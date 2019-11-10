@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{9CCA32B7-EED8-426A-A902-CB4EA806DA8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{AE5D7151-1CD3-4F32-9855-76D1F926EF44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watch", "Watch", "{ADADC88A-B331-4576-BEE2-35F5A97DC1F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{7EE78E46-B275-4ACE-83C3-5B66B8A1F7EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{74B53A76-A019-428B-A44D-EBB20D43163B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedSkating.Dto", "Shared\SpeedSkating.Dto\SpeedSkating.Dto.csproj", "{5E6F3958-D4E4-4917-967D-88E17E18C679}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AE5D7151-1CD3-4F32-9855-76D1F926EF44} = {74B53A76-A019-428B-A44D-EBB20D43163B}
+		{ADADC88A-B331-4576-BEE2-35F5A97DC1F6} = {74B53A76-A019-428B-A44D-EBB20D43163B}
+		{5E6F3958-D4E4-4917-967D-88E17E18C679} = {9CCA32B7-EED8-426A-A902-CB4EA806DA8D}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E6F3958-D4E4-4917-967D-88E17E18C679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E6F3958-D4E4-4917-967D-88E17E18C679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E6F3958-D4E4-4917-967D-88E17E18C679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E6F3958-D4E4-4917-967D-88E17E18C679}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.StandardHeader = $1
+		$1.Text = @SmartSkating. Speed Skating activity tracker app\n${FileName}\nCopyrigh ${Year} ${AuthorName} ${AuthorEmail}
+	EndGlobalSection
+EndGlobal
