@@ -1,6 +1,4 @@
 ﻿using System;
-
-using Foundation;
 using WatchKit;
 
 namespace SmartSkating.WatchOs.WatchOSExtension

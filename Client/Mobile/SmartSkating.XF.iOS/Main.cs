@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using UIKit;
 
-using Foundation;
-using UIKit;
-
-namespace SmartSkating.Xf.iOS
+namespace Sanet.SmartSkating.Xf.Ios
 {
     public class Application
     {

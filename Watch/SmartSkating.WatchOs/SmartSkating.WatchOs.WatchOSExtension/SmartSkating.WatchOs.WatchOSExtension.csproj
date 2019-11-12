@@ -7,12 +7,14 @@
     <ProjectGuid>{81273B2A-F780-4F72-A392-173C7B4F53C6}</ProjectGuid>
     <TemplateGuid>{22c3201b-89f4-43a0-a2fc-a31418d6fe44}</TemplateGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SmartSkating.WatchOs.WatchOSExtension</RootNamespace>
+    <RootNamespace>Sanet.SmartSkating.WatchOs.Extension</RootNamespace>
     <AssemblyName>SmartSkatingWatchOsWatchOSExtension</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <LangVersion>8</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>

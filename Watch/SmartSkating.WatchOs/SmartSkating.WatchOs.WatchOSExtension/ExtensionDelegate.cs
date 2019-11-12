@@ -1,9 +1,6 @@
-﻿using System;
+﻿using WatchKit;
 
-using Foundation;
-using WatchKit;
-
-namespace SmartSkating.WatchOs.WatchOSExtension
+namespace Sanet.SmartSkating.WatchOs.Extension
 {
     public class ExtensionDelegate : WKExtensionDelegate
     {

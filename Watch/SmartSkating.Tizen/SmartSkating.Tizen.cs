@@ -1,6 +1,4 @@
-using System;
-
-namespace SmartSkating.Tizen
+namespace Sanet.SmartSkating.Tizen
 {
     class Program : global::Xamarin.Forms.Platform.Tizen.FormsApplication
     {
@@ -14,7 +12,7 @@ namespace SmartSkating.Tizen
         static void Main(string[] args)
         {
             var app = new Program();
-            global::Xamarin.Forms.Platform.Tizen.Forms.Init(app);
+            Xamarin.Forms.Forms.Init(app);
             global::Tizen.Wearable.CircularUI.Forms.Renderer.FormsCircularUI.Init();
             app.Run(args);
         }

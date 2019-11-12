@@ -1,10 +1,8 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms;
 
-namespace SmartSkating.Xf
+namespace Sanet.SmartSkating.Xf
 {
-    public partial class App : Application
+    public partial class App
     {
         public App()
         {

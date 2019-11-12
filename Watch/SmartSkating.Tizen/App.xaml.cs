@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace SmartSkating.Tizen
+namespace Sanet.SmartSkating.Tizen
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class App : Application
@@ -16,7 +10,7 @@ namespace SmartSkating.Tizen
         {
             InitializeComponent();
 
-            MainPage = new SmartSkating.Tizen.MainPage();
+            MainPage = new MainPage();
         }
 
         protected override void OnStart()

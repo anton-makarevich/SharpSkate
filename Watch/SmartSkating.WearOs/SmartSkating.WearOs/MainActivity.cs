@@ -1,31 +1,21 @@
-﻿using System;
-
-using Android.App;
-using Android.Content;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.App;
 using Android.OS;
-using Android.Support.Wearable.Views;
-using Android.Support.V4.App;
-using Android.Support.V4.View;
 using Android.Support.Wearable.Activity;
-using Java.Interop;
-using Android.Views.Animations;
+using Android.Widget;
 
-namespace SmartSkating.WearOs
+namespace Sanet.SmartSkating.WearOs
 {
     [Activity(Label = "@string/app_name", MainLauncher = true)]
     public class MainActivity : WearableActivity
     {
-        TextView textView;
+        TextView _textView;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.activity_main);
 
-            textView = FindViewById<TextView>(Resource.Id.text);
+            _textView = FindViewById<TextView>(Resource.Id.text);
             SetAmbientEnabled();
         }
     }
