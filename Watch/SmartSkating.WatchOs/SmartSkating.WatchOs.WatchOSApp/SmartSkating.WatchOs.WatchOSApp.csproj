@@ -130,7 +130,8 @@
     <ProjectReference Include="..\SmartSkating.WatchOs.WatchOSExtension\SmartSkating.WatchOs.WatchOSExtension.csproj">
       <Name>SmartSkating.WatchOs.WatchOSExtension</Name>
       <Project>{81273B2A-F780-4F72-A392-173C7B4F53C6}</Project>
-      <IsAppExtension>True</IsAppExtension>
+      <IsAppExtension>true</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\WatchOS\Xamarin.WatchOS.App.CSharp.targets" />
