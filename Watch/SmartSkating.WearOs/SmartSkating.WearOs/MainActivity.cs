@@ -20,5 +20,3 @@ namespace Sanet.SmartSkating.WearOs
         }
     }
 }
-
-

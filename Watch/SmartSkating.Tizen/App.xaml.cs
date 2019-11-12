@@ -29,4 +29,3 @@ namespace Sanet.SmartSkating.Tizen
         }
     }
 }
-

@@ -49,4 +49,3 @@ namespace SmartSkating.WatchOs.WatchOSExtension
         }
     }
 }
-

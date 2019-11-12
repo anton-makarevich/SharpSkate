@@ -9,4 +9,3 @@ namespace Sanet.SmartSkating.WatchOs.Extension
         }
     }
 }
-
