@@ -30,13 +30,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.Xf.iOS", "Clie
 		{81273B2A-F780-4F72-A392-173C7B4F53C6} = {81273B2A-F780-4F72-A392-173C7B4F53C6}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.WearOs", "Watch\SmartSkating.WearOs\SmartSkating.WearOs\SmartSkating.WearOs.csproj", "{3F4AD79D-7FF3-4F27-9F44-3CECF248B422}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.WearOs", "Client\Watch\SmartSkating.WearOs\SmartSkating.WearOs\SmartSkating.WearOs.csproj", "{3F4AD79D-7FF3-4F27-9F44-3CECF248B422}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.WatchOs.WatchOSApp", "Watch\SmartSkating.WatchOs\SmartSkating.WatchOs.WatchOSApp\SmartSkating.WatchOs.WatchOSApp.csproj", "{59DE158E-6A9B-44F2-8C35-A2BAEC360B84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.WatchOs.WatchOSApp", "Client\Watch\SmartSkating.WatchOs\SmartSkating.WatchOs.WatchOSApp\SmartSkating.WatchOs.WatchOSApp.csproj", "{59DE158E-6A9B-44F2-8C35-A2BAEC360B84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.WatchOs.WatchOSExtension", "Watch\SmartSkating.WatchOs\SmartSkating.WatchOs.WatchOSExtension\SmartSkating.WatchOs.WatchOSExtension.csproj", "{81273B2A-F780-4F72-A392-173C7B4F53C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.WatchOs.WatchOSExtension", "Client\Watch\SmartSkating.WatchOs\SmartSkating.WatchOs.WatchOSExtension\SmartSkating.WatchOs.WatchOSExtension.csproj", "{81273B2A-F780-4F72-A392-173C7B4F53C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Tizen", "Watch\SmartSkating.Tizen\SmartSkating.Tizen.csproj", "{BF24B673-E308-4DBF-962A-36C61B660F2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Tizen", "Client\Watch\SmartSkating.Tizen\SmartSkating.Tizen.csproj", "{BF24B673-E308-4DBF-962A-36C61B660F2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

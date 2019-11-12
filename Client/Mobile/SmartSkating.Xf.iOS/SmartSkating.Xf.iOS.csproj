@@ -142,7 +142,7 @@
       <Project>{990644BD-E628-444E-BE86-3A671C918A18}</Project>
       <Name>SmartSkating.Xf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Watch\SmartSkating.WatchOs\SmartSkating.WatchOs.WatchOSApp\SmartSkating.WatchOs.WatchOSApp.csproj">
+    <ProjectReference Include="..\..\Watch\SmartSkating.WatchOs\SmartSkating.WatchOs.WatchOSApp\SmartSkating.WatchOs.WatchOSApp.csproj">
       <IsWatchApp>true</IsWatchApp>
       <Project>{59DE158E-6A9B-44F2-8C35-A2BAEC360B84}</Project>
       <Name>SmartSkating.WatchOs.WatchOSApp</Name>
