@@ -124,13 +124,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj">
-      <Project>{795C2FC0-D25E-48E9-AD4A-2A003447415A}</Project>
+    <ProjectReference Include="..\..\..\..\Shared\SmartSkating\SmartSkating.csproj">
+      <Project>{795c2fc0-d25e-48e9-ad4a-2a003447415a}</Project>
       <Name>SmartSkating</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Shared\SmartSkating.Models\SmartSkating.Models.csproj">
-      <Project>{A13A39D9-B9E6-42E0-B248-5FFC972F61E1}</Project>
-      <Name>SmartSkating.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

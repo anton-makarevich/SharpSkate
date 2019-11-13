@@ -1,6 +1,7 @@
+using Sanet.SmartSkating.Models;
 using Xunit;
 
-namespace Sanet.SmartSkating.Models.Tests
+namespace Sanet.SmartSkating.Tests.Models
 {
     public class RinkTests
     {

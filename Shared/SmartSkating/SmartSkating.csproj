@@ -5,8 +5,4 @@
     <RootNamespace>Sanet.SmartSkating</RootNamespace>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SmartSkating.Models\SmartSkating.Models.csproj" />
-  </ItemGroup>
 </Project>

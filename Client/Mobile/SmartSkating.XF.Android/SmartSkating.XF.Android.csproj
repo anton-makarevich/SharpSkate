@@ -125,11 +125,7 @@
       <Project>{795C2FC0-D25E-48E9-AD4A-2A003447415A}</Project>
       <Name>SmartSkating</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Shared\SmartSkating.Models\SmartSkating.Models.csproj">
-      <Project>{A13A39D9-B9E6-42E0-B248-5FFC972F61E1}</Project>
-      <Name>SmartSkating.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SmartSkating.Xf\SmartSkating.Xf.csproj">
+    <ProjectReference Include="..\SmartSkating.Xf\SmartSkating.Xf.csproj">
       <Project>{990644BD-E628-444E-BE86-3A671C918A18}</Project>
       <Name>SmartSkating.Xf</Name>
     </ProjectReference>

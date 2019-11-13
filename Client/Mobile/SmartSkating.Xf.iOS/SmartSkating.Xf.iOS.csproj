@@ -9,6 +9,7 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{6143fdea-f3c2-4a09-aafa-6e230626515e}</TemplateGuid>
     <OutputType>Exe</OutputType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <RootNamespace>Sanet.SmartSkating.Xf.Ios</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>SmartSkating.Xf.iOS</AssemblyName>
@@ -133,15 +134,11 @@
       <Project>{795C2FC0-D25E-48E9-AD4A-2A003447415A}</Project>
       <Name>SmartSkating</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Shared\SmartSkating.Models\SmartSkating.Models.csproj">
-      <Project>{A13A39D9-B9E6-42E0-B248-5FFC972F61E1}</Project>
-      <Name>SmartSkating.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SmartSkating.Xf\SmartSkating.Xf.csproj">
+    <ProjectReference Include="..\SmartSkating.Xf\SmartSkating.Xf.csproj">
       <Project>{990644BD-E628-444E-BE86-3A671C918A18}</Project>
       <Name>SmartSkating.Xf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Watch\SmartSkating.WatchOs\SmartSkating.WatchOs.WatchOSApp\SmartSkating.WatchOs.WatchOSApp.csproj">
+    <ProjectReference Include="..\..\Watch\SmartSkating.WatchOs\SmartSkating.WatchOs.WatchOSApp\SmartSkating.WatchOs.WatchOSApp.csproj">
       <IsWatchApp>true</IsWatchApp>
       <Project>{59DE158E-6A9B-44F2-8C35-A2BAEC360B84}</Project>
       <Name>SmartSkating.WatchOs.WatchOSApp</Name>
