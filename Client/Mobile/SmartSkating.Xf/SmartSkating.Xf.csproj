@@ -2,16 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <RootNamespace>Sanet.SmartSkating.Models</RootNamespace>
-    <Nullable>enable</Nullable>
+    <RootNamespace>Sanet.SmartSkating.Xf</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Commandlineparameters></Commandlineparameters>
-    <PlatformTarget>anycpu</PlatformTarget>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
+    <PackageReference Include="Xamarin.Forms" Version="4.3.0.947036" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj" />
+  </ItemGroup>
 </Project>
