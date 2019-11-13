@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Sanet.SmartSkating.ViewModels;
+using Sanet.SmartSkating.Xf.Views;
 
 namespace Sanet.SmartSkating.Xf
 {
@@ -8,7 +9,7 @@ namespace Sanet.SmartSkating.Xf
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new LiveSessionView(){ViewModel = new LiveSessionViewModel()};
         }
 
         protected override void OnStart()

@@ -12,7 +12,6 @@ namespace Sanet.SmartSkating.ViewModels.Base
         
         #region Fields
         private bool _isBusy;
-        private int _pageWidth;
         private INavigationService? _navigationService;
         #endregion
         protected BaseViewModel() { }
@@ -35,12 +34,6 @@ namespace Sanet.SmartSkating.ViewModels.Base
             set => SetProperty(ref _isBusy, value);
         }
 
-        public int PageWidth
-        {
-            get => _pageWidth;
-            set => SetProperty(ref _pageWidth, value);
-        }
-        
         public bool ExpectsResult { get; set; }
         #endregion
 
