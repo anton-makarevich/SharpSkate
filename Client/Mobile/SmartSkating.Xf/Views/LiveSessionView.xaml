@@ -8,8 +8,10 @@
     xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
     x:Class="Sanet.SmartSkating.Xf.Views.LiveSessionView">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Hello, world!"
+        <StackLayout
+            BackgroundColor="White">
+            <Label Text="Hello, Team!"
+                   TextColor="Black"
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="CenterAndExpand" />
         </StackLayout>
