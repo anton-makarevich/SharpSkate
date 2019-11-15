@@ -34,6 +34,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.WatchOs.WatchO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Tizen", "Client\Watch\SmartSkating.Tizen\SmartSkating.Tizen.csproj", "{BF24B673-E308-4DBF-962A-36C61B660F2B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{16751D3E-6C9D-4194-B62C-B717875E9996}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPXComposer", "Tools\GPXComposer\GPXComposer.csproj", "{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,6 +156,18 @@ Global
 		{BF24B673-E308-4DBF-962A-36C61B660F2B}.Release|iPhone.Build.0 = Release|Any CPU
 		{BF24B673-E308-4DBF-962A-36C61B660F2B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{BF24B673-E308-4DBF-962A-36C61B660F2B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Release|iPhone.Build.0 = Release|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -168,6 +184,7 @@ Global
 		{81273B2A-F780-4F72-A392-173C7B4F53C6} = {ADADC88A-B331-4576-BEE2-35F5A97DC1F6}
 		{BF24B673-E308-4DBF-962A-36C61B660F2B} = {ADADC88A-B331-4576-BEE2-35F5A97DC1F6}
 		{990644BD-E628-444E-BE86-3A671C918A18} = {AE5D7151-1CD3-4F32-9855-76D1F926EF44}
+		{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208} = {16751D3E-6C9D-4194-B62C-B717875E9996}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3FBC07CE-2F49-4B83-94B6-C1DD05A66813}
