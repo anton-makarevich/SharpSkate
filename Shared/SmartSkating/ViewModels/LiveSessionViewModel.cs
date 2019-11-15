@@ -1,7 +1,9 @@
+using System;
 using System.Windows.Input;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
-using Sanet.SmartSkating.Service.Location;
+using Sanet.SmartSkating.Services.Location;
+using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.ViewModels.Base;
 
 namespace Sanet.SmartSkating.ViewModels
@@ -9,12 +11,14 @@ namespace Sanet.SmartSkating.ViewModels
     public class LiveSessionViewModel:BaseViewModel
     {
         private readonly ILocationService _locationService;
+        private readonly IStorageService _storageService;
         private bool _isRunning;
-        private string _infoLabel;
+        private string _infoLabel = string.Empty;
 
-        public LiveSessionViewModel(ILocationService locationService)
+        public LiveSessionViewModel(ILocationService locationService, IStorageService storageService)
         {
             _locationService = locationService;
+            _storageService = storageService;
         }
 
 
@@ -22,13 +26,14 @@ namespace Sanet.SmartSkating.ViewModels
         {
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
             _locationService.StartFetchLocation();
-            _isRunning = true;
+            IsRunning = true;
         });
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
             LastCoordinate = e.Coordinate;
             InfoLabel = LastCoordinate.ToString();
+            _storageService.SaveCoordinateAsync(LastCoordinate);
         }
 
         public ICommand StopCommand => new SimpleCommand(StopLocationService);
@@ -37,7 +42,8 @@ namespace Sanet.SmartSkating.ViewModels
         {
             _locationService.LocationReceived -= LocationServiceOnLocationReceived;
             _locationService.StopFetchLocation();
-            _isRunning = false;
+            IsRunning = false;
+            InfoLabel = string.Empty;
         }
 
         public bool IsRunning

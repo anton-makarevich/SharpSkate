@@ -4,13 +4,13 @@ using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Xamarin.Essentials;
 
-namespace Sanet.SmartSkating.Service.Location
+namespace Sanet.SmartSkating.Services.Location
 {
     public class EssentialsLocationService:ILocationService
     {
         private bool _isRunning;
         
-        public event EventHandler<CoordinateEventArgs> LocationReceived;
+        public event EventHandler<CoordinateEventArgs>? LocationReceived;
         public void StartFetchLocation()
         {
             _isRunning = true;
@@ -30,7 +30,7 @@ namespace Sanet.SmartSkating.Service.Location
             do
             {
                 var location = await Geolocation.GetLocationAsync(request);
-                if (location!=null && !location.IsFromMockProvider)
+                if (location!=null && !location.IsFromMockProvider && _isRunning)
                     LocationReceived?.Invoke(
                         null,
                         new CoordinateEventArgs(new Coordinate(location.Latitude,location.Longitude)));

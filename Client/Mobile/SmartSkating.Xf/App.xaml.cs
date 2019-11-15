@@ -1,4 +1,6 @@
-﻿using Sanet.SmartSkating.ViewModels;
+﻿using Sanet.SmartSkating.Services.Location;
+using Sanet.SmartSkating.Services.Storage;
+using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.Xf.Views;
 
 namespace Sanet.SmartSkating.Xf
@@ -9,7 +11,12 @@ namespace Sanet.SmartSkating.Xf
         {
             InitializeComponent();
 
-            MainPage = new LiveSessionView(){ViewModel = new LiveSessionViewModel()};
+            MainPage = new LiveSessionView()
+            {
+                ViewModel = new LiveSessionViewModel(
+                    new EssentialsLocationService(),
+                    new JsonStorageService())
+            };
         }
 
         protected override void OnStart()

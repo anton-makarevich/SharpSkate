@@ -1,8 +1,7 @@
 using System;
-using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 
-namespace Sanet.SmartSkating.Service.Location
+namespace Sanet.SmartSkating.Services.Location
 {
     public interface ILocationService
     {

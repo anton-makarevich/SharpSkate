@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <base:BaseView
-    x:TypeArguments="vm:LiveSessionViewModel" 
+    x:TypeArguments="vm:LiveSessionViewModel"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base;assembly=SmartSkating.Xf"
     xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
-    x:Class="Sanet.SmartSkating.Xf.Views.LiveSessionView">
+    x:Class="Sanet.SmartSkating.Xf.Views.LiveSessionView"
+    BackgroundColor="White">
     <ContentPage.Content>
         <StackLayout
-            BackgroundColor="White">
-            <Label Text="Hello, Team!"
-                   TextColor="Black"
-                   VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand" />
+            Margin="20"
+            >
+            <Label
+                Text="{Binding InfoLabel}"
+                FontSize="Large"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Button
+                Text="Start"
+                Command="{Binding StartCommand}"
+                IsVisible="{Binding IsRunning, Converter={StaticResource InverseBooleanConverter}}" />
+            <Button
+                Text="Stop"
+                Command="{Binding StopCommand}"
+                IsVisible="{Binding IsRunning}" />
         </StackLayout>
     </ContentPage.Content>
 </base:BaseView>
