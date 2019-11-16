@@ -8,7 +8,6 @@ namespace Sanet.SmartSkating.Tests.Models
         [Fact]
         public void ToStringPrintsLatitudeAndLongitude()
         {
-
             var sut = new Coordinate(34.45, 23.56);
             
             var text = sut.ToString();

@@ -20,8 +20,7 @@ namespace Sanet.SmartSkating.ViewModels
             _locationService = locationService;
             _storageService = storageService;
         }
-
-
+        
         public ICommand StartCommand => new SimpleCommand(() =>
         {
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;

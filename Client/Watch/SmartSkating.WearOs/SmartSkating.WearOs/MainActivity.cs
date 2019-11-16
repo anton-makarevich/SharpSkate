@@ -28,7 +28,6 @@ namespace Sanet.SmartSkating.WearOs
             Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
             Xamarin.Essentials.Platform.Init(this, bundle);
             SetContentView(Resource.Layout.activity_main);
-            
 
             _textView = FindViewById<TextView>(Resource.Id.text);
             _startButton = FindViewById<Button>(Resource.Id.startButton);
