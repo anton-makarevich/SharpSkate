@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using Android.App;
+using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.Wearable.Activity;
 using Android.Views;
 using Android.Widget;
@@ -23,14 +25,15 @@ namespace Sanet.SmartSkating.WearOs
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+            Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
+            Xamarin.Essentials.Platform.Init(this, bundle);
             SetContentView(Resource.Layout.activity_main);
             
 
             _textView = FindViewById<TextView>(Resource.Id.text);
             _startButton = FindViewById<Button>(Resource.Id.startButton);
             _stopButton = FindViewById<Button>(Resource.Id.stopButton);
-            
+
             SetViewModel();
             
             _startButton.Click+= StartButtonOnClick;
@@ -89,6 +92,13 @@ namespace Sanet.SmartSkating.WearOs
         private void UpdateTextState()
         {
             _textView.Text = _viewModel.InfoLabel;
+        }
+        
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }
