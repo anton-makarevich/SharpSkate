@@ -61,8 +61,13 @@ namespace Sanet.SmartSkating.WearOs
 
         private void SetViewModel()
         {
-            _viewModel = new LiveSessionViewModel(new EssentialsLocationService(), new JsonStorageService());
+            var storageService = new JsonStorageService();
+            _viewModel = new LiveSessionViewModel(new EssentialsLocationService(), storageService);
             _viewModel.PropertyChanged+= ViewModelOnPropertyChanged;
+            
+            #if DEBUG
+            storageService.LoadAllCoordinatesAsync();
+            #endif
             
             UpdateTextState();
             UpdateButtonsState();

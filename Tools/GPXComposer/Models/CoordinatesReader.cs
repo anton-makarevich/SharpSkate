@@ -11,14 +11,14 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
 {
     public class CoordinatesReader
     {
-        private const string Path = "data/user/0/SmartSkating.WearOs.SmartSkating.WearOs/files/SmartSkating/";
+        private const string Path = "data/user/0/by.sanet.smartskating.wearos/files/SmartSkating/";
 
         private List<WayPoint> _wayPoints;
         
         public void ReadFromLog()
         {
             _wayPoints = new List<WayPoint>();
-            var data = File.ReadAllLines("/Users/amakarevich/Downloads/skatingData/vera-fossil-sport-16112019");
+            var data = File.ReadAllLines("/Users/amakarevich/Downloads/skatingData/anton11182019/testlog");
             foreach (var line in data)
             {
                 if (line.Contains(Path))
@@ -49,10 +49,10 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
 
             foreach (var wayPoint in t)
             {
-                var startDate = new DateTime(2019,11,16,8,40,0);
-                var endDate = new DateTime(2019,11,16,9,30,0);
-                if (wayPoint.Date < startDate || wayPoint.Date > endDate)
-                    continue;
+//                var startDate = new DateTime(2019,11,16,8,40,0);
+//                var endDate = new DateTime(2019,11,16,9,30,0);
+//                if (wayPoint.Date < startDate || wayPoint.Date > endDate)
+//                    continue;
                 
                 var gpxPoint = new GpxRoutePoint();
                 gpxPoint.Latitude = wayPoint.Coordinate.Latitude;
@@ -62,9 +62,9 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
                 gpxRoute.RoutePoints.Add(gpxPoint);
             }
 
-            var metaData = new GpxMetadata {Name = "Anton skating 11-16-2019"};
+            var metaData = new GpxMetadata {Name = "Anton testing 11-18-2019"};
 
-            using var stream = File.OpenWrite("/Users/amakarevich/Downloads/skatingData/anton16112019/test2.gpx");
+            using var stream = File.OpenWrite("/Users/amakarevich/Downloads/skatingData/anton11182019/testlog.gpx");
             using GpxWriter writer = new GpxWriter(stream);
             writer.WriteMetadata(metaData);
 
