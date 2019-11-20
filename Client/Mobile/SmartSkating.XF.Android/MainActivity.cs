@@ -1,8 +1,14 @@
-﻿using Android.App;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Android;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.App;
+using Android.Support.V4.Content;
 using Android.Views;
+using SimpleInjector;
 
 namespace Sanet.SmartSkating.Xf.Droid
 {
@@ -13,20 +19,46 @@ namespace Sanet.SmartSkating.Xf.Droid
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        private readonly Container _container = new Container();
+        private const int PermissionsRequestCode = 432;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+            _container.RegisterModules(this);
+            LoadApplication(new App(_container));
+            
+            RequestPermissions();
         }
-        
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
+            [GeneratedEnum] Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            
+            
+        }
+
+        private void RequestPermissions()
+        {
+
+            var permissions = new List<string>();
+
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) != Permission.Granted)
+            {
+                permissions.Add(Manifest.Permission.AccessFineLocation);
+            }
+
+            if (permissions.Any())
+            {
+                ActivityCompat.RequestPermissions(this,
+                    permissions.ToArray(), PermissionsRequestCode);
+            }
         }
     }
 }

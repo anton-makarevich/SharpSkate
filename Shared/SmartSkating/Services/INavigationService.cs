@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Sanet.SmartSkating.ViewModels.Base;
 
-namespace Sanet.SmartSkating.Service
+namespace Sanet.SmartSkating.Services
 {
     public interface INavigationService
     {

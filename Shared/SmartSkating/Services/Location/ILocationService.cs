@@ -5,7 +5,7 @@ namespace Sanet.SmartSkating.Services.Location
 {
     public interface ILocationService
     {
-        event EventHandler<CoordinateEventArgs> LocationReceived;
+        event EventHandler<CoordinateEventArgs>? LocationReceived;
         void StartFetchLocation();
         void StopFetchLocation();
     }

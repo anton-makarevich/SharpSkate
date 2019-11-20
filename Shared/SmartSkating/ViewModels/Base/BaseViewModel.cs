@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Sanet.SmartSkating.Models;
-using Sanet.SmartSkating.Service;
+using Sanet.SmartSkating.Services;
 
 namespace Sanet.SmartSkating.ViewModels.Base
 {
