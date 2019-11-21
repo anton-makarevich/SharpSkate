@@ -1,14 +1,20 @@
-﻿using Xamarin.Forms;
+﻿using Sanet.SmartSkating.ViewModels;
+using Sanet.SmartSkating.Xf.Services;
+using Sanet.SmartSkating.Xf.Views;
+using SimpleInjector;
 
 namespace Sanet.SmartSkating.Xf
 {
     public partial class App
     {
-        public App()
+        public App(Container container)
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new LiveSessionView()
+            {
+                ViewModel = new XamarinFormsNavigationService(container).GetViewModel<LiveSessionViewModel>()
+            };
         }
 
         protected override void OnStart()

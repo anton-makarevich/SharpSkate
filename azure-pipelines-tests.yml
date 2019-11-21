@@ -1,0 +1,22 @@
+trigger:
+- develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use dotnet sdk 3.x'
+  inputs:
+    version: 3.x
+    includePreviewVersions: false
+
+- script: dotnet restore SmartSkating.sln
+  displayName: 'Restore nuget packages'
+
+- script: dotnet test Shared/SmartSkating.Tests/SmartSkating.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating]*
+  displayName: 'Run Core tests'
+
+- bash: |
+    bash <(curl -s https://codecov.io/bash) -f "Shared/SmartSkating.Tests/coverage.opencover.xml" -t $(codecov.token)
+  displayName: 'Upload DTO tests results'
