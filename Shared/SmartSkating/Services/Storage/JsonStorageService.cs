@@ -35,8 +35,7 @@ namespace Sanet.SmartSkating.Services.Storage
             return Task<List<Coordinate>>.Factory.StartNew(() =>
             {
                 var coordinates = new List<Coordinate>();
-
-
+                
                 var files = Directory.EnumerateFiles(SmartSkatingFolder);
                 foreach (var file in files)
                 {

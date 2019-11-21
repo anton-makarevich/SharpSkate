@@ -13,7 +13,6 @@ namespace Sanet.SmartSkating.Droid.Utils
         public static int PermissionsRequestCode = 432;
         public static void RequestPermissions(this Activity activity)
         {
-
             var permissions = new List<string>();
 
             if (ContextCompat.CheckSelfPermission(activity,

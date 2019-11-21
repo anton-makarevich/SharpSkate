@@ -25,7 +25,6 @@ namespace Sanet.SmartSkating.Droid.Services.Location
         public event EventHandler<CoordinateEventArgs>? LocationReceived;
         public void StartFetchLocation()
         {
-            
             _locationManager?.RequestLocationUpdates(LocationManager.GpsProvider,2000, 1, this);
         }
 
