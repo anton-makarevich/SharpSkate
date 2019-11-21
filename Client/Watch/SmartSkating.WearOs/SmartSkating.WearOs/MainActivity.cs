@@ -7,7 +7,8 @@ using Android.Runtime;
 using Android.Support.Wearable.Activity;
 using Android.Views;
 using Android.Widget;
-using Sanet.SmartSkating.Services.Location;
+using Sanet.SmartSkating.Droid.Services.Location;
+using Sanet.SmartSkating.Droid.Utils;
 using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.ViewModels;
 
@@ -28,6 +29,8 @@ namespace Sanet.SmartSkating.WearOs
             Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
             Xamarin.Essentials.Platform.Init(this, bundle);
             SetContentView(Resource.Layout.activity_main);
+            
+            this.RequestPermissions();
 
             _textView = FindViewById<TextView>(Resource.Id.text);
             _startButton = FindViewById<Button>(Resource.Id.startButton);
@@ -62,7 +65,7 @@ namespace Sanet.SmartSkating.WearOs
         private void SetViewModel()
         {
             var storageService = new JsonStorageService();
-            _viewModel = new LiveSessionViewModel(new EssentialsLocationService(), storageService);
+            _viewModel = new LiveSessionViewModel(new LocationManagerService(this), storageService);
             _viewModel.PropertyChanged+= ViewModelOnPropertyChanged;
             
             #if DEBUG

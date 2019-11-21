@@ -1,6 +1,6 @@
 using Android.App;
 using Sanet.SmartSkating.Services.Location;
-using Sanet.SmartSkating.Xf.Droid.Services.Location;
+using Sanet.SmartSkating.Droid.Services.Location;
 using SimpleInjector;
 
 namespace Sanet.SmartSkating.Xf.Droid

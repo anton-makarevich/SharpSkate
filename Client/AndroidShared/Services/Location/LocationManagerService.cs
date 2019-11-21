@@ -7,7 +7,7 @@ using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Services.Location;
 
-namespace Sanet.SmartSkating.Xf.Droid.Services.Location
+namespace Sanet.SmartSkating.Droid.Services.Location
 {
     public class LocationManagerService: Java.Lang.Object, ILocationService, ILocationListener
     {

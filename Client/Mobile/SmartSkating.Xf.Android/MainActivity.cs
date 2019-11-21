@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Android;
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.App;
-using Android.Support.V4.Content;
 using Android.Views;
+using Sanet.SmartSkating.Droid.Utils;
 using SimpleInjector;
 
 namespace Sanet.SmartSkating.Xf.Droid
@@ -20,7 +16,6 @@ namespace Sanet.SmartSkating.Xf.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         private readonly Container _container = new Container();
-        private const int PermissionsRequestCode = 432;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -31,7 +26,7 @@ namespace Sanet.SmartSkating.Xf.Droid
             _container.RegisterModules(this);
             LoadApplication(new App(_container));
             
-            RequestPermissions();
+            this.RequestPermissions();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
@@ -42,23 +37,6 @@ namespace Sanet.SmartSkating.Xf.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             
             
-        }
-
-        private void RequestPermissions()
-        {
-
-            var permissions = new List<string>();
-
-            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) != Permission.Granted)
-            {
-                permissions.Add(Manifest.Permission.AccessFineLocation);
-            }
-
-            if (permissions.Any())
-            {
-                ActivityCompat.RequestPermissions(this,
-                    permissions.ToArray(), PermissionsRequestCode);
-            }
         }
     }
 }
