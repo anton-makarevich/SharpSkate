@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Sanet.SmartSkating.Utils;
 
 namespace Sanet.SmartSkating.Models.Location
@@ -44,9 +46,39 @@ namespace Sanet.SmartSkating.Models.Location
 
         public Line? GetPerpendicularToEnd()
         {
-            if (End.HasValue)
+            if (End.HasValue)    
                 return new Line(-1/this.Slope, this.End.Value);
             return null;
+        }
+
+        public IEnumerable<Point> FindPointsFromBegin(double distance)
+        {
+            return FindPointsFrom(Begin, distance);
+        }
+        
+        public IEnumerable<Point> FindPointsFromEnd(double distance)
+        {
+            return End == null ? new Point[0] : FindPointsFrom(End.Value, distance);
+        }
+
+        private IEnumerable<Point> FindPointsFrom(Point point, double distance)
+        {
+            var d = GetDeltaX(distance);
+            var x1 = point.X + d;
+            var x2 = point.X - d;
+            var y1 = GetY(x1);
+            var y2 = GetY(x2);
+            return new[] {new Point(x1, y1), new Point(x2,y2)};
+        }
+
+        private double GetDeltaX(double distance)
+        {
+            return distance / Math.Sqrt(1 + Slope * Slope);
+        }
+
+        public double GetY(double x)
+        {
+            return x * Slope + Intercept;
         }
     }
 }

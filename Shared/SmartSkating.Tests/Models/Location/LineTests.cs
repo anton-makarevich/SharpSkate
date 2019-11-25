@@ -1,3 +1,4 @@
+using System.Linq;
 using Sanet.SmartSkating.Models.Location;
 using Xunit;
 
@@ -91,6 +92,45 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             Assert.Equal(-1,perpendicularLine.Value.Slope,0);
             Assert.Equal(perpendicularLine.Value.Begin,line.End);
             Assert.Null(perpendicularLine.Value.End);
+        }
+
+        [Fact]
+        public void GetYCalculatesYForGivenX()
+        {
+            var secondPoint = new Point(3,4);
+            var sut = new Line(secondPoint);
+
+            var y1 = sut.GetY(3);
+            var y2 = sut.GetY(6);
+            
+            Assert.Equal(4,y1);
+            Assert.Equal(8,y2);
+        }
+
+        [Fact]
+        public void FindPointsFromBeginFindsTwoPointsWithCorrectCoordinates()
+        {
+            var secondPoint = new Point(3,4);
+            var sut = new Line(secondPoint);
+
+            var points = sut.FindPointsFromBegin(5).ToList();
+            
+            Assert.Equal(2,points.Count);
+            Assert.Contains(secondPoint,points);
+            Assert.Contains(new Point(-3, -4),points);
+        }
+        
+        [Fact]
+        public void FindPointsFromEndFindsTwoPointsWithCorrectCoordinatesIfEndIsNotNull()
+        {
+            var secondPoint = new Point(3,4);
+            var sut = new Line(secondPoint);
+
+            var points = sut.FindPointsFromEnd(5).ToList();
+            
+            Assert.Equal(2,points.Count);
+            Assert.Contains(new Point(), points);
+            Assert.Contains(new Point(6, 8),points);
         }
     }
 }
