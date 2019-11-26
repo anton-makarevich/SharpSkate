@@ -24,6 +24,7 @@ namespace Sanet.SmartSkating.Models.Location
             Slope = slope;
             Intercept = (beginPoint.IsZero)
                 ? 0
+#pragma warning disable SA1407
                 : beginPoint.Y - Slope * beginPoint.X;
             Length = (End.HasValue)
                 // ReSharper disable once PossibleInvalidOperationException
@@ -34,10 +35,10 @@ namespace Sanet.SmartSkating.Models.Location
         }
 
         public double Slope { get; }
-        public double Intercept { get;}
+        public double Intercept { get; }
         public double Length { get; }
-        public Point Begin { get;}
-        public Point? End { get;}
+        public Point Begin { get; }
+        public Point? End { get; }
         
         public Line GetPerpendicularToBegin()
         {
@@ -73,11 +74,13 @@ namespace Sanet.SmartSkating.Models.Location
 
         private double GetDeltaX(double distance)
         {
+            #pragma warning disable SA1407
             return distance / Math.Sqrt(1 + Slope * Slope);
         }
 
         public double GetY(double x)
         {
+            #pragma warning disable SA1407
             return x * Slope + Intercept;
         }
     }
