@@ -24,12 +24,18 @@ namespace Sanet.SmartSkating.Tests.Models
         [Fact]
         public void FinishLocalIsHundredMetersAwayFromStart()
         {
-            var localFinish = _sut.FinishLocal;
-
-            var dist = (localFinish.X,localFinish.Y).GetDistance();
+            var dist = (_sut.StartLocal,_sut.FinishLocal).GetDistance();
             Assert.Equal(100,dist,0);
         }
 
+        [Fact]
+        public void RinksFirstSectorContainsStart()
+        {
+            var startLine = _sut.FirstSector.StartLine;
+            
+            Assert.True(startLine.Contains(_sut.StartLocal));
+        }
+        
         [Fact]
         public void RinkHasFourSectors()
         {

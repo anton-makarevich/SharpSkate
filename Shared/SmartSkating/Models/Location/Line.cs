@@ -6,6 +6,8 @@ namespace Sanet.SmartSkating.Models.Location
 {
     public struct Line
     {
+        private const double RoundTolerance = 0.001;
+
         public Line(Point beginPoint, Point endPoint):this(
             (endPoint.Y-beginPoint.Y)/(endPoint.X-beginPoint.X),
             beginPoint,
@@ -57,6 +59,14 @@ namespace Sanet.SmartSkating.Models.Location
 
         private IEnumerable<Point> FindPointsFrom(Point point, double distance)
         {
+            if (double.IsInfinity(Slope))
+            {
+                return new[]
+                {
+                    new Point(point.X, point.Y+distance),
+                    new Point(point.X, point.Y-distance)
+                };
+            }
             var d = GetDeltaX(distance);
             var x1 = point.X + d;
             var x2 = point.X - d;
@@ -73,6 +83,13 @@ namespace Sanet.SmartSkating.Models.Location
         public double GetY(double x)
         {
             return x * Slope + Intercept;
+        }
+    
+        public bool Contains(Point point)
+        {
+            return (double.IsInfinity(Slope))
+                ? Math.Abs(point.X - Begin.X) < RoundTolerance
+                : Math.Abs(GetY(point.X) - point.Y) < RoundTolerance;
         }
     }
 }

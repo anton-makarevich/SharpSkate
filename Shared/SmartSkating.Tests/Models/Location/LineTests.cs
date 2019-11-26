@@ -90,6 +90,26 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             Assert.Equal(-1,perpendicularLine.Slope,0);
             Assert.Equal(perpendicularLine.Begin,line.End);
         }
+        
+        [Fact]
+        public void GetPerpendicularReturnsVerticalLineForHorizontalOne()
+        {
+            var secondPoint = new Point(1,0);
+            var line = new Line(secondPoint);
+
+            var perpendicularLine = line.GetPerpendicularToBegin();
+            Assert.True(double.IsInfinity(perpendicularLine.Slope));
+        }
+        
+        [Fact]
+        public void GetPerpendicularReturnsHorizontalLineForVerticalOne()
+        {
+            var secondPoint = new Point(0,1);
+            var line = new Line(secondPoint);
+
+            var perpendicularLine = line.GetPerpendicularToBegin();
+            Assert.Equal(0,perpendicularLine.Slope);
+        }
 
         [Fact]
         public void GetYCalculatesYForGivenX()
@@ -118,7 +138,7 @@ namespace Sanet.SmartSkating.Tests.Models.Location
         }
         
         [Fact]
-        public void FindPointsFromEndFindsTwoPointsWithCorrectCoordinatesIfEndIsNotNull()
+        public void FindPointsFromEndFindsTwoPointsWithCorrectCoordinates()
         {
             var secondPoint = new Point(3,4);
             var sut = new Line(secondPoint);
@@ -128,6 +148,63 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             Assert.Equal(2,points.Count);
             Assert.Contains(new Point(), points);
             Assert.Contains(new Point(6, 8),points);
+        }
+        
+        [Fact]
+        public void FindPointsFromBeginFindsTwoPointsWithCorrectCoordinatesForVerticalLine()
+        {
+            var secondPoint = new Point(0,5);
+            var sut = new Line(secondPoint);
+
+            var points = sut.FindPointsFromBegin(5).ToList();
+            
+            Assert.Equal(2,points.Count);
+            Assert.Contains(secondPoint,points);
+            Assert.Contains(new Point(0, -5),points);
+        }
+        
+        [Fact]
+        public void FindPointsFromBeginFindsTwoPointsWithCorrectCoordinatesForHorizontalLine()
+        {
+            var secondPoint = new Point(5,0);
+            var sut = new Line(secondPoint);
+
+            var points = sut.FindPointsFromBegin(5).ToList();
+            
+            Assert.Equal(2,points.Count);
+            Assert.Contains(secondPoint,points);
+            Assert.Contains(new Point(-5, 0),points);
+        }
+
+        [Fact]
+        public void ContainsReturnsTrueIfPointBelongsToLine()
+        {
+            var secondPoint = new Point(2,2);
+            
+            var sut = new Line(secondPoint);
+            
+            Assert.True(sut.Contains(new Point(1,1)));
+        }
+        
+        [Fact]
+        public void ContainsReturnsFalseIfPointDoesNotBelongToLine()
+        {
+            var secondPoint = new Point(2,2);
+            
+            var sut = new Line(secondPoint);
+            
+            Assert.False(sut.Contains(new Point(1,2)));
+        }
+        
+        [Fact]
+        public void ContainsReturnsCorrectResultForVerticalLine()
+        {
+            var firstPoint = new Point(2,0);
+            var secondPoint = new Point(2,2);
+            
+            var sut = new Line(firstPoint,secondPoint);
+            
+            Assert.True(sut.Contains(new Point(2,1)));
         }
     }
 }

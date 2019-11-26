@@ -6,7 +6,7 @@ namespace Sanet.SmartSkating.Models
 {
     public class Rink
     {
-        public const int SectorWidthInMeters = 20;
+        private const int SectorWidthInMeters = 20;
         public Rink(Coordinate start, Coordinate finish)
         {
             Start = start;
@@ -21,12 +21,7 @@ namespace Sanet.SmartSkating.Models
 
             FinishLocal = new Point(latitudeToFinish.ToLatitudeDistanceInMeters(),longitudeToFinish.ToLongitudeDistanceInMeters(longitudeFactor));
 
-            FillSectors();
-        }
-
-        private void FillSectors()
-        {
-            Sectors.Add(CreateFirstSector());
+            FirstSector = CreateFirstSector();
         }
 
         private Sector CreateFirstSector()
@@ -43,6 +38,7 @@ namespace Sanet.SmartSkating.Models
         public Coordinate Finish { get; }
         public Point StartLocal { get; }
         public Point FinishLocal { get; }
-        public IList<Sector> Sectors { get; } = new List<Sector>();
+        public IList<Sector> Sectors => new List<Sector>(){FirstSector};
+        public Sector FirstSector { get; }
     }
 }
