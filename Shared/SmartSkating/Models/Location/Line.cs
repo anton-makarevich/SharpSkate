@@ -24,7 +24,6 @@ namespace Sanet.SmartSkating.Models.Location
             Slope = slope;
             Intercept = (beginPoint.IsZero)
                 ? 0
-#pragma warning disable SA1407
                 : beginPoint.Y - Slope * beginPoint.X;
             Length = (End.HasValue)
                 // ReSharper disable once PossibleInvalidOperationException
@@ -74,13 +73,11 @@ namespace Sanet.SmartSkating.Models.Location
 
         private double GetDeltaX(double distance)
         {
-            #pragma warning disable SA1407
             return distance / Math.Sqrt(1 + Slope * Slope);
         }
 
         public double GetY(double x)
         {
-            #pragma warning disable SA1407
             return x * Slope + Intercept;
         }
     }
