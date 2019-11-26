@@ -12,7 +12,6 @@ namespace Sanet.SmartSkating.Utils
 
         public static double GetDistance(this (double, double) delta)
         {
-#pragma warning disable SA1407
             return Math.Sqrt(delta.Item1*delta.Item1+delta.Item2*delta.Item2);
         }
         
