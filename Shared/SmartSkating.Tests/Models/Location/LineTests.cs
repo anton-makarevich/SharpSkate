@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Sanet.SmartSkating.Models.Location;
 using Xunit;
@@ -77,7 +78,6 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             
             Assert.Equal(-1,perpendicularLine.Slope,0);
             Assert.Equal(perpendicularLine.Begin,line.Begin);
-            Assert.Null(perpendicularLine.End);
         }
         
         [Fact]
@@ -87,11 +87,8 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             var line = new Line(secondPoint);
 
             var perpendicularLine = line.GetPerpendicularToEnd();
-            
-            Assert.NotNull(perpendicularLine);
-            Assert.Equal(-1,perpendicularLine.Value.Slope,0);
-            Assert.Equal(perpendicularLine.Value.Begin,line.End);
-            Assert.Null(perpendicularLine.Value.End);
+            Assert.Equal(-1,perpendicularLine.Slope,0);
+            Assert.Equal(perpendicularLine.Begin,line.End);
         }
 
         [Fact]

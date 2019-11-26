@@ -17,7 +17,7 @@ namespace Sanet.SmartSkating.Models.Location
         {
         }
 
-        private Line(double slope, Point beginPoint, Point? endPoint = null)
+        private Line(double slope, Point beginPoint, Point endPoint)
         {
             Begin = beginPoint;
             End = endPoint;
@@ -25,30 +25,24 @@ namespace Sanet.SmartSkating.Models.Location
             Intercept = (beginPoint.IsZero)
                 ? 0
                 : beginPoint.Y - Slope * beginPoint.X;
-            Length = (End.HasValue)
-                // ReSharper disable once PossibleInvalidOperationException
-                ? (End.Value.X - Begin.X, 
-                    // ReSharper disable once PossibleInvalidOperationException
-                    End.Value.Y - Begin.Y).GetDistance()
-                : 0;
+            Length = (End.X - Begin.X,
+                    End.Y - Begin.Y).GetDistance();
         }
 
         public double Slope { get; }
         public double Intercept { get; }
         public double Length { get; }
         public Point Begin { get; }
-        public Point? End { get; }
+        public Point End { get; }
         
         public Line GetPerpendicularToBegin()
         {
-            return new Line(-1/this.Slope, this.Begin);
+            return new Line(-1/this.Slope, Begin, Begin);
         }
 
-        public Line? GetPerpendicularToEnd()
+        public Line GetPerpendicularToEnd()
         {
-            if (End.HasValue)    
-                return new Line(-1/this.Slope, this.End.Value);
-            return null;
+            return new Line(-1/this.Slope, End,End);
         }
 
         public IEnumerable<Point> FindPointsFromBegin(double distance)
@@ -58,7 +52,7 @@ namespace Sanet.SmartSkating.Models.Location
         
         public IEnumerable<Point> FindPointsFromEnd(double distance)
         {
-            return End == null ? new Point[0] : FindPointsFrom(End.Value, distance);
+            return FindPointsFrom(End, distance);
         }
 
         private IEnumerable<Point> FindPointsFrom(Point point, double distance)

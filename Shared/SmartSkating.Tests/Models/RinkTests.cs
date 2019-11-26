@@ -29,5 +29,11 @@ namespace Sanet.SmartSkating.Tests.Models
             var dist = (localFinish.X,localFinish.Y).GetDistance();
             Assert.Equal(100,dist,0);
         }
+
+        [Fact]
+        public void RinkHasFourSectors()
+        {
+            Assert.Equal(4,_sut.Sectors.Count);
+        }
     }
 }
