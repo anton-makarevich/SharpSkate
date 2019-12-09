@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Sanet.SmartSkating.Models.Location;
 using Xunit;
@@ -174,37 +173,6 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             Assert.Equal(2,points.Count);
             Assert.Contains(secondPoint,points);
             Assert.Contains(new Point(-5, 0),points);
-        }
-
-        [Fact]
-        public void ContainsReturnsTrueIfPointBelongsToLine()
-        {
-            var secondPoint = new Point(2,2);
-            
-            var sut = new Line(secondPoint);
-            
-            Assert.True(sut.Contains(new Point(1,1)));
-        }
-        
-        [Fact]
-        public void ContainsReturnsFalseIfPointDoesNotBelongToLine()
-        {
-            var secondPoint = new Point(2,2);
-            
-            var sut = new Line(secondPoint);
-            
-            Assert.False(sut.Contains(new Point(1,2)));
-        }
-        
-        [Fact]
-        public void ContainsReturnsCorrectResultForVerticalLine()
-        {
-            var firstPoint = new Point(2,0);
-            var secondPoint = new Point(2,2);
-            
-            var sut = new Line(firstPoint,secondPoint);
-            
-            Assert.True(sut.Contains(new Point(2,1)));
         }
     }
 }

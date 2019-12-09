@@ -1,3 +1,4 @@
+using System;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Utils;
 using Xunit;
@@ -29,11 +30,38 @@ namespace Sanet.SmartSkating.Tests.Models
         }
 
         [Fact]
+        public void OneKilometerFinishIsBetweenStartAndFinish()
+        {
+            var startFinishDx = _sut.FinishLocal.X - _sut.StartLocal.X;
+            var startFinishDy = _sut.FinishLocal.Y - _sut.StartLocal.Y;
+            
+            var startFinish1KDx = _sut.Finish1KLocal.X - _sut.StartLocal.X;
+            var startFinish1KDy = _sut.Finish1KLocal.Y - _sut.StartLocal.Y;
+            
+            Assert.True(Math.Abs(startFinishDx*0.5 - startFinish1KDx) < 0.001);
+            Assert.True(Math.Abs(startFinishDy*0.5 - startFinish1KDy) < 0.001);
+        }
+
+        [Fact]
         public void RinksFirstSectorContainsStart()
         {
             var startLine = _sut.FirstSector.StartLine;
             
             Assert.True(startLine.Contains(_sut.StartLocal));
+        }
+        
+        [Fact]
+        public void RinksFirstSectorContainsFinish1K()
+        {
+            Assert.True(_sut.FirstSector.Contains(_sut.Finish1KLocal));
+        }
+        
+        [Fact]
+        public void RinksFirstSectorContainsFinish()
+        {
+            var finishLine = _sut.FirstSector.FinishLine;
+            
+            Assert.True(finishLine.Contains(_sut.FinishLocal));
         }
         
         [Fact]

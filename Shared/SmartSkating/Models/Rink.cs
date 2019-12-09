@@ -21,6 +21,8 @@ namespace Sanet.SmartSkating.Models
 
             FinishLocal = new Point(latitudeToFinish.ToLatitudeDistanceInMeters(),longitudeToFinish.ToLongitudeDistanceInMeters(longitudeFactor));
 
+            Finish1KLocal=new Point(FinishLocal.X*0.5,FinishLocal.Y*0.5);
+            
             FirstSector = CreateFirstSector();
         }
 
@@ -38,7 +40,9 @@ namespace Sanet.SmartSkating.Models
         public Coordinate Finish { get; }
         public Point StartLocal { get; }
         public Point FinishLocal { get; }
+        public Point Finish1KLocal { get; }
         public IList<Sector> Sectors => new List<Sector>(){FirstSector};
         public Sector FirstSector { get; }
+        
     }
 }
