@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Utils;
 using Xunit;
@@ -38,8 +39,27 @@ namespace Sanet.SmartSkating.Tests.Models
             var startFinish1KDx = _sut.Finish1KLocal.X - _sut.StartLocal.X;
             var startFinish1KDy = _sut.Finish1KLocal.Y - _sut.StartLocal.Y;
             
-            Assert.True(Math.Abs(startFinishDx*0.5 - startFinish1KDx) < 0.001);
-            Assert.True(Math.Abs(startFinishDy*0.5 - startFinish1KDy) < 0.001);
+            Assert.Equal(startFinishDx*0.5, startFinish1KDx,0);
+            Assert.Equal(startFinishDy*0.5, startFinish1KDy, 0);
+        }
+
+        [Fact]
+        public void StartTreeHundredIs60MetersAwayFromFinish()
+        {
+            var dist = (_sut.Start300MLocal,_sut.FinishLocal).GetDistance();
+            Assert.Equal(60,dist,0);
+        }
+        
+        [Fact]
+        public void RinkHasFourSectors()
+        {
+            Assert.Equal(4,_sut.Sectors.Count);
+        }
+
+        [Fact]
+        public void FirstSectorIsDefined()
+        {
+            Assert.True(_sut.FirstSector.Points.Any());
         }
 
         [Fact]
@@ -65,9 +85,9 @@ namespace Sanet.SmartSkating.Tests.Models
         }
         
         [Fact]
-        public void RinkHasFourSectors()
+        public void SecondSectorIsDefined()
         {
-            Assert.Equal(4,_sut.Sectors.Count);
+            Assert.True(_sut.SecondSector.Points.Any());
         }
     }
 }

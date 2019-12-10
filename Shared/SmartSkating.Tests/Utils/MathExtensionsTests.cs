@@ -1,3 +1,4 @@
+using System.Linq;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Utils;
 using Xunit;
@@ -138,6 +139,44 @@ namespace Sanet.SmartSkating.Tests.Utils
             foreach (var outPoint in outPoints)
             {
                 Assert.False(outPoint.IsInPolygon(polygon));
+            }
+        }
+
+        [Fact]
+        public void PointLiesToTheLeftOfLine()
+        {
+            var lines = new []{
+                new Line(new Point(1,2),new Point(5,1)),
+                new Line(new Point(1,0),new Point(4,2))
+            };
+            var points = new[]
+            {
+                new Point(3, 3),
+                new Point(2, 2)
+            };
+
+            for (var i = 0; i < lines.Length; i++)
+            {
+                Assert.True(points[i].IsLeftFrom(lines[i]));
+            }
+        }
+        
+        [Fact]
+        public void PointDoesNotLieToTheLeftOfLine()
+        {
+            var lines = new []{
+                new Line(new Point(1,2),new Point(5,1)),
+                new Line(new Point(1,0),new Point(4,2))
+            };
+            var points = new[]
+            {
+                new Point(1, 1),
+                new Point(3,0), 
+            };
+
+            for (var i = 0; i < lines.Length; i++)
+            {
+                Assert.False(points[i].IsLeftFrom(lines[i]));
             }
         }
     }

@@ -43,6 +43,7 @@ namespace Sanet.SmartSkating.Models
         public Point Finish1KLocal { get; }
         public IList<Sector> Sectors => new List<Sector>(){FirstSector};
         public Sector FirstSector { get; }
-        
+        public Sector SecondSector { get; }
+        public Point Start300MLocal { get; set; }
     }
 }

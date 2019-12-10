@@ -56,5 +56,10 @@ namespace Sanet.SmartSkating.Utils
                 ? Math.Abs(point.X - line.Begin.X) < RoundTolerance
                 : Math.Abs(line.GetY(point.X) - point.Y) < RoundTolerance;
         }
+        
+        public static bool IsLeftFrom(this Point point, Line line){
+            return (line.End.X - line.Begin.X)*(point.Y - line.Begin.Y)
+                   - (line.End.Y - line.Begin.Y)*(point.X - line.Begin.X) > 0;
+        }
     }
 }
