@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Utils;
@@ -49,6 +48,34 @@ namespace Sanet.SmartSkating.Tests.Models
             var dist = (_sut.Start300MLocal,_sut.FinishLocal).GetDistance();
             Assert.Equal(60,dist,0);
         }
+
+        [Fact]
+        public void Start3KIs60MetersAwayFromStart()
+        {
+            var dist = (_sut.Start3KLocal,_sut.StartLocal).GetDistance();
+            Assert.Equal(60,dist,0);
+        }
+        
+        [Fact]
+        public void Start3KIs100MetersAwayFromStart300M()
+        {
+            var dist = (_sut.Start3KLocal,_sut.Start300MLocal).GetDistance();
+            Assert.Equal(100,dist,0);
+        }
+        
+        [Fact]
+        public void Start1KIs50MetersAwayFromStart300M()
+        {
+            var dist = (_sut.Start1KLocal,_sut.Start300MLocal).GetDistance();
+            Assert.Equal(50,dist,0);
+        }
+        
+        [Fact]
+        public void Start1KIs50MetersAwayFromStart3K()
+        {
+            var dist = (_sut.Start1KLocal,_sut.Start3KLocal).GetDistance();
+            Assert.Equal(50,dist,0);
+        }
         
         [Fact]
         public void RinkHasFourSectors()
@@ -88,6 +115,47 @@ namespace Sanet.SmartSkating.Tests.Models
         public void SecondSectorIsDefined()
         {
             Assert.True(_sut.SecondSector.Points.Any());
+        }
+        
+        [Fact]
+        public void ThirdSectorIsDefined()
+        {
+            Assert.True(_sut.ThirdSector.Points.Any());
+        }
+        
+        [Fact]
+        public void RinksThirdSectorContainsStart300M()
+        {
+            var startLine = _sut.ThirdSector.StartLine;
+            
+            Assert.True(startLine.Contains(_sut.Start300MLocal));
+        }
+        
+        [Fact]
+        public void RinksThirdSectorContainsStart1K()
+        {
+            Assert.True(_sut.ThirdSector.Contains(_sut.Start1KLocal));
+        }
+        
+        [Fact]
+        public void RinksThirdSectorContainsStart3K()
+        {
+            var finishLine = _sut.ThirdSector.FinishLine;
+            
+            Assert.True(finishLine.Contains(_sut.Start3KLocal));
+        }
+
+        [Fact]
+        public void DistanceBetweenFirstSectorsLastPointAndThirdSectorsFirstPointIsLessOrEqualThan80Meters()
+        {
+            var dist = (_sut.FirstSector.Points.Last(),_sut.ThirdSector.Points.First()).GetDistance();
+            Assert.True(dist<=80);
+        }
+        
+        [Fact]
+        public void FourthSectorIsDefined()
+        {
+            Assert.True(_sut.FourthSector.Points.Any());
         }
     }
 }
