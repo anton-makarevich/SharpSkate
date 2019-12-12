@@ -179,5 +179,21 @@ namespace Sanet.SmartSkating.Tests.Utils
                 Assert.False(points[i].IsLeftFrom(lines[i]));
             }
         }
+
+        [Fact]
+        public void FindsPointsOnTwoLinesThatAreLocatedOnOppositeSides()
+        {
+            var point1 = new Point(1,1);
+            var point2 = new Point(2,1);
+            var point3 = new Point(3,1);
+            var point4 = new Point(4,1);
+            
+            var line1 = new Line(point1,point2);
+            var line2 = new Line(point3,point4);
+
+            var result = (line1, line2).FindOppositePoints();
+            
+            Assert.Equal((point1,point4),result);
+        }
     }
 }

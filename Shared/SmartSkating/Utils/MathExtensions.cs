@@ -61,5 +61,17 @@ namespace Sanet.SmartSkating.Utils
             return (line.End.X - line.Begin.X)*(point.Y - line.Begin.Y)
                    - (line.End.Y - line.Begin.Y)*(point.X - line.Begin.X) > 0;
         }
+        
+        public static (Point, Point) FindOppositePoints(this (Line,Line ) lines)
+        {
+            var (line1, line2) = lines;
+            var point1 = (line1.Begin, line2.Begin).GetDistance() > (line1.End, line2.Begin).GetDistance()
+                ? line1.Begin
+                : line1.End;
+            var point2 = (line2.Begin, point1).GetDistance() > (line2.End, point1).GetDistance()
+                ? line2.Begin
+                : line2.End;
+            return (point1, point2);
+        }
     }
 }
