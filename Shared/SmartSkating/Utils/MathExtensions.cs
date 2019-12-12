@@ -40,7 +40,7 @@ namespace Sanet.SmartSkating.Utils
                     point.X <= b.X)
                     return true;
 
-                if (b.Y < point.Y && a.Y >= point.Y || a.Y < point.Y && b.Y >= point.Y)
+                if ((b.Y < point.Y && a.Y >= point.Y) || (a.Y < point.Y && b.Y >= point.Y))
                 {
                     if (b.X + (point.Y - b.Y) / (a.Y - b.Y) * (a.X - b.X) <= point.X)
                         result = !result;

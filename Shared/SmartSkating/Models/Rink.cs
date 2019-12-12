@@ -75,8 +75,7 @@ namespace Sanet.SmartSkating.Models
         public Sector ThirdSector { get; }
         public Sector FourthSector { get; }
         public Point Center { get; }
-
-
+        
         #region Rink elements
         private static Point CreateStart300M(Point beginPoint, Point endPoint)
         {
