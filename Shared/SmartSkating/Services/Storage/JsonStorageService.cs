@@ -31,7 +31,7 @@ namespace Sanet.SmartSkating.Services.Storage
         public Task<List<Coordinate>> LoadAllCoordinatesAsync()
         {
             if (!Directory.Exists(SmartSkatingFolder))
-                return Task.FromResult<List<Coordinate>>(null);
+                return Task.FromResult<List<Coordinate>>(new List<Coordinate>());
             return Task<List<Coordinate>>.Factory.StartNew(() =>
             {
                 var coordinates = new List<Coordinate>();

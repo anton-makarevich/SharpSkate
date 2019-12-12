@@ -17,11 +17,11 @@ namespace Sanet.SmartSkating.WearOs
     [Activity(Label = "@string/app_name", MainLauncher = true)]
     public class MainActivity : WearableActivity
     {
-        private LiveSessionViewModel _viewModel;
+        private LiveSessionViewModel? _viewModel;
         
-        private TextView _textView;
-        private Button _startButton;
-        private Button _stopButton;
+        private TextView? _textView;
+        private Button? _startButton;
+        private Button? _stopButton;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -47,19 +47,19 @@ namespace Sanet.SmartSkating.WearOs
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            _startButton.Click-= StartButtonOnClick;
-            _stopButton.Click-= StopButtonOnClick;
-            _viewModel.PropertyChanged-= ViewModelOnPropertyChanged;
+            if (_startButton != null) _startButton.Click -= StartButtonOnClick;
+            if (_stopButton != null) _stopButton.Click -= StopButtonOnClick;
+            if (_viewModel != null) _viewModel.PropertyChanged -= ViewModelOnPropertyChanged;
         }
 
         private void StopButtonOnClick(object sender, EventArgs e)
         {
-            _viewModel.StopCommand.Execute(null);
+            _viewModel?.StopCommand.Execute(null);
         }
 
         private void StartButtonOnClick(object sender, EventArgs e)
         {
-            _viewModel.StartCommand.Execute(true);
+            _viewModel?.StartCommand.Execute(true);
         }
 
         private void SetViewModel()
@@ -92,13 +92,20 @@ namespace Sanet.SmartSkating.WearOs
 
         private void UpdateButtonsState()
         {
-            _startButton.Visibility = (_viewModel.IsRunning) ? ViewStates.Gone : ViewStates.Visible;
-            _stopButton.Visibility = (_viewModel.IsRunning) ? ViewStates.Visible : ViewStates.Gone;
+            if (_startButton != null)
+                _startButton.Visibility = 
+                    (_viewModel != null && _viewModel.IsRunning)
+                    ? ViewStates.Gone 
+                    : ViewStates.Visible;
+            if (_stopButton != null)
+                _stopButton.Visibility = (_viewModel != null && _viewModel.IsRunning) 
+                    ? ViewStates.Visible 
+                    : ViewStates.Gone;
         }
 
         private void UpdateTextState()
         {
-            _textView.Text = _viewModel.InfoLabel;
+            if (_textView != null) _textView.Text = _viewModel?.InfoLabel;
         }
         
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
