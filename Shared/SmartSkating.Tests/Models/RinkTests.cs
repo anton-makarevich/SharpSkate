@@ -86,7 +86,7 @@ namespace Sanet.SmartSkating.Tests.Models
         [Fact]
         public void FirstSectorIsDefined()
         {
-            Assert.True(_sut.FirstSector.Points.Any());
+            Assert.True(_sut.FirstSector.Corners.Any());
         }
 
         [Fact]
@@ -114,13 +114,13 @@ namespace Sanet.SmartSkating.Tests.Models
         [Fact]
         public void SecondSectorIsDefined()
         {
-            Assert.True(_sut.SecondSector.Points.Any());
+            Assert.True(_sut.SecondSector.Corners.Any());
         }
         
         [Fact]
         public void ThirdSectorIsDefined()
         {
-            Assert.True(_sut.ThirdSector.Points.Any());
+            Assert.True(_sut.ThirdSector.Corners.Any());
         }
         
         [Fact]
@@ -148,14 +148,47 @@ namespace Sanet.SmartSkating.Tests.Models
         [Fact]
         public void DistanceBetweenFirstSectorsLastPointAndThirdSectorsFirstPointIsLessOrEqualThan80Meters()
         {
-            var dist = (_sut.FirstSector.Points.Last(),_sut.ThirdSector.Points.First()).GetDistance();
+            var dist = (_sut.FirstSector.Corners.Last(),_sut.ThirdSector.Corners.First()).GetDistance();
             Assert.True(dist<=80);
         }
         
         [Fact]
         public void FourthSectorIsDefined()
         {
-            Assert.True(_sut.FourthSector.Points.Any());
+            Assert.True(_sut.FourthSector.Corners.Any());
+        }
+
+        [Fact]
+        public void AllCornersOfSecondSectorAreMoreThan100MAwayFromStart()
+        {
+            foreach (var distance in _sut.SecondSector.Corners
+                .Select(point => (point, _sut.StartLocal).GetDistance()))
+            {
+                Assert.True(distance>100);
+            }
+        }
+        
+        [Fact]
+        public void AllCornersOfFourthSectorAreMoreThan100MAwayFromFinish()
+        {
+            foreach (var distance in _sut.FourthSector.Corners
+                .Select(point => (point, _sut.FinishLocal).GetDistance()))
+            {
+                Assert.True(distance>100);
+            }
+        }
+
+        [Fact]
+        public void RinkCenterIsAtTheSameDistanceFromAllTheMainPoints()
+        {
+            var distToStart = (_sut.Center, _sut.StartLocal).GetDistance();
+            var distToFinish = (_sut.Center, _sut.FinishLocal).GetDistance();
+            var distTo300MStart = (_sut.Center, _sut.Start300MLocal).GetDistance();
+            var distTo3KStart = (_sut.Center, _sut.Start3KLocal).GetDistance();
+            
+            Assert.Equal(distToStart,distToFinish,0);
+            Assert.Equal(distToStart,distTo300MStart,0);
+            Assert.Equal(distToStart,distTo3KStart,0);
         }
     }
 }

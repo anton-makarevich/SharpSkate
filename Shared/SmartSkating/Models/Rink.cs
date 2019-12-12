@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Utils;
@@ -37,11 +38,21 @@ namespace Sanet.SmartSkating.Models
             FirstSector = CreateStraightSector(StartLocal, FinishLocal);
             ThirdSector = CreateStraightSector(Start300MLocal, Start3KLocal);
 
-            var (secondSectorPoint1, secondSectorPoint2) = (FirstSector.FinishLine, ThirdSector.StartLine).FindOppositePoints();
+            var (secondSectorPoint1, secondSectorPoint2)
+                = (FirstSector.FinishLine, ThirdSector.StartLine).FindOppositePoints();
             SecondSector = CreateCornerSector(secondSectorPoint1, secondSectorPoint2);
             
-            var (forthSectorPoint1, forthSectorPoint2) = (ThirdSector.FinishLine, FirstSector.StartLine).FindOppositePoints();
+            var (forthSectorPoint1, forthSectorPoint2) 
+                = (ThirdSector.FinishLine, FirstSector.StartLine).FindOppositePoints();
             FourthSector = CreateCornerSector(forthSectorPoint1, forthSectorPoint2);
+
+            var center = (new Line(FirstSector.Center, ThirdSector.Center),
+                new Line(SecondSector.Center, FourthSector.Center)).GetIntersection();
+
+            if (center.HasValue)
+                Center = center.Value;
+            else
+                throw new NoNullAllowedException("No center point for sector");
         }
 
         public Coordinate Start { get; }
@@ -63,6 +74,7 @@ namespace Sanet.SmartSkating.Models
         public Sector SecondSector { get; }
         public Sector ThirdSector { get; }
         public Sector FourthSector { get; }
+        public Point Center { get; }
 
 
         #region Rink elements

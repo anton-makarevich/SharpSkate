@@ -73,5 +73,25 @@ namespace Sanet.SmartSkating.Utils
                 : line2.End;
             return (point1, point2);
         }
+
+        public static Point? GetIntersection(this (Line, Line ) lines)
+        {
+            var (line1, line2) = lines;
+            if (Math.Abs(line1.Slope - line2.Slope) < RoundTolerance)
+                return null;
+
+            double x;
+            if (double.IsInfinity(line1.Slope))
+                x = line1.Begin.X;
+            else if (double.IsInfinity(line2.Slope))
+                x = line2.Begin.X;
+            else
+                x = (line2.Intercept - line1.Intercept) / (line1.Slope - line2.Slope);
+
+            var lineToGetY = double.IsInfinity(line1.Slope) ? line2 : line1;
+            
+            var y = lineToGetY.GetY(x);
+            return new Point(x,y);
+        }
     }
 }

@@ -195,5 +195,69 @@ namespace Sanet.SmartSkating.Tests.Utils
             
             Assert.Equal((point1,point4),result);
         }
+
+        [Fact]
+        public void IntersectionOfTwoParallelLinesDoesNotExist()
+        {
+            var point1 = new Point(1,1);
+            var point2 = new Point(2,1);
+            var point3 = new Point(3,2);
+            var point4 = new Point(4,2);
+            
+            var line1 = new Line(point1,point2);
+            var line2 = new Line(point3,point4);
+
+            var intersection = (line1, line2).GetIntersection();
+            
+            Assert.Null(intersection);
+        }
+        
+        [Fact]
+        public void CalculatesIntersectionOfTwoNotParallelLines()
+        {
+            var point1 = new Point();
+            var point2 = new Point(2,2);
+            var point3 = new Point(0,2);
+            var point4 = new Point(2,0);
+            
+            var line1 = new Line(point1,point2);
+            var line2 = new Line(point3,point4);
+
+            var intersection = (line1, line2).GetIntersection();
+            
+            Assert.Equal(new Point(1,1),intersection );
+        }
+        
+        [Fact]
+        public void CalculatesIntersectionOfVerticalLineWithAnotherOne()
+        {
+            var point1 = new Point();
+            var point2 = new Point(2,2);
+            var point3 = new Point(1,2);
+            var point4 = new Point(1,0);
+            
+            var line1 = new Line(point1,point2);
+            var line2 = new Line(point3,point4);
+
+            var intersection = (line1, line2).GetIntersection();
+            
+            Assert.Equal(new Point(1,1),intersection );
+        }
+        
+        [Fact]
+        public void CalculatesIntersectionOfHorizontalLineWithAnotherOne()
+        {
+            var point1 = new Point();
+            var point2 = new Point(2,2);
+            var point3 = new Point(0,1);
+            var point4 = new Point(2,1);
+            
+            var line1 = new Line(point1,point2);
+            var line2 = new Line(point3,point4);
+
+            var intersection = (line1, line2).GetIntersection();
+            
+            Assert.Equal(new Point(1,1),intersection );
+        }
     }
 }

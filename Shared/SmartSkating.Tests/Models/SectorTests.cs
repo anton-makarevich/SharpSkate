@@ -62,7 +62,7 @@ namespace Sanet.SmartSkating.Tests.Models
             
             var sut = new Sector(startPoints,finishPoints);
             
-            Assert.Equal(4,sut.Points.Count);
+            Assert.Equal(4,sut.Corners.Count);
         }
         
         [Fact]
@@ -75,6 +75,27 @@ namespace Sanet.SmartSkating.Tests.Models
             var sut = new Sector(startPoints,finishPoints);
             
             Assert.True(sut.Contains(testPoint));
+        }
+
+        [Fact]
+        public void SectorsCenterIsInsideSector()
+        {
+            var startPoints = new[] {new Point(), new Point(1, 1)};
+            var finishPoints = new[] {new Point(1, -1), new Point(2, 0)};
+            
+            var sut = new Sector(startPoints,finishPoints);
+            Assert.True(sut.Contains(sut.Center));
+        }
+        
+        [Fact]
+        public void SectorsCenterIsCalculatedCorrectly()
+        {
+            var startPoints = new[] {new Point(), new Point(1, 1)};
+            var finishPoints = new[] {new Point(1, -1), new Point(2, 0)};
+            
+            var sut = new Sector(startPoints,finishPoints);
+            
+            Assert.Equal(new Point(1,0),sut.Center);
         }
     }
 }

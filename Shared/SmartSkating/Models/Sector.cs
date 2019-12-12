@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Utils;
@@ -22,27 +23,38 @@ namespace Sanet.SmartSkating.Models
             
             FinishLine = new Line(finishPointsList[0],finishPointsList[1]);
 
-            Points = startPointsList;
+            Corners = startPointsList;
             if ((startPointsList[1], finishPointsList[0]).GetDistance()
                 < (startPointsList[1], finishPointsList[1]).GetDistance())
             {
-                Points.Add(finishPointsList[0]);
-                Points.Add(finishPointsList[1]);
+                Corners.Add(finishPointsList[0]);
+                Corners.Add(finishPointsList[1]);
             }
             else
             {
-                Points.Add(finishPointsList[1]);
-                Points.Add(finishPointsList[0]);
+                Corners.Add(finishPointsList[1]);
+                Corners.Add(finishPointsList[0]);
             }
+
+            var intersection = (
+                new Line(Corners[0], Corners[2]),
+                new Line(Corners[1], Corners[3]))
+                .GetIntersection();
+            
+            if (intersection.HasValue)
+                Center = intersection.Value;
+            else
+                throw new NoNullAllowedException("No center point for sector");
         }
 
         public Line StartLine { get; }
         public Line FinishLine { get; }
-        public List<Point> Points { get; } 
+        public List<Point> Corners { get; }
+        public Point Center { get; }
 
         public bool Contains(Point point)
         {
-            return point.IsInPolygon(Points.ToArray());
+            return point.IsInPolygon(Corners.ToArray());
         }
     }   
 }
