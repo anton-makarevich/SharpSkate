@@ -28,6 +28,8 @@ namespace Sanet.SmartSkating.Models.Geometry
             Finish1KLocal = new Point(FinishLocal.X * 0.5, FinishLocal.Y * 0.5);
 
             Start300MLocal = CreateStart300M(StartLocal, FinishLocal);
+            Start300M = ToGeoCoordinateSystem(Start300MLocal);
+            Start3K = ToGeoCoordinateSystem(Start3KLocal);
             Start3KLocal = CreateStart3K(StartLocal, FinishLocal);
             Start1KLocal = new Point(
                 (Start300MLocal.X + Start3KLocal.X) * 0.5,
@@ -67,6 +69,8 @@ namespace Sanet.SmartSkating.Models.Geometry
 
         public Coordinate Start { get; }
         public Coordinate Finish { get; }
+        public Coordinate Start300M { get; }
+        public Coordinate Start3K { get; }
         public Point StartLocal { get; }
         public Point FinishLocal { get; }
         public Point Finish1KLocal { get; }
@@ -87,7 +91,7 @@ namespace Sanet.SmartSkating.Models.Geometry
         public Sector ThirdSector { get; }
         public Sector FourthSector { get; }
         public Point Center { get; }
-
+        
         #region Rink elements
 
         private static Point CreateStart300M(Point beginPoint, Point endPoint)
@@ -137,7 +141,7 @@ namespace Sanet.SmartSkating.Models.Geometry
             var secondStartPoint = startPoints.First(p => !p.IsLeftFrom(innerSide));
             var startLine = new[] {start, secondStartPoint};
 
-            var finishRay = innerSide.GetPerpendicularToBegin();
+            var finishRay = innerSide.GetPerpendicularToEnd();
             var finishPoints = finishRay.FindPointsFromBegin(CornerSectorWidthInMeters);
             var secondFinishPoint = finishPoints.First(p => !p.IsLeftFrom(innerSide));
             var finishLine = new[] {finish, secondFinishPoint};

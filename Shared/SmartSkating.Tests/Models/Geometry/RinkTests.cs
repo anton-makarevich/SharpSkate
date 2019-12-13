@@ -235,5 +235,18 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
             Assert.Equal(EindhovenFinish.Latitude, geoCoordinate.Latitude,5);
             Assert.Equal(EindhovenFinish.Longitude, geoCoordinate.Longitude,5);
         }
+        
+        [Fact]
+        public void AllCornersOfEverySectorAreDifferent()
+        {
+            foreach (var sector in _sut.Sectors)
+            {
+                var firstCorner = sector.Corners.First();
+                foreach (var corner in sector.Corners.Skip(1))     
+                {
+                    Assert.NotEqual(firstCorner,corner);
+                }
+            }
+        }
     }
 }
