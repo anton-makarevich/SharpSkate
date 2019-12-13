@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Models.Geometry;
 
 namespace Sanet.SmartSkating.Utils
 {

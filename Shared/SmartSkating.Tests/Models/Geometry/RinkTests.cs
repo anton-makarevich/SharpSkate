@@ -1,9 +1,10 @@
 using System.Linq;
 using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Utils;
 using Xunit;
 
-namespace Sanet.SmartSkating.Tests.Models
+namespace Sanet.SmartSkating.Tests.Models.Geometry
 {
     public class RinkTests
     {

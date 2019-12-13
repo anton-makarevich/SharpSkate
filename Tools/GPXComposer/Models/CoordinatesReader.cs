@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Sanet.SmartSkating.Models;
-using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Tools.GpxComposer.Models.Gpx;
 
 namespace Sanet.SmartSkating.Tools.GpxComposer.Models
@@ -55,8 +55,8 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
                     continue;
                 
                 var gpxPoint = new GpxRoutePoint();
-                gpxPoint.Latitude = wayPoint.Coordinate.Latitude;
-                gpxPoint.Longitude = wayPoint.Coordinate.Longitude;
+                gpxPoint.Latitude = wayPoint.OriginalCoordinate.Latitude;
+                gpxPoint.Longitude = wayPoint.OriginalCoordinate.Longitude;
                 gpxPoint.Time = wayPoint.Date;
 
                 gpxRoute.RoutePoints.Add(gpxPoint);

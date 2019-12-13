@@ -1,6 +1,6 @@
 using System;
 
-namespace Sanet.SmartSkating.Models.Location
+namespace Sanet.SmartSkating.Models.Geometry
 {
     public struct Point
     {

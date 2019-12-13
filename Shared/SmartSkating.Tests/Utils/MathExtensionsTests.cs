@@ -1,5 +1,5 @@
 using System.Linq;
-using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Utils;
 using Xunit;
 

@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Utils;
 
-namespace Sanet.SmartSkating.Models
+namespace Sanet.SmartSkating.Models.Geometry
 {
     public struct Sector
     {

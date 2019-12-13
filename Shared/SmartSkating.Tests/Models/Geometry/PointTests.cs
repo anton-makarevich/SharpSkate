@@ -1,7 +1,7 @@
-using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Models.Geometry;
 using Xunit;
 
-namespace Sanet.SmartSkating.Tests.Models.Location
+namespace Sanet.SmartSkating.Tests.Models.Geometry
 {
     public class PointTests
     {
