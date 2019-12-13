@@ -1,6 +1,7 @@
 using System.Linq;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.Geometry;
+using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Utils;
 using Xunit;
 
@@ -8,19 +9,20 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
 {
     public class RinkTests
     {
-        private readonly Coordinate _start = new Coordinate(51.4157028,5.4724154);  // Eindhoven start
-        private readonly Coordinate _finish = new Coordinate(51.4148027,5.4724154); // Eindhoven finish   
+        public static Coordinate EindhovenStart = new Coordinate(51.4157028,5.4724154);  
+        public static Coordinate EindhovenFinish = new Coordinate(51.4148027,5.4724154); 
+        
         private readonly Rink _sut;
         public RinkTests()
         {
-            _sut = new Rink(_start,_finish);
+            _sut = new Rink(EindhovenStart,EindhovenFinish);
         }
         
         [Fact]
         public void CreatesRinkWithStartAndFinishCoordinates()
         {
-            Assert.Equal(_start,_sut.Start);
-            Assert.Equal(_finish, _sut.Finish);
+            Assert.Equal(EindhovenStart,_sut.Start);
+            Assert.Equal(EindhovenFinish, _sut.Finish);
         }
 
         [Fact]
@@ -89,6 +91,12 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         {
             Assert.True(_sut.FirstSector.Corners.Any());
         }
+        
+        [Fact]
+        public void FirstSectorHasCorrectType()
+        {
+            Assert.Equal(WayPointTypes.FirstSector,_sut.FirstSector.Type);
+        }
 
         [Fact]
         public void RinksFirstSectorContainsStart()
@@ -119,9 +127,21 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         }
         
         [Fact]
+        public void SecondSectorHasCorrectType()
+        {
+            Assert.Equal(WayPointTypes.SecondSector,_sut.SecondSector.Type);
+        }
+        
+        [Fact]
         public void ThirdSectorIsDefined()
         {
             Assert.True(_sut.ThirdSector.Corners.Any());
+        }
+        
+        [Fact]
+        public void ThirdSectorHasCorrectType()
+        {
+            Assert.Equal(WayPointTypes.ThirdSector,_sut.ThirdSector.Type);
         }
         
         [Fact]
@@ -160,6 +180,12 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         }
 
         [Fact]
+        public void FourthSectorHasCorrectType()
+        {
+            Assert.Equal(WayPointTypes.FourthSector,_sut.FourthSector.Type);
+        }
+
+        [Fact]
         public void AllCornersOfSecondSectorAreMoreThan100MAwayFromStart()
         {
             foreach (var distance in _sut.SecondSector.Corners
@@ -190,6 +216,24 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
             Assert.Equal(distToStart,distToFinish,0);
             Assert.Equal(distToStart,distTo300MStart,0);
             Assert.Equal(distToStart,distTo3KStart,0);
+        }
+
+        [Fact]
+        public void ConvertsGeoCoordinateToLocalSystem()
+        {
+            var localPoint = _sut.ToLocalCoordinateSystem(EindhovenFinish);
+            
+            Assert.Equal(0, localPoint.X,0);
+            Assert.Equal(-100,localPoint.Y,0);
+        }
+
+        [Fact]
+        public void ConvertsLocalPointToGeoCoordinate()
+        {
+            var geoCoordinate = _sut.ToGeoCoordinateSystem(_sut.FinishLocal);
+            
+            Assert.Equal(EindhovenFinish.Latitude, geoCoordinate.Latitude,5);
+            Assert.Equal(EindhovenFinish.Longitude, geoCoordinate.Longitude,5);
         }
     }
 }
