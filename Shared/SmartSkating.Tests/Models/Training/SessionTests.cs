@@ -32,7 +32,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         {
             var location = new Coordinate(51.4159838,5.4709491);
 
-            _sut.Add(location);
+            _sut.AddPoint(location, DateTime.Now);
             
             Assert.Empty(_sut.WayPoints);
         }
@@ -42,7 +42,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         {
             var location = new Coordinate(51.4153197,5.4724154);
 
-            _sut.Add(location);
+            _sut.AddPoint(location, DateTime.Now);
             
             Assert.Single(_sut.WayPoints);
         }
@@ -52,7 +52,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         {
             var location = new Coordinate(51.4153197,5.4724154);
 
-            _sut.Add(location);
+            _sut.AddPoint(location, DateTime.Now);
             
             Assert.Equal(WayPointTypes.FirstSector,_sut.WayPoints.First().Type);
         }
@@ -62,7 +62,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         {
             var location = new Coordinate(51.4153197,5.47230);
 
-            _sut.Add(location);
+            _sut.AddPoint(location, DateTime.Now);
             
             Assert.NotEqual(location,_sut.WayPoints.First().AdjustedCoordinate);
         }
@@ -70,8 +70,8 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void AddsExtraWayPointWhenCrossingStartFromFourthSectorToFirst()
         {
-            _sut.Add(_fourthSectorPoint);
-            _sut.Add(_firstSectorPoint);
+            _sut.AddPoint(_fourthSectorPoint, DateTime.Now);
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
             
             Assert.Equal(3,_sut.WayPoints.Count);
         }
@@ -82,8 +82,8 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             var fourthSectorTime = new DateTime(2019,12,13,11,10,9);
             var firstSectorTime = new DateTime(2019,12,13,11,10,19);
             
-            _sut.Add(_fourthSectorPoint,fourthSectorTime);
-            _sut.Add(_firstSectorPoint, firstSectorTime);
+            _sut.AddPoint(_fourthSectorPoint,fourthSectorTime);
+            _sut.AddPoint(_firstSectorPoint, firstSectorTime);
 
             var extraPoint = _sut.WayPoints[1];
             
@@ -94,8 +94,8 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void AddsExtraWayPointWhenCrossingFinishFromFirstSectorToSecond()
         {
-            _sut.Add(_firstSectorPoint);
-            _sut.Add(_secondSectorPoint);
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now);
             
             Assert.Equal(3,_sut.WayPoints.Count);
         }
@@ -103,8 +103,8 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void AddsExtraWayPointWhenCrossingStart300MFromSecondSectorToThird()
         {
-            _sut.Add(_secondSectorPoint);
-            _sut.Add(_thirdSectorPoint);
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now);
+            _sut.AddPoint(_thirdSectorPoint, DateTime.Now);
             
             Assert.Equal(3,_sut.WayPoints.Count);
         }
@@ -112,8 +112,8 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void AddsExtraWayPointWhenCrossingStart3KFromThirdSectorToFourth()
         {
-            _sut.Add(_thirdSectorPoint);
-            _sut.Add(_fourthSectorPoint);
+            _sut.AddPoint(_thirdSectorPoint, DateTime.Now);
+            _sut.AddPoint(_fourthSectorPoint, DateTime.Now);
             
             Assert.Equal(3,_sut.WayPoints.Count);
         }
@@ -121,8 +121,8 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void DoesNotAddAnyWayPointsWhenCrossingStartFromFourthSectorToFirst()
         {
-            _sut.Add(_firstSectorPoint);
-            _sut.Add(_fourthSectorPoint);
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+            _sut.AddPoint(_fourthSectorPoint, DateTime.Now);
 
             Assert.Single(_sut.WayPoints);
         }
@@ -130,8 +130,8 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void DoesNotAddAnyWayPointsWhenCrossingFinishFromSecondSectorToFirst()
         {
-            _sut.Add(_secondSectorPoint);
-            _sut.Add(_firstSectorPoint);
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now);
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
 
             Assert.Single(_sut.WayPoints);
         }
@@ -139,8 +139,8 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void DoesNotAddAnyWayPointsWhenCrossingStart300MFromThirdSectorToSecond()
         {
-            _sut.Add(_thirdSectorPoint);
-            _sut.Add(_secondSectorPoint);
+            _sut.AddPoint(_thirdSectorPoint, DateTime.Now);
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now);
             
             Assert.Single(_sut.WayPoints);
         }
@@ -148,8 +148,8 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void DoesNotAddAnyWayPointsWhenCrossingStart3KFromFourthSectorToThird()
         {
-            _sut.Add(_fourthSectorPoint);
-            _sut.Add(_thirdSectorPoint);
+            _sut.AddPoint(_fourthSectorPoint, DateTime.Now);
+            _sut.AddPoint(_thirdSectorPoint, DateTime.Now);
             
             Assert.Single(_sut.WayPoints);
         }
@@ -157,10 +157,19 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void AddsSectorEntryWhenEntersNewSectorInOrder()
         {
-            _sut.Add(_firstSectorPoint);
-            _sut.Add(_secondSectorPoint);
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now);
             
             Assert.NotEmpty(_sut.Sectors);
+        }
+
+        [Fact]
+        public void DoesNotAddSeparatorIfLastPointDoesNotBelongToPreviousSector()
+        {
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+            _sut.AddSeparatingPoint(_rink.Start3K,DateTime.Now.AddSeconds(10), WayPointTypes.Start3K);
+
+            Assert.Single(_sut.WayPoints);
         }
     }
 }

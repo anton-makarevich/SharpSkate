@@ -9,24 +9,22 @@ namespace Sanet.SmartSkating.Models.Training
     public class Session
     {
         private readonly Rink _rink;
-        private WayPoint? _lastWayPoint;
 
         public Session(Rink rink)
         {
             _rink = rink;
             WayPoints = new List<WayPoint>();
+            Sectors = new List<Section>();
         }
 
         public IList<WayPoint> WayPoints { get; }
         public IList<Section> Sectors { get; }
 
-        public void Add(Coordinate location, DateTime? date = null)
+        public void AddPoint(Coordinate location, DateTime date)
         {
             var point = _rink.ToLocalCoordinateSystem(location);
             if (!((point, _rink.Center).GetDistance() <= 100)) return;
-            
-            var dateTime = date ?? DateTime.Now;
-            
+
             var type =
                 (from sector in _rink.Sectors 
                     where sector.Contains(point)
@@ -45,40 +43,64 @@ namespace Sanet.SmartSkating.Models.Training
                     type = closestSector.Type;
                 }
             }
-
-            if (_lastWayPoint.HasValue && _lastWayPoint.Value.Type != type)
+            
+            if (WayPoints.Any() && WayPoints.Last().Type != type)
             {
-                var lastPoint = _lastWayPoint ?? new WayPoint(location, dateTime);
-                var extraPointType = (lastPoint.Type, type).GetTypeSeparatingSectors();
-                if (extraPointType == WayPointTypes.Unknown)
+                var lastPoint = WayPoints.Last();
+                var separatingPointType = (lastPoint.Type, type).GetTypeSeparatingSectors();
+                if (separatingPointType == WayPointTypes.Unknown)
                     return;
-                var extraLocation = GetLocationByType(extraPointType);
-                if (extraLocation.HasValue)
-                {
-                    var extraLocationValue = extraLocation.Value;
-                    var prevDistance
-                        = (lastPoint.AdjustedCoordinate, extraLocationValue).GetRelativeDistance();
-                    var currentDistance
-                        = (adjustedLocation, extraLocationValue).GetRelativeDistance();
-                    var extraDate = InterpolateDate(
+                var separatingPointLocation = separatingPointType.GetSeparatingPointLocationForType(_rink);
+                var distanceTo
+                        = (lastPoint.AdjustedCoordinate, separatingPointLocation).GetRelativeDistance();
+                    var distanceFrom
+                        = (adjustedLocation, separatingPointLocation).GetRelativeDistance();
+                    var separatingPointDate = InterpolateDate(
                         lastPoint.Date, 
-                        dateTime,
-                        prevDistance,
-                        currentDistance);
-                    WayPoints.Add(new WayPoint(
-                        extraLocationValue,
-                        extraLocationValue,
-                        extraDate,
-                        extraPointType));
-                }
+                        date,
+                        distanceTo,
+                        distanceFrom);
+                    AddSeparatingPoint(separatingPointLocation,separatingPointDate,separatingPointType);
             }
 
-            _lastWayPoint = new WayPoint(
+            WayPoints.Add(new WayPoint(
                 location,
                 adjustedLocation,
-                dateTime,
+                date,
+                type));
+        }
+
+        public void AddSeparatingPoint(Coordinate location, DateTime date, WayPointTypes type)
+        {
+            if (WayPoints.Any())
+            {
+                var previousSectorType = type.GetPreviousSectorType();
+                if (WayPoints.Last().Type!=previousSectorType)
+                    return;
+            }
+
+            var separatingWayPoint = new WayPoint(
+                location,
+                location,
+                date,
                 type);
-            WayPoints.Add(_lastWayPoint.Value);
+            AddSection(separatingWayPoint);
+            WayPoints.Add(separatingWayPoint);
+        }
+
+        private void AddSection(WayPoint separatingWayPoint)
+        {
+            var firstPointType = separatingWayPoint.Type.GetPreviousSeparationPointType();
+            var firstPoint = WayPoints.LastOrDefault(wp => wp.Type == firstPointType);
+            if (firstPoint.Type == WayPointTypes.Unknown)
+            {
+                firstPointType = separatingWayPoint.Type.GetPreviousSectorType();
+                firstPoint = WayPoints.LastOrDefault(wp => wp.Type == firstPointType);
+                if (firstPoint.Type == WayPointTypes.Unknown)
+                    return;
+            }
+            var section = new Section(firstPoint,separatingWayPoint);
+            Sectors.Add(section);
         }
 
         private DateTime InterpolateDate(
@@ -93,18 +115,6 @@ namespace Sanet.SmartSkating.Models.Training
             var deltaTicks = wholeTicks * previousDistance / wholeDistance;
 
             return new DateTime(previousDate.Ticks+(long)deltaTicks);
-        }
-
-        private Coordinate? GetLocationByType(WayPointTypes pointType)
-        {
-            return pointType switch
-            {
-                WayPointTypes.Start => _rink.Start,
-                WayPointTypes.Finish => _rink.Finish,
-                WayPointTypes.Start300M => _rink.Start300M,
-                WayPointTypes.Start3K => _rink.Start3K,
-                _ => throw new NotSupportedException($"No coordinate for {pointType} point type")
-            };
         }
     }
 }
