@@ -171,5 +171,33 @@ namespace Sanet.SmartSkating.Tests.Models.Training
 
             Assert.Single(_sut.WayPoints);
         }
+
+        [Fact]
+        public void IncreasesLapCountOnStartCrossing()
+        {
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now);
+            _sut.AddPoint(_thirdSectorPoint, DateTime.Now);
+            _sut.AddPoint(_fourthSectorPoint, DateTime.Now);
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+
+            Assert.Equal(1,_sut.LapsCount);
+        }
+        
+        [Fact]
+        public void CalculatesLastLapTimeOnStartCrossing()
+        {
+            var firstLapTime = DateTime.Now;
+            _sut.AddPoint(_firstSectorPoint, firstLapTime);
+            _sut.AddPoint(_secondSectorPoint, firstLapTime.AddSeconds(10));
+            _sut.AddPoint(_thirdSectorPoint, firstLapTime.AddSeconds(20));
+            _sut.AddPoint(_fourthSectorPoint, firstLapTime.AddSeconds(30));
+            _sut.AddPoint(_firstSectorPoint, firstLapTime.AddSeconds(40));
+
+            // 30 is time for middle of fourth sector, 
+            // 40 is time for middle of first
+            // so we're crossing start in between ~35 seconds
+            Assert.Equal(35,_sut.LastLapTime.Seconds); 
+        }
     }
 }

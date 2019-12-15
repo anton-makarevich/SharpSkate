@@ -7,7 +7,7 @@ namespace Sanet.SmartSkating.Models.Training
         public Section(WayPoint startWayPoint, WayPoint finishWayPoint)
         {
             Time = finishWayPoint.Date.Subtract(startWayPoint.Date);
-            Type = (startWayPoint.Type, finishWayPoint.Type).GetSectorTypeBetween();
+            Type = finishWayPoint.Type.GetPreviousSectorType();
         }
 
         public WayPointTypes Type { get; }

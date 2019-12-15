@@ -20,19 +20,6 @@ namespace Sanet.SmartSkating.Models.Training
     
     public static class WayPointTypesExtensions
     {
-        public static WayPointTypes GetSectorTypeBetween(this (WayPointTypes, WayPointTypes) wayPoints)
-        {
-            var (startType, finishType) = wayPoints;
-            return (startType, finishType) switch
-            {
-                (WayPointTypes.Start, WayPointTypes.Finish) => WayPointTypes.FirstSector,
-                (WayPointTypes.Finish, WayPointTypes.Start300M) => WayPointTypes.SecondSector,
-                (WayPointTypes.Start300M, WayPointTypes.Start3K) => WayPointTypes.ThirdSector,
-                (WayPointTypes.Start3K, WayPointTypes.Start) => WayPointTypes.FourthSector,
-                _ => WayPointTypes.Unknown
-            };
-        }
-        
         public static WayPointTypes GetTypeSeparatingSectors(this (WayPointTypes, WayPointTypes) wayPointTypes)
         {
             var (previousType, currentType) = wayPointTypes;

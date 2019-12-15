@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Utils;
@@ -19,6 +20,8 @@ namespace Sanet.SmartSkating.Models.Training
 
         public IList<WayPoint> WayPoints { get; }
         public IList<Section> Sectors { get; }
+        public int LapsCount { get; private set; }
+        public TimeSpan LastLapTime { get; private set; }
 
         public void AddPoint(Coordinate location, DateTime date)
         {
@@ -101,6 +104,19 @@ namespace Sanet.SmartSkating.Models.Training
             }
             var section = new Section(firstPoint,separatingWayPoint);
             Sectors.Add(section);
+
+            UpdateMetaData();
+        }
+
+        private void UpdateMetaData()
+        {
+            var lastSections = Sectors.TakeLast(4).ToList();
+            if (lastSections.Count() == 4 && lastSections.First().Type == WayPointTypes.FirstSector &&
+                lastSections.Last().Type == WayPointTypes.FourthSector)
+            {
+                LapsCount++;
+                LastLapTime = new TimeSpan(lastSections.Sum(s => s.Time.Ticks));
+            }
         }
 
         private DateTime InterpolateDate(
