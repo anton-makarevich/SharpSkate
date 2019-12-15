@@ -60,7 +60,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void PointThatIsNotExactlyInTheSectorShouldBeAdjusted()
         {
-            var location = new Coordinate(51.4153197,5.47230);
+            var location = new Coordinate(51.4153197,5.47225);
 
             _sut.AddPoint(location, DateTime.Now);
             

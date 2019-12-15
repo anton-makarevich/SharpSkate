@@ -12,17 +12,20 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         public static Coordinate EindhovenStart = new Coordinate(51.4157028,5.4724154);  
         public static Coordinate EindhovenFinish = new Coordinate(51.4148027,5.4724154); 
         
+        public static Coordinate GrefrathStart = new Coordinate(51.347566, 6.340406);  
+        public static Coordinate GrefrathFinish = new Coordinate(51.348305, 6.339573); 
+        
         private readonly Rink _sut;
         public RinkTests()
         {
-            _sut = new Rink(EindhovenStart,EindhovenFinish);
+            _sut = new Rink(GrefrathStart,GrefrathFinish);//Rink(EindhovenStart,EindhovenFinish);
         }
         
         [Fact]
         public void CreatesRinkWithStartAndFinishCoordinates()
         {
-            Assert.Equal(EindhovenStart,_sut.Start);
-            Assert.Equal(EindhovenFinish, _sut.Finish);
+            Assert.Equal(GrefrathStart,_sut.Start);
+            Assert.Equal(GrefrathFinish, _sut.Finish);
         }
 
         [Fact]
@@ -221,19 +224,19 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         [Fact]
         public void ConvertsGeoCoordinateToLocalSystem()
         {
-            var localPoint = _sut.ToLocalCoordinateSystem(EindhovenFinish);
+            var localPoint = _sut.ToLocalCoordinateSystem(GrefrathFinish);
             
-            Assert.Equal(0, localPoint.X,0);
-            Assert.Equal(-100,localPoint.Y,0);
+            Assert.Equal(-58, localPoint.X,0);
+            Assert.Equal(82,localPoint.Y,0);
         }
 
         [Fact]
         public void ConvertsLocalPointToGeoCoordinate()
         {
-            var geoCoordinate = _sut.ToGeoCoordinateSystem(_sut.FinishLocal);
+            var geoCoordinate = _sut.ToGeoCoordinateSystem(new Point(-58,82));
             
-            Assert.Equal(EindhovenFinish.Latitude, geoCoordinate.Latitude,5);
-            Assert.Equal(EindhovenFinish.Longitude, geoCoordinate.Longitude,5);
+            Assert.Equal(GrefrathFinish.Latitude, geoCoordinate.Latitude,5);
+            Assert.Equal(GrefrathFinish.Longitude, geoCoordinate.Longitude,5);
         }
         
         [Fact]

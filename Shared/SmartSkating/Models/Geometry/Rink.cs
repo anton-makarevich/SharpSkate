@@ -19,7 +19,7 @@ namespace Sanet.SmartSkating.Models.Geometry
             Start = start;
             Finish = finish;
 
-            _longitudeFactor = Start.Longitude.GetLongitudeFactor();
+            _longitudeFactor = Start.Latitude.GetLongitudeFactor();
 
             StartLocal = new Point();
 

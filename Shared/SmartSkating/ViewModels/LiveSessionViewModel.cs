@@ -2,6 +2,7 @@ using System;
 using System.Windows.Input;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.ViewModels.Base;
@@ -12,13 +13,18 @@ namespace Sanet.SmartSkating.ViewModels
     {
         private readonly ILocationService _locationService;
         private readonly IStorageService _storageService;
+        private readonly ISession _currentSession;
         private bool _isRunning;
         private string _infoLabel = string.Empty;
 
-        public LiveSessionViewModel(ILocationService locationService, IStorageService storageService)
+        public LiveSessionViewModel(
+            ILocationService locationService, 
+            IStorageService storageService,
+            ISession currentSession)
         {
             _locationService = locationService;
             _storageService = storageService;
+            _currentSession = currentSession;
         }
         
         public ICommand StartCommand => new SimpleCommand(() =>

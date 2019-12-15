@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using NSubstitute;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.ViewModels;
@@ -14,11 +15,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly LiveSessionViewModel _sut;
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
         private readonly IStorageService _storageService = Substitute.For<IStorageService>();
+        private readonly ISession _session = Substitute.For<ISession>();
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
 
         public LiveSessionViewModelTests()
         {
-            _sut = new LiveSessionViewModel(_locationService,_storageService);
+            _sut = new LiveSessionViewModel(_locationService,_storageService,_session);
         }
 
         [Fact]

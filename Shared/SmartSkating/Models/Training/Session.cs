@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Utils;
 
 namespace Sanet.SmartSkating.Models.Training
 {
-    public class Session
+    public class Session : ISession
     {
         private readonly Rink _rink;
 
