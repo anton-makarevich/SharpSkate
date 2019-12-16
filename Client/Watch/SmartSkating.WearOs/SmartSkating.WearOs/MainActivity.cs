@@ -9,10 +9,9 @@ using Android.Views;
 using Android.Widget;
 using Sanet.SmartSkating.Droid.Services.Location;
 using Sanet.SmartSkating.Droid.Utils;
-using Sanet.SmartSkating.Models;
-using Sanet.SmartSkating.Models.Geometry;
-using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Storage;
+using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
 
 namespace Sanet.SmartSkating.WearOs
@@ -67,13 +66,11 @@ namespace Sanet.SmartSkating.WearOs
 
         private void SetViewModel()
         {
-        var grefrathStart = new Coordinate(51.347566, 6.340406);  
-        var grefrathFinish = new Coordinate(51.348305, 6.339573); 
             var storageService = new JsonStorageService();
             _viewModel = new LiveSessionViewModel(
                 new LocationManagerService(this), 
                 storageService,
-                new Session(new Rink(grefrathStart,grefrathFinish)));
+                new TrackService(new LocalTrackProvider()));
             _viewModel.PropertyChanged+= ViewModelOnPropertyChanged;
             
             #if DEBUG

@@ -135,6 +135,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj">
+      <Project>{da620869-1efd-4593-add8-05d9904de1fb}</Project>
+      <Name>SmartSkating.Dto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Shared\SmartSkating\SmartSkating.csproj">
       <Project>{795c2fc0-d25e-48e9-ad4a-2a003447415a}</Project>
       <Name>SmartSkating</Name>
