@@ -46,6 +46,9 @@ namespace Sanet.SmartSkating.Models.Training
                 }
             }
             
+            if (type == WayPointTypes.Unknown)
+                return;
+            
             if (WayPoints.Any() && WayPoints.Last().Type != type)
             {
                 var lastPoint = WayPoints.Last();
