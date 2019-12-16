@@ -27,5 +27,4 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             Assert.Equal(coordinateDto.Longitude,coordinate.Longitude,5);
         }
     }
-    
 }

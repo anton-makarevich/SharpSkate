@@ -18,7 +18,7 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         private readonly Rink _sut;
         public RinkTests()
         {
-            _sut = new Rink(GrefrathStart,GrefrathFinish);//Rink(EindhovenStart,EindhovenFinish);
+            _sut = new Rink(GrefrathStart,GrefrathFinish);
         }
         
         [Fact]
