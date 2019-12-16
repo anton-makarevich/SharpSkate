@@ -1,4 +1,6 @@
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Storage;
+using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
 using SimpleInjector;
 
@@ -13,6 +15,8 @@ namespace Sanet.SmartSkating.Xf
             
             // Register services
             container.RegisterSingleton<IStorageService, JsonStorageService>();
+            container.RegisterSingleton<ITrackProvider,LocalTrackProvider>();
+            container.RegisterSingleton<ITrackService, TrackService>();
         }
     }
 }

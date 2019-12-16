@@ -1,5 +1,5 @@
-using System.Linq;
-using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Utils;
 using Xunit;
 
@@ -258,6 +258,17 @@ namespace Sanet.SmartSkating.Tests.Utils
             var intersection = (line1, line2).GetIntersection();
             
             Assert.Equal(new Point(1,1),intersection );
+        }
+
+        [Fact]
+        public void CalculatesRelativeDistanceBetweenCoordinatesAsTheyWouldPlainPoints()
+        {
+            var coordinate1 = new Coordinate(0,0);
+            var coordinate2 = new Coordinate(3,4);
+
+            var relativeDistance = (coordinate1, coordinate2).GetRelativeDistance();
+            
+            Assert.Equal(5,relativeDistance,0);
         }
     }
 }

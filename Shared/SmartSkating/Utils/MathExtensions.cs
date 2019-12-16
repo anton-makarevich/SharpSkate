@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
-using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Models.Geometry;
 
 namespace Sanet.SmartSkating.Utils
 {
@@ -23,6 +24,15 @@ namespace Sanet.SmartSkating.Utils
             var dx = points.Item2.X - points.Item1.X;
             var dy = points.Item2.Y - points.Item1.Y;
             return (dx,dy).GetDistance();
+        }
+        
+        public static double GetRelativeDistance(this (Coordinate, Coordinate) coordinates)
+        {
+            var (coordinate1, coordinate2) = coordinates;
+            var point1 = new Point(coordinate1.Longitude,coordinate1.Latitude);
+            var point2 = new Point(coordinate2.Longitude,coordinate2.Latitude);
+
+            return (point1, point2).GetDistance();
         }
         
         public static bool IsInPolygon(this Point point, Point[] polygon)

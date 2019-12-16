@@ -19,4 +19,11 @@ steps:
 
 - bash: |
     bash <(curl -s https://codecov.io/bash) -f "Shared/SmartSkating.Tests/coverage.opencover.xml" -t $(codecov.token)
-  displayName: 'Upload DTO tests results'
+  displayName: 'Upload Core tests results'
+
+- script: dotnet test Shared/SmartSkating.Dto.Tests/SmartSkating.Dto.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating]*
+  displayName: 'Run Dto tests'
+
+- bash: |
+    bash <(curl -s https://codecov.io/bash) -f "Shared/SmartSkating.Dto.Tests/coverage.opencover.xml" -t $(codecov.token)
+  displayName: 'Upload Dto tests results'

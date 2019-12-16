@@ -24,9 +24,9 @@ namespace Sanet.SmartSkating.Utils
             return yDifference /( 111321 * longitudeFactor);
         }
 
-        public static double GetLongitudeFactor(this double longitude)
+        public static double GetLongitudeFactor(this double latitude)
         {
-            return Math.Cos(longitude.ToRadians());
+            return Math.Cos(latitude.ToRadians());
         }
     }
 }

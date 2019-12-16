@@ -1,3 +1,4 @@
+using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Utils;
 using Xunit;
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Sanet.SmartSkating.Utils;
 
-namespace Sanet.SmartSkating.Models.Location
+namespace Sanet.SmartSkating.Models.Geometry
 {
     public struct Line
     {

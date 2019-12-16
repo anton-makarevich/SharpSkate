@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Utils;
 
-namespace Sanet.SmartSkating.Models
+namespace Sanet.SmartSkating.Models.Geometry
 {
     public struct Sector
     {
-        public Sector(IEnumerable<Point> startPoints, IEnumerable<Point> finishPoints)
+        public Sector(IEnumerable<Point> startPoints, IEnumerable<Point> finishPoints, WayPointTypes type)
         {
             var startPointsList = startPoints.ToList();
             if (startPointsList.Count!=2)
@@ -45,16 +45,45 @@ namespace Sanet.SmartSkating.Models
                 Center = intersection.Value;
             else
                 throw new NoNullAllowedException("No center point for sector");
+
+            Type = type;
         }
 
         public Line StartLine { get; }
         public Line FinishLine { get; }
         public List<Point> Corners { get; }
         public Point Center { get; }
+        public WayPointTypes Type { get; }
 
         public bool Contains(Point point)
         {
             return point.IsInPolygon(Corners.ToArray());
+        }
+
+        public Point? FindIntersection(Line line)
+        {
+            var pointsInSector = 0;
+            foreach (var point in new []{line.Begin,line.End})
+            {
+                if (Contains(point))
+                    pointsInSector++;
+            }
+
+            if (pointsInSector != 1)
+                return null;
+                
+            var length = line.Length;
+
+            for (var i = 0; i < Corners.Count - 1; i++)
+            {
+                var side = new Line(Corners[i],Corners[i+1]);
+                var intersection = (line, side).GetIntersection();
+                if (intersection.HasValue
+                    && (intersection.Value, line.Begin).GetDistance() < length)
+                    return intersection;
+            }
+
+            return null;
         }
     }   
 }
