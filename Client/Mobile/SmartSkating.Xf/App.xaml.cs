@@ -11,9 +11,9 @@ namespace Sanet.SmartSkating.Xf
         {
             InitializeComponent();
 
-            MainPage = new LiveSessionView()
+            MainPage = new TracksView()
             {
-                ViewModel = new XamarinFormsNavigationService(container).GetViewModel<LiveSessionViewModel>()
+                ViewModel = new XamarinFormsNavigationService(container).GetViewModel<TracksViewModel>()
             };
         }
 

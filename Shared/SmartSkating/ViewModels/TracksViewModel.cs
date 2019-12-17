@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Sanet.SmartSkating.Models;
-using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
 using Sanet.SmartSkating.ViewModels.Wrappers;
@@ -13,13 +12,11 @@ namespace Sanet.SmartSkating.ViewModels
     public class TracksViewModel:BaseViewModel
     {
         private readonly ITrackService _trackService;
-        private readonly INavigationService _navigationServiceMock;
         private ObservableCollection<TrackViewModel> _tracks;
 
-        public TracksViewModel(ITrackService trackService, INavigationService navigationServiceMock)
+        public TracksViewModel(ITrackService trackService)
         {
             _trackService = trackService;
-            _navigationServiceMock = navigationServiceMock;
         }
 
         public ObservableCollection<TrackViewModel> Tracks
@@ -32,7 +29,7 @@ namespace Sanet.SmartSkating.ViewModels
         public ICommand ConfirmSelectionCommand => new SimpleCommand(async () =>
             {
                 if (HasSelectedTrack)
-                    await _navigationServiceMock.NavigateToViewModelAsync<LiveSessionViewModel>();
+                    await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
             });
 
         public async Task LoadTracksAsync()

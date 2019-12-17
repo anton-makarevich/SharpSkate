@@ -21,7 +21,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
         public TracksViewModelTests()
         {
-            _sut = new TracksViewModel(_trackServiceMock, _navigationServiceMock);
+            _sut = new TracksViewModel(_trackServiceMock);
+            _sut.SetNavigationService(_navigationServiceMock);
             var tracks = JsonConvert.DeserializeObject<List<TrackDto>>(TrackServiceTests.TracksData);
             _trackServiceMock.Tracks.Returns(tracks);
         }
