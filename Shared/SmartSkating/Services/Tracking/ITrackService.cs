@@ -9,6 +9,7 @@ namespace Sanet.SmartSkating.Services.Tracking
     {
         IList<TrackDto> Tracks { get; }
         Task LoadTracksAsync();
-        Rink? GetRinkByName(string name);
+        void SelectRinkByName(string name);
+        Rink SelectedRink { get; }
     }
 }
