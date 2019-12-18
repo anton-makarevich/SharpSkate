@@ -74,7 +74,6 @@ namespace Sanet.SmartSkating.WearOs.Views
         {
             if (_confirmButton != null)
                 _confirmButton.Enabled = ViewModel.HasSelectedTrack;
-            
         }
     }
 }
