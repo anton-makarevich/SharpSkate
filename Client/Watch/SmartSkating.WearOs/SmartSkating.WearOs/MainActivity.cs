@@ -16,7 +16,7 @@ using Sanet.SmartSkating.ViewModels;
 
 namespace Sanet.SmartSkating.WearOs
 {
-    [Activity(Label = "@string/app_name", MainLauncher = true)]
+    [Activity]
     public class MainActivity : WearableActivity
     {
         private LiveSessionViewModel? _viewModel;
@@ -29,7 +29,6 @@ namespace Sanet.SmartSkating.WearOs
         {
             base.OnCreate(bundle);
             Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
-            Xamarin.Essentials.Platform.Init(this, bundle);
             SetContentView(Resource.Layout.activity_main);
             
             this.RequestPermissions();
