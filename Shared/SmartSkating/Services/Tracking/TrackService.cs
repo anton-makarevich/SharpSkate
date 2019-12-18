@@ -18,16 +18,17 @@ namespace Sanet.SmartSkating.Services.Tracking
         }
 
         public IList<TrackDto> Tracks { get; private set; }
+        public Rink SelectedRink { get; private set; }
 
         public async Task LoadTracksAsync()
         {
             Tracks = await _tracksProviderMock.GetAllTracksAsync();
         }
 
-        public Rink? GetRinkByName(string name)
+        public void SelectRinkByName(string name)
         {
             var track = Tracks.SingleOrDefault(r => r.Name == name);
-            return !string.IsNullOrEmpty(track.Name) 
+            SelectedRink = !string.IsNullOrEmpty(track.Name) 
                 ? new Rink(new Coordinate(track.Start),new Coordinate(track.Finish)) 
                 : null;
         }

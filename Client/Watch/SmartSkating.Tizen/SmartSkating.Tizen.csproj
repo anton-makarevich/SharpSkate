@@ -27,5 +27,10 @@
     <PackageReference Include="SimpleInjector" Version="4.8.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj" />
+    <ProjectReference Include="..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj" />
+    <ProjectReference Include="..\..\Mobile\SmartSkating.Xf\SmartSkating.Xf.csproj" />
+  </ItemGroup>
 </Project>
 

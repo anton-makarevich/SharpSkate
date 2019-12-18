@@ -11,7 +11,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 {
     public class TrackServiceTests
     {
-        private string tracksData = @"[
+        public const string TracksData = @"[
             {
             ""Name"": ""Eindhoven"",
             ""Start"": 
@@ -44,7 +44,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
         public TrackServiceTests()
         {
-            var tracks = JsonConvert.DeserializeObject<List<TrackDto>>(tracksData);
+            var tracks = JsonConvert.DeserializeObject<List<TrackDto>>(TracksData);
             var tracksProviderMock = Substitute.For<ITrackProvider>();
             tracksProviderMock.GetAllTracksAsync().Returns(Task.FromResult(tracks));
             _sut = new TrackService(tracksProviderMock);
@@ -64,9 +64,9 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             var name = "Eindhoven";
             await _sut.LoadTracksAsync();
 
-            var rinkByName = _sut.GetRinkByName(name);
+            _sut.SelectRinkByName(name);
 
-            Assert.NotNull(rinkByName);
+            Assert.NotNull(_sut.SelectedRink);
         }
         
         [Fact]
@@ -75,9 +75,9 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             var name = "AntekGura";
             await _sut.LoadTracksAsync();
 
-            var rinkByName = _sut.GetRinkByName(name);
+            _sut.SelectRinkByName(name);
 
-            Assert.Null(rinkByName);
+            Assert.Null(_sut.SelectedRink);
         }
     }
 }

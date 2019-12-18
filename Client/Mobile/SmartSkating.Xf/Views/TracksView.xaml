@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<base:BaseView 
+    x:TypeArguments="vm:TracksViewModel" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base;assembly=SmartSkating.Xf"
+    xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
+    xmlns:cells="clr-namespace:Sanet.SmartSkating.Xf.Views.Cells;assembly=SmartSkating.Xf"
+    x:Class="Sanet.SmartSkating.Xf.Views.TracksView"
+    BackgroundColor="White">
+    <Grid
+        Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <ListView
+            ItemsSource="{Binding Tracks}"
+            RowHeight="50"
+            ItemSelected="OnTrackSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <cells:TrackCell />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button
+            Grid.Row="1"
+            Text="Confirm"
+            Command="{Binding ConfirmSelectionCommand}"
+            IsEnabled ="{Binding HasSelectedTrack}" />
+    </Grid>
+</base:BaseView>
