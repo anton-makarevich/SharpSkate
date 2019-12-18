@@ -28,10 +28,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public async Task LoadTracksFromService()
+        public async Task LoadsTracksFromService()
         {
             await _sut.LoadTracksAsync();
 
+            await _trackServiceMock.Received().LoadTracksAsync();
+            Assert.NotEmpty(_sut.Tracks);
+        }
+        
+        [Fact]
+        public async Task LoadsTracksFromServiceOnPageAppear()
+        {
+            _sut.AttachHandlers();
+            
             await _trackServiceMock.Received().LoadTracksAsync();
             Assert.NotEmpty(_sut.Tracks);
         }
@@ -144,6 +153,21 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.ConfirmSelectionCommand.Execute(null);
 
             await _navigationServiceMock.DidNotReceive().NavigateToViewModelAsync<LiveSessionViewModel>();
+        }
+        
+        [Fact]
+        public void DoesNotCrashWhenAccessingVmBeforeLoad()
+        {
+            Assert.False(_sut.HasSelectedTrack);
+        }
+        
+        [Fact]
+        public async Task DoesNotAddDuplicatedTracks()
+        {
+            await _sut.LoadTracksAsync();
+            await _sut.LoadTracksAsync();
+            
+            Assert.Equal(_trackServiceMock.Tracks.Count, _sut.Tracks.Count);
         }
     }
 }

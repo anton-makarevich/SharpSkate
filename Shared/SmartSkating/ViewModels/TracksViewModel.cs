@@ -12,7 +12,7 @@ namespace Sanet.SmartSkating.ViewModels
     public class TracksViewModel:BaseViewModel
     {
         private readonly ITrackService _trackService;
-        private ObservableCollection<TrackViewModel> _tracks;
+        private ObservableCollection<TrackViewModel> _tracks = new ObservableCollection<TrackViewModel>();
 
         public TracksViewModel(ITrackService trackService)
         {
@@ -35,11 +35,17 @@ namespace Sanet.SmartSkating.ViewModels
         public async Task LoadTracksAsync()
         {
             await _trackService.LoadTracksAsync();
-            Tracks = new ObservableCollection<TrackViewModel>();
             foreach (var track in _trackService.Tracks)
             {
-                Tracks.Add(new TrackViewModel(track));
+                if (Tracks.All(t => t.Name != track.Name))
+                    Tracks.Add(new TrackViewModel(track));
             }
+        }
+
+        public override void AttachHandlers()
+        {
+            base.AttachHandlers();
+            LoadTracksAsync();
         }
 
         public void SelectTrack(TrackViewModel track)

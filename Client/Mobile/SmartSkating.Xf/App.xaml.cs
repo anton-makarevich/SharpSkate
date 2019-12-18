@@ -2,6 +2,7 @@
 using Sanet.SmartSkating.Xf.Services;
 using Sanet.SmartSkating.Xf.Views;
 using SimpleInjector;
+using Xamarin.Forms;
 
 namespace Sanet.SmartSkating.Xf
 {
@@ -11,10 +12,10 @@ namespace Sanet.SmartSkating.Xf
         {
             InitializeComponent();
 
-            MainPage = new TracksView()
+            MainPage = new NavigationPage( new TracksView()
             {
                 ViewModel = new XamarinFormsNavigationService(container).GetViewModel<TracksViewModel>()
-            };
+            });
         }
 
         protected override void OnStart()

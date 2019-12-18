@@ -8,24 +8,22 @@
     xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
     x:Class="Sanet.SmartSkating.Xf.Views.LiveSessionView"
     BackgroundColor="White">
-    <ContentPage.Content>
-        <StackLayout
-            Margin="20"
-            >
-            <Label
-                Text="{Binding InfoLabel}"
-                FontSize="Large"
-                TextColor="Black"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
-            <Button
-                Text="Start"
-                Command="{Binding StartCommand}"
-                IsVisible="{Binding IsRunning, Converter={StaticResource InverseBooleanConverter}}" />
-            <Button
-                Text="Stop"
-                Command="{Binding StopCommand}"
-                IsVisible="{Binding IsRunning}" />
-        </StackLayout>
-    </ContentPage.Content>
+    <StackLayout
+        Margin="20"
+        >
+        <Label
+            Text="{Binding InfoLabel}"
+            FontSize="Large"
+            TextColor="Black"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand" />
+        <Button
+            Text="Start"
+            Command="{Binding StartCommand}"
+            IsVisible="{Binding IsRunning, Converter={StaticResource InverseBooleanConverter}}" />
+        <Button
+            Text="Stop"
+            Command="{Binding StopCommand}"
+            IsVisible="{Binding IsRunning}" />
+    </StackLayout>
 </base:BaseView>
