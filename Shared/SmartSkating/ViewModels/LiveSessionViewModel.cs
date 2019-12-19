@@ -20,7 +20,6 @@ namespace Sanet.SmartSkating.ViewModels
         private ISession? _currentSession;
         private bool _isRunning;
         private string _infoLabel = string.Empty;
-        private int _lapsCount;
         private string _currentSector = string.Empty;
         private string _lastLapTime = string.Empty;
         private string _laps = string.Empty;
@@ -63,7 +62,9 @@ namespace Sanet.SmartSkating.ViewModels
                 {
                     var lastSector = Session.Sectors.Last();
                     LastSector = $"Last Sector: {lastSector.Type.GetSectorName()}, {lastSector.Time:m\\:s}";
-                };
+                }
+                if (Session.WayPoints.Any())
+                    CurrentSector = $"Currently in {Session.WayPoints.Last().Type.GetSectorName()} sector";
             }
         }
 
@@ -89,12 +90,6 @@ namespace Sanet.SmartSkating.ViewModels
         {
             get => _infoLabel;
             private set => SetProperty(ref _infoLabel, value);
-        }
-
-        public int LapsCount
-        {
-            get => _lapsCount;
-            set => SetProperty(ref _lapsCount, value);
         }
 
         public string CurrentSector

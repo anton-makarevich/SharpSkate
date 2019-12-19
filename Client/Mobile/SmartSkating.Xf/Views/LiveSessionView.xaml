@@ -11,12 +11,33 @@
     <StackLayout
         Margin="20"
         >
-        <Label
-            Text="{Binding InfoLabel}"
-            FontSize="Large"
-            TextColor="Black"
-            VerticalOptions="CenterAndExpand"
-            HorizontalOptions="CenterAndExpand" />
+        <StackLayout>
+            <Label
+                Text="{Binding Laps}"
+                FontSize="Large"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding LastLapTime}"
+                FontSize="Large"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding LastSector}"
+                FontSize="Large"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding CurrentSector}"
+                FontSize="Large"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+        </StackLayout>
+        
         <Button
             Text="Start"
             Command="{Binding StartCommand}"
