@@ -12,18 +12,13 @@ namespace Sanet.SmartSkating.ViewModels
     public class TracksViewModel:BaseViewModel
     {
         private readonly ITrackService _trackService;
-        private ObservableCollection<TrackViewModel> _tracks = new ObservableCollection<TrackViewModel>();
 
         public TracksViewModel(ITrackService trackService)
         {
             _trackService = trackService;
         }
 
-        public ObservableCollection<TrackViewModel> Tracks
-        {
-            get => _tracks;
-            private set => SetProperty(ref _tracks, value);
-        }
+        public ObservableCollection<TrackViewModel> Tracks { get; } = new ObservableCollection<TrackViewModel>();
 
         public bool HasSelectedTrack => Tracks.Any(t => t.IsSelected);
         public ICommand ConfirmSelectionCommand => new SimpleCommand(async () =>
@@ -45,7 +40,9 @@ namespace Sanet.SmartSkating.ViewModels
         public override void AttachHandlers()
         {
             base.AttachHandlers();
+#pragma warning disable 4014
             LoadTracksAsync();
+#pragma warning restore 4014
         }
 
         public void SelectTrack(TrackViewModel track)

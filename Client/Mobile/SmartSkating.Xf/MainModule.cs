@@ -17,6 +17,7 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<IStorageService, JsonStorageService>();
             container.RegisterSingleton<ITrackProvider,LocalTrackProvider>();
             container.RegisterSingleton<ITrackService, TrackService>();
+            container.RegisterSingleton<ISessionService,SessionService>();
         }
     }
 }

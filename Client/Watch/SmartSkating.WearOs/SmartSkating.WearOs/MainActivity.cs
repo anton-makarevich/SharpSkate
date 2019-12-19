@@ -69,7 +69,8 @@ namespace Sanet.SmartSkating.WearOs
             _viewModel = new LiveSessionViewModel(
                 new LocationManagerService(this), 
                 storageService,
-                new TrackService(new LocalTrackProvider()));
+                new TrackService(new LocalTrackProvider()),
+                new SessionService());
             _viewModel.PropertyChanged+= ViewModelOnPropertyChanged;
             
             #if DEBUG
