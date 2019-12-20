@@ -18,13 +18,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly ITrackService _trackServiceMock = Substitute.For<ITrackService>();
         private readonly INavigationService _navigationServiceMock = Substitute.For<INavigationService>();
         private readonly TracksViewModel _sut;
+        private readonly List<TrackDto> _tracks;
 
         public TracksViewModelTests()
         {
             _sut = new TracksViewModel(_trackServiceMock);
             _sut.SetNavigationService(_navigationServiceMock);
-            var tracks = JsonConvert.DeserializeObject<List<TrackDto>>(TrackServiceTests.TracksData);
-            _trackServiceMock.Tracks.Returns(tracks);
+            _tracks = JsonConvert.DeserializeObject<List<TrackDto>>(TrackServiceTests.TracksData);
+            _trackServiceMock.Tracks.Returns(_tracks);
         }
 
         [Fact]
@@ -168,6 +169,18 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             await _sut.LoadTracksAsync();
             
             Assert.Equal(_trackServiceMock.Tracks.Count, _sut.Tracks.Count);
+        }
+
+        [Fact]
+        public async Task SelectsTrackAutomaticallyAndGoesToSessionIfItIsTheOnlyOne()
+        {
+            const string name = "Eindhoven";
+            _trackServiceMock.Tracks.Returns(_tracks.Where(t=>t.Name=="Eindhoven").ToList());
+            
+            await _sut.LoadTracksAsync();
+
+            _trackServiceMock.Received().SelectRinkByName(name);
+            await _navigationServiceMock.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
         }
     }
 }

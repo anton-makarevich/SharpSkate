@@ -10,13 +10,51 @@
     BackgroundColor="White">
     <StackLayout
         Margin="20"
+        VerticalOptions="CenterAndExpand"
+        HorizontalOptions="CenterAndExpand"
         >
-        <Label
-            Text="{Binding InfoLabel}"
-            FontSize="Large"
-            TextColor="Black"
+        <StackLayout
             VerticalOptions="CenterAndExpand"
-            HorizontalOptions="CenterAndExpand" />
+            HorizontalOptions="CenterAndExpand"
+            Spacing="0">
+            <Label
+                Text="{Binding Laps}"
+                FontSize="Medium"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding Distance}"
+                FontSize="Medium"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding TotalTime}"
+                FontSize="Medium"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding LastLapTime}"
+                FontSize="Medium"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding LastSector}"
+                FontSize="Medium"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding CurrentSector}"
+                FontSize="Medium"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+        </StackLayout>
+        
         <Button
             Text="Start"
             Command="{Binding StartCommand}"

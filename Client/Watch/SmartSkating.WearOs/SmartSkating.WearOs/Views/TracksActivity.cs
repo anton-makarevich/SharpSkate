@@ -1,18 +1,19 @@
+using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using Android.App;
 using Android.OS;
 using Android.Support.V7.Widget;
+using Android.Views;
 using Android.Widget;
-using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.WearOs.Models;
+using Sanet.SmartSkating.WearOs.Services;
 
 namespace Sanet.SmartSkating.WearOs.Views
 {
-    [Activity(Label = "@string/app_name", MainLauncher = true)]
+    [Activity]
     public class TracksActivity: BaseActivity<TracksViewModel>
     {
         private RecyclerView? _recyclerView;
@@ -27,15 +28,23 @@ namespace Sanet.SmartSkating.WearOs.Views
             _recyclerView = FindViewById<RecyclerView> (Resource.Id.recyclerView);
             _confirmButton = FindViewById<Button>(Resource.Id.confirmButton);
             
+            _confirmButton.Click += ConfirmButtonOnClick;
+            
             SetViewModel();
             
             var layoutManager = new LinearLayoutManager (this);
             _recyclerView.SetLayoutManager (layoutManager);
         }
 
+        private void ConfirmButtonOnClick(object sender, EventArgs e)
+        {
+            ViewModel.ConfirmSelectionCommand.Execute(null);
+        }
+
         private void SetViewModel()
         {
-            ViewModel = new TracksViewModel(new TrackService(new LocalTrackProvider()));
+            ViewModel = AndroidNavigationService.SharedInstance.Container.GetInstance<TracksViewModel>();
+            ViewModel.SetNavigationService(AndroidNavigationService.SharedInstance);
             ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
             ViewModel.Tracks.CollectionChanged += TracksOnCollectionChanged;
             UpdateButtonsState();

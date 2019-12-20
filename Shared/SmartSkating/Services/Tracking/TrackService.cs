@@ -17,8 +17,8 @@ namespace Sanet.SmartSkating.Services.Tracking
             _tracksProviderMock = tracksProviderMock;
         }
 
-        public IList<TrackDto> Tracks { get; private set; }
-        public Rink SelectedRink { get; private set; }
+        public IList<TrackDto> Tracks { get; private set; } = new List<TrackDto>();
+        public Rink? SelectedRink { get; private set; }
 
         public async Task LoadTracksAsync()
         {

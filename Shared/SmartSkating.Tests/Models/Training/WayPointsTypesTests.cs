@@ -211,5 +211,45 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             
             Assert.Equal(WayPointTypes.ThirdSector,result);
         }
+
+        [Fact]
+        public void CorrectlyConvertsFirstSectorTypeToString()
+        {
+            var result = WayPointTypes.FirstSector.GetSectorName();
+            
+            Assert.Equal("1st",result);
+        }
+        
+        [Fact]
+        public void CorrectlyConvertsSecondSectorTypeToString()
+        {
+            var result = WayPointTypes.SecondSector.GetSectorName();
+            
+            Assert.Equal("2nd",result);
+        }
+        
+        [Fact]
+        public void CorrectlyConvertsThirdSectorTypeToString()
+        {
+            var result = WayPointTypes.ThirdSector.GetSectorName();
+            
+            Assert.Equal("3rd",result);
+        }
+        
+        [Fact]
+        public void CorrectlyConvertsFourthSectorTypeToString()
+        {
+            var result = WayPointTypes.FourthSector.GetSectorName();
+            
+            Assert.Equal("4th",result);
+        }
+        
+        [Fact]
+        public void ReturnsNaForSectorNameIfTypeIsNotSector()
+        {
+            var result = WayPointTypes.Start.GetSectorName();
+            
+            Assert.Equal("NA",result);
+        }
     }
 }

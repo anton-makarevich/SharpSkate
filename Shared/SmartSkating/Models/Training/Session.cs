@@ -21,6 +21,7 @@ namespace Sanet.SmartSkating.Models.Training
         public IList<Section> Sectors { get; }
         public int LapsCount { get; private set; }
         public TimeSpan LastLapTime { get; private set; }
+        public Rink Rink => _rink;
 
         public void AddPoint(Coordinate location, DateTime date)
         {
@@ -91,6 +92,12 @@ namespace Sanet.SmartSkating.Models.Training
                 type);
             AddSection(separatingWayPoint);
             WayPoints.Add(separatingWayPoint);
+        }
+
+        public DateTime StartTime { get; private set; }
+        public void SetStartTime(DateTime startTime)
+        {
+            StartTime = startTime;
         }
 
         private void AddSection(WayPoint separatingWayPoint)
