@@ -13,5 +13,8 @@ namespace Sanet.SmartSkating.Models.Training
         Rink Rink { get; }
         void AddPoint(Coordinate location, DateTime date);
         void AddSeparatingPoint(Coordinate location, DateTime date, WayPointTypes type);
+        
+        DateTime StartTime { get; }
+        void SetStartTime(DateTime startTime);
     }
 }

@@ -239,5 +239,40 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             Assert.Equal("Last Sector: 1st, 0:10",_sut.LastSector);
         }
+
+        [Fact]
+        public void DisplaysTotalDistance()
+        {
+            var session = CreateSessionMock();
+            var startTime = DateTime.Now;
+            var endTime = startTime.AddSeconds(10);
+            var section = new Section(
+                new WayPoint(_locationStub,_locationStub,startTime, WayPointTypes.Start),
+                new WayPoint(_locationStub,_locationStub,endTime, WayPointTypes.Finish)
+            );
+            session.Sectors.Returns(new List<Section>(){section});
+            
+            _sut.StartCommand.Execute(null);
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            Assert.Equal("Distance: 0.1Km",_sut.Distance);
+        }
+
+        [Fact]
+        public void StartingSessionUpdatesItsStartTime()
+        {
+            var session = CreateSessionMock();
+            var startTime = DateTime.Now;
+            var endTime = startTime.AddSeconds(10);
+            var section = new Section(
+                new WayPoint(_locationStub,_locationStub,startTime, WayPointTypes.Start),
+                new WayPoint(_locationStub,_locationStub,endTime, WayPointTypes.Finish)
+            );
+            session.Sectors.Returns(new List<Section>(){section});
+            
+            _sut.StartCommand.Execute(null);
+            
+            session.Received().SetStartTime(Arg.Any<DateTime>());
+        }
     }
 }

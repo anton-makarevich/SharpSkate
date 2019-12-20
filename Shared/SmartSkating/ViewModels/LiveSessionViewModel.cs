@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
@@ -24,6 +25,8 @@ namespace Sanet.SmartSkating.ViewModels
         private string _lastLapTime = string.Empty;
         private string _laps = string.Empty;
         private string _lastSector = string.Empty;
+        private string _distance = string.Empty;
+        private string _totalTime = string.Empty;
 
         public LiveSessionViewModel(
             ILocationService locationService, 
@@ -40,14 +43,35 @@ namespace Sanet.SmartSkating.ViewModels
         {
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
             _locationService.StartFetchLocation();
+            Session?.SetStartTime(DateTime.UtcNow);
             IsRunning = true;
+#pragma warning disable 4014
+            TrackTime();
+#pragma warning restore 4014
         });
+
+        private async Task TrackTime()
+        {
+            do
+            {
+                await Task.Delay(1000);
+                if (Session == null) continue;
+                var time = DateTime.UtcNow.Subtract(Session.StartTime);
+                TotalTime = $"Elapsed Time: {time:h\\:m\\:ss}";
+            } while (IsRunning);
+        }
+
+        public string TotalTime
+        {
+            get => _totalTime;
+            private set => SetProperty(ref _totalTime, value);
+        }
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
             LastCoordinate = e.Coordinate;
             _storageService.SaveCoordinateAsync(LastCoordinate);
-            Session?.AddPoint(LastCoordinate,DateTime.Now);
+            Session?.AddPoint(LastCoordinate,DateTime.UtcNow);
             UpdateMetaData();
         }
 
@@ -56,12 +80,13 @@ namespace Sanet.SmartSkating.ViewModels
             InfoLabel = LastCoordinate.ToString();
             if (Session != null)
             {
-                LastLapTime = Session.LapsCount > 0 ? $"Last Lap: {Session.LastLapTime:h\\:m\\:s}":string.Empty;
+                LastLapTime = Session.LapsCount > 0 ? $"Last Lap: {Session.LastLapTime:h\\:m\\:ss}":string.Empty;
                 Laps = $"Laps: {Session.LapsCount}";
                 if (Session.Sectors.Any())
                 {
                     var lastSector = Session.Sectors.Last();
-                    LastSector = $"Last Sector: {lastSector.Type.GetSectorName()}, {lastSector.Time:m\\:s}";
+                    LastSector = $"Last Sector: {lastSector.Type.GetSectorName()}, {lastSector.Time:m\\:ss}";
+                    Distance = $"Distance: {Session.Sectors.Count * 0.1f}Km";
                 }
                 if (Session.WayPoints.Any())
                     CurrentSector = $"Currently in {Session.WayPoints.Last().Type.GetSectorName()} sector";
@@ -126,6 +151,12 @@ namespace Sanet.SmartSkating.ViewModels
         {
             get => _lastSector;
             private set => SetProperty(ref _lastSector, value);
+        }
+
+        public string Distance
+        {
+            get => _distance;
+            private set => SetProperty(ref _distance, value);
         }
 
         public override void DetachHandlers()

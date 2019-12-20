@@ -10,29 +10,46 @@
     BackgroundColor="White">
     <StackLayout
         Margin="20"
+        VerticalOptions="CenterAndExpand"
+        HorizontalOptions="CenterAndExpand"
         >
-        <StackLayout>
+        <StackLayout
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand"
+            Spacing="0">
             <Label
                 Text="{Binding Laps}"
-                FontSize="Large"
+                FontSize="Medium"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding Distance}"
+                FontSize="Medium"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label
+                Text="{Binding TotalTime}"
+                FontSize="Medium"
                 TextColor="Black"
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" />
             <Label
                 Text="{Binding LastLapTime}"
-                FontSize="Large"
+                FontSize="Medium"
                 TextColor="Black"
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" />
             <Label
                 Text="{Binding LastSector}"
-                FontSize="Large"
+                FontSize="Medium"
                 TextColor="Black"
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" />
             <Label
                 Text="{Binding CurrentSector}"
-                FontSize="Large"
+                FontSize="Medium"
                 TextColor="Black"
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" />

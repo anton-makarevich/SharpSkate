@@ -94,6 +94,12 @@ namespace Sanet.SmartSkating.Models.Training
             WayPoints.Add(separatingWayPoint);
         }
 
+        public DateTime StartTime { get; private set; }
+        public void SetStartTime(DateTime startTime)
+        {
+            StartTime = startTime;
+        }
+
         private void AddSection(WayPoint separatingWayPoint)
         {
             var firstPointType = separatingWayPoint.Type.GetPreviousSeparationPointType();

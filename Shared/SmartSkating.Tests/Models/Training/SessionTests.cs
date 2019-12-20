@@ -199,5 +199,16 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             // so we're crossing start in between ~35 seconds
             Assert.Equal(35,_sut.LastLapTime.Seconds); 
         }
+        
+        
+        [Fact]
+        public void SetsStartTime()
+        {
+            var startTime = DateTime.Now;
+            
+            _sut.SetStartTime(startTime);
+            
+            Assert.Equal(startTime,_sut.StartTime);
+        }
     }
 }

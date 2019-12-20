@@ -12,7 +12,7 @@ using Sanet.SmartSkating.WearOs.Models;
 
 namespace Sanet.SmartSkating.WearOs.Views
 {
-    [Activity(Label = "@string/app_name", MainLauncher = true)]
+    [Activity]
     public class TracksActivity: BaseActivity<TracksViewModel>
     {
         private RecyclerView? _recyclerView;
