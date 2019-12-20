@@ -63,7 +63,6 @@ namespace Sanet.SmartSkating.WearOs.Views
             ViewModel?.StartCommand.Execute(true);
         }
         
-        
         private void SetViewModel()
         {
             ViewModel = AndroidNavigationService.SharedInstance.Container.GetInstance<LiveSessionViewModel>();

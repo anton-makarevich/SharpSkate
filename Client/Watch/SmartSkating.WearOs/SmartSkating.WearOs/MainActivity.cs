@@ -36,7 +36,6 @@ namespace Sanet.SmartSkating.WearOs
             NavigateToTracks(permissions[0]);
 #pragma warning restore 4014
         }
-
         
         public override void OnRequestPermissionsResult(
             int requestCode, 

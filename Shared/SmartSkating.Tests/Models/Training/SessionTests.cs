@@ -200,7 +200,6 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             Assert.Equal(35,_sut.LastLapTime.Seconds); 
         }
         
-        
         [Fact]
         public void SetsStartTime()
         {

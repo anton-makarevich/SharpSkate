@@ -225,33 +225,31 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void ShowsLastSectorTypeAndTime()
         {
-            var session = CreateSessionMock();
-            var startTime = DateTime.Now;
-            var endTime = startTime.AddSeconds(10);
-            var section = new Section(
-                new WayPoint(_locationStub,_locationStub,startTime, WayPointTypes.Start),
-                new WayPoint(_locationStub,_locationStub,endTime, WayPointTypes.Finish)
-                );
-            session.Sectors.Returns(new List<Section>(){section});
-            
+            CreateSessionMockWithOneSector();
+
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
             Assert.Equal("Last Sector: 1st, 0:10",_sut.LastSector);
         }
 
-        [Fact]
-        public void DisplaysTotalDistance()
+        private void CreateSessionMockWithOneSector()
         {
             var session = CreateSessionMock();
             var startTime = DateTime.Now;
             var endTime = startTime.AddSeconds(10);
             var section = new Section(
-                new WayPoint(_locationStub,_locationStub,startTime, WayPointTypes.Start),
-                new WayPoint(_locationStub,_locationStub,endTime, WayPointTypes.Finish)
+                new WayPoint(_locationStub, _locationStub, startTime, WayPointTypes.Start),
+                new WayPoint(_locationStub, _locationStub, endTime, WayPointTypes.Finish)
             );
-            session.Sectors.Returns(new List<Section>(){section});
-            
+            session.Sectors.Returns(new List<Section>() {section});
+        }
+
+        [Fact]
+        public void DisplaysTotalDistance()
+        {
+            CreateSessionMockWithOneSector();
+
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
