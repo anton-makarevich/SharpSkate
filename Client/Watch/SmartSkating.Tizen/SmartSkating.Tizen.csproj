@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>tizen50</TargetFramework>
+    <TargetFramework>tizen40</TargetFramework>
     <RootNamespace>Sanet.SmartSkating.Tizen</RootNamespace>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>

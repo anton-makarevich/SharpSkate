@@ -11,18 +11,5 @@
             "Latitude":51.4148027,
             "Longitude":5.4724154
         }
-    },
-    {
-        "Name": "Grefrath",
-        "Start": 
-        {
-            "Latitude":51.347566,
-            "Longitude":6.340406
-        },
-        "Finish": 
-        {
-            "Latitude":51.348305,
-            "Longitude":6.339573
-        }
     }
 ]

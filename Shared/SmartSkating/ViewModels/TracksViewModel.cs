@@ -35,6 +35,12 @@ namespace Sanet.SmartSkating.ViewModels
                 if (Tracks.All(t => t.Name != track.Name))
                     Tracks.Add(new TrackViewModel(track));
             }
+
+            if (Tracks.Count == 1)
+            {
+                SelectTrack(Tracks.First());
+                ConfirmSelectionCommand.Execute(null);
+            }
         }
 
         public override void AttachHandlers()
