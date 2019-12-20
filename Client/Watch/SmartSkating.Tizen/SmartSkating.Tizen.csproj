@@ -30,7 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj" />
     <ProjectReference Include="..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj" />
-    <ProjectReference Include="..\..\Mobile\SmartSkating.Xf\SmartSkating.Xf.csproj" />
   </ItemGroup>
+  <Import Project="..\..\XfShared\XfShared.projitems" Label="Shared" Condition="Exists('..\..\XfShared\XfShared.projitems')" />
 </Project>
 
