@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.Dto", "Shared\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSkating.Dto.Tests", "Shared\SmartSkating.Dto.Tests\SmartSkating.Dto.Tests.csproj", "{BB2053AF-6042-495F-BE6A-4ABD7BF4531E}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "XfShared", "Client\XfShared\XfShared.shproj", "{037F168E-C37F-40EA-85C4-448E4F05107F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -218,6 +220,7 @@ Global
 		{C13C1E1C-11CE-44C7-9EB3-1C1F03B9CEA2} = {74B53A76-A019-428B-A44D-EBB20D43163B}
 		{DA620869-1EFD-4593-ADD8-05D9904DE1FB} = {9CCA32B7-EED8-426A-A902-CB4EA806DA8D}
 		{BB2053AF-6042-495F-BE6A-4ABD7BF4531E} = {9CCA32B7-EED8-426A-A902-CB4EA806DA8D}
+		{037F168E-C37F-40EA-85C4-448E4F05107F} = {74B53A76-A019-428B-A44D-EBB20D43163B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3FBC07CE-2F49-4B83-94B6-C1DD05A66813}

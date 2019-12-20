@@ -7,7 +7,7 @@ namespace Sanet.SmartSkating.Xf.Views.Base
 {
     public abstract class BaseView<TViewModel> : ContentPage, IBaseView<TViewModel> where TViewModel : BaseViewModel
     {
-        protected bool NavigationBarEnabled = false;
+        protected bool NavigationBarEnabled;
 
         private TViewModel _viewModel;
 
