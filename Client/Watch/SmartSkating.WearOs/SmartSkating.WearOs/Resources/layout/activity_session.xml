@@ -12,20 +12,73 @@
         <LinearLayout android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:orientation="vertical"
-                      android:layout_centerInParent="true">
+                      android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
+                        >
             <TextView
-                    android:id="@+id/text"
+                    android:id="@+id/laps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hello_world" />
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+            />
+            <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+            />
+            <TextView
+                    android:id="@+id/elapsed_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+            />
+            
+            <TextView
+                    android:id="@+id/last_lap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    />
+            <TextView
+                    android:id="@+id/last_sector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    />
+            <TextView
+                    android:id="@+id/current_sector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+            />
             <Button android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/startButton"
-                    android:text="Start"/>
+                    android:text="Start"
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+            />
             <Button android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/stopButton"
-                    android:text="Stop"/>
+                    android:text="Stop"
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+            />
         </LinearLayout>
 
     </RelativeLayout>

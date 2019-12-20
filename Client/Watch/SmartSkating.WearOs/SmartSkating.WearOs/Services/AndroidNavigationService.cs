@@ -2,7 +2,10 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Sanet.SmartSkating.Services;
+using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.ViewModels.Base;
+using Sanet.SmartSkating.WearOs.Views;
+using SimpleInjector;
 
 namespace Sanet.SmartSkating.WearOs.Services
 {
@@ -10,11 +13,18 @@ namespace Sanet.SmartSkating.WearOs.Services
     {
         private readonly Activity _activity;
 
-        public AndroidNavigationService(Activity activity)
+        public static AndroidNavigationService SharedInstance { get; private set; }
+
+        public AndroidNavigationService(Activity activity, Container container)
         {
             _activity = activity;
+            Container = container;
+
+            SharedInstance = this;
         }
-        
+
+        public Container Container { get; } 
+
         public T GetNewViewModel<T>() where T : BaseViewModel
         {
             throw new System.NotImplementedException();
@@ -32,16 +42,19 @@ namespace Sanet.SmartSkating.WearOs.Services
 
         public Task NavigateToViewModelAsync<T>(T viewModel) where T : BaseViewModel
         {
-            return Task.Run(() =>
-            {
-                var intent = new Intent(_activity, typeof(MainActivity));
-                _activity.StartActivity(intent);
-            }); 
+            throw new System.NotImplementedException();
         }
 
         public Task NavigateToViewModelAsync<T>() where T : BaseViewModel
         {
-            throw new System.NotImplementedException();
+            return Task.Run(() =>
+            {
+                var intent = typeof(T) == typeof(TracksViewModel)
+                    ? new Intent(_activity, typeof(TracksActivity))
+                    : new Intent(_activity, typeof(LiveSessionActivity));
+                
+                _activity.StartActivity(intent);
+            }); 
         }
 
         public Task ShowViewModelAsync<T>(T viewModel) where T : BaseViewModel

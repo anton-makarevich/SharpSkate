@@ -4,18 +4,21 @@ using Android.App;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Sanet.SmartSkating.Droid.Services.Location;
-using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Services.Storage;
-using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
+using Sanet.SmartSkating.WearOs.Services;
 
 namespace Sanet.SmartSkating.WearOs.Views
 {
     [Activity]
     public class LiveSessionActivity:BaseActivity<LiveSessionViewModel>
     {
-        private TextView? _textView;
+        private TextView? _elapsedTemText;
+        private TextView? _distanceText;
+        private TextView? _lapsText;
+        private TextView? _lastLapText;
+        private TextView? _lastSectorText;
+        private TextView? _currentSectorText;
+
         private Button? _startButton;
         private Button? _stopButton;
         
@@ -24,7 +27,13 @@ namespace Sanet.SmartSkating.WearOs.Views
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.activity_session);
             
-            _textView = FindViewById<TextView>(Resource.Id.text);
+            _elapsedTemText = FindViewById<TextView>(Resource.Id.elapsed_time);
+            _distanceText = FindViewById<TextView>(Resource.Id.distance);
+            _lapsText = FindViewById<TextView>(Resource.Id.laps);
+            _lastLapText = FindViewById<TextView>(Resource.Id.last_lap);
+            _lastSectorText = FindViewById<TextView>(Resource.Id.last_sector);
+            _currentSectorText = FindViewById<TextView>(Resource.Id.current_sector);
+            
             _startButton = FindViewById<Button>(Resource.Id.startButton);
             _stopButton = FindViewById<Button>(Resource.Id.stopButton);
             
@@ -57,27 +66,47 @@ namespace Sanet.SmartSkating.WearOs.Views
         
         private void SetViewModel()
         {
-            var storageService = new JsonStorageService();
-            ViewModel = new LiveSessionViewModel(
-                new LocationManagerService(this), 
-                storageService,
-                new TrackService(new LocalTrackProvider()),
-                new SessionService());
+            ViewModel = AndroidNavigationService.SharedInstance.Container.GetInstance<LiveSessionViewModel>();
+            ViewModel.SetNavigationService(AndroidNavigationService.SharedInstance);
             ViewModel.PropertyChanged+= ViewModelOnPropertyChanged;
             
-#if DEBUG
-            storageService.LoadAllCoordinatesAsync();
-#endif
-            
-            UpdateTextState();
             UpdateButtonsState();
         }
 
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModel.InfoLabel))
+            if (e.PropertyName == nameof(ViewModel.TotalTime))
             {
-                UpdateTextState();
+                UpdateTime();
+                return;
+            }
+            
+            if (e.PropertyName == nameof(ViewModel.Distance))
+            {
+                UpdateDistance();
+                return;
+            }
+            
+            if (e.PropertyName == nameof(ViewModel.Laps))
+            {
+                UpdateLaps();
+                return;
+            }
+            
+            if (e.PropertyName == nameof(ViewModel.LastLapTime))
+            {
+                UpdateLastLapTime();
+                return;
+            }
+            
+            if (e.PropertyName == nameof(ViewModel.LastSector))
+            {
+                UpdateLastSector();
+                return;
+            }
+            if (e.PropertyName == nameof(ViewModel.CurrentSector))
+            {
+                UpdateCurrentSector();
                 return;
             }
 
@@ -100,9 +129,34 @@ namespace Sanet.SmartSkating.WearOs.Views
                     : ViewStates.Gone;
         }
 
-        private void UpdateTextState()
+        private void UpdateTime()
         {
-            if (_textView != null) _textView.Text = ViewModel?.InfoLabel;
+            if (_elapsedTemText != null) _elapsedTemText.Text = ViewModel?.TotalTime;
+        }
+        
+        private void UpdateLastLapTime()
+        {
+            if (_lastLapText != null) _lastLapText.Text = ViewModel?.LastLapTime;
+        }
+        
+        private void UpdateDistance()
+        {
+            if (_distanceText != null) _distanceText.Text = ViewModel?.Distance;
+        }
+        
+        private void UpdateLaps()
+        {
+            if (_lapsText != null) _lapsText.Text = ViewModel?.Laps;
+        }
+        
+        private void UpdateLastSector()
+        {
+            if (_lastSectorText != null) _lastSectorText.Text = ViewModel?.LastSector;
+        }
+        
+        private void UpdateCurrentSector()
+        {
+            if (_currentSectorText != null) _currentSectorText.Text = ViewModel?.CurrentSector;
         }
     }
 }

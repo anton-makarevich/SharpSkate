@@ -11,12 +11,13 @@ namespace Sanet.SmartSkating.Droid.Utils
     public static class AndroidExtensions
     {
         public static int PermissionsRequestCode = 432;
-        public static void RequestPermissions(this Activity activity)
+        public static Permission[] RequestPermissions(this Activity activity)
         {
             var permissions = new List<string>();
 
-            if (ContextCompat.CheckSelfPermission(activity,
-                    Manifest.Permission.AccessFineLocation) != Permission.Granted)
+            var locationPermission = ContextCompat.CheckSelfPermission(activity,
+                Manifest.Permission.AccessFineLocation);
+            if (locationPermission != Permission.Granted)
             {
                 permissions.Add(Manifest.Permission.AccessFineLocation);
             }
@@ -26,6 +27,8 @@ namespace Sanet.SmartSkating.Droid.Utils
                 ActivityCompat.RequestPermissions(activity,
                     permissions.ToArray(), PermissionsRequestCode);
             }
+
+            return new[] {locationPermission};
         }
     }
 }

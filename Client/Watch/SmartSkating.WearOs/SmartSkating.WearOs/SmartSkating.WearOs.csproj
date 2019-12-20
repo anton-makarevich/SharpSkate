@@ -63,6 +63,7 @@
     <Compile Include="Views\BaseActivity.cs" />
     <Compile Include="Views\LiveSessionActivity.cs" />
     <Compile Include="Views\TracksActivity.cs" />
+    <Compile Include="PlatformModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
