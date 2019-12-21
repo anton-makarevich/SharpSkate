@@ -3,9 +3,19 @@ using Sanet.SmartSkating.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
+#if TIZEN
+using Tizen.Wearable.CircularUI.Forms;
+#endif
+
 namespace Sanet.SmartSkating.Xf.Views.Base
 {
-    public abstract class BaseView<TViewModel> : ContentPage, IBaseView<TViewModel> where TViewModel : BaseViewModel
+    public abstract class BaseView<TViewModel> :
+#if TIZEN
+        CirclePage,
+#else
+        ContentPage,
+#endif
+        IBaseView<TViewModel> where TViewModel : BaseViewModel
     {
         protected bool NavigationBarEnabled;
 

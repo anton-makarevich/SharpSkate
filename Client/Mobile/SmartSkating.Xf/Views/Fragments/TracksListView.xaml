@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ListView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cells="clr-namespace:Sanet.SmartSkating.Xf.Views.Cells"
+    x:Class="Sanet.SmartSkating.Xf.Views.Fragments.TracksListView"
+    ItemsSource="{Binding Tracks}"
+            RowHeight="50"
+            >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <cells:TrackCell />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+</ListView>

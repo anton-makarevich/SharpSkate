@@ -18,6 +18,7 @@
   <ItemGroup>
     <Folder Include="lib\" />
     <Folder Include="res\" />
+    <Folder Include="Views\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,7 +6,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base"
     xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
-    xmlns:cells="clr-namespace:Sanet.SmartSkating.Xf.Views.Cells"
+    xmlns:fragments="clr-namespace:Sanet.SmartSkating.Xf.Views.Fragments"
     x:Class="Sanet.SmartSkating.Xf.Views.TracksView"
     BackgroundColor="White">
     <Grid
@@ -15,16 +15,8 @@
             <RowDefinition/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-        <ListView
-            ItemsSource="{Binding Tracks}"
-            RowHeight="50"
-            ItemSelected="OnTrackSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <cells:TrackCell />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <fragments:TracksListView
+            ItemSelected="OnTrackSelected"/>
         <Button
             Grid.Row="1"
             Text="Confirm"
