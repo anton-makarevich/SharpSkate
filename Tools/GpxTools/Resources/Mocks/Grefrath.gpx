@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<gpx version="1.1" creator="GpsMaster 0.63.33-191008" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" xmlns:gpsm="http://www.gpsmaster.org/schema/gpsm/v1">
+<metadata>
+<name>testFileGet</name>
+<time>2019-12-15T22:16:51Z</time><bounds minlat="51.34700249" minlon="6.33862853" maxlat="51.34852700" maxlon="6.34069383"/>
+</metadata>
+<rte>
+<name>testFileGet</name>
+<extensions>
+<gpsm:color>f7ba0bff</gpsm:color>
+</extensions>
+<rtept lat="51.34760560" lon="6.34046853">
+</rtept>
+<rtept lat="51.34775637" lon="6.34029150">
+</rtept>
+<rtept lat="51.34789039" lon="6.34014666">
+</rtept>
+<rtept lat="51.34799761" lon="6.34001255">
+</rtept>
+<rtept lat="51.34810818" lon="6.33987308">
+</rtept>
+<rtept lat="51.34821205" lon="6.33974969">
+</rtept>
+<rtept lat="51.34833602" lon="6.33961022">
+</rtept>
+<rtept lat="51.34842313" lon="6.33950293">
+</rtept>
+<rtept lat="51.34848344" lon="6.33937955">
+</rtept>
+<rtept lat="51.34850689" lon="6.33922935">
+</rtept>
+<rtept lat="51.34851024" lon="6.33908987">
+</rtept>
+<rtept lat="51.34848009" lon="6.33895576">
+</rtept>
+<rtept lat="51.34843318" lon="6.33884847">
+</rtept>
+<rtept lat="51.34837287" lon="6.33875191">
+</rtept>
+<rtept lat="51.34830251" lon="6.33870900">
+</rtept>
+<rtept lat="51.34821875" lon="6.33867681">
+</rtept>
+<rtept lat="51.34813163" lon="6.33867681">
+</rtept>
+<rtept lat="51.34805122" lon="6.33871436">
+</rtept>
+<rtept lat="51.34799426" lon="6.33876801">
+</rtept>
+<rtept lat="51.34791385" lon="6.33886456">
+</rtept>
+<rtept lat="51.34783679" lon="6.33895040">
+</rtept>
+<rtept lat="51.34775302" lon="6.33905768">
+</rtept>
+<rtept lat="51.34765585" lon="6.33918643">
+</rtept>
+<rtept lat="51.34736435" lon="6.33951366">
+</rtept>
+<rtept lat="51.34722698" lon="6.34061873">
+</rtept>
+<rtept lat="51.34741461" lon="6.34064555">
+</rtept>
+<rtept lat="51.34756204" lon="6.34053290">
+</rtept>
+<rtept lat="51.34772287" lon="6.34035051">
+</rtept>
+<rtept lat="51.34793730" lon="6.34008229">
+</rtept>
+<rtept lat="51.34816514" lon="6.33981943">
+</rtept>
+<rtept lat="51.34830586" lon="6.33963704">
+</rtept>
+<rtept lat="51.34847004" lon="6.33942783">
+</rtept>
+<rtept lat="51.34852700" lon="6.33914351">
+</rtept>
+<rtept lat="51.34847339" lon="6.33885920">
+</rtept>
+<rtept lat="51.34836617" lon="6.33869827">
+</rtept>
+<rtept lat="51.34819194" lon="6.33862853">
+</rtept>
+<rtept lat="51.34801101" lon="6.33869827">
+</rtept>
+<rtept lat="51.34786359" lon="6.33888602">
+</rtept>
+<rtept lat="51.34769941" lon="6.33908451">
+</rtept>
+<rtept lat="51.34757209" lon="6.33923471">
+</rtept>
+<rtept lat="51.34745147" lon="6.33937418">
+</rtept>
+<rtept lat="51.34724373" lon="6.33961558">
+</rtept>
+<rtept lat="51.34710971" lon="6.33978188">
+</rtept>
+<rtept lat="51.34702259" lon="6.34002864">
+</rtept>
+<rtept lat="51.34700249" lon="6.34032905">
+</rtept>
+<rtept lat="51.34709965" lon="6.34056509">
+</rtept>
+<rtept lat="51.34729064" lon="6.34069383">
+</rtept>
+<rtept lat="51.34749838" lon="6.34055436">
+</rtept>
+<rtept lat="51.34764580" lon="6.34037197">
+</rtept>
+</rte>
+<extensions>
+<gpsm:color>f7ba0bff</gpsm:color>
+</extensions></gpx>

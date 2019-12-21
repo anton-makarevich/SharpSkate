@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GpxTools.Models.Gpx;
 using Newtonsoft.Json;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.Training;
@@ -49,15 +50,17 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
 
             foreach (var wayPoint in t)
             {
-//                var startDate = new DateTime(2019,11,16,8,40,0);
-//                var endDate = new DateTime(2019,11,16,9,30,0);
+                //                var startDate = new DateTime(2019,11,16,8,40,0);
+                //                var endDate = new DateTime(2019,11,16,9,30,0);
                 // if (wayPoint.Date.Day != 23)
                 //     continue;
-                
-                var gpxPoint = new GpxRoutePoint();
-                gpxPoint.Latitude = wayPoint.OriginalCoordinate.Latitude;
-                gpxPoint.Longitude = wayPoint.OriginalCoordinate.Longitude;
-                gpxPoint.Time = wayPoint.Date;
+
+                var gpxPoint = new GpxRoutePoint
+                {
+                    Latitude = wayPoint.OriginalCoordinate.Latitude,
+                    Longitude = wayPoint.OriginalCoordinate.Longitude,
+                    Time = wayPoint.Date
+                };
 
                 gpxRoute.RoutePoints.Add(gpxPoint);
             }
