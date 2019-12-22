@@ -17,6 +17,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 {
     public class LiveSessionViewModelTests
     {
+        private const string NoValue = "- - -";
+        
         private readonly LiveSessionViewModel _sut;
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
         private readonly IStorageService _storageService = Substitute.For<IStorageService>();
@@ -207,7 +209,44 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal("Last Lap: 0:0:40",_sut.LastLapTime);
+            Assert.Equal("0:00:40",_sut.LastLapTime);
+        }
+        
+        [Fact]
+        public void ShowsPlaceholderForLastLapTimeIfNoLapsDone()
+        {
+            var session = CreateSessionMock();
+            session.LapsCount.Returns(0);
+            
+            _sut.StartCommand.Execute(null);
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            Assert.Equal(NoValue,_sut.LastLapTime);
+        }
+        
+        [Fact]
+        public void ShowsBestLapTime()
+        {
+            var session = CreateSessionMock();
+            session.BestLapTime.Returns(new TimeSpan(0, 0, 40));
+            session.LapsCount.Returns(1);
+            
+            _sut.StartCommand.Execute(null);
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            Assert.Equal("0:00:40",_sut.BestLastTime);
+        }
+        
+        [Fact]
+        public void ShowsPlaceholderForBestLapTimeIfNoLapsDone()
+        {
+            var session = CreateSessionMock();
+            session.LapsCount.Returns(0);
+            
+            _sut.StartCommand.Execute(null);
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            Assert.Equal(NoValue,_sut.BestLastTime);
         }
         
         [Fact]
@@ -219,18 +258,65 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal("Laps: 1",_sut.Laps);
+            Assert.Equal("1",_sut.Laps);
         }
         
         [Fact]
-        public void ShowsLastSectorTypeAndTime()
+        public void ShowsZeroForAmountOfLapsIfNoLapsDone()
+        {
+            var session = CreateSessionMock();
+            session.LapsCount.Returns(0);
+            
+            _sut.StartCommand.Execute(null);
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            Assert.Equal("0",_sut.Laps);
+        }
+        
+        [Fact]
+        public void ShowsLastSectorTime()
         {
             CreateSessionMockWithOneSector();
 
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal("Last Sector: 1st, 0:10",_sut.LastSector);
+            Assert.Equal("00:10",_sut.LastSectorTime);
+        }
+        
+        [Fact]
+        public void ShowsPlaceholderForLastSectorTimeIfNoSectorsDone()
+        {
+            var session = CreateSessionMock();
+            session.Sectors.Returns(new List<Section>());
+
+            _sut.StartCommand.Execute(null);
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            Assert.Equal(NoValue,_sut.LastSectorTime);
+        }
+        
+        [Fact]
+        public void ShowsBestSectorTime()
+        {
+            CreateSessionMockWithOneSector();
+
+            _sut.StartCommand.Execute(null);
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            Assert.Equal("00:10",_sut.BestSectorTime);
+        }
+        
+        [Fact]
+        public void ShowsPlaceholderForBestSectorTimeIfNoSectorsDone()
+        {
+            var session = CreateSessionMock();
+            session.Sectors.Returns(new List<Section>());
+
+            _sut.StartCommand.Execute(null);
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            Assert.Equal(NoValue,_sut.BestSectorTime);
         }
 
         private void CreateSessionMockWithOneSector()
@@ -239,10 +325,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             var startTime = DateTime.Now;
             var endTime = startTime.AddSeconds(10);
             var section = new Section(
-                new WayPoint(_locationStub, _locationStub, startTime, WayPointTypes.Start),
-                new WayPoint(_locationStub, _locationStub, endTime, WayPointTypes.Finish)
+                new WayPoint(
+                    _locationStub,
+                    _locationStub,
+                    startTime, 
+                    WayPointTypes.Start),
+                new WayPoint(
+                    _locationStub, 
+                    _locationStub,
+                    endTime, 
+                    WayPointTypes.Finish)
             );
             session.Sectors.Returns(new List<Section>() {section});
+            session.BestSector.Returns(section);
         }
 
         [Fact]
@@ -253,7 +348,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal("Distance: 0.1Km",_sut.Distance);
+            Assert.Equal("0.1Km",_sut.Distance);
         }
 
         [Fact]

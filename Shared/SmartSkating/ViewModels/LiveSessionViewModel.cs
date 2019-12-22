@@ -14,6 +14,8 @@ namespace Sanet.SmartSkating.ViewModels
 {
     public class LiveSessionViewModel:BaseViewModel
     {
+        private const string NoValue = "- - -";
+        
         private readonly ILocationService _locationService;
         private readonly IStorageService _storageService;
         private readonly ITrackService _trackService;
@@ -24,9 +26,11 @@ namespace Sanet.SmartSkating.ViewModels
         private string _currentSector = string.Empty;
         private string _lastLapTime = string.Empty;
         private string _laps = string.Empty;
-        private string _lastSector = string.Empty;
+        private string _lastSectorTime = string.Empty;
         private string _distance = string.Empty;
         private string _totalTime = string.Empty;
+        private string _bestLastTime = string.Empty;
+        private string _bestSectorTime = string.Empty;
 
         public LiveSessionViewModel(
             ILocationService locationService, 
@@ -57,7 +61,7 @@ namespace Sanet.SmartSkating.ViewModels
                 await Task.Delay(1000);
                 if (Session == null) continue;
                 var time = DateTime.UtcNow.Subtract(Session.StartTime);
-                TotalTime = $"Elapsed Time: {time:h\\:m\\:ss}";
+                TotalTime = time.ToString("h\\:mm\\:ss");
             } while (IsRunning);
         }
 
@@ -78,19 +82,34 @@ namespace Sanet.SmartSkating.ViewModels
         private void UpdateMetaData()
         {
             InfoLabel = LastCoordinate.ToString();
-            if (Session != null)
+            if (Session == null) return;
+            if (Session.LapsCount > 0)
             {
-                LastLapTime = Session.LapsCount > 0 ? $"Last Lap: {Session.LastLapTime:h\\:m\\:ss}":string.Empty;
-                Laps = $"Laps: {Session.LapsCount}";
-                if (Session.Sectors.Any())
-                {
-                    var lastSector = Session.Sectors.Last();
-                    LastSector = $"Last Sector: {lastSector.Type.GetSectorName()}, {lastSector.Time:m\\:ss}";
-                    Distance = $"Distance: {Session.Sectors.Count * 0.1f}Km";
-                }
-                if (Session.WayPoints.Any())
-                    CurrentSector = $"Currently in {Session.WayPoints.Last().Type.GetSectorName()} sector";
+                LastLapTime = Session.LastLapTime.ToString("h\\:mm\\:ss");
+                BestLastTime = Session.BestLapTime.ToString("h\\:mm\\:ss");
             }
+            else
+            {
+                LastLapTime = NoValue;
+                BestLastTime = NoValue;
+            }
+
+            Laps = Session.LapsCount.ToString();
+            if (Session.Sectors.Any())
+            {
+                var lastSector = Session.Sectors.Last();
+                LastSectorTime = lastSector.Time.ToString("mm\\:ss");
+                Distance = $"{Session.Sectors.Count * 0.1f}Km";
+                if (Session.BestSector != null) 
+                    BestSectorTime = Session.BestSector.Value.Time.ToString("mm\\:ss");
+            }
+            else
+            {
+                LastSectorTime = NoValue;
+                BestSectorTime = NoValue;
+            }
+            if (Session.WayPoints.Any())
+                CurrentSector = $"Currently in {Session.WayPoints.Last().Type.GetSectorName()} sector";
         }
 
         public ICommand StopCommand => new SimpleCommand(StopLocationService);
@@ -147,16 +166,28 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _laps, value);
         }
 
-        public string LastSector
+        public string LastSectorTime
         {
-            get => _lastSector;
-            private set => SetProperty(ref _lastSector, value);
+            get => _lastSectorTime;
+            private set => SetProperty(ref _lastSectorTime, value);
         }
 
         public string Distance
         {
             get => _distance;
             private set => SetProperty(ref _distance, value);
+        }
+
+        public string BestLastTime
+        {
+            get => _bestLastTime;
+            private set => SetProperty(ref _bestLastTime, value);
+        }
+
+        public string BestSectorTime
+        {
+            get => _bestSectorTime;
+            private set => SetProperty(ref _bestSectorTime, value);
         }
 
         public override void DetachHandlers()

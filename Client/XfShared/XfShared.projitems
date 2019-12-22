@@ -22,26 +22,10 @@
       <DependentUpon>..\..\..\Mobile\SmartSkating.Xf\Views\Cells\TrackCell.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Views\LiveSessionView.xaml.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' ">
-      <DependentUpon>..\..\Mobile\SmartSkating.Xf\Views\LiveSessionView.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Views\TracksView.xaml.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' ">
-      <DependentUpon>..\..\Mobile\SmartSkating.Xf\Views\TracksView.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)MainModule.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Cells\TrackCell.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\LiveSessionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\TracksView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

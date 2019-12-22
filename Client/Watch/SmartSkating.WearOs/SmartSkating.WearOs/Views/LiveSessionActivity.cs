@@ -98,7 +98,7 @@ namespace Sanet.SmartSkating.WearOs.Views
                 return;
             }
             
-            if (e.PropertyName == nameof(ViewModel.LastSector))
+            if (e.PropertyName == nameof(ViewModel.LastSectorTime))
             {
                 UpdateLastSector();
                 return;
@@ -150,7 +150,7 @@ namespace Sanet.SmartSkating.WearOs.Views
         
         private void UpdateLastSector()
         {
-            if (_lastSectorText != null) _lastSectorText.Text = ViewModel?.LastSector;
+            if (_lastSectorText != null) _lastSectorText.Text = ViewModel?.LastSectorTime;
         }
         
         private void UpdateCurrentSector()

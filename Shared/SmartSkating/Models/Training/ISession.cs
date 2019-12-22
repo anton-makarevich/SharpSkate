@@ -8,8 +8,10 @@ namespace Sanet.SmartSkating.Models.Training
     {
         IList<WayPoint> WayPoints { get; }
         IList<Section> Sectors { get; }
+        Section? BestSector { get; }
         int LapsCount { get; }
         TimeSpan LastLapTime { get; }
+        TimeSpan BestLapTime { get; }
         Rink Rink { get; }
         void AddPoint(Coordinate location, DateTime date);
         void AddSeparatingPoint(Coordinate location, DateTime date, WayPointTypes type);

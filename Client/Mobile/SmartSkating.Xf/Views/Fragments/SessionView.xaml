@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Sanet.SmartSkating.Xf.Views.Fragments.SessionView"
+             VerticalOptions="CenterAndExpand"
+        HorizontalOptions="CenterAndExpand"
+        Spacing="0">
+        <Label
+            Text="{Binding Laps}"
+            FontSize="Medium"
+            TextColor="Black"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand" />
+        <Label
+            Text="{Binding Distance}"
+            FontSize="Medium"
+            TextColor="Black"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand" />
+        <Label
+            Text="{Binding TotalTime}"
+            FontSize="Medium"
+            TextColor="Black"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand" />
+        <Label
+            Text="{Binding LastLapTime}"
+            FontSize="Medium"
+            TextColor="Black"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand" />
+        <Label
+            Text="{Binding LastSector}"
+            FontSize="Medium"
+            TextColor="Black"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand" />
+        <Label
+            Text="{Binding CurrentSector}"
+            FontSize="Medium"
+            TextColor="Black"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand" />
+    </StackLayout>

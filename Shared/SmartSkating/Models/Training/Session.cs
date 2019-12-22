@@ -21,6 +21,7 @@ namespace Sanet.SmartSkating.Models.Training
         public IList<Section> Sectors { get; }
         public int LapsCount { get; private set; }
         public TimeSpan LastLapTime { get; private set; }
+        public TimeSpan BestLapTime { get; private set; }
         public Rink Rink => _rink;
 
         public void AddPoint(Coordinate location, DateTime date)
@@ -95,6 +96,8 @@ namespace Sanet.SmartSkating.Models.Training
         }
 
         public DateTime StartTime { get; private set; }
+        public Section? BestSector { get; private set; }
+
         public void SetStartTime(DateTime startTime)
         {
             StartTime = startTime;
@@ -112,6 +115,10 @@ namespace Sanet.SmartSkating.Models.Training
                     return;
             }
             var section = new Section(firstPoint,separatingWayPoint);
+
+            if (!Sectors.Any() || Sectors.Last().Time.Ticks > section.Time.Ticks)
+                BestSector = section;
+            
             Sectors.Add(section);
 
             UpdateMetaData();
@@ -125,6 +132,8 @@ namespace Sanet.SmartSkating.Models.Training
             {
                 LapsCount++;
                 LastLapTime = new TimeSpan(lastSections.Sum(s => s.Time.Ticks));
+                if (BestLapTime.Ticks == 0 || LastLapTime.Ticks < BestLapTime.Ticks)
+                    BestLapTime = LastLapTime;
             }
         }
 
