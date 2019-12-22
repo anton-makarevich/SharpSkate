@@ -234,7 +234,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal("0:00:40",_sut.BestLastTime);
+            Assert.Equal("0:00:40",_sut.BestLapTime);
         }
         
         [Fact]
@@ -246,7 +246,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal(NoValue,_sut.BestLastTime);
+            Assert.Equal(NoValue,_sut.BestLapTime);
         }
         
         [Fact]

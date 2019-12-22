@@ -29,7 +29,7 @@ namespace Sanet.SmartSkating.ViewModels
         private string _lastSectorTime = string.Empty;
         private string _distance = string.Empty;
         private string _totalTime = string.Empty;
-        private string _bestLastTime = string.Empty;
+        private string _bestLapTime = string.Empty;
         private string _bestSectorTime = string.Empty;
 
         public LiveSessionViewModel(
@@ -86,12 +86,12 @@ namespace Sanet.SmartSkating.ViewModels
             if (Session.LapsCount > 0)
             {
                 LastLapTime = Session.LastLapTime.ToString("h\\:mm\\:ss");
-                BestLastTime = Session.BestLapTime.ToString("h\\:mm\\:ss");
+                BestLapTime = Session.BestLapTime.ToString("h\\:mm\\:ss");
             }
             else
             {
                 LastLapTime = NoValue;
-                BestLastTime = NoValue;
+                BestLapTime = NoValue;
             }
 
             Laps = Session.LapsCount.ToString();
@@ -99,7 +99,7 @@ namespace Sanet.SmartSkating.ViewModels
             {
                 var lastSector = Session.Sectors.Last();
                 LastSectorTime = lastSector.Time.ToString("mm\\:ss");
-                Distance = $"{Session.Sectors.Count * 0.1f}Km";
+                Distance = $"{Math.Round(Session.Sectors.Count * 0.1f,1)}Km";
                 if (Session.BestSector != null) 
                     BestSectorTime = Session.BestSector.Value.Time.ToString("mm\\:ss");
             }
@@ -178,10 +178,10 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _distance, value);
         }
 
-        public string BestLastTime
+        public string BestLapTime
         {
-            get => _bestLastTime;
-            private set => SetProperty(ref _bestLastTime, value);
+            get => _bestLapTime;
+            private set => SetProperty(ref _bestLapTime, value);
         }
 
         public string BestSectorTime
