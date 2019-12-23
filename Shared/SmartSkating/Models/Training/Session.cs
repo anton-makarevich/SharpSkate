@@ -110,18 +110,32 @@ namespace Sanet.SmartSkating.Models.Training
             if (firstPoint.Type == WayPointTypes.Unknown)
             {
                 firstPointType = separatingWayPoint.Type.GetPreviousSectorType();
-                firstPoint = WayPoints.LastOrDefault(wp => wp.Type == firstPointType);
+                firstPoint = GetFirstPointOfCurrentSector(firstPointType);
                 if (firstPoint.Type == WayPointTypes.Unknown)
                     return;
             }
             var section = new Section(firstPoint,separatingWayPoint);
 
-            if (!Sectors.Any() || Sectors.Last().Time.Ticks > section.Time.Ticks)
+            if (BestSector == null || BestSector.Value.Time.Ticks > section.Time.Ticks)
                 BestSector = section;
             
             Sectors.Add(section);
 
             UpdateMetaData();
+        }
+
+        private WayPoint GetFirstPointOfCurrentSector(WayPointTypes sectorType)
+        {
+            if (WayPoints.Count == 1 && WayPoints[0].Type == sectorType)
+                return WayPoints[0];
+            for (var index = WayPoints.Count - 1; index >= 0; index--)
+            {
+                if (WayPoints[index].Type != sectorType && WayPoints[index + 1].Type == sectorType)
+                    return WayPoints[index + 1];
+                if (index == 0 && WayPoints[index].Type == sectorType)
+                    return WayPoints[index];
+            }
+            return default;
         }
 
         private void UpdateMetaData()

@@ -162,6 +162,34 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             
             Assert.NotEmpty(_sut.Sectors);
         }
+        
+        [Fact]
+        public void CorrectlyCalculatesSectorTime()
+        {
+            var fourthSectorTime = DateTime.Now;
+            var firstSectorTime = fourthSectorTime.AddSeconds(10);
+            var secondSectorTime = fourthSectorTime.AddSeconds(20);
+            
+            _sut.AddPoint(_fourthSectorPoint, fourthSectorTime);
+            _sut.AddPoint(_firstSectorPoint, firstSectorTime);
+            _sut.AddPoint(_secondSectorPoint, secondSectorTime);
+            
+            Assert.Equal(9, _sut.Sectors.Last().Time.Seconds);
+        }
+        
+        [Fact]
+        public void CorrectlyCalculatesFirstSectorTime()
+        {
+            var firstSectorEnterTime = DateTime.Now;
+            var firstSectorTime = firstSectorEnterTime.AddSeconds(10);
+            var secondSectorTime = firstSectorEnterTime.AddSeconds(20);
+            
+            _sut.AddPoint(_firstSectorPoint, firstSectorEnterTime);
+            _sut.AddPoint(_firstSectorPoint, firstSectorTime);
+            _sut.AddPoint(_secondSectorPoint, secondSectorTime);
+            
+            Assert.Equal(15, _sut.Sectors.Last().Time.Seconds);
+        }
 
         [Fact]
         public void UpdatesBestSectorWhenFirstSectorIsAdded()

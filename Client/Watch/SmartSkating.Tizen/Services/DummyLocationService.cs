@@ -7,7 +7,7 @@ using Sanet.SmartSkating.Services.Location;
 
 namespace Sanet.SmartSkating.Tizen.Services
 {
-    public class MockLocationService:ILocationService
+    public class DummyLocationService:ILocationService
     {
         private readonly GpxReaderService _gpxReader = new GpxReaderService();
         

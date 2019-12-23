@@ -7,7 +7,7 @@
       VerticalOptions="Fill"
                      Spacing="0"
              x:Class="Sanet.SmartSkating.Xf.Views.Fragments.SessionView">
-            <Label Text="{Binding Distance}"/>
+            <Label Text="{Binding Distance}" FontSize="Small"/>
             <Label Text="{Binding TotalTime}"
                    HorizontalTextAlignment="Center"/>
         <Grid
