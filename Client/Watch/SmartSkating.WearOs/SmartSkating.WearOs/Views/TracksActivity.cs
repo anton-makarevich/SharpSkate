@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using Android.App;
 using Android.OS;
-using Android.Support.V7.Widget;
 using Android.Support.Wear.Widget;
 using Android.Widget;
 using Sanet.SmartSkating.ViewModels;
