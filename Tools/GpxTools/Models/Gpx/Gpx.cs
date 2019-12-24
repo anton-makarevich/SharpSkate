@@ -9,16 +9,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sanet.SmartSkating.Tools.GpxComposer.Models.Gpx;
 
-namespace Sanet.SmartSkating.Tools.GpxComposer.Models.Gpx
+namespace GpxTools.Models.Gpx
 {
     public static class GpxNamespaces
     {
         public const string GPX_NAMESPACE = "http://www.topografix.com/GPX/1/1";
         public const string GARMIN_EXTENSIONS_NAMESPACE = "http://www.garmin.com/xmlschemas/GpxExtensions/v3";
+        public const string GARMIN_TRACKPOINT_EXTENSIONS_V1_NAMESPACE = "http://www.garmin.com/xmlschemas/TrackPointExtension/v1";
         public const string GARMIN_TRACKPOINT_EXTENSIONS_V2_NAMESPACE = "http://www.garmin.com/xmlschemas/TrackPointExtension/v2";
         public const string GARMIN_WAYPOINT_EXTENSIONS_NAMESPACE = "http://www.garmin.com/xmlschemas/WaypointExtension/v1";
         public const string DLG_EXTENSIONS_NAMESPACE = "http://dlg.krakow.pl/gpx/extensions/v1";
+    }
+    
+    public class GpxAttributes
+    {
+        public string Version { get; set; }
+        public string Creator { get; set; }
     }
 
     public class GpxMetadata
@@ -156,6 +164,80 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models.Gpx
 
             return EarthRadius * Math.Acos(cos);
         }
+    }
+    
+    public class GpxWayPoint : GpxPoint
+    {
+        // GARMIN_EXTENSIONS, GARMIN_WAYPOINT_EXTENSIONS
+
+        public double? Proximity
+        {
+            get => Properties.GetValueProperty<double>("Proximity");
+            set => Properties.SetValueProperty<double>("Proximity", value);
+        }
+
+        public double? Temperature
+        {
+            get => Properties.GetValueProperty<double>("Temperature");
+            set => Properties.SetValueProperty<double>("Temperature", value);
+        }
+
+        public double? Depth
+        {
+            get => Properties.GetValueProperty<double>("Depth");
+            set => Properties.SetValueProperty<double>("Depth", value);
+        }
+
+        public string DisplayMode
+        {
+            get => Properties.GetObjectProperty<string>("DisplayMode");
+            set => Properties.SetObjectProperty<string>("DisplayMode", value);
+        }
+
+        public IList<string> Categories => Properties.GetListProperty<string>("Categories");
+
+        public GpxAddress Address
+        {
+            get => Properties.GetObjectProperty<GpxAddress>("Address");
+            set => Properties.SetObjectProperty<GpxAddress>("Address", value);
+        }
+
+        public IList<GpxPhone> Phones => Properties.GetListProperty<GpxPhone>("Phones");
+
+        // GARMIN_WAYPOINT_EXTENSIONS
+
+        public int? Samples
+        {
+            get => Properties.GetValueProperty<int>("Samples");
+            set => Properties.SetValueProperty<int>("Samples", value);
+        }
+
+        public DateTime? Expiration
+        {
+            get => Properties.GetValueProperty<DateTime>("Expiration");
+            set => Properties.SetValueProperty<DateTime>("Expiration", value);
+        }
+
+        // DLG_EXTENSIONS
+
+        public int? Level
+        {
+            get => Properties.GetValueProperty<int>("Level");
+            set => Properties.SetValueProperty<int>("Level", value);
+        }
+
+        public IList<string> Aliases => Properties.GetListProperty<string>("Aliases");
+
+        public bool HasGarminExtensions =>
+            Proximity != null || Temperature != null || Depth != null ||
+            DisplayMode != null || Address != null ||
+            Categories.Count != 0 || Phones.Count != 0;
+
+        public bool HasGarminWaypointExtensions => Samples != null || Expiration != null;
+
+        public bool HasDlgExtensions => Level != null || Aliases.Count != 0;
+
+        public bool HasExtensions => HasGarminExtensions || HasGarminWaypointExtensions || HasDlgExtensions;
     }
 
     public class GpxTrackPoint : GpxPoint
@@ -496,4 +578,6 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models.Gpx
         White = 0xffffffff,
         Transparent = 0x00ffffff
     }
+    
+    
 }

@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Xml;
+using GpxTools.Models.Gpx;
 
 namespace Sanet.SmartSkating.Tools.GpxComposer.Models.Gpx
 {

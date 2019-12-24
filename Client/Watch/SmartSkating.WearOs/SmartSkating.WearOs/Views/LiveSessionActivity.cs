@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.WearOs.Services;
+using Sanet.SmartSkating.WearOs.Views.Components;
 
 namespace Sanet.SmartSkating.WearOs.Views
 {
@@ -14,11 +15,12 @@ namespace Sanet.SmartSkating.WearOs.Views
     {
         private TextView? _elapsedTemText;
         private TextView? _distanceText;
-        private TextView? _lapsText;
-        private TextView? _lastLapText;
-        private TextView? _lastSectorText;
-        private TextView? _currentSectorText;
-
+        private TitledLabelView? _lapsText;
+        private TitledLabelView? _lastLapText;
+        private TitledLabelView? _bestLapText;
+        private TitledLabelView? _lastSectorText;
+        private TitledLabelView? _bestSectorText;
+        
         private Button? _startButton;
         private Button? _stopButton;
         
@@ -29,11 +31,18 @@ namespace Sanet.SmartSkating.WearOs.Views
             
             _elapsedTemText = FindViewById<TextView>(Resource.Id.elapsed_time);
             _distanceText = FindViewById<TextView>(Resource.Id.distance);
-            _lapsText = FindViewById<TextView>(Resource.Id.laps);
-            _lastLapText = FindViewById<TextView>(Resource.Id.last_lap);
-            _lastSectorText = FindViewById<TextView>(Resource.Id.last_sector);
-            _currentSectorText = FindViewById<TextView>(Resource.Id.current_sector);
             
+            _lapsText = FindViewById<TitledLabelView>(Resource.Id.laps);
+            _lapsText.TitleText = "Laps:";
+            _lastLapText = FindViewById<TitledLabelView>(Resource.Id.last_lap);
+            _lastLapText.TitleText = "Last lap:";
+            _bestLapText = FindViewById<TitledLabelView>(Resource.Id.best_lap);
+            _bestLapText.TitleText = "Best lap:";
+            _lastSectorText = FindViewById<TitledLabelView>(Resource.Id.last_sector);
+            _lastSectorText.TitleText = "Last 100m:";
+            _bestSectorText = FindViewById<TitledLabelView>(Resource.Id.best_sector);
+            _bestSectorText.TitleText = "Best 100m:";
+
             _startButton = FindViewById<Button>(Resource.Id.startButton);
             _stopButton = FindViewById<Button>(Resource.Id.stopButton);
             
@@ -97,15 +106,20 @@ namespace Sanet.SmartSkating.WearOs.Views
                 UpdateLastLapTime();
                 return;
             }
+            if (e.PropertyName == nameof(ViewModel.BestLapTime))
+            {
+                UpdateBestLapTime();
+                return;
+            }
             
-            if (e.PropertyName == nameof(ViewModel.LastSector))
+            if (e.PropertyName == nameof(ViewModel.LastSectorTime))
             {
                 UpdateLastSector();
                 return;
             }
-            if (e.PropertyName == nameof(ViewModel.CurrentSector))
+            if (e.PropertyName == nameof(ViewModel.BestSectorTime))
             {
-                UpdateCurrentSector();
+                UpdateBestSector();
                 return;
             }
 
@@ -135,27 +149,32 @@ namespace Sanet.SmartSkating.WearOs.Views
         
         private void UpdateLastLapTime()
         {
-            if (_lastLapText != null) _lastLapText.Text = ViewModel?.LastLapTime;
+            if (_lastLapText != null) _lastLapText.ValueText = ViewModel?.LastLapTime;
         }
-        
+
         private void UpdateDistance()
         {
             if (_distanceText != null) _distanceText.Text = ViewModel?.Distance;
         }
-        
+
+        private void UpdateBestLapTime()
+        {
+            if (_lastLapText != null) _bestLapText.ValueText = ViewModel?.BestLapTime;
+        }
+
         private void UpdateLaps()
         {
-            if (_lapsText != null) _lapsText.Text = ViewModel?.Laps;
+            if (_lapsText != null) _lapsText.ValueText = ViewModel?.Laps;
         }
-        
+
         private void UpdateLastSector()
         {
-            if (_lastSectorText != null) _lastSectorText.Text = ViewModel?.LastSector;
+            if (_lastSectorText != null) _lastSectorText.ValueText = ViewModel?.LastSectorTime;
         }
         
-        private void UpdateCurrentSector()
+        private void UpdateBestSector()
         {
-            if (_currentSectorText != null) _currentSectorText.Text = ViewModel?.CurrentSector;
+            if (_bestSectorText != null) _bestSectorText.ValueText = ViewModel?.BestSectorTime;
         }
     }
 }

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Sanet.SmartSkating.Xf.Views.Fragments.SessionView"
+             VerticalOptions="Fill"
+        HorizontalOptions="Fill"
+        >
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+    </Grid.RowDefinitions>
+    <Label
+        Text="Elapsed Time:"
+        FontSize="Medium"
+        TextColor="Black"
+        />
+    <Label
+        Text="{Binding TotalTime}"
+        FontSize="Large"
+        FontAttributes="Bold"
+        TextColor="Black"
+        Grid.Column="1" /> 
+    
+    <Label
+        Text="Laps:"
+        FontSize="Medium"
+        TextColor="Black"
+        Grid.Row="1"
+    />
+    <Label
+        Text="Distance:"
+        FontSize="Medium"
+        TextColor="Black"
+        Grid.Row="1"
+        Grid.Column="1" />
+    <Label
+        Text="{Binding Laps}"
+        FontSize="Large"
+        FontAttributes="Bold"
+        TextColor="Black"
+        Grid.Row="2"
+        />
+    <Label
+        Text="{Binding Distance}"
+        FontSize="Large"
+        FontAttributes="Bold"
+        TextColor="Black"
+        Grid.Row="2"
+        Grid.Column="1" />
+        
+    <Label
+        Text="Last Lap:"
+        FontSize="Medium"
+        Grid.Row="3"
+        TextColor="Black"
+    />
+    <Label
+        Text="Best Lap:"
+        FontSize="Medium"
+        TextColor="Black"
+        Grid.Row="3"
+        Grid.Column="1"
+    />
+    <Label
+        Text="{Binding LastLapTime}"
+        FontSize="Large"
+        FontAttributes="Bold"
+        Grid.Row="4"
+        TextColor="Black"
+        />
+    <Label
+        Text="{Binding BestLapTime}"
+        FontSize="Large"
+        FontAttributes="Bold"
+        TextColor="Black"
+        Grid.Row="4"
+        Grid.Column="1"
+    />
+    
+    <Label
+        Text="Last 100m:"
+        FontSize="Medium"
+        TextColor="Black"
+        Grid.Row="5"
+    />
+    <Label
+        Text="Best 100m:"
+        FontSize="Medium"
+        TextColor="Black"
+        Grid.Row="5"
+        Grid.Column="1"
+    />
+    <Label
+        Text="{Binding LastSectorTime}"
+        FontSize="Large"
+        FontAttributes="Bold"
+        TextColor="Black"
+        Grid.Row="6"
+         />
+    <Label
+        Text="{Binding BestSectorTime}"
+        FontSize="Large"
+        FontAttributes="Bold"
+        TextColor="Black"
+        Grid.Row="6"
+        Grid.Column="1"
+         />
+</Grid>

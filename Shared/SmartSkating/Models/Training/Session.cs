@@ -21,6 +21,7 @@ namespace Sanet.SmartSkating.Models.Training
         public IList<Section> Sectors { get; }
         public int LapsCount { get; private set; }
         public TimeSpan LastLapTime { get; private set; }
+        public TimeSpan BestLapTime { get; private set; }
         public Rink Rink => _rink;
 
         public void AddPoint(Coordinate location, DateTime date)
@@ -95,6 +96,8 @@ namespace Sanet.SmartSkating.Models.Training
         }
 
         public DateTime StartTime { get; private set; }
+        public Section? BestSector { get; private set; }
+
         public void SetStartTime(DateTime startTime)
         {
             StartTime = startTime;
@@ -107,14 +110,32 @@ namespace Sanet.SmartSkating.Models.Training
             if (firstPoint.Type == WayPointTypes.Unknown)
             {
                 firstPointType = separatingWayPoint.Type.GetPreviousSectorType();
-                firstPoint = WayPoints.LastOrDefault(wp => wp.Type == firstPointType);
+                firstPoint = GetFirstPointOfCurrentSector(firstPointType);
                 if (firstPoint.Type == WayPointTypes.Unknown)
                     return;
             }
             var section = new Section(firstPoint,separatingWayPoint);
+
+            if (BestSector == null || BestSector.Value.Time.Ticks > section.Time.Ticks)
+                BestSector = section;
+            
             Sectors.Add(section);
 
             UpdateMetaData();
+        }
+
+        private WayPoint GetFirstPointOfCurrentSector(WayPointTypes sectorType)
+        {
+            if (WayPoints.Count == 1 && WayPoints[0].Type == sectorType)
+                return WayPoints[0];
+            for (var index = WayPoints.Count - 1; index >= 0; index--)
+            {
+                if (WayPoints[index].Type != sectorType && WayPoints[index + 1].Type == sectorType)
+                    return WayPoints[index + 1];
+                if (index == 0 && WayPoints[index].Type == sectorType)
+                    return WayPoints[index];
+            }
+            return default;
         }
 
         private void UpdateMetaData()
@@ -125,6 +146,8 @@ namespace Sanet.SmartSkating.Models.Training
             {
                 LapsCount++;
                 LastLapTime = new TimeSpan(lastSections.Sum(s => s.Time.Ticks));
+                if (BestLapTime.Ticks == 0 || LastLapTime.Ticks < BestLapTime.Ticks)
+                    BestLapTime = LastLapTime;
             }
         }
 

@@ -162,6 +162,65 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             
             Assert.NotEmpty(_sut.Sectors);
         }
+        
+        [Fact]
+        public void CorrectlyCalculatesSectorTime()
+        {
+            var fourthSectorTime = DateTime.Now;
+            var firstSectorTime = fourthSectorTime.AddSeconds(10);
+            var secondSectorTime = fourthSectorTime.AddSeconds(20);
+            
+            _sut.AddPoint(_fourthSectorPoint, fourthSectorTime);
+            _sut.AddPoint(_firstSectorPoint, firstSectorTime);
+            _sut.AddPoint(_secondSectorPoint, secondSectorTime);
+            
+            Assert.Equal(9, _sut.Sectors.Last().Time.Seconds);
+        }
+        
+        [Fact]
+        public void CorrectlyCalculatesFirstSectorTime()
+        {
+            var firstSectorEnterTime = DateTime.Now;
+            var firstSectorTime = firstSectorEnterTime.AddSeconds(10);
+            var secondSectorTime = firstSectorEnterTime.AddSeconds(20);
+            
+            _sut.AddPoint(_firstSectorPoint, firstSectorEnterTime);
+            _sut.AddPoint(_firstSectorPoint, firstSectorTime);
+            _sut.AddPoint(_secondSectorPoint, secondSectorTime);
+            
+            Assert.Equal(15, _sut.Sectors.Last().Time.Seconds);
+        }
+
+        [Fact]
+        public void UpdatesBestSectorWhenFirstSectorIsAdded()
+        {
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now);
+            
+            Assert.NotNull(_sut.BestSector);
+        }
+        
+        [Fact]
+        public void UpdatesBestSectorWhenNewSectorIsBetter()
+        {
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now.AddSeconds(20));
+            _sut.AddPoint(_thirdSectorPoint, DateTime.Now.AddSeconds(10));
+
+            Assert.NotNull(_sut.BestSector);
+            Assert.Equal(WayPointTypes.SecondSector, _sut.BestSector.Value.Type);
+        }
+        
+        [Fact]
+        public void DoesNotUpdateBestSectorWhenNewSectorIsBetter()
+        {
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now.AddSeconds(20));
+            _sut.AddPoint(_thirdSectorPoint, DateTime.Now.AddSeconds(40));
+
+            Assert.NotNull(_sut.BestSector);
+            Assert.Equal(WayPointTypes.FirstSector, _sut.BestSector.Value.Type);
+        }
 
         [Fact]
         public void DoesNotAddSeparatorIfLastPointDoesNotBelongToPreviousSector()
@@ -188,11 +247,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         public void CalculatesLastLapTimeOnStartCrossing()
         {
             var firstLapTime = DateTime.Now;
-            _sut.AddPoint(_firstSectorPoint, firstLapTime);
-            _sut.AddPoint(_secondSectorPoint, firstLapTime.AddSeconds(10));
-            _sut.AddPoint(_thirdSectorPoint, firstLapTime.AddSeconds(20));
-            _sut.AddPoint(_fourthSectorPoint, firstLapTime.AddSeconds(30));
-            _sut.AddPoint(_firstSectorPoint, firstLapTime.AddSeconds(40));
+            AddLap(firstLapTime, 10);
 
             // 30 is time for middle of fourth sector, 
             // 40 is time for middle of first
@@ -200,6 +255,44 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             Assert.Equal(35,_sut.LastLapTime.Seconds); 
         }
         
+        [Fact]
+        public void UpdatesBestLastLapTimeOnStartCrossing()
+        {
+            var firstLapTime = DateTime.Now;
+            AddLap(firstLapTime, 10);
+
+            Assert.Equal(35,_sut.BestLapTime.Seconds); 
+        }
+        
+        [Fact]
+        public void UpdatesBestLastLapTimeWhenNewLapIsBetter()
+        {
+            var firstLapTime = DateTime.Now;
+            AddLap(firstLapTime,10);
+            AddLap(firstLapTime.AddSeconds(40),8);
+        
+            Assert.Equal(32,_sut.BestLapTime.Seconds); 
+        }
+        
+        [Fact]
+        public void DoesNotUpdateBestLastLapTimeWhenNewLapIsSlower()
+        {
+            var firstLapTime = DateTime.Now;
+            AddLap(firstLapTime,10);
+            AddLap(firstLapTime.AddSeconds(40),12);
+        
+            Assert.Equal(35,_sut.BestLapTime.Seconds); 
+        }
+
+        private void AddLap(DateTime startTime, int sectorTime)
+        {
+            _sut.AddPoint(_firstSectorPoint, startTime);
+            _sut.AddPoint(_secondSectorPoint, startTime.AddSeconds(sectorTime));
+            _sut.AddPoint(_thirdSectorPoint, startTime.AddSeconds(sectorTime*2));
+            _sut.AddPoint(_fourthSectorPoint, startTime.AddSeconds(sectorTime*3));
+            _sut.AddPoint(_firstSectorPoint, startTime.AddSeconds(sectorTime*4));
+        }
+
         [Fact]
         public void SetsStartTime()
         {

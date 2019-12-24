@@ -19,4 +19,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
+    <Folder Include="Views\Fragments\" />
+  </ItemGroup>
+  <Import Project="..\..\XfShared\XfShared.projitems" Label="Shared" Condition="Exists('..\..\XfShared\XfShared.projitems')" />
 </Project>

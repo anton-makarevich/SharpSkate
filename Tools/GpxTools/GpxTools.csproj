@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>8</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Mocks\Grefrath.gpx" />
+      <EmbeddedResource Include="Resources\Mocks\Grefrath.gpx" />
+    </ItemGroup>
+
+</Project>

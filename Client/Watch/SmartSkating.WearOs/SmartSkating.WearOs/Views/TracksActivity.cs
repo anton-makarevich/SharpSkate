@@ -4,8 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using Android.App;
 using Android.OS;
-using Android.Support.V7.Widget;
-using Android.Views;
+using Android.Support.Wear.Widget;
 using Android.Widget;
 using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.WearOs.Models;
@@ -16,7 +15,7 @@ namespace Sanet.SmartSkating.WearOs.Views
     [Activity]
     public class TracksActivity: BaseActivity<TracksViewModel>
     {
-        private RecyclerView? _recyclerView;
+        private WearableRecyclerView? _recyclerView;
         private Button? _confirmButton;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -25,14 +24,15 @@ namespace Sanet.SmartSkating.WearOs.Views
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_tracks);
             
-            _recyclerView = FindViewById<RecyclerView> (Resource.Id.recyclerView);
+            _recyclerView = FindViewById<WearableRecyclerView> (Resource.Id.recyclerView);
+            _recyclerView.EdgeItemsCenteringEnabled = true;
             _confirmButton = FindViewById<Button>(Resource.Id.confirmButton);
             
             _confirmButton.Click += ConfirmButtonOnClick;
             
             SetViewModel();
             
-            var layoutManager = new LinearLayoutManager (this);
+            var layoutManager = new WearableLinearLayoutManager(this);
             _recyclerView.SetLayoutManager (layoutManager);
         }
 

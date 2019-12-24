@@ -4,8 +4,9 @@
     x:TypeArguments="vm:LiveSessionViewModel"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base;assembly=SmartSkating.Xf"
+    xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base"
     xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
+    xmlns:fragments="clr-namespace:Sanet.SmartSkating.Xf.Views.Fragments"
     x:Class="Sanet.SmartSkating.Xf.Views.LiveSessionView"
     BackgroundColor="White">
     <StackLayout
@@ -13,48 +14,7 @@
         VerticalOptions="CenterAndExpand"
         HorizontalOptions="CenterAndExpand"
         >
-        <StackLayout
-            VerticalOptions="CenterAndExpand"
-            HorizontalOptions="CenterAndExpand"
-            Spacing="0">
-            <Label
-                Text="{Binding Laps}"
-                FontSize="Medium"
-                TextColor="Black"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
-            <Label
-                Text="{Binding Distance}"
-                FontSize="Medium"
-                TextColor="Black"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
-            <Label
-                Text="{Binding TotalTime}"
-                FontSize="Medium"
-                TextColor="Black"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
-            <Label
-                Text="{Binding LastLapTime}"
-                FontSize="Medium"
-                TextColor="Black"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
-            <Label
-                Text="{Binding LastSector}"
-                FontSize="Medium"
-                TextColor="Black"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
-            <Label
-                Text="{Binding CurrentSector}"
-                FontSize="Medium"
-                TextColor="Black"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-        
+        <fragments:SessionView/>
         <Button
             Text="Start"
             Command="{Binding StartCommand}"
