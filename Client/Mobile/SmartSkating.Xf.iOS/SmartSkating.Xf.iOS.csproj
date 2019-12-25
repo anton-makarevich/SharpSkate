@@ -67,6 +67,9 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\Watch\SmartSkating.Tizen\Services\DummyLocationService.cs">
+      <Link>Services\DummyLocationService.cs</Link>
+    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <None Include="Entitlements.plist" />
@@ -138,6 +141,10 @@
     <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj">
       <Project>{795C2FC0-D25E-48E9-AD4A-2A003447415A}</Project>
       <Name>SmartSkating</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Tools\GpxTools\GpxTools.csproj">
+      <Project>{fea47fee-4de0-43b2-b607-2632bb690ced}</Project>
+      <Name>GpxTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmartSkating.Xf\SmartSkating.Xf.csproj">
       <Project>{990644BD-E628-444E-BE86-3A671C918A18}</Project>

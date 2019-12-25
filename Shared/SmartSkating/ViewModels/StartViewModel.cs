@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Services.Location;
@@ -12,7 +14,7 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly ILocationService _locationService;
         private readonly ITrackService _tracksService;
         private string _infoLabel = string.Empty;
-        private bool _geoServicesAreInitialized;
+        private bool _areGeoServicesInitialized;
 
         public StartViewModel(ILocationService locationService, ITrackService tracksService)
         {
@@ -26,10 +28,10 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _infoLabel, value);
         }
 
-        public bool GeoServicesAreInitialized
+        public bool AreGeoServicesInitialized
         {
-            get => _geoServicesAreInitialized;
-            private set => SetProperty(ref _geoServicesAreInitialized, value);
+            get => _areGeoServicesInitialized;
+            private set => SetProperty(ref _areGeoServicesInitialized, value);
         }
 
         public bool IsRinkSelected => _tracksService.SelectedRink!=null;
@@ -37,24 +39,34 @@ namespace Sanet.SmartSkating.ViewModels
             ?_tracksService.SelectedRink.Name
             :string.Empty;
 
+        public bool CanStart => AreGeoServicesInitialized && IsRinkSelected;
+        public ICommand StartCommand => new SimpleCommand(async () =>
+            {
+                if (CanStart)
+                    await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
+            });
+
         public override void AttachHandlers()
         {
             base.AttachHandlers();
-            InitializeGeoServices();
+#pragma warning disable 4014
+            LoadTracksAndInitializeGeoServices();
+#pragma warning restore 4014
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
         }
 
-        private void InitializeGeoServices()
+        private async Task LoadTracksAndInitializeGeoServices()
         {
-            _locationService.StartFetchLocation();
             InfoLabel = "Initializing GeoServices. Be sure you're in open air";
+            await _tracksService.LoadTracksAsync();
+            _locationService.StartFetchLocation();
         }
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
-            GeoServicesAreInitialized = !e.Coordinate.Equals(default(Coordinate));
+            AreGeoServicesInitialized = !e.Coordinate.Equals(default(Coordinate));
             InfoLabel = String.Empty;
-            if (GeoServicesAreInitialized)
+            if (AreGeoServicesInitialized)
             {
                 _tracksService.SelectRinkCloseTo(e.Coordinate);
                 if (_tracksService.SelectedRink == null)
@@ -62,7 +74,7 @@ namespace Sanet.SmartSkating.ViewModels
                 NotifyPropertyChanged(nameof(IsRinkSelected));
                 NotifyPropertyChanged(nameof(RinkName));
             }
-
+            NotifyPropertyChanged(nameof(CanStart));
             _locationService.StopFetchLocation();
         }
 

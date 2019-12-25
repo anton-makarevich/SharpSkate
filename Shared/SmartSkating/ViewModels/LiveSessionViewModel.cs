@@ -200,6 +200,7 @@ namespace Sanet.SmartSkating.ViewModels
         {
             base.AttachHandlers();
             CreateSession();
+            StartCommand.Execute(null);
         }
 
         private void CreateSession()
