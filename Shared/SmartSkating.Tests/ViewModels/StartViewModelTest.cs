@@ -36,6 +36,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             
             _locationService.Received().StartFetchLocation();
         }
+        
+        [Fact]
+        public void IsInitializingGeoServicesTrueOnLocationRequest()
+        {
+            _sut.AttachHandlers();
+            
+            Assert.True(_sut.IsInitializingGeoServices);
+        }
 
         [Fact]
         public async Task LoadsTracksFromServiceOnPageAppear()
@@ -52,6 +60,16 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
             
             _locationService.Received().StopFetchLocation();
+        }
+        
+        [Fact]
+        public void IsInitializingGeoServicesIsFalseAfterCoordinateHasBeenReceived()
+        {
+            _sut.AttachHandlers();
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            
+            _locationService.Received().StopFetchLocation();
+            Assert.False(_sut.IsInitializingGeoServices);
         }
 
         [Fact]
@@ -217,6 +235,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
 
             await _navigationService.DidNotReceive().NavigateToViewModelAsync<LiveSessionViewModel>();
+        }
+
+        [Fact]
+        public async Task SelectRinkCommandNavigatesToTracksPage()
+        {
+            _sut.SelectRinkCommand.Execute(null);
+
+            await _navigationService.Received().NavigateToViewModelAsync<TracksViewModel>();
         }
     }
 }

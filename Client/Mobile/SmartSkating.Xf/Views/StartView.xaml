@@ -8,12 +8,23 @@
     xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
     x:Class="Sanet.SmartSkating.Xf.Views.StartView"
     BackgroundColor="White">
-    <Grid>
+    <Grid
+        Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
+        <StackLayout>
+            <Label 
+                Text="{Binding RinkName}"
+                IsVisible="{Binding IsRinkSelected}"/>
+            <Button
+                Text="Select rink"
+                Command="{Binding SelectRinkCommand}"
+                IsEnabled="{Binding IsInitializingGeoServices, Converter={StaticResource InverseBooleanConverter}}"
+                IsVisible="{Binding IsRinkSelected, Converter={StaticResource InverseBooleanConverter}}" />
+        </StackLayout>
         <Label 
             Grid.Row="1"
             Text="{Binding InfoLabel}"/>

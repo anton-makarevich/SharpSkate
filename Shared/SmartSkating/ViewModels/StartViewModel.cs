@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Sanet.SmartSkating.Models;
@@ -15,6 +14,7 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly ITrackService _tracksService;
         private string _infoLabel = string.Empty;
         private bool _areGeoServicesInitialized;
+        private bool _isInitializingGeoServices;
 
         public StartViewModel(ILocationService locationService, ITrackService tracksService)
         {
@@ -46,6 +46,17 @@ namespace Sanet.SmartSkating.ViewModels
                     await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
             });
 
+        public bool IsInitializingGeoServices
+        {
+            get => _isInitializingGeoServices;
+            private set => SetProperty(ref _isInitializingGeoServices, value);
+        }
+
+        public ICommand SelectRinkCommand => new SimpleCommand(async () =>
+            {
+                await NavigationService.NavigateToViewModelAsync<TracksViewModel>();
+            });
+
         public override void AttachHandlers()
         {
             base.AttachHandlers();
@@ -59,13 +70,15 @@ namespace Sanet.SmartSkating.ViewModels
         {
             InfoLabel = "Initializing GeoServices. Be sure you're in open air";
             await _tracksService.LoadTracksAsync();
+            IsInitializingGeoServices = true;
             _locationService.StartFetchLocation();
         }
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
+            IsInitializingGeoServices = false;
             AreGeoServicesInitialized = !e.Coordinate.Equals(default(Coordinate));
-            InfoLabel = String.Empty;
+            InfoLabel = string.Empty;
             if (AreGeoServicesInitialized)
             {
                 _tracksService.SelectRinkCloseTo(e.Coordinate);
