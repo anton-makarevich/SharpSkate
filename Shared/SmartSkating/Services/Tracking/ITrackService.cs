@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.Geometry;
 
 namespace Sanet.SmartSkating.Services.Tracking
@@ -11,5 +12,6 @@ namespace Sanet.SmartSkating.Services.Tracking
         Task LoadTracksAsync();
         void SelectRinkByName(string name);
         Rink? SelectedRink { get; }
+        void SelectRinkCloseTo(Coordinate locationStub);
     }
 }

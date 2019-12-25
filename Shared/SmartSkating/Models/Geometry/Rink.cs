@@ -14,10 +14,11 @@ namespace Sanet.SmartSkating.Models.Geometry
 
         private readonly double _longitudeFactor;
 
-        public Rink(Coordinate start, Coordinate finish)
+        public Rink(Coordinate start, Coordinate finish, string name = "Unknown")
         {
             Start = start;
             Finish = finish;
+            Name = name;
 
             _longitudeFactor = Start.Latitude.GetLongitudeFactor();
 
@@ -91,7 +92,8 @@ namespace Sanet.SmartSkating.Models.Geometry
         public Sector ThirdSector { get; }
         public Sector FourthSector { get; }
         public Point Center { get; }
-        
+        public string Name { get; }
+
         #region Rink elements
 
         private static Point CreateStart300M(Point beginPoint, Point endPoint)

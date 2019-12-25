@@ -5,6 +5,7 @@ using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.Geometry;
+using Sanet.SmartSkating.Utils;
 
 namespace Sanet.SmartSkating.Services.Tracking
 {
@@ -19,6 +20,22 @@ namespace Sanet.SmartSkating.Services.Tracking
 
         public IList<TrackDto> Tracks { get; private set; } = new List<TrackDto>();
         public Rink? SelectedRink { get; private set; }
+        public void SelectRinkCloseTo(Coordinate coordinate)
+        {
+            var track = Tracks
+                .Select(t => new
+                {
+                    Track = t,
+                    Distance = (coordinate, new Coordinate(t.Start.Latitude, t.Start.Longitude)).GetRelativeDistance()
+                })
+                .Where(o => o.Distance <= 0.001)
+                .OrderBy(o => o.Distance)
+                .Select(o=>o.Track)
+                .FirstOrDefault();
+            SelectedRink = !track.Equals(default(TrackDto))
+                ? new Rink(new Coordinate(track.Start), new Coordinate(track.Finish), track.Name)
+                : null;
+        }
 
         public async Task LoadTracksAsync()
         {
@@ -29,7 +46,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         {
             var track = Tracks.SingleOrDefault(r => r.Name == name);
             SelectedRink = !string.IsNullOrEmpty(track.Name) 
-                ? new Rink(new Coordinate(track.Start),new Coordinate(track.Finish)) 
+                ? new Rink(new Coordinate(track.Start),new Coordinate(track.Finish), track.Name) 
                 : null;
         }
     }
