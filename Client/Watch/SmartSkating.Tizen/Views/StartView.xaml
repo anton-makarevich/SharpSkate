@@ -14,9 +14,11 @@
             <BoxView HeightRequest="40"/>
             <Label 
                 Text="{Binding RinkName}"
+                HorizontalOptions="Center"
                 IsVisible="{Binding IsRinkSelected}"/>
             <Button
                 Text="Select rink"
+                HorizontalOptions="Center"
                 Command="{Binding SelectRinkCommand}"
                 IsEnabled="{Binding IsInitializingGeoServices, Converter={StaticResource InverseBooleanConverter}}"
                 IsVisible="{Binding IsRinkSelected, Converter={StaticResource InverseBooleanConverter}}" />
@@ -26,7 +28,7 @@
         </w:CircleStackLayout>
     </w:CirclePage.Content>
     <w:CirclePage.ActionButton>
-        <w:ActionButtonItem x:Name="ActionButton"
+        <w:ActionButtonItem x:Name="StartButton"
             Clicked="StartButtonOnClicked"
             Text="Start" />
     </w:CirclePage.ActionButton>
