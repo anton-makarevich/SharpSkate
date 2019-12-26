@@ -10,6 +10,7 @@ namespace Sanet.SmartSkating.Xf.Views
         public StartView()
         {
             InitializeComponent();
+            StartButton.IsEnable = false;
         }
 
         protected override void OnViewModelSet()
@@ -21,7 +22,7 @@ namespace Sanet.SmartSkating.Xf.Views
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ViewModel.CanStart))
-                ActionButton.IsEnable = ViewModel.CanStart;
+                StartButton.IsEnable = ViewModel.CanStart;
         }
 
         private void StartButtonOnClicked(object sender, EventArgs e)
