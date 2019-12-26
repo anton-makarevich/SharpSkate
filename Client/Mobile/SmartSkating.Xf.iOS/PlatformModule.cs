@@ -21,7 +21,6 @@ namespace Sanet.SmartSkating.Xf.Ios
 #else
             container.RegisterSingleton<ILocationService, EssentialsLocationService>();
 #endif
-            
         }
     }
 }
