@@ -38,6 +38,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _locationService.Received().StartFetchLocation();
         }
+        
+        [Fact]
+        public void StartsLocationServiceWhenPageIsLoaded()
+        {
+           _sut.AttachHandlers();
+
+            _locationService.Received().StartFetchLocation();
+        }
 
         [Fact]
         public void StopsLocationServiceWhenStopButtonPressed()

@@ -1,15 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Wearable.Activity;
 using Android.Views;
+using Android.Widget;
 using Sanet.SmartSkating.Droid.Utils;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.WearOs.Services;
-using SimpleInjector;
+using Container = SimpleInjector.Container;
 
 namespace Sanet.SmartSkating.WearOs
 {
@@ -18,6 +20,14 @@ namespace Sanet.SmartSkating.WearOs
     {
         private readonly Container _container = new Container();
         private INavigationService _navigationService;
+        private StartViewModel? _viewModel;
+        
+        private TextView? _rinkNameText;
+        private TextView? _infoText;
+
+        private Button? _startButton;
+        private Button? _selectRinkButton;
+        
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -28,15 +38,68 @@ namespace Sanet.SmartSkating.WearOs
             Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
             SetContentView(Resource.Layout.activity_main);
             
-             var permissions = this.RequestPermissions();
+            _rinkNameText = FindViewById<TextView>(Resource.Id.track_name);
+            _infoText = FindViewById<TextView>(Resource.Id.info_label);
+            
+            _startButton = FindViewById<Button>(Resource.Id.startButton);
+            _selectRinkButton = FindViewById<Button>(Resource.Id.select_rink_button);
+            
+            _startButton.Click+= StartButtonOnClick;
+            _selectRinkButton.Click+= SelectRinkButtonOnClick;
+            
+            var permissions = this.RequestPermissions();
             
             SetAmbientEnabled();
 
-#pragma warning disable 4014
-            NavigateToTracks(permissions[0]);
-#pragma warning restore 4014
+            _viewModel = _container.GetInstance<StartViewModel>();
+            _viewModel.PropertyChanged += ViewModelOnPropertyChanged;
+            
+            InitGeoServices(permissions[0]);
         }
-        
+
+        private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_viewModel.CanStart))
+            {
+                _startButton.Enabled = _viewModel.CanStart;
+            }
+            else if (e.PropertyName == nameof(_viewModel.InfoLabel))
+            {
+                _infoText.Text = _viewModel.InfoLabel;
+            }
+            else if (e.PropertyName == nameof(_viewModel.IsInitializingGeoServices))
+            {
+                _selectRinkButton.Enabled = !_viewModel.IsInitializingGeoServices;
+            }
+            else if (e.PropertyName == nameof(_viewModel.RinkName))
+            {
+                _rinkNameText.Text = _viewModel.RinkName;
+            }
+            else if (e.PropertyName == nameof(_viewModel.IsRinkSelected))
+            {
+                if (_viewModel.IsRinkSelected)
+                {
+                    _rinkNameText.Visibility = ViewStates.Visible;
+                    _selectRinkButton.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    _rinkNameText.Visibility = ViewStates.Gone;
+                    _selectRinkButton.Visibility = ViewStates.Visible;
+                }
+            }
+        }
+
+        private async void SelectRinkButtonOnClick(object sender, EventArgs e)
+        {
+            await _navigationService.NavigateToViewModelAsync<TracksViewModel>();
+        }
+
+        private async void StartButtonOnClick(object sender, EventArgs e)
+        {
+            await _navigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
+        }
+
         public override void OnRequestPermissionsResult(
             int requestCode, 
             string[] permissions,
@@ -46,15 +109,13 @@ namespace Sanet.SmartSkating.WearOs
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-#pragma warning disable 4014
-            NavigateToTracks(grantResults[0]);
-#pragma warning restore 4014
+            InitGeoServices(grantResults[0]);
         }
 
-        private async Task NavigateToTracks(Permission permission)
+        private void InitGeoServices(Permission permission)
         {
             if (permission == Permission.Granted)
-                 await _navigationService.NavigateToViewModelAsync<TracksViewModel>();
+                _viewModel?.AttachHandlers();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         private readonly Rink _sut;
         public RinkTests()
         {
-            _sut = new Rink(GrefrathStart,GrefrathFinish);
+            _sut = new Rink(GrefrathStart,GrefrathFinish,"RinkName");
         }
         
         [Fact]
@@ -26,6 +26,12 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         {
             Assert.Equal(GrefrathStart,_sut.Start);
             Assert.Equal(GrefrathFinish, _sut.Finish);
+        }
+        
+        [Fact]
+        public void CreatesRinkWithName()
+        {
+            Assert.Equal("RinkName",_sut.Name);
         }
 
         [Fact]

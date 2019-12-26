@@ -15,14 +15,15 @@ Speed skating activity tracker for long tracks (400m rinks)
 [![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.Tests?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=7&branchName=develop)
 
 ## Supported Platforms ##
-**Android**
 
-![Android](Screenshots/Android/241219.gif)
+**Mobile**
 
-**Tizen wear**
+|Android   |iOS   
+|:-:|:-:|
+|![Android](Screenshots/Android/241219.gif)   |![iOS](Screenshots/iOS/241219.gif)   
 
-![Tizen](Screenshots/Tizen/241219.gif)
+**Wearable**
 
-**Wear OS**
-
-![AndroidWear](Screenshots/WearOs/241219.gif)
+|Tizen   |WearOs   
+|:-:|:-:|
+|![Tizen](Screenshots/Tizen/241219.gif)   |![AndroidWear](Screenshots/WearOs/241219.gif)

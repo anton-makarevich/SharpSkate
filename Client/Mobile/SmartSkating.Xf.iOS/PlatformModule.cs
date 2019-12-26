@@ -1,5 +1,8 @@
 using Sanet.SmartSkating.Services.Location;
 using SimpleInjector;
+#if DEBUG
+using Sanet.SmartSkating.Tizen.Services; 
+#endif
 
 namespace Sanet.SmartSkating.Xf.Ios
 {
@@ -13,7 +16,11 @@ namespace Sanet.SmartSkating.Xf.Ios
 
         private static void RegisterIosModule(this Container container)
         {
+#if DEBUG
+            container.RegisterSingleton<ILocationService, DummyLocationService>();
+#else
             container.RegisterSingleton<ILocationService, EssentialsLocationService>();
+#endif
         }
     }
 }

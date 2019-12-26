@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Services.Tracking;
 using Xunit;
 
@@ -76,6 +77,28 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             await _sut.LoadTracksAsync();
 
             _sut.SelectRinkByName(name);
+
+            Assert.Null(_sut.SelectedRink);
+        }
+        
+        [Fact]
+        public async Task SetSelectedRinkIfItIsCloseEnoughToCoordinate()
+        {
+            var coordinate = new Coordinate(51.4157, 5.4724);
+            await _sut.LoadTracksAsync();
+
+            _sut.SelectRinkCloseTo(coordinate);
+
+            Assert.NotNull(_sut.SelectedRink);
+        }
+        
+        [Fact]
+        public async Task DoesNotSetSelectedRinkIfNoTracksAreCloseEnoughToCoordinate()
+        {
+            var coordinate = new Coordinate(41.4157, 4.4724);
+            await _sut.LoadTracksAsync();
+
+            _sut.SelectRinkCloseTo(coordinate);
 
             Assert.Null(_sut.SelectedRink);
         }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<base:BaseView 
+    x:TypeArguments="vm:StartViewModel" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base"
+    xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
+    x:Class="Sanet.SmartSkating.Xf.Views.StartView"
+    BackgroundColor="White">
+    <Grid
+        Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <StackLayout>
+            <Label 
+                Text="{Binding RinkName}"
+                IsVisible="{Binding IsRinkSelected}"/>
+            <Button
+                Text="Select rink"
+                Command="{Binding SelectRinkCommand}"
+                IsEnabled="{Binding IsInitializingGeoServices, Converter={StaticResource InverseBooleanConverter}}"
+                IsVisible="{Binding IsRinkSelected, Converter={StaticResource InverseBooleanConverter}}" />
+        </StackLayout>
+        <Label 
+            Grid.Row="1"
+            Text="{Binding InfoLabel}"/>
+        <Button
+            Grid.Row="2"
+            Text="Start"
+            Command="{Binding StartCommand}"
+            IsEnabled ="{Binding CanStart}" />
+    </Grid>
+</base:BaseView>

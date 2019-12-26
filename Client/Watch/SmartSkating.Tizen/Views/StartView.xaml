@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<base:BaseView 
+    x:TypeArguments="vm:StartViewModel" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base"
+    xmlns:w="clr-namespace:Tizen.Wearable.CircularUI.Forms;assembly=Tizen.Wearable.CircularUI.Forms"
+    xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
+    x:Class="Sanet.SmartSkating.Xf.Views.StartView">
+    <w:CirclePage.Content>
+        <w:CircleStackLayout
+            VerticalOptions="Fill">
+            <BoxView HeightRequest="40"/>
+            <Label 
+                Text="{Binding RinkName}"
+                IsVisible="{Binding IsRinkSelected}"/>
+            <Button
+                Text="Select rink"
+                Command="{Binding SelectRinkCommand}"
+                IsEnabled="{Binding IsInitializingGeoServices, Converter={StaticResource InverseBooleanConverter}}"
+                IsVisible="{Binding IsRinkSelected, Converter={StaticResource InverseBooleanConverter}}" />
+             <Label
+                 HeightRequest="150"
+            Text="{Binding InfoLabel}"/>
+        </w:CircleStackLayout>
+    </w:CirclePage.Content>
+    <w:CirclePage.ActionButton>
+        <w:ActionButtonItem x:Name="ActionButton"
+            Clicked="StartButtonOnClicked"
+            Text="Start" />
+    </w:CirclePage.ActionButton>
+</base:BaseView>
