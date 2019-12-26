@@ -33,7 +33,7 @@ steps:
 
 - task: AzureFunctionApp@1
   inputs:
-    azureSubscription: ''
+    azureSubscription: $(azure.subscription)
     appType: 'functionApp'
     appName: 'smart-skating-dev'
     package: 'Web\Functions\WayPointSaverFunction\bin\Release\Function.zip'
