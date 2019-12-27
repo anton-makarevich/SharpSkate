@@ -35,7 +35,7 @@ steps:
   inputs:
     azureSubscription: $(azure.subscription)
     appType: 'functionApp'
-    appName: 'smart-skating-dev'
+    appName: 'smartskating'
     package: 'Web\Functions\WayPointSaverFunction\bin\Release\Function.zip'
     deploymentMethod: 'auto'
   displayName: 'Publish functions'
