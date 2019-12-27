@@ -25,7 +25,8 @@ namespace Sanet.SmartSkating.Azure.Services
             _hasStorageAccess = !string.IsNullOrEmpty(connectionString);
             if (!_hasStorageAccess)
             {
-                log.LogCritical("NoStorageAccess");
+                ErrorMessage = "NoStorageAccess";
+                log.LogCritical(ErrorMessage);
                 return;
             }
 
@@ -53,5 +54,7 @@ namespace Sanet.SmartSkating.Azure.Services
                 return false;
             }
         }
+
+        public string ErrorMessage { get; } = string.Empty;
     }
 }

@@ -86,5 +86,22 @@ namespace WayPointSaverFunctionTests
             Assert.Equal(_wayPointsStub.First().Id,response.SyncedWayPointsIds.First());
             Assert.Equal(_wayPointsStub.Last().Id,response.SyncedWayPointsIds.Last());
         }
+        
+        [Fact]
+        public async Task ReturnsServiceErrorMessage()
+        {
+            const string errorMessage = "some error";
+            _dataService.ErrorMessage.Returns(errorMessage);
+            _dataService.SaveWayPointAsync(Arg.Any<WayPointDto>()).ReturnsForAnyArgs(Task.FromResult(false));
+        
+            var actionResult = await _sut.Run(Utils.CreateMockRequest(
+                    _wayPointsStub),
+                Substitute.For<ILogger>()) as JsonResult;
+        
+            Assert.NotNull(actionResult);
+            var response = actionResult.Value as SaveWayPointsResponse;
+
+            Assert.Equal(errorMessage, response.Message);
+        }
     }
 }

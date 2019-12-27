@@ -50,6 +50,8 @@ namespace Sanet.SmartSkating.Web.Functions
                     if (await _dataService.SaveWayPointAsync(wayPoint))
                         responseObject.SyncedWayPointsIds.Add(wayPoint.Id);
                 }
+                
+                responseObject.Message = _dataService.ErrorMessage;
             }
             return new JsonResult(responseObject);
         }
