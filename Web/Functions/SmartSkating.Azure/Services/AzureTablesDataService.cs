@@ -36,7 +36,7 @@ namespace Sanet.SmartSkating.Azure.Services
         
         public async Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
         {
-            if (_hasStorageAccess)
+            if (!_hasStorageAccess)
                 return false;
             try
             {
