@@ -16,10 +16,19 @@ namespace Sanet.SmartSkating.Azure.Services
 
         private readonly CloudTable _scoresTable;
 
+        private readonly bool _hasStorageAccess;
+
         public AzureTablesDataService(ILogger log)
         {
             _log = log;
             var connectionString = Environment.GetEnvironmentVariable("TableConnectionString");
+            _hasStorageAccess = !string.IsNullOrEmpty(connectionString);
+            if (!_hasStorageAccess)
+            {
+                log.LogCritical("NoStorageAccess");
+                return;
+            }
+
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var tableClient = storageAccount.CreateCloudTableClient();
             _scoresTable = tableClient.GetTableReference(TableName);
@@ -27,6 +36,8 @@ namespace Sanet.SmartSkating.Azure.Services
         
         public async Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
         {
+            if (_hasStorageAccess)
+                return false;
             try
             {
                 await _scoresTable.CreateIfNotExistsAsync();
