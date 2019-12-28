@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.Geometry;
+using Sanet.SmartSkating.Models.Location;
 
 namespace Sanet.SmartSkating.Utils
 {

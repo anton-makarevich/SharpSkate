@@ -2,11 +2,13 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Location;
-using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
 
@@ -17,7 +19,7 @@ namespace Sanet.SmartSkating.ViewModels
         private const string NoValue = "- - -";
         
         private readonly ILocationService _locationService;
-        private readonly IStorageService _storageService;
+        private readonly IDataService _storageService;
         private readonly ITrackService _trackService;
         private readonly ISessionService _sessionService;
         private ISession? _currentSession;
@@ -34,7 +36,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         public LiveSessionViewModel(
             ILocationService locationService, 
-            IStorageService storageService,
+            IDataService storageService,
             ITrackService trackService, ISessionService sessionService)
         {
             _locationService = locationService;
@@ -74,8 +76,9 @@ namespace Sanet.SmartSkating.ViewModels
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
             LastCoordinate = e.Coordinate;
-            _storageService.SaveCoordinateAsync(LastCoordinate);
-            Session?.AddPoint(LastCoordinate,DateTime.UtcNow);
+            var pointDto = WayPointDto.FromSessionCoordinate(Session.SessionId, LastCoordinate.ToDto());
+            _storageService.SaveWayPointAsync(pointDto);
+            Session?.AddPoint(LastCoordinate,pointDto.Time);
             UpdateMetaData();
         }
 

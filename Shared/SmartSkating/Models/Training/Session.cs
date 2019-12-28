@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sanet.SmartSkating.Models.Geometry;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Utils;
 
 namespace Sanet.SmartSkating.Models.Training
@@ -15,8 +16,10 @@ namespace Sanet.SmartSkating.Models.Training
             _rink = rink;
             WayPoints = new List<WayPoint>();
             Sectors = new List<Section>();
+            SessionId = Guid.NewGuid().ToString("N");
         }
 
+        public string SessionId { get; }
         public IList<WayPoint> WayPoints { get; }
         public IList<Section> Sectors { get; }
         public int LapsCount { get; private set; }

@@ -1,3 +1,5 @@
+using Sanet.SmartSkating.Models.Location;
+
 namespace Sanet.SmartSkating.Models.EventArgs
 {
     public class CoordinateEventArgs:System.EventArgs

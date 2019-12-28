@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;

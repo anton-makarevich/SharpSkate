@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Models.Location;
 using Xamarin.Essentials;
 
 namespace Sanet.SmartSkating.Services.Location

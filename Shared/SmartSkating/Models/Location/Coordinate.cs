@@ -1,7 +1,7 @@
 using System.Globalization;
 using Sanet.SmartSkating.Dto.Models;
 
-namespace Sanet.SmartSkating.Models
+namespace Sanet.SmartSkating.Models.Location
 {
     public struct Coordinate
     {
@@ -21,6 +21,11 @@ namespace Sanet.SmartSkating.Models
         public override string ToString()
         {
             return $"{Latitude.ToString(CultureInfo.InvariantCulture)};{Longitude.ToString(CultureInfo.InvariantCulture)}";
+        }
+
+        public CoordinateDto ToDto()
+        {
+            return new CoordinateDto {Latitude = Latitude, Longitude = Longitude};
         }
     }
 }

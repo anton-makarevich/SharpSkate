@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NSubstitute;
+using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Location;
-using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.Tests.Models.Geometry;
 using Sanet.SmartSkating.ViewModels;
@@ -21,7 +23,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         
         private readonly LiveSessionViewModel _sut;
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
-        private readonly IStorageService _storageService = Substitute.For<IStorageService>();
+        private readonly IDataService _storageService = Substitute.For<IDataService>();
         private readonly ITrackService _trackService = Substitute.For<ITrackService>();
         private readonly ISessionService _sessionService = Substitute.For<ISessionService>();
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
@@ -101,6 +103,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void UpdatesLastLocationWithNewValueFromServiceIfServiceIsStarted()
         {
+            InitViewModelWithRink();
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
@@ -110,6 +113,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void LastCoordinateChangeUpdatesInfoLabel()
         {
+            InitViewModelWithRink();
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
@@ -119,6 +123,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void StopClearsInfoLabel()
         {
+            InitViewModelWithRink();
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
@@ -130,22 +135,29 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public async Task LastCoordinateChangeSavesCoordinateToDisk()
         {
+            InitViewModelWithRink();
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            await _storageService.Received().SaveCoordinateAsync(_locationStub);
+            await _storageService.Received().SaveWayPointAsync(Arg.Any<WayPointDto>());
         }
 
         [Fact]
         public void CreatesSessionOnPageStart()
         {
+            var rink = InitViewModelWithRink();
+
+            _sessionService.Received().CreateSessionForRink(rink);
+        }
+
+        private Rink InitViewModelWithRink()
+        {
             var rink = new Rink(RinkTests.EindhovenStart,
                 RinkTests.EindhovenFinish);
             _trackService.SelectedRink.Returns(rink);
-            
-            _sut.AttachHandlers();
 
-            _sessionService.Received().CreateSessionForRink(rink);
+            _sut.AttachHandlers();
+            return rink;
         }
 
         [Fact]

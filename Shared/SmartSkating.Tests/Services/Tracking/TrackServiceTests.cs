@@ -5,6 +5,7 @@ using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Xunit;
 

@@ -1,5 +1,6 @@
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Models.Location;
 using Xunit;
 
 namespace Sanet.SmartSkating.Tests.Models.Location
@@ -25,6 +26,16 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             
             Assert.Equal(coordinateDto.Latitude,coordinate.Latitude,5);
             Assert.Equal(coordinateDto.Longitude,coordinate.Longitude,5);
+        }
+
+        [Fact]
+        public void CouldBeConvertedToDto()
+        {
+            var sut = new Coordinate(34.45, 23.56);
+
+            var dto = sut.ToDto();
+            
+            Assert.Equal(sut.Latitude, dto.Latitude);
         }
     }
 }

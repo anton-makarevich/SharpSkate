@@ -1,5 +1,6 @@
+using System;
 using System.Threading.Tasks;
-using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Services.Storage;
 using Xunit;
 
@@ -11,9 +12,20 @@ namespace Sanet.SmartSkating.Tests.Services
         public async Task SavesJsonFileToLocalFileSystem()
         {
             var sut = new JsonStorageService();
-            var coordinateStub = new Coordinate(34.5454, 45.23343);
+            var wayPointDto = new WayPointDto()
+            {
+                Coordinate = new CoordinateDto()
+                {
+                    Latitude = 34.56,
+                    Longitude = 35.54
+                },
+                Id = "0",
+                SessionId = "8",
+                Time = DateTime.Now,
+                WayPointType = "uu"
+            };
 
-            await sut.SaveCoordinateAsync(coordinateStub);
+            await sut.SaveWayPointAsync(wayPointDto);
         }
     }
 }

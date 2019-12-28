@@ -5,6 +5,7 @@ using System.Linq;
 using GpxTools.Models.Gpx;
 using Newtonsoft.Json;
 using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Tools.GpxComposer.Models.Gpx;
 
