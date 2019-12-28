@@ -1,3 +1,4 @@
+using System;
 using Microsoft.WindowsAzure.Storage.Table;
 using Sanet.SmartSkating.Dto.Models;
 
@@ -14,6 +15,7 @@ namespace Sanet.SmartSkating.Azure.Models
 
             Latitude = wayPoint.Coordinate.Latitude;
             Longitude = wayPoint.Coordinate.Longitude;
+            Time = wayPoint.Time;
         }
 
         public double Longitude { get; set; }
@@ -21,5 +23,7 @@ namespace Sanet.SmartSkating.Azure.Models
         public double Latitude { get; set; }
 
         public string WayPointType { get; set; }
+
+        public DateTime Time { get; set; }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace Sanet.SmartSkating.Dto.Models
 {
     public struct WayPointDto
@@ -6,5 +8,6 @@ namespace Sanet.SmartSkating.Dto.Models
         public string SessionId { get; set; }
         public CoordinateDto Coordinate { get; set; }
         public string WayPointType { get; set; }
+        public DateTime Time { get; set; }
     }
 }
