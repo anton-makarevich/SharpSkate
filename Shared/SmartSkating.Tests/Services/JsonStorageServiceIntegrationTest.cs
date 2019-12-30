@@ -35,7 +35,5 @@ namespace Sanet.SmartSkating.Tests.Services
             var isDeleted = await sut.DeleteWayPointAsync(loadedWayPoint.Id);
             Assert.True(isDeleted);
         }
-        
-        
     }
 }

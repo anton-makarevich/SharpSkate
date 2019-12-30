@@ -48,7 +48,6 @@ namespace Sanet.SmartSkating.Services.Storage
 
         public Task<bool> DeleteWayPointAsync(string id)
         {
-
             return Task.Run(() =>
             {
                 if (!Directory.Exists(SmartSkatingFolder))

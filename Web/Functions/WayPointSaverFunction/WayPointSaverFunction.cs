@@ -17,7 +17,7 @@ namespace Sanet.SmartSkating.Web.Functions
 {
     public class WayPointSaverFunction
     {
-        private IDataService _dataService;
+        private IDataService? _dataService;
 
         public void SetService(IDataService dataService)
         {
@@ -47,11 +47,11 @@ namespace Sanet.SmartSkating.Web.Functions
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
                 foreach (var wayPoint in requestObject)
                 {
-                    if (await _dataService.SaveWayPointAsync(wayPoint))
+                    if (_dataService != null && await _dataService.SaveWayPointAsync(wayPoint))
                         responseObject.SyncedWayPointsIds.Add(wayPoint.Id);
                 }
-                
-                responseObject.Message = _dataService.ErrorMessage;
+
+                if (_dataService != null) responseObject.Message = _dataService.ErrorMessage;
             }
             return new JsonResult(responseObject);
         }

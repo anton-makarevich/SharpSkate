@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
@@ -56,5 +57,14 @@ namespace Sanet.SmartSkating.Azure.Services
         }
 
         public string ErrorMessage { get; } = string.Empty;
+        public Task<List<WayPointDto>> GetAllWayPointsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteWayPointAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
