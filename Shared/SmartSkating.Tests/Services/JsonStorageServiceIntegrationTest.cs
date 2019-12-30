@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Services.Storage;
@@ -9,7 +10,7 @@ namespace Sanet.SmartSkating.Tests.Services
     public class JsonStorageServiceIntegrationTest
     {
         [Fact]
-        public async Task SavesJsonFileToLocalFileSystem()
+        public async Task SavesWayPointAsJsonFileToLocalFileSystemReadsItAndDeletes()
         {
             var sut = new JsonStorageService();
             var wayPointDto = new WayPointDto()
@@ -25,7 +26,16 @@ namespace Sanet.SmartSkating.Tests.Services
                 WayPointType = "uu"
             };
 
-            await sut.SaveWayPointAsync(wayPointDto);
+            var isSaved = await sut.SaveWayPointAsync(wayPointDto);
+            Assert.True(isSaved);
+
+            var loadedWayPoint = (await sut.GetAllWayPointsAsync()).First();
+            Assert.Equal(wayPointDto, loadedWayPoint);
+
+            var isDeleted = await sut.DeleteWayPointAsync(loadedWayPoint.Id);
+            Assert.True(isDeleted);
         }
+        
+        
     }
 }
