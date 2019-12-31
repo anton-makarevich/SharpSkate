@@ -11,20 +11,30 @@ namespace Sanet.SmartSkating.Services.Storage
 {
     public class JsonStorageService : IDataService
     {
-        private static string SmartSkatingFolder =>
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SmartSkating");
+        private const string SmartSkatingFolder = "SmartSkating";
+        private const string WayPointsFolder = "WayPoints";
+        private const string SessionsFolder = "Sessions";
+
+        private static string SmartSkatingPath =>
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), SmartSkatingFolder);
         
         public Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
         {
+            return SaveAsync(wayPoint,WayPointsFolder);
+        }
+
+        private static Task<bool> SaveAsync<T>(T entity, string folder) where T:EntityBase
+        {
             return Task.Run(() =>
             {
+                var path = Path.Combine(
+                    SmartSkatingPath, folder);
                 var file =
-                    Path.Combine(
-                        SmartSkatingFolder,
-                        $"{wayPoint.Id}.json");
-                var stringData = JsonConvert.SerializeObject(wayPoint);
-                if (!Directory.Exists(SmartSkatingFolder))
-                    Directory.CreateDirectory(SmartSkatingFolder);
+                    Path.Combine(path,
+                        $"{entity.Id}.json");
+                var stringData = JsonConvert.SerializeObject(entity);
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
                 File.WriteAllText(file, stringData);
                 return true;
             });
@@ -33,32 +43,61 @@ namespace Sanet.SmartSkating.Services.Storage
         public string ErrorMessage { get; } = string.Empty;
         public Task<List<WayPointDto>> GetAllWayPointsAsync()
         {
-            if (!Directory.Exists(SmartSkatingFolder))
-                return Task.FromResult(new List<WayPointDto>());
+            return GetAllAsync<WayPointDto>(WayPointsFolder);
+        }
+
+        private static Task<List<T>> GetAllAsync<T>(string folder)
+        {
             return Task.Run(() =>
             {
-                var files = Directory.EnumerateFiles(SmartSkatingFolder);
+                var path = Path.Combine(
+                    SmartSkatingPath, folder);
+                if (!Directory.Exists(path))
+                    return new List<T>();
+                var files = Directory.EnumerateFiles(path);
 
                 return files
                     .Where(f => f.EndsWith(".json"))
                     .Select(File.ReadAllText)
-                    .Select(JsonConvert.DeserializeObject<WayPointDto>).ToList();
+                    .Select(JsonConvert.DeserializeObject<T>).ToList();
             });
         }
 
         public Task<bool> DeleteWayPointAsync(string id)
         {
+            return DeleteAsync(id, WayPointsFolder);
+        }
+
+        private static Task<bool> DeleteAsync(string id, string folder)
+        {
             return Task.Run(() =>
             {
-                if (!Directory.Exists(SmartSkatingFolder))
+                var path = Path.Combine(
+                    SmartSkatingPath, folder);
+                if (!Directory.Exists(path))
                     return false;
-                var dtoFileName = Path.Combine(SmartSkatingFolder, $"{id}.json");
+                var dtoFileName = Path.Combine(path, $"{id}.json");
                 if (!File.Exists(dtoFileName))
                     return false;
-                
+
                 File.Delete(dtoFileName);
                 return true;
             });
+        }
+
+        public Task<bool> SaveSessionAsync(SessionDto session)
+        {
+            return SaveAsync(session,SessionsFolder);
+        }
+
+        public Task<List<SessionDto>> GetAllSessionsAsync()
+        {
+            return GetAllAsync<SessionDto>(SessionsFolder);
+        }
+
+        public Task<bool> DeleteSessionAsync(string id)
+        {
+            return DeleteAsync(id, SessionsFolder);
         }
     }
 }

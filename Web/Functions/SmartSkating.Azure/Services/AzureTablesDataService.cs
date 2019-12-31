@@ -66,5 +66,20 @@ namespace Sanet.SmartSkating.Azure.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<bool> SaveSessionAsync(SessionDto session)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SessionDto>> GetAllSessionsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteSessionAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
