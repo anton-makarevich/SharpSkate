@@ -3,8 +3,8 @@ using Sanet.SmartSkating.Dto.Models.Responses.Base;
 
 namespace Sanet.SmartSkating.Dto.Models.Responses
 {
-    public class SaveWayPointsResponse:ResponseBase
+    public class SaveEntitiesResponse:ResponseBase
     {
-        public List<string>? SyncedWayPointsIds { get; set; } 
+        public List<string>? SyncedIds { get; set; } 
     }
 }

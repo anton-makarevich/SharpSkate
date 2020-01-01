@@ -61,7 +61,7 @@ namespace WayPointSaverFunctionTests
                 Substitute.For<ILogger>()) as JsonResult;
         
             Assert.NotNull(actionResult);
-            var response = actionResult.Value as SaveWayPointsResponse;
+            var response = actionResult.Value as SaveEntitiesResponse;
         
             Assert.NotNull(response);
             const int badRequestStatus = (int) HttpStatusCode.BadRequest;
@@ -78,13 +78,13 @@ namespace WayPointSaverFunctionTests
                 Substitute.For<ILogger>()) as JsonResult;
         
             Assert.NotNull(actionResult);
-            var response = actionResult.Value as SaveWayPointsResponse;
+            var response = actionResult.Value as SaveEntitiesResponse;
         
-            Assert.NotNull(response?.SyncedWayPointsIds);
+            Assert.NotNull(response?.SyncedIds);
             Assert.Equal(200, response.ErrorCode);
-            Assert.Equal(2, response.SyncedWayPointsIds.Count);
-            Assert.Equal(_wayPointsStub.First().Id,response.SyncedWayPointsIds.First());
-            Assert.Equal(_wayPointsStub.Last().Id,response.SyncedWayPointsIds.Last());
+            Assert.Equal(2, response.SyncedIds.Count);
+            Assert.Equal(_wayPointsStub.First().Id,response.SyncedIds.First());
+            Assert.Equal(_wayPointsStub.Last().Id,response.SyncedIds.Last());
         }
         
         [Fact]
@@ -99,7 +99,7 @@ namespace WayPointSaverFunctionTests
                 Substitute.For<ILogger>()) as JsonResult;
         
             Assert.NotNull(actionResult);
-            var response = actionResult.Value as SaveWayPointsResponse;
+            var response = actionResult.Value as SaveEntitiesResponse;
 
             Assert.Equal(errorMessage, response.Message);
         }

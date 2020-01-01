@@ -9,6 +9,9 @@ namespace Sanet.SmartSkating.Services.Api
     public interface IApiService
     {
         [Post("/waypoints")]
-        Task<SaveWayPointsResponse> PostWaypointsAsync([Body] List<WayPointDto> waypoints);
+        Task<SaveEntitiesResponse> PostWaypointsAsync([Body] List<WayPointDto> waypoints);
+
+        [Post("/sessions")]
+        Task<SaveEntitiesResponse> PostSessionsAsync([Body] List<SessionDto> sessions);
     }
 }

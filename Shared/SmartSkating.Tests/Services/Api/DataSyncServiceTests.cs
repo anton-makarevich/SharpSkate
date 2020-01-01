@@ -29,6 +29,20 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             }
         };
 
+        private List<SessionDto> GetSessionsStub(bool saved, bool completed)
+        {
+            return new List<SessionDto>
+            {
+                new SessionDto
+                {
+                    Id = "0",
+                    AccountId = "0",
+                    IsCompleted = completed,
+                    IsSaved = saved
+                }
+            };
+        }
+        
         public DataSyncServiceTests()
         {
             _dataService = Substitute.For<IDataService>();
@@ -36,6 +50,8 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             _connectivityService = Substitute.For<IConnectivityService>();
             
             _sut = new DataSyncService(_dataService,_apiService,_connectivityService);
+            
+            _dataService.GetAllSessionsAsync().Returns(Task.FromResult(new List<SessionDto>()));
         }
 
         [Fact]
@@ -68,11 +84,85 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             _dataService.GetAllWayPointsAsync().Returns(Task.FromResult(_wayPoints));
             _apiService.PostWaypointsAsync(_wayPoints)
                 .Returns(Task.FromResult(
-                new SaveWayPointsResponse(){SyncedWayPointsIds = _wayPoints.Select(f=>f.Id).ToList()}));
+                new SaveEntitiesResponse(){SyncedIds = _wayPoints.Select(f=>f.Id).ToList()}));
             
             _sut.StartSyncing();
 
             await _dataService.Received().DeleteWayPointAsync(_wayPoints.First().Id);
+        }
+        
+        [Fact]
+        public async Task WhenStartedAndHasConnectionReadsLocalSessionsAndSendsNotSavedToApi()
+        {
+            var notSavedSessions = GetSessionsStub(false, false);
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _dataService.GetAllSessionsAsync().Returns(Task.FromResult(notSavedSessions));
+            
+            _sut.StartSyncing();
+
+            await _apiService.Received().PostSessionsAsync(Arg.Any<List<SessionDto>>());
+        }
+        
+        [Fact]
+        public async Task WhenStartedAndHasConnectionReadsLocalSessionsButDoesNotSendSavedToApi()
+        {
+            var savedSessions = GetSessionsStub(true, false);
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _dataService.GetAllSessionsAsync().Returns(Task.FromResult(savedSessions));
+            
+            _sut.StartSyncing();
+
+            await _apiService.DidNotReceive().PostSessionsAsync(savedSessions);
+        }
+        
+        [Fact]
+        public async Task WhenStartedAndHasConnectionReadsLocalSessionsAndSendsSavedAndCompletedToApi()
+        {
+            var savedAndCompletedSessions = GetSessionsStub(true, true);
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _dataService.GetAllSessionsAsync().Returns(Task.FromResult(savedAndCompletedSessions));
+            
+            _sut.StartSyncing();
+
+            await _apiService.Received().PostSessionsAsync(Arg.Any<List<SessionDto>>());
+        }
+        
+        [Fact]
+        public async Task MarksIncompleteSessionsAsSavedAfterSync()
+        {
+            var notSavedSessions = GetSessionsStub(false, false);
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _dataService.GetAllSessionsAsync().Returns(Task.FromResult(notSavedSessions));
+            _apiService.PostSessionsAsync(Arg.Any<List<SessionDto>>())
+                .Returns(Task.FromResult(
+                    new SaveEntitiesResponse()
+                    {
+                        SyncedIds = notSavedSessions.Select(s=>s.Id).ToList()
+                    }));
+            
+            _sut.StartSyncing();
+
+            var sessionToUpdate = notSavedSessions.First();
+            sessionToUpdate.IsSaved = true;
+            await _dataService.Received().SaveSessionAsync(sessionToUpdate);
+        }
+        
+        [Fact]
+        public async Task DeletesCompleteSessionsAfterSync()
+        {
+            var completeSessions = GetSessionsStub(false, true);
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _dataService.GetAllSessionsAsync().Returns(Task.FromResult(completeSessions));
+            _apiService.PostSessionsAsync(Arg.Any<List<SessionDto>>())
+                .Returns(Task.FromResult(
+                    new SaveEntitiesResponse()
+                    {
+                        SyncedIds = completeSessions.Select(s=>s.Id).ToList()
+                    }));
+            
+            _sut.StartSyncing();
+            
+            await _dataService.Received().DeleteSessionAsync(completeSessions.First().Id);
         }
     }
 }

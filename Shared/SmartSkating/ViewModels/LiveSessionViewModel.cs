@@ -76,9 +76,13 @@ namespace Sanet.SmartSkating.ViewModels
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
             LastCoordinate = e.Coordinate;
-            var pointDto = WayPointDto.FromSessionCoordinate(Session.SessionId, LastCoordinate.ToDto());
-            _storageService.SaveWayPointAsync(pointDto);
-            Session?.AddPoint(LastCoordinate,pointDto.Time);
+            if (Session != null)
+            {
+                var pointDto = WayPointDto.FromSessionCoordinate(Session.SessionId, LastCoordinate.ToDto());
+                _storageService.SaveWayPointAsync(pointDto);
+                Session?.AddPoint(LastCoordinate,pointDto.Time);
+            }
+
             UpdateMetaData();
         }
 

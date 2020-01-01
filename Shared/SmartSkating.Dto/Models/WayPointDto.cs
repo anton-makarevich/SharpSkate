@@ -4,9 +4,9 @@ namespace Sanet.SmartSkating.Dto.Models
 {
     public class WayPointDto:EntityBase
     {
-        public string SessionId { get; set; }
+        public string SessionId { get; set; } = string.Empty;
         public CoordinateDto Coordinate { get; set; }
-        public string WayPointType { get; set; }
+        public string WayPointType { get; set; } = string.Empty;
         public DateTime Time { get; set; }
 
         public static WayPointDto FromSessionCoordinate(string sessionId, CoordinateDto coordinate)

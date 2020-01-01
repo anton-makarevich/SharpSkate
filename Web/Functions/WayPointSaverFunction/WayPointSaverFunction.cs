@@ -32,8 +32,8 @@ namespace Sanet.SmartSkating.Web.Functions
             if (_dataService == null)
                 SetService(new AzureTablesDataService(log));
 
-            var responseObject = new SaveWayPointsResponse();
-            responseObject.SyncedWayPointsIds = new List<string>();
+            var responseObject = new SaveEntitiesResponse();
+            responseObject.SyncedIds = new List<string>();
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
             var requestObject = JsonConvert.DeserializeObject<List<WayPointDto>>(requestData);
             
@@ -48,7 +48,7 @@ namespace Sanet.SmartSkating.Web.Functions
                 foreach (var wayPoint in requestObject)
                 {
                     if (_dataService != null && await _dataService.SaveWayPointAsync(wayPoint))
-                        responseObject.SyncedWayPointsIds.Add(wayPoint.Id);
+                        responseObject.SyncedIds.Add(wayPoint.Id);
                 }
 
                 if (_dataService != null) responseObject.Message = _dataService.ErrorMessage;

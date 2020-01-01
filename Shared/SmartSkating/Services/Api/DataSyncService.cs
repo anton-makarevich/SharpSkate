@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto.Services;
 
@@ -33,17 +34,53 @@ namespace Sanet.SmartSkating.Services.Api
         {
             do
             {
-                if (!await _connectivityService.IsConnected())
-                    continue;
-                var wayPointsToSync = await _dataService.GetAllWayPointsAsync();
-                var wayPointsIds = (await _apiService.PostWaypointsAsync(wayPointsToSync))
-                    .SyncedWayPointsIds;
-                foreach (var syncedWayPoint in wayPointsIds)
-                {
-                    await _dataService.DeleteWayPointAsync(syncedWayPoint);
-                }
+                await SyncSessionsAsync();
+                await SyncWayPointsAsync();
+            
                 await Task.Delay(30000);
             } while (true);
+            // ReSharper disable once FunctionNeverReturns
+        }
+
+        public async Task SyncWayPointsAsync()
+        {
+            if (!await _connectivityService.IsConnected())
+                return;
+            var wayPointsToSync = await _dataService.GetAllWayPointsAsync();
+            if (!wayPointsToSync.Any())
+                return;
+            var wayPointsIds = (await _apiService.PostWaypointsAsync(wayPointsToSync))
+                .SyncedIds;
+            if (wayPointsIds == null) return;
+            foreach (var syncedWayPoint in wayPointsIds)
+            {
+                await _dataService.DeleteWayPointAsync(syncedWayPoint);
+            }
+        }
+        
+        public async Task SyncSessionsAsync()
+        {
+            if (!await _connectivityService.IsConnected())
+                return;
+            var sessionsToSync = (await _dataService.GetAllSessionsAsync())
+                .Where(s=>!s.IsSaved||s.IsCompleted)
+                .ToList();
+            if (!sessionsToSync.Any())
+                return;
+            var syncedIds = (await _apiService.PostSessionsAsync(sessionsToSync))
+                .SyncedIds;
+            if (syncedIds == null) return;
+            foreach (var id in syncedIds)
+            {
+                var session = sessionsToSync.Single(s => s.Id == id);
+                if (!session.IsSaved && !session.IsCompleted)
+                {
+                    session.IsSaved = true;
+                    await _dataService.SaveSessionAsync(session);   
+                }
+                if (session.IsCompleted)
+                    await _dataService.DeleteSessionAsync(id);
+            }
         }
     }
 }
