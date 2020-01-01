@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Sanet.SmartSkating.Models;
+using FluentAssertions;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
@@ -26,6 +26,12 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             _fourthSectorPoint = new Coordinate(51.4159491,5.4728511);
             _secondSectorPoint = new Coordinate(51.4145113,5.4728282);
             _thirdSectorPoint = new Coordinate(51.4153197,5.4729568);
+        }
+
+        [Fact]
+        public void NewSessionHasId()
+        {
+            _sut.SessionId.Should().NotBeEmpty();
         }
 
         [Fact]

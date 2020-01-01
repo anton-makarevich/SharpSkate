@@ -1,5 +1,3 @@
-using System;
-
 namespace Sanet.SmartSkating.Dto.Models
 {
     public class SessionDto:EntityBase
