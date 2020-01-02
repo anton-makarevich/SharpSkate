@@ -12,7 +12,7 @@ namespace Sanet.SmartSkating.Tizen.Services
         private readonly GpxReaderService _gpxReader = new GpxReaderService();
 
         private readonly string _dummyLocation;
-        private readonly int _delay;
+        private int _delay;
         
         public event EventHandler<CoordinateEventArgs>? LocationReceived;
         private bool _isRunning;
@@ -34,10 +34,17 @@ namespace Sanet.SmartSkating.Tizen.Services
         private async Task RunMockLocations()
         {
             var route = await _gpxReader.ReadEmbeddedGpxFileAsync(_dummyLocation);
+            DateTime? prevTime = null;
             while (_isRunning)
             {
                 foreach (var routePoint in route.RoutePoints)
                 {
+                    if (prevTime != null && routePoint.Time!=null && _delay<1)
+                    {
+                        _delay = (int)routePoint.Time.Value.Subtract(prevTime.Value).TotalMilliseconds;
+                    }
+
+                    prevTime = routePoint.Time;
                     if (!_isRunning)
                         return;
                     LocationReceived?.Invoke(
