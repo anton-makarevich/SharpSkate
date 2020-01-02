@@ -1,3 +1,5 @@
+using Refit;
+using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
@@ -16,6 +18,7 @@ namespace Sanet.SmartSkating.Xf
             container.Register<StartViewModel>();
             
             // Register services
+            container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
             container.RegisterSingleton<IDataSyncService,DataSyncService>();
             container.RegisterSingleton<IDataService, JsonStorageService>();

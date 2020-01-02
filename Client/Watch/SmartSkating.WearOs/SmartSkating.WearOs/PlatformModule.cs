@@ -1,4 +1,6 @@
 using Android.App;
+using Refit;
+using Sanet.SmartSkating.Dto;
 #if DEBUG
 using Sanet.SmartSkating.Tizen.Services;
 #else
@@ -28,11 +30,14 @@ namespace Sanet.SmartSkating.WearOs
             container.Register<TracksViewModel>();
             container.Register<LiveSessionViewModel>();
             container.Register<StartViewModel>();
+            
             #if DEBUG
             container.RegisterSingleton<ILocationService,DummyLocationService>();
             #else
             container.RegisterInstance<ILocationService>(new LocationManagerService(activity));
             #endif
+            
+            container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
             container.RegisterSingleton<IDataSyncService,DataSyncService>();
             container.RegisterSingleton<IDataService, JsonStorageService>();

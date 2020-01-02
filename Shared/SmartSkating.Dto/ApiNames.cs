@@ -13,5 +13,7 @@ namespace Sanet.SmartSkating.Dto
             public const string Path= "/sessions";
             public const string Route = "sessions";
         }
+
+        public static string BaseUrl = "https://smartskating.azure-api.net/smartskating";
     }
 }
