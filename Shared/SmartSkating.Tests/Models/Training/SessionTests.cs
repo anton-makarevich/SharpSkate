@@ -137,8 +137,9 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void DoesNotAddAnyWayPointsWhenCrossingFinishFromSecondSectorToFirst()
         {
-            _sut.AddPoint(_secondSectorPoint, DateTime.Now);
-            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+            var time = DateTime.Now;
+            _sut.AddPoint(_secondSectorPoint, time);
+            _sut.AddPoint(_firstSectorPoint, time);
 
             Assert.Single(_sut.WayPoints);
         }
@@ -181,7 +182,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             _sut.AddPoint(_firstSectorPoint, firstSectorTime);
             _sut.AddPoint(_secondSectorPoint, secondSectorTime);
             
-            Assert.Equal(9, _sut.Sectors.Last().Time.Seconds);
+            Assert.Equal(10, _sut.Sectors.Last().Time.Seconds);
         }
         
         [Fact]
@@ -199,12 +200,12 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         }
 
         [Fact]
-        public void UpdatesBestSectorWhenFirstSectorIsAdded()
+        public void DoesNotUpdateBestSectorWhenFirstSectorIsAdded()
         {
             _sut.AddPoint(_firstSectorPoint, DateTime.Now);
             _sut.AddPoint(_secondSectorPoint, DateTime.Now);
             
-            Assert.NotNull(_sut.BestSector);
+            Assert.Null(_sut.BestSector);
         }
         
         [Fact]
@@ -222,11 +223,12 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         public void DoesNotUpdateBestSectorWhenNewSectorIsBetter()
         {
             _sut.AddPoint(_firstSectorPoint, DateTime.Now);
-            _sut.AddPoint(_secondSectorPoint, DateTime.Now.AddSeconds(20));
-            _sut.AddPoint(_thirdSectorPoint, DateTime.Now.AddSeconds(40));
+            _sut.AddPoint(_secondSectorPoint, DateTime.Now.AddSeconds(10));
+            _sut.AddPoint(_thirdSectorPoint, DateTime.Now.AddSeconds(25));
+            _sut.AddPoint(_fourthSectorPoint, DateTime.Now.AddSeconds(50));
 
             Assert.NotNull(_sut.BestSector);
-            Assert.Equal(WayPointTypes.FirstSector, _sut.BestSector.Value.Type);
+            Assert.Equal(WayPointTypes.SecondSector, _sut.BestSector.Value.Type);
         }
 
         [Fact]
@@ -259,7 +261,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             // 30 is time for middle of fourth sector, 
             // 40 is time for middle of first
             // so we're crossing start in between ~35 seconds
-            Assert.Equal(35,_sut.LastLapTime.Seconds); 
+            Assert.Equal(34,_sut.LastLapTime.Seconds); 
         }
         
         [Fact]
@@ -268,7 +270,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             var firstLapTime = DateTime.Now;
             AddLap(firstLapTime, 10);
 
-            Assert.Equal(35,_sut.BestLapTime.Seconds); 
+            Assert.Equal(34,_sut.BestLapTime.Seconds); 
         }
         
         [Fact]
@@ -278,7 +280,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             AddLap(firstLapTime,10);
             AddLap(firstLapTime.AddSeconds(40),8);
         
-            Assert.Equal(32,_sut.BestLapTime.Seconds); 
+            Assert.Equal(33,_sut.BestLapTime.Seconds); 
         }
         
         [Fact]
@@ -288,7 +290,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             AddLap(firstLapTime,10);
             AddLap(firstLapTime.AddSeconds(40),12);
         
-            Assert.Equal(35,_sut.BestLapTime.Seconds); 
+            Assert.Equal(34,_sut.BestLapTime.Seconds); 
         }
 
         private void AddLap(DateTime startTime, int sectorTime)
@@ -308,6 +310,18 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             _sut.SetStartTime(startTime);
             
             Assert.Equal(startTime,_sut.StartTime);
+        }
+
+        [Fact]
+        public void AddMissingSectorIfTimeIsMoreThanMaxReasonableSectorTime()
+        {
+            var startTime = DateTime.Now;
+            var secondTime = startTime.AddSeconds(29);
+            
+            _sut.AddPoint(_firstSectorPoint,startTime);
+            _sut.AddPoint(_thirdSectorPoint,secondTime);
+
+            _sut.WayPoints.Count.Should().Be(5);
         }
     }
 }

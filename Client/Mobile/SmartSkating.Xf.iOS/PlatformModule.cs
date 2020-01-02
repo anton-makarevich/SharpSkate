@@ -17,7 +17,7 @@ namespace Sanet.SmartSkating.Xf.Ios
         private static void RegisterIosModule(this Container container)
         {
 #if DEBUG
-            container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 0));
+            container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 10));
 #else
             container.RegisterSingleton<ILocationService, EssentialsLocationService>();
 #endif

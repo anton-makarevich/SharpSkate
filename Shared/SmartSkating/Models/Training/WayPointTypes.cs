@@ -34,14 +34,14 @@ namespace Sanet.SmartSkating.Models.Training
             };
         }
         
-        public static Coordinate GetSeparatingPointLocationForType(this WayPointTypes pointType, Rink rink)
+        public static (Point,Coordinate) GetSeparatingPointLocationForType(this WayPointTypes pointType, Rink rink)
         {
             return pointType switch
             {
-                WayPointTypes.Start => rink.Start,
-                WayPointTypes.Finish => rink.Finish,
-                WayPointTypes.Start300M => rink.Start300M,
-                WayPointTypes.Start3K => rink.Start3K,
+                WayPointTypes.Start => (rink.StartLocal,rink.Start),
+                WayPointTypes.Finish => (rink.FinishLocal,rink.Finish),
+                WayPointTypes.Start300M => (rink.Start300MLocal,rink.Start300M),
+                WayPointTypes.Start3K => (rink.Start3KLocal,rink.Start3K),
                 _ => throw new NotSupportedException($"No coordinate for {pointType} point type")
             };
         }

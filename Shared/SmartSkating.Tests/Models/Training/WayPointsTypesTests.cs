@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Tests.Models.Geometry;
@@ -49,33 +50,37 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void ReturnsCorrectLocationForStart()
         {
-            var result = WayPointTypes.Start.GetSeparatingPointLocationForType(_rink);
-            
-            Assert.Equal(_rink.Start,result);
+            var (point, coordinate) = WayPointTypes.Start.GetSeparatingPointLocationForType(_rink);
+
+            point.Should().Be(_rink.StartLocal);
+            coordinate.Should().Be(_rink.Start);
         }
         
         [Fact]
         public void ReturnsCorrectLocationForFinish()
         {
-            var result = WayPointTypes.Finish.GetSeparatingPointLocationForType(_rink);
+            var (point, coordinate) = WayPointTypes.Finish.GetSeparatingPointLocationForType(_rink);
             
-            Assert.Equal(_rink.Finish,result);
+            point.Should().Be(_rink.FinishLocal);
+            coordinate.Should().Be(_rink.Finish);
         }
         
         [Fact]
         public void ReturnsCorrectLocationForStart300M()
         {
-            var result = WayPointTypes.Start300M.GetSeparatingPointLocationForType(_rink);
+            var (point, coordinate) = WayPointTypes.Start300M.GetSeparatingPointLocationForType(_rink);
             
-            Assert.Equal(_rink.Start300M,result);
+            point.Should().Be(_rink.Start300MLocal);
+            coordinate.Should().Be(_rink.Start300M);
         }
         
         [Fact]
         public void ReturnsCorrectLocationForStart3K()
         {
-            var result = WayPointTypes.Start3K.GetSeparatingPointLocationForType(_rink);
+            var (point, coordinate) = WayPointTypes.Start3K.GetSeparatingPointLocationForType(_rink);
             
-            Assert.Equal(_rink.Start3K,result);
+           point.Should().Be(_rink.Start3KLocal);
+           coordinate.Should().Be(_rink.Start3K);
         }
         
         [Fact]

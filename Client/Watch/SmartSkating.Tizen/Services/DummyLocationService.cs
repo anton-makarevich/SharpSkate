@@ -52,7 +52,8 @@ namespace Sanet.SmartSkating.Tizen.Services
                         new CoordinateEventArgs(
                             new Coordinate(
                                 routePoint.Latitude,
-                                routePoint.Longitude)));
+                                routePoint.Longitude),
+                            routePoint.Time));
                     await Task.Delay(_delay);
                 }
                 Console.WriteLine("End of file!");

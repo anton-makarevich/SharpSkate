@@ -9,14 +9,14 @@ namespace Sanet.SmartSkating.Dto.Models
         public string WayPointType { get; set; } = string.Empty;
         public DateTime Time { get; set; }
 
-        public static WayPointDto FromSessionCoordinate(string sessionId, CoordinateDto coordinate)
+        public static WayPointDto FromSessionCoordinate(string sessionId, CoordinateDto coordinate, DateTime? time = null)
         {
             return new WayPointDto()
             {
                 Coordinate = coordinate,
                 Id = Guid.NewGuid().ToString("N"),
                 SessionId = sessionId,
-                Time = DateTime.UtcNow,
+                Time = time?? DateTime.UtcNow,
                 WayPointType = string.Empty
             };
         }
