@@ -18,6 +18,7 @@ namespace Sanet.SmartSkating.Xf
             container.Register<StartViewModel>();
             
             // Register services
+            container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
             container.RegisterSingleton<IDataSyncService,DataSyncService>();

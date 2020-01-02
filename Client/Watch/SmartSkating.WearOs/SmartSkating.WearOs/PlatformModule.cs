@@ -37,6 +37,7 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterInstance<ILocationService>(new LocationManagerService(activity));
             #endif
             
+            container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
             container.RegisterSingleton<IDataSyncService,DataSyncService>();

@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Tizen", "Clien
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{16751D3E-6C9D-4194-B62C-B717875E9996}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GPXComposer", "Tools\GPXComposer\GPXComposer.csproj", "{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GpxComposer", "Tools\GpxComposer\GpxComposer.csproj", "{B8BE3FC6-AFCF-4EAF-A6F5-43BF6FF93208}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AndroidShared", "Client\AndroidShared\AndroidShared.shproj", "{C13C1E1C-11CE-44C7-9EB3-1C1F03B9CEA2}"
 EndProject
