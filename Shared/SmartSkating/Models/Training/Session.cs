@@ -32,14 +32,26 @@ namespace Sanet.SmartSkating.Models.Training
             var point = _rink.ToLocalCoordinateSystem(location);
             if (!((point, _rink.Center).GetDistance() <= 100)) return;
 
+            var expectedSectorTypes = Sectors.Any()
+                ? new List<WayPointTypes>
+                {
+                    WayPoints.Last().Type,
+                    WayPoints.Last().Type.GetNextSectorType()
+                }
+                : new List<WayPointTypes>();
+
+            var expectedSectors = expectedSectorTypes.Any()
+                ? _rink.Sectors.Where(s => expectedSectorTypes.Contains(s.Type)).ToList()
+                : _rink.Sectors;
+
             var type =
-                (from sector in _rink.Sectors 
+                (from sector in expectedSectors 
                     where sector.Contains(point)
                     select sector.Type).FirstOrDefault();
             var adjustedLocation = location;
             if (type == WayPointTypes.Unknown)
             {
-                var closestSector = _rink.Sectors
+                var closestSector = expectedSectors
                     .OrderBy(s => (s.Center, point).GetDistance())
                     .First();
                 var intersection = closestSector

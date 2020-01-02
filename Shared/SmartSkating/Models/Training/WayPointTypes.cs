@@ -77,6 +77,22 @@ namespace Sanet.SmartSkating.Models.Training
                 _ => WayPointTypes.Unknown
             };
         }
+        
+        public static WayPointTypes GetNextSectorType(this WayPointTypes currentType)
+        {
+            return currentType switch
+            {
+                WayPointTypes.Start => WayPointTypes.FirstSector,
+                WayPointTypes.FirstSector => WayPointTypes.SecondSector,
+                WayPointTypes.Finish => WayPointTypes.SecondSector,
+                WayPointTypes.SecondSector => WayPointTypes.ThirdSector,
+                WayPointTypes.Start300M => WayPointTypes.ThirdSector,
+                WayPointTypes.ThirdSector => WayPointTypes.FourthSector,
+                WayPointTypes.Start3K => WayPointTypes.FourthSector,
+                WayPointTypes.FourthSector => WayPointTypes.FirstSector,
+                _ => WayPointTypes.Unknown
+            };
+        }
 
         public static string GetSectorName(this WayPointTypes currentType)
         {

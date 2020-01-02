@@ -251,5 +251,69 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             
             Assert.Equal("NA",result);
         }
+        
+        [Fact]
+        public void FourthSectorIsAfterStart3K()
+        {
+            var result = WayPointTypes.Start3K.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.FourthSector,result);
+        }
+        
+        [Fact]
+        public void FourthSectorIsAfterThirdSector()
+        {
+            var result = WayPointTypes.ThirdSector.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.FourthSector,result);
+        }
+        
+        [Fact]
+        public void FirstSectorIsAfterStart()
+        {
+            var result = WayPointTypes.Start.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.FirstSector,result);
+        }
+        
+        [Fact]
+        public void FirstSectorIsAfterFourthSector()
+        {
+            var result = WayPointTypes.FourthSector.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.FirstSector,result);
+        }
+        
+        [Fact]
+        public void SecondSectorIsAfterFinish()
+        {
+            var result = WayPointTypes.Finish.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.SecondSector,result);
+        }
+        
+        [Fact]
+        public void SecondSectorIsAfterFirstSector()
+        {
+            var result = WayPointTypes.FirstSector.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.SecondSector,result);
+        }
+        
+        [Fact]
+        public void ThirdSectorIsAfterStart300M()
+        {
+            var result = WayPointTypes.Start300M.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.ThirdSector,result);
+        }
+        
+        [Fact]
+        public void ThirdSectorIsAfterSecondSector()
+        {
+            var result = WayPointTypes.SecondSector.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.ThirdSector,result);
+        }
     }
 }
