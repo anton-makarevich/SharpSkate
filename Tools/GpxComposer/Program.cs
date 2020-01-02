@@ -8,7 +8,7 @@ namespace Sanet.SmartSkating.Tools.GpxComposer
         static void Main(string[] args)
         {
             var coordinateReader = new CoordinatesReader();
-            coordinateReader.ReadFromLog();
+            coordinateReader.ReadFromBackup();
             Console.WriteLine("Done! Press any key to exit");
             Console.ReadKey();
         }

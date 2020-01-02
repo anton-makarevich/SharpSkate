@@ -30,16 +30,31 @@ namespace Sanet.SmartSkating.Models.Training
         public void AddPoint(Coordinate location, DateTime date)
         {
             var point = _rink.ToLocalCoordinateSystem(location);
+            var adjustedPoint = point;
             if (!((point, _rink.Center).GetDistance() <= 100)) return;
 
+            // we only record sectors in normal CCW order
+            var expectedSectorTypes = WayPoints.Any()
+                ? new List<WayPointTypes>
+                {
+                    WayPoints.Last().Type,
+                    WayPoints.Last().Type.GetNextSectorType(),
+                    WayPoints.Last().Type.GetNextSectorType().GetNextSectorType()
+                }
+                : new List<WayPointTypes>();
+
+            var expectedSectors = expectedSectorTypes.Any()
+                ? _rink.Sectors.Where(s => expectedSectorTypes.Contains(s.Type)).ToList()
+                : _rink.Sectors;
+
             var type =
-                (from sector in _rink.Sectors 
+                (from sector in _rink.Sectors
                     where sector.Contains(point)
                     select sector.Type).FirstOrDefault();
             var adjustedLocation = location;
             if (type == WayPointTypes.Unknown)
             {
-                var closestSector = _rink.Sectors
+                var closestSector = expectedSectors
                     .OrderBy(s => (s.Center, point).GetDistance())
                     .First();
                 var intersection = closestSector
@@ -47,8 +62,28 @@ namespace Sanet.SmartSkating.Models.Training
                 if (intersection.HasValue)
                 {
                     adjustedLocation = _rink.ToGeoCoordinateSystem(intersection.Value);
+                    adjustedPoint = intersection.Value;
                     type = closestSector.Type;
                 }
+            }
+
+            if (expectedSectorTypes.Any() 
+                && type == expectedSectorTypes.Last() 
+                && date.Subtract(WayPoints.Last().Date).TotalSeconds>MaxSectorTimeInSeconds)
+            {
+                var lastPoint = WayPoints.Last();
+                var missingSector = _rink.Sectors
+                    .Single(s => s.Type == expectedSectorTypes[1]);
+                var distanceTo
+                    = (_rink.ToLocalCoordinateSystem(lastPoint.AdjustedCoordinate), missingSector.Center).GetDistance();
+                var distanceFrom
+                    = (missingSector.Center, adjustedPoint).GetDistance();
+                var missingSectorDate = InterpolateDate(
+                    lastPoint.Date, 
+                    date,
+                    distanceTo,
+                    distanceFrom);
+                AddPoint(_rink.ToGeoCoordinateSystem(missingSector.Center),missingSectorDate);
             }
             
             if (type == WayPointTypes.Unknown)
@@ -62,15 +97,15 @@ namespace Sanet.SmartSkating.Models.Training
                     return;
                 var separatingPointLocation = separatingPointType.GetSeparatingPointLocationForType(_rink);
                 var distanceTo
-                        = (lastPoint.AdjustedCoordinate, separatingPointLocation).GetRelativeDistance();
-                    var distanceFrom
-                        = (adjustedLocation, separatingPointLocation).GetRelativeDistance();
-                    var separatingPointDate = InterpolateDate(
-                        lastPoint.Date, 
-                        date,
-                        distanceTo,
-                        distanceFrom);
-                    AddSeparatingPoint(separatingPointLocation,separatingPointDate,separatingPointType);
+                        = (_rink.ToLocalCoordinateSystem(lastPoint.AdjustedCoordinate), separatingPointLocation.Item1).GetDistance();
+                var distanceFrom
+                    = (adjustedPoint, separatingPointLocation.Item1).GetDistance();
+                var separatingPointDate = InterpolateDate(
+                    lastPoint.Date, 
+                    date,
+                    distanceTo,
+                    distanceFrom);
+                AddSeparatingPoint(separatingPointLocation.Item2,separatingPointDate,separatingPointType);
             }
 
             WayPoints.Add(new WayPoint(
@@ -119,8 +154,9 @@ namespace Sanet.SmartSkating.Models.Training
             }
             var section = new Section(firstPoint,separatingWayPoint);
 
-            if (BestSector == null || BestSector.Value.Time.Ticks > section.Time.Ticks)
-                BestSector = section;
+            if (Sectors.Any() )
+                if (BestSector == null || BestSector.Value.Time.TotalMilliseconds > section.Time.TotalMilliseconds)
+                    BestSector = section;
             
             Sectors.Add(section);
 
@@ -160,12 +196,22 @@ namespace Sanet.SmartSkating.Models.Training
             double previousDistance,
             double currentDistance)
         {
-            var wholeTicks = currentDate.Ticks - previousDate.Ticks;
+            var wholeTicks = currentDate.Subtract(previousDate).Ticks;
             var wholeDistance = previousDistance + currentDistance;
 
             var deltaTicks = wholeTicks * previousDistance / wholeDistance;
 
             return new DateTime(previousDate.Ticks+(long)deltaTicks);
+        }
+
+        private double MaxSectorTimeInSeconds
+        {
+            get
+            {
+                if (BestLapTime.Ticks == 0)
+                    return 25;
+                return BestLapTime.TotalSeconds * 0.39;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Tests.Models.Geometry;
@@ -49,33 +50,37 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void ReturnsCorrectLocationForStart()
         {
-            var result = WayPointTypes.Start.GetSeparatingPointLocationForType(_rink);
-            
-            Assert.Equal(_rink.Start,result);
+            var (point, coordinate) = WayPointTypes.Start.GetSeparatingPointLocationForType(_rink);
+
+            point.Should().Be(_rink.StartLocal);
+            coordinate.Should().Be(_rink.Start);
         }
         
         [Fact]
         public void ReturnsCorrectLocationForFinish()
         {
-            var result = WayPointTypes.Finish.GetSeparatingPointLocationForType(_rink);
+            var (point, coordinate) = WayPointTypes.Finish.GetSeparatingPointLocationForType(_rink);
             
-            Assert.Equal(_rink.Finish,result);
+            point.Should().Be(_rink.FinishLocal);
+            coordinate.Should().Be(_rink.Finish);
         }
         
         [Fact]
         public void ReturnsCorrectLocationForStart300M()
         {
-            var result = WayPointTypes.Start300M.GetSeparatingPointLocationForType(_rink);
+            var (point, coordinate) = WayPointTypes.Start300M.GetSeparatingPointLocationForType(_rink);
             
-            Assert.Equal(_rink.Start300M,result);
+            point.Should().Be(_rink.Start300MLocal);
+            coordinate.Should().Be(_rink.Start300M);
         }
         
         [Fact]
         public void ReturnsCorrectLocationForStart3K()
         {
-            var result = WayPointTypes.Start3K.GetSeparatingPointLocationForType(_rink);
+            var (point, coordinate) = WayPointTypes.Start3K.GetSeparatingPointLocationForType(_rink);
             
-            Assert.Equal(_rink.Start3K,result);
+           point.Should().Be(_rink.Start3KLocal);
+           coordinate.Should().Be(_rink.Start3K);
         }
         
         [Fact]
@@ -250,6 +255,70 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             var result = WayPointTypes.Start.GetSectorName();
             
             Assert.Equal("NA",result);
+        }
+        
+        [Fact]
+        public void FourthSectorIsAfterStart3K()
+        {
+            var result = WayPointTypes.Start3K.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.FourthSector,result);
+        }
+        
+        [Fact]
+        public void FourthSectorIsAfterThirdSector()
+        {
+            var result = WayPointTypes.ThirdSector.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.FourthSector,result);
+        }
+        
+        [Fact]
+        public void FirstSectorIsAfterStart()
+        {
+            var result = WayPointTypes.Start.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.FirstSector,result);
+        }
+        
+        [Fact]
+        public void FirstSectorIsAfterFourthSector()
+        {
+            var result = WayPointTypes.FourthSector.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.FirstSector,result);
+        }
+        
+        [Fact]
+        public void SecondSectorIsAfterFinish()
+        {
+            var result = WayPointTypes.Finish.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.SecondSector,result);
+        }
+        
+        [Fact]
+        public void SecondSectorIsAfterFirstSector()
+        {
+            var result = WayPointTypes.FirstSector.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.SecondSector,result);
+        }
+        
+        [Fact]
+        public void ThirdSectorIsAfterStart300M()
+        {
+            var result = WayPointTypes.Start300M.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.ThirdSector,result);
+        }
+        
+        [Fact]
+        public void ThirdSectorIsAfterSecondSector()
+        {
+            var result = WayPointTypes.SecondSector.GetNextSectorType();
+            
+            Assert.Equal(WayPointTypes.ThirdSector,result);
         }
     }
 }

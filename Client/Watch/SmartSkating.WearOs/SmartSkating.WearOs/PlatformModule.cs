@@ -32,11 +32,12 @@ namespace Sanet.SmartSkating.WearOs
             container.Register<StartViewModel>();
             
             #if DEBUG
-            container.RegisterSingleton<ILocationService,DummyLocationService>();
+            container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 100));
             #else
             container.RegisterInstance<ILocationService>(new LocationManagerService(activity));
             #endif
             
+            container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
             container.RegisterSingleton<IDataSyncService,DataSyncService>();

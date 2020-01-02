@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using GpxTools.Models.Gpx;
 using Newtonsoft.Json;
-using Sanet.SmartSkating.Models;
-using Sanet.SmartSkating.Models.Location;
-using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Tools.GpxComposer.Models.Gpx;
 
 namespace Sanet.SmartSkating.Tools.GpxComposer.Models
@@ -15,11 +13,11 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
     {
         private const string Path = "data/user/0/by.sanet.smartskating.wearos/files/SmartSkating/";
 
-        private List<WayPoint> _wayPoints;
+        private List<WayPointDto> _wayPoints;
         
         public void ReadFromLog()
         {
-            _wayPoints = new List<WayPoint>();
+            _wayPoints = new List<WayPointDto>();
             var data = File.ReadAllLines("/Users/amakarevich/OneDrive/SmartSkating/skatingData/vera14122019-grefrath/data.log");
             foreach (var line in data)
             {
@@ -33,8 +31,8 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
 
         public void ReadFromBackup()
         {
-            _wayPoints = new List<WayPoint>();
-            var files = Directory.EnumerateFiles("/Users/amakarevich/Downloads/skatingData/anton16112019/data");
+            _wayPoints = new List<WayPointDto>();
+            var files = Directory.EnumerateFiles("/Users/amakarevich/OneDrive/SmartSkating/skatingData/antonShaatsnaacht2019/rawdata");
             foreach (var file in files)
             {
                 var dateCoordinateString = $"{System.IO.Path.GetFileName(file)}: - {File.ReadAllText(file)}";
@@ -45,7 +43,7 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
 
         private void WriteGpx()
         {
-            var t = _wayPoints.OrderBy(f => f.Date);
+            var t = _wayPoints.OrderBy(f => f.Time);
 
             var gpxRoute = new GpxRoute();
 
@@ -58,17 +56,17 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
 
                 var gpxPoint = new GpxRoutePoint
                 {
-                    Latitude = wayPoint.OriginalCoordinate.Latitude,
-                    Longitude = wayPoint.OriginalCoordinate.Longitude,
-                    Time = wayPoint.Date
+                    Latitude = wayPoint.Coordinate.Latitude,
+                    Longitude = wayPoint.Coordinate.Longitude,
+                    Time = wayPoint.Time
                 };
 
                 gpxRoute.RoutePoints.Add(gpxPoint);
             }
 
-            var metaData = new GpxMetadata {Name = "Anton testing 11-18-2019"};
+            var metaData = new GpxMetadata {Name = "Anton schaatsnaacht 27-12-2019"};
 
-            using var stream = File.OpenWrite("/Users/amakarevich/OneDrive/SmartSkating/skatingData/vera14122019-grefrath/data.gpx");
+            using var stream = File.OpenWrite("/Users/amakarevich/OneDrive/SmartSkating/skatingData/antonShaatsnaacht2019/schaatsnaacht.gpx");
             using GpxWriter writer = new GpxWriter(stream);
             writer.WriteMetadata(metaData);
 
@@ -94,8 +92,13 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
                 var dateString = dateCoordinateParts[0];
                 var coordinateString = dateCoordinateParts[1];
                 var date = DateFromString(dateString);
-                var coordinate = JsonConvert.DeserializeObject<Coordinate>(coordinateString);
-                _wayPoints.Add(new WayPoint(coordinate, date));
+                var coordinate = JsonConvert.DeserializeObject<CoordinateDto>(coordinateString, 
+                    new JsonSerializerSettings { FloatParseHandling = FloatParseHandling.Double });
+                _wayPoints.Add(new WayPointDto
+                {
+                    Coordinate = coordinate,
+                    Time = date
+                });
             }
         }
 

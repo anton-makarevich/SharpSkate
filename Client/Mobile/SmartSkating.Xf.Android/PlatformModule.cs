@@ -21,7 +21,7 @@ namespace Sanet.SmartSkating.Xf.Droid
         private static void RegisterAndroidModule(this Container container, Activity activity)
         {
 #if DEBUG
-            container.RegisterSingleton<ILocationService,DummyLocationService>();;
+            container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 1000));
 #else
             container.RegisterInstance<ILocationService>(new LocationManagerService(activity));
 #endif

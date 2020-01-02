@@ -101,7 +101,10 @@ namespace Sanet.SmartSkating.ViewModels
             LastCoordinate = e.Coordinate;
             if (Session != null)
             {
-                var pointDto = WayPointDto.FromSessionCoordinate(Session.SessionId, LastCoordinate.ToDto());
+                var pointDto = WayPointDto.FromSessionCoordinate(
+                    Session.SessionId,
+                    LastCoordinate.ToDto(),
+                    e.Date);
                 _storageService.SaveWayPointAsync(pointDto);
                 Session?.AddPoint(LastCoordinate,pointDto.Time);
             }
