@@ -12,6 +12,8 @@
     <ItemGroup>
       <None Remove="Resources\Mocks\Grefrath.gpx" />
       <EmbeddedResource Include="Resources\Mocks\Grefrath.gpx" />
+      <None Remove="Resources\Mocks\Schaatsnaacht.gpx" />
+      <EmbeddedResource Include="Resources\Mocks\Schaatsnaacht.gpx" />
     </ItemGroup>
 
 </Project>
