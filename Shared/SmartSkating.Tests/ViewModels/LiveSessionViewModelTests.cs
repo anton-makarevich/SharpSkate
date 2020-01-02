@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.Tests.Models.Geometry;
@@ -22,6 +22,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private const string NoValue = "- - -";
         
         private readonly LiveSessionViewModel _sut;
+        private readonly IAccountService _accountService = Substitute.For<IAccountService>();
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
         private readonly IDataService _storageService = Substitute.For<IDataService>();
         private readonly ITrackService _trackService = Substitute.For<ITrackService>();
@@ -30,7 +31,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
         public LiveSessionViewModelTests()
         {
-            _sut = new LiveSessionViewModel(_locationService,_storageService,_trackService,_sessionService);
+            _sut = new LiveSessionViewModel(
+                _locationService,
+                _storageService,
+                _trackService,
+                _sessionService,
+                _accountService);
         }
 
         [Fact]
@@ -39,6 +45,20 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
 
             _locationService.Received().StartFetchLocation();
+        }
+        
+        [Fact]
+        public void StartSavesSessionToLocalStorage()
+        {
+            var session = CreateSessionMock();
+            const string userId = "123";
+            _accountService.UserId.Returns(userId);
+
+            _sut.StartCommand.Execute(null);
+
+            _storageService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
+                s.Id == session.SessionId 
+                && s.AccountId == userId));
         }
         
         [Fact]

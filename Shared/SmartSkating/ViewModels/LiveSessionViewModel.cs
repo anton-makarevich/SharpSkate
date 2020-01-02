@@ -8,6 +8,7 @@ using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
@@ -33,19 +34,21 @@ namespace Sanet.SmartSkating.ViewModels
         private string _totalTime = string.Empty;
         private string _bestLapTime = string.Empty;
         private string _bestSectorTime = string.Empty;
+        private readonly IAccountService _accountService;
 
         public LiveSessionViewModel(
             ILocationService locationService, 
             IDataService storageService,
-            ITrackService trackService, ISessionService sessionService)
+            ITrackService trackService, ISessionService sessionService, IAccountService accountService)
         {
             _locationService = locationService;
             _storageService = storageService;
             _trackService = trackService;
             _sessionService = sessionService;
+            _accountService = accountService;
         }
         
-        public ICommand StartCommand => new SimpleCommand( () =>
+        public ICommand StartCommand => new SimpleCommand( async () =>
         {
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
             _locationService.StartFetchLocation();
@@ -53,8 +56,16 @@ namespace Sanet.SmartSkating.ViewModels
             IsRunning = true;
 #pragma warning disable 4014
             TrackTime();
+            SaveSession();
 #pragma warning restore 4014
         });
+
+        private async Task SaveSession()
+        {
+            var sessionDto = GetSessionDto();
+            if (sessionDto != null)
+                await _storageService.SaveSessionAsync(sessionDto);
+        }
 
         private async Task TrackTime()
         {
@@ -215,6 +226,17 @@ namespace Sanet.SmartSkating.ViewModels
             Session = _trackService.SelectedRink != null
                 ? _sessionService.CreateSessionForRink(_trackService.SelectedRink)
                 : null;
+        }
+
+        private SessionDto? GetSessionDto()
+        {
+            if (Session == null)
+                return null;
+            return new SessionDto
+            {
+                Id = Session.SessionId,
+                AccountId = _accountService.UserId,
+            };
         }
     }
 }
