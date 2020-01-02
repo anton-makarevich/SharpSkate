@@ -8,6 +8,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Sanet.SmartSkating.Azure;
 using Sanet.SmartSkating.Azure.Services;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
@@ -16,7 +17,7 @@ using Sanet.SmartSkating.Dto.Services;
 
 namespace Sanet.SmartSkating.Web.Functions
 {
-    public class WayPointSaverFunction
+    public class WayPointSaverFunction: IAzureFunction
     {
         private IDataService? _dataService;
 

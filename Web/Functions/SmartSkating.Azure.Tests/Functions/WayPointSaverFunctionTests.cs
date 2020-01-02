@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using FunctionTestUtils;
 using Microsoft.AspNetCore.Mvc;
@@ -54,21 +53,6 @@ namespace Sanet.SmartSkating.Azure.Tests.Functions
         }
 
         [Fact]
-        public async Task RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode()
-        {
-            var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    null),
-                Substitute.For<ILogger>()) as JsonResult;
-        
-            Assert.NotNull(actionResult);
-            var response = actionResult.Value as SaveEntitiesResponse;
-        
-            Assert.NotNull(response);
-            const int badRequestStatus = (int) HttpStatusCode.BadRequest;
-            Assert.Equal(badRequestStatus, response.ErrorCode);
-        }
-        
-        [Fact]
         public async Task RunningFunctionReturnsListOfSavedWayPointIds()
         {
             _dataService.SaveWayPointAsync(Arg.Any<WayPointDto>()).ReturnsForAnyArgs(Task.FromResult(true));
@@ -102,6 +86,12 @@ namespace Sanet.SmartSkating.Azure.Tests.Functions
             var response = actionResult.Value as SaveEntitiesResponse;
             Assert.NotNull(response);
             Assert.Equal(errorMessage, response.Message);
+        }
+        
+        [Fact]
+        public async Task RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode()
+        {
+            await CommonFunctionsTests.RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode(_sut);
         }
     }
 }
