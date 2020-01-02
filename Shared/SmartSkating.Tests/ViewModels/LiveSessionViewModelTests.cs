@@ -9,6 +9,7 @@ using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Account;
+using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.Tests.Models.Geometry;
@@ -28,6 +29,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly ITrackService _trackService = Substitute.For<ITrackService>();
         private readonly ISessionService _sessionService = Substitute.For<ISessionService>();
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
+        private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
 
         public LiveSessionViewModelTests()
         {
@@ -36,7 +38,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 _storageService,
                 _trackService,
                 _sessionService,
-                _accountService);
+                _accountService,
+                _dataSyncService);
         }
 
         [Fact]
@@ -69,6 +72,30 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _locationService.Received().StartFetchLocation();
         }
 
+        [Fact]
+        public void StopSavesCompletedSessionToLocalStorage()
+        {
+            var session = CreateSessionMock();
+            const string userId = "123";
+            _accountService.UserId.Returns(userId);
+            
+            _sut.StopCommand.Execute(null);
+
+            _storageService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
+                s.Id == session.SessionId 
+                && s.AccountId == userId
+                && s.IsCompleted));
+        }
+        
+        [Fact]
+        public async Task StopSyncsDataForSessionsAndWayPoints()
+        {
+            _sut.StopCommand.Execute(null);
+
+            await _dataSyncService.Received().SyncSessionsAsync();
+            await _dataSyncService.Received().SyncWayPointsAsync();
+        }
+        
         [Fact]
         public void StopsLocationServiceWhenStopButtonPressed()
         {

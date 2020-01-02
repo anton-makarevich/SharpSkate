@@ -9,6 +9,7 @@ using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Account;
+using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
@@ -35,20 +36,22 @@ namespace Sanet.SmartSkating.ViewModels
         private string _bestLapTime = string.Empty;
         private string _bestSectorTime = string.Empty;
         private readonly IAccountService _accountService;
+        private readonly IDataSyncService _dataSyncService;
 
-        public LiveSessionViewModel(
-            ILocationService locationService, 
+        public LiveSessionViewModel(ILocationService locationService,
             IDataService storageService,
-            ITrackService trackService, ISessionService sessionService, IAccountService accountService)
+            ITrackService trackService, ISessionService sessionService, IAccountService accountService,
+            IDataSyncService dataSyncService)
         {
             _locationService = locationService;
             _storageService = storageService;
             _trackService = trackService;
             _sessionService = sessionService;
             _accountService = accountService;
+            _dataSyncService = dataSyncService;
         }
         
-        public ICommand StartCommand => new SimpleCommand( async () =>
+        public ICommand StartCommand => new SimpleCommand(() =>
         {
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
             _locationService.StartFetchLocation();
@@ -56,15 +59,24 @@ namespace Sanet.SmartSkating.ViewModels
             IsRunning = true;
 #pragma warning disable 4014
             TrackTime();
-            SaveSession();
+            SaveSessionAndSyncData();
 #pragma warning restore 4014
         });
 
-        private async Task SaveSession()
+        private async Task SaveSessionAndSyncData(bool isCompleted = false)
         {
             var sessionDto = GetSessionDto();
             if (sessionDto != null)
+            {
+                sessionDto.IsCompleted = isCompleted;
                 await _storageService.SaveSessionAsync(sessionDto);
+            }
+
+            if (isCompleted)
+            {
+                await _dataSyncService.SyncSessionsAsync();
+                await _dataSyncService.SyncWayPointsAsync();
+            }
         }
 
         private async Task TrackTime()
@@ -136,8 +148,13 @@ namespace Sanet.SmartSkating.ViewModels
         {
             _locationService.LocationReceived -= LocationServiceOnLocationReceived;
             _locationService.StopFetchLocation();
+            
             IsRunning = false;
             InfoLabel = string.Empty;
+            
+#pragma warning disable 4014
+            SaveSessionAndSyncData(true);
+#pragma warning restore 4014
         }
 
         public bool IsRunning
