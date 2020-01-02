@@ -1,5 +1,6 @@
 using System;
 using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
 using Xunit;
 

@@ -10,9 +10,11 @@ Speed skating activity tracker for long tracks (400m rinks)
 [![codecov](https://codecov.io/gh/anton-makarevich/SmartSkating/branch/develop/graph/badge.svg)](https://codecov.io/gh/anton-makarevich/SmartSkating)
 
 ## Build status ##
-**Core**
 
-[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.Tests?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=7&branchName=develop)
+|Core   |Azure Functions   
+|:-:|:-:|
+|[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.Tests?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=7&branchName=develop)   |[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.AzureFunctions?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=8&branchName=develop)
+
 
 ## Supported Platforms ##
 

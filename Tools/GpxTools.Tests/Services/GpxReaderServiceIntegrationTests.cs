@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using GpxTools.Services;
 using Xunit;
 
-namespace GpxTool.Tests.Services
+namespace GpxTools.Tests.Services
 {
     public class GpxReaderServiceIntegrationTests
     {

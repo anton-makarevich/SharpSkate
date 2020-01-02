@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
@@ -12,14 +14,17 @@ namespace Sanet.SmartSkating.ViewModels
     {
         private readonly ILocationService _locationService;
         private readonly ITrackService _tracksService;
+        private readonly IDataSyncService _dataSyncService;
         private string _infoLabel = string.Empty;
         private bool _areGeoServicesInitialized;
         private bool _isInitializingGeoServices;
 
-        public StartViewModel(ILocationService locationService, ITrackService tracksService)
+        public StartViewModel(ILocationService locationService, ITrackService tracksService,
+            IDataSyncService dataSyncService)
         {
             _locationService = locationService;
             _tracksService = tracksService;
+            _dataSyncService = dataSyncService;
         }
 
         public string InfoLabel
@@ -64,6 +69,7 @@ namespace Sanet.SmartSkating.ViewModels
             LoadTracksAndInitializeGeoServices();
 #pragma warning restore 4014
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
+            _dataSyncService.StartSyncing();
         }
 
         private async Task LoadTracksAndInitializeGeoServices()

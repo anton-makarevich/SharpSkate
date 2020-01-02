@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Sanet.SmartSkating.Models.Geometry;
+using Sanet.SmartSkating.Models.Location;
 
 namespace Sanet.SmartSkating.Models.Training
 {
     public interface ISession
     {
+        string SessionId { get; }
         IList<WayPoint> WayPoints { get; }
         IList<Section> Sectors { get; }
         Section? BestSector { get; }

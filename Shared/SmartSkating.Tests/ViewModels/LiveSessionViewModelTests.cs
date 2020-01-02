@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NSubstitute;
-using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Services.Account;
+using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Location;
-using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.Tests.Models.Geometry;
 using Sanet.SmartSkating.ViewModels;
@@ -20,15 +23,23 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private const string NoValue = "- - -";
         
         private readonly LiveSessionViewModel _sut;
+        private readonly IAccountService _accountService = Substitute.For<IAccountService>();
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
-        private readonly IStorageService _storageService = Substitute.For<IStorageService>();
+        private readonly IDataService _storageService = Substitute.For<IDataService>();
         private readonly ITrackService _trackService = Substitute.For<ITrackService>();
         private readonly ISessionService _sessionService = Substitute.For<ISessionService>();
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
+        private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
 
         public LiveSessionViewModelTests()
         {
-            _sut = new LiveSessionViewModel(_locationService,_storageService,_trackService,_sessionService);
+            _sut = new LiveSessionViewModel(
+                _locationService,
+                _storageService,
+                _trackService,
+                _sessionService,
+                _accountService,
+                _dataSyncService);
         }
 
         [Fact]
@@ -40,6 +51,20 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
+        public void StartSavesSessionToLocalStorage()
+        {
+            var session = CreateSessionMock();
+            const string userId = "123";
+            _accountService.UserId.Returns(userId);
+
+            _sut.StartCommand.Execute(null);
+
+            _storageService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
+                s.Id == session.SessionId 
+                && s.AccountId == userId));
+        }
+        
+        [Fact]
         public void StartsLocationServiceWhenPageIsLoaded()
         {
            _sut.AttachHandlers();
@@ -47,6 +72,30 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _locationService.Received().StartFetchLocation();
         }
 
+        [Fact]
+        public void StopSavesCompletedSessionToLocalStorage()
+        {
+            var session = CreateSessionMock();
+            const string userId = "123";
+            _accountService.UserId.Returns(userId);
+            
+            _sut.StopCommand.Execute(null);
+
+            _storageService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
+                s.Id == session.SessionId 
+                && s.AccountId == userId
+                && s.IsCompleted));
+        }
+        
+        [Fact]
+        public async Task StopSyncsDataForSessionsAndWayPoints()
+        {
+            _sut.StopCommand.Execute(null);
+
+            await _dataSyncService.Received().SyncSessionsAsync();
+            await _dataSyncService.Received().SyncWayPointsAsync();
+        }
+        
         [Fact]
         public void StopsLocationServiceWhenStopButtonPressed()
         {
@@ -101,6 +150,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void UpdatesLastLocationWithNewValueFromServiceIfServiceIsStarted()
         {
+            InitViewModelWithRink();
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
@@ -110,6 +160,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void LastCoordinateChangeUpdatesInfoLabel()
         {
+            InitViewModelWithRink();
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
@@ -119,6 +170,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void StopClearsInfoLabel()
         {
+            InitViewModelWithRink();
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
@@ -130,22 +182,29 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public async Task LastCoordinateChangeSavesCoordinateToDisk()
         {
+            InitViewModelWithRink();
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            await _storageService.Received().SaveCoordinateAsync(_locationStub);
+            await _storageService.Received().SaveWayPointAsync(Arg.Any<WayPointDto>());
         }
 
         [Fact]
         public void CreatesSessionOnPageStart()
         {
+            var rink = InitViewModelWithRink();
+
+            _sessionService.Received().CreateSessionForRink(rink);
+        }
+
+        private Rink InitViewModelWithRink()
+        {
             var rink = new Rink(RinkTests.EindhovenStart,
                 RinkTests.EindhovenFinish);
             _trackService.SelectedRink.Returns(rink);
-            
-            _sut.AttachHandlers();
 
-            _sessionService.Received().CreateSessionForRink(rink);
+            _sut.AttachHandlers();
+            return rink;
         }
 
         [Fact]

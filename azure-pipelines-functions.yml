@@ -1,0 +1,51 @@
+trigger:
+- develop
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- script: dotnet test Web\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating]*
+  displayName: 'Run functions tests'
+
+- bash: |
+    curl -s https://codecov.io/bash > codecov
+    chmod +x codecov
+    ./codecov -f "Tests\Functions\SmartSkating.Azure.Tests\coverage.opencover.xml" -t $(codecov.token)
+  displayName: 'Upload functions tests results'
+
+- script: dotnet build Web\Functions\WayPointSaverFunction\WayPointSaverFunction.csproj -c $(buildConfiguration) -v d
+  displayName: 'Build WayPointSaver function'
+
+- script: dotnet build Web\Functions\SessionSaverFunction\SessionSaverFunction.csproj -c $(buildConfiguration) -v d
+  displayName: 'Build SessionSaver function'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'Web\Functions\SessionSaverFunction\bin\Release\netcoreapp3.0\'
+    Contents: '**'
+    TargetFolder: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
+  displayName: 'Copy SessionSaverFunction output'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: 'Web\Functions\WayPointSaverFunction\bin\Release\Function.zip'
+    replaceExistingArchive: true
+    verbose: true
+  displayName: 'Archive functions'
+
+- task: AzureFunctionApp@1
+  inputs:
+    azureSubscription: 'AzureDevSubscription'
+    appType: 'functionApp'
+    appName: 'smartskating'
+    package: 'Web\Functions\WayPointSaverFunction\bin\Release\Function.zip'
+    deploymentMethod: 'auto'
+  displayName: 'Publish functions'

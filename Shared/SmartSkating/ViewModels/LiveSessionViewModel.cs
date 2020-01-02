@@ -2,11 +2,15 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Services.Account;
+using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Location;
-using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
 
@@ -17,7 +21,7 @@ namespace Sanet.SmartSkating.ViewModels
         private const string NoValue = "- - -";
         
         private readonly ILocationService _locationService;
-        private readonly IStorageService _storageService;
+        private readonly IDataService _storageService;
         private readonly ITrackService _trackService;
         private readonly ISessionService _sessionService;
         private ISession? _currentSession;
@@ -31,19 +35,23 @@ namespace Sanet.SmartSkating.ViewModels
         private string _totalTime = string.Empty;
         private string _bestLapTime = string.Empty;
         private string _bestSectorTime = string.Empty;
+        private readonly IAccountService _accountService;
+        private readonly IDataSyncService _dataSyncService;
 
-        public LiveSessionViewModel(
-            ILocationService locationService, 
-            IStorageService storageService,
-            ITrackService trackService, ISessionService sessionService)
+        public LiveSessionViewModel(ILocationService locationService,
+            IDataService storageService,
+            ITrackService trackService, ISessionService sessionService, IAccountService accountService,
+            IDataSyncService dataSyncService)
         {
             _locationService = locationService;
             _storageService = storageService;
             _trackService = trackService;
             _sessionService = sessionService;
+            _accountService = accountService;
+            _dataSyncService = dataSyncService;
         }
         
-        public ICommand StartCommand => new SimpleCommand( () =>
+        public ICommand StartCommand => new SimpleCommand(() =>
         {
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
             _locationService.StartFetchLocation();
@@ -51,8 +59,25 @@ namespace Sanet.SmartSkating.ViewModels
             IsRunning = true;
 #pragma warning disable 4014
             TrackTime();
+            SaveSessionAndSyncData();
 #pragma warning restore 4014
         });
+
+        private async Task SaveSessionAndSyncData(bool isCompleted = false)
+        {
+            var sessionDto = GetSessionDto();
+            if (sessionDto != null)
+            {
+                sessionDto.IsCompleted = isCompleted;
+                await _storageService.SaveSessionAsync(sessionDto);
+            }
+
+            if (isCompleted)
+            {
+                await _dataSyncService.SyncSessionsAsync();
+                await _dataSyncService.SyncWayPointsAsync();
+            }
+        }
 
         private async Task TrackTime()
         {
@@ -74,8 +99,13 @@ namespace Sanet.SmartSkating.ViewModels
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
             LastCoordinate = e.Coordinate;
-            _storageService.SaveCoordinateAsync(LastCoordinate);
-            Session?.AddPoint(LastCoordinate,DateTime.UtcNow);
+            if (Session != null)
+            {
+                var pointDto = WayPointDto.FromSessionCoordinate(Session.SessionId, LastCoordinate.ToDto());
+                _storageService.SaveWayPointAsync(pointDto);
+                Session?.AddPoint(LastCoordinate,pointDto.Time);
+            }
+
             UpdateMetaData();
         }
 
@@ -118,8 +148,13 @@ namespace Sanet.SmartSkating.ViewModels
         {
             _locationService.LocationReceived -= LocationServiceOnLocationReceived;
             _locationService.StopFetchLocation();
+            
             IsRunning = false;
             InfoLabel = string.Empty;
+            
+#pragma warning disable 4014
+            SaveSessionAndSyncData(true);
+#pragma warning restore 4014
         }
 
         public bool IsRunning
@@ -208,6 +243,17 @@ namespace Sanet.SmartSkating.ViewModels
             Session = _trackService.SelectedRink != null
                 ? _sessionService.CreateSessionForRink(_trackService.SelectedRink)
                 : null;
+        }
+
+        private SessionDto? GetSessionDto()
+        {
+            if (Session == null)
+                return null;
+            return new SessionDto
+            {
+                Id = Session.SessionId,
+                AccountId = _accountService.UserId,
+            };
         }
     }
 }

@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
 using NSubstitute;
-using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Services;
+using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.Tests.Models.Geometry;
@@ -19,13 +20,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
         private readonly ITrackService _tracksService;
         private readonly INavigationService _navigationService;
+        private readonly IDataSyncService _dataSyncService;
 
         public StartViewModelTest()
         {
             _navigationService = Substitute.For<INavigationService>();
             _tracksService = Substitute.For<ITrackService>();
             _locationService = Substitute.For<ILocationService>();
-            _sut = new StartViewModel(_locationService,_tracksService);
+            _dataSyncService = Substitute.For<IDataSyncService>();
+            _sut = new StartViewModel(_locationService,_tracksService, _dataSyncService);
             _sut.SetNavigationService(_navigationService);
         }
 
@@ -35,6 +38,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.AttachHandlers();
             
             _locationService.Received().StartFetchLocation();
+        }
+        
+        [Fact]
+        public void StartsDataSyncProcessOnPageAppear()
+        {
+            _sut.AttachHandlers();
+            
+            _dataSyncService.Received().StartSyncing();
         }
         
         [Fact]

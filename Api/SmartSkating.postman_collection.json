@@ -1,0 +1,41 @@
+{
+	"info": {
+		"_postman_id": "2503d9aa-1468-4ab3-bcf7-012167e754fb",
+		"name": "SmartSkating",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST waypoints",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\n    \"Coordinate\":{\n        \"Latitude\":34,\n        \"Longitude\":23\n    },\n    \"Id\": \"0\",\n    \"SessionId\": \"0\",\n    \"WayPointType\": \"na\"\n},\n{\n            \"Coordinate\":{\n        \"Latitude\":34,\n        \"Longitude\":23\n    },\n    \"Id\": \"1\",\n    \"SessionId\": \"0\",\n    \"WayPointType\": \"na\"}]"
+				},
+				"url": {
+					"raw": "https://smartskating.azure-api.net/smartskating/waypoints",
+					"protocol": "https",
+					"host": [
+						"smartskating",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"smartskating",
+						"waypoints"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

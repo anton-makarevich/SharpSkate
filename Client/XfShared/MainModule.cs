@@ -1,4 +1,8 @@
+using Refit;
+using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Services.Account;
+using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
@@ -14,7 +18,10 @@ namespace Sanet.SmartSkating.Xf
             container.Register<StartViewModel>();
             
             // Register services
-            container.RegisterSingleton<IStorageService, JsonStorageService>();
+            container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
+            container.RegisterSingleton<IAccountService,EssentialsAccountService>();
+            container.RegisterSingleton<IDataSyncService,DataSyncService>();
+            container.RegisterSingleton<IDataService, JsonStorageService>();
             container.RegisterSingleton<ITrackProvider,LocalTrackProvider>();
             container.RegisterSingleton<ITrackService, TrackService>();
             container.RegisterSingleton<ISessionService,SessionService>();
