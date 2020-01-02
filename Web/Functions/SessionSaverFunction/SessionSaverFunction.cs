@@ -16,7 +16,7 @@ using Sanet.SmartSkating.Dto.Services;
 
 namespace Sanet.SmartSkating.Web.Functions
 {
-    public class WayPointSaverFunction
+    public class SessionSaverFunction
     {
         private IDataService? _dataService;
 
@@ -25,11 +25,11 @@ namespace Sanet.SmartSkating.Web.Functions
             _dataService = dataService;
         }
         
-        [FunctionName("WayPointSaverFunction")]
+        [FunctionName("SessionSaverFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function,
-                "post", 
-                Route = ApiNames.WayPointsResource.Route)] HttpRequest request,
+            [HttpTrigger(AuthorizationLevel.Function, 
+                "post",
+                Route = ApiNames.SessionsResource.Route)] HttpRequest request,
             ILogger log)
         {
             if (_dataService == null)
@@ -37,7 +37,7 @@ namespace Sanet.SmartSkating.Web.Functions
 
             var responseObject = new SaveEntitiesResponse {SyncedIds = new List<string>()};
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
-            var requestObject = JsonConvert.DeserializeObject<List<WayPointDto>>(requestData);
+            var requestObject = JsonConvert.DeserializeObject<List<SessionDto>>(requestData);
             
             if (requestObject == null)
             {
@@ -49,7 +49,7 @@ namespace Sanet.SmartSkating.Web.Functions
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
                 foreach (var wayPoint in requestObject)
                 {
-                    if (_dataService != null && await _dataService.SaveWayPointAsync(wayPoint))
+                    if (_dataService != null && await _dataService.SaveSessionAsync(wayPoint))
                         responseObject.SyncedIds.Add(wayPoint.Id);
                 }
 

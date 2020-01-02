@@ -13,9 +13,11 @@ namespace Sanet.SmartSkating.Azure.Services
     public class AzureTablesDataService:IDataService
     {
         private readonly ILogger _log;
-        private const string TableName = "WayPointsTable";
+        private const string WayPointsTableName = "WayPointsTable";
+        private const string SessionsTableName = "SessionsTable";
 
-        private readonly CloudTable _scoresTable;
+        private readonly CloudTable _wayPointsTable;
+        private readonly CloudTable _sessionsTable;
 
         private readonly bool _hasStorageAccess;
 
@@ -33,25 +35,32 @@ namespace Sanet.SmartSkating.Azure.Services
 
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var tableClient = storageAccount.CreateCloudTableClient();
-            _scoresTable = tableClient.GetTableReference(TableName);
+            
+            _wayPointsTable = tableClient.GetTableReference(WayPointsTableName);
+            _sessionsTable = tableClient.GetTableReference(SessionsTableName);
         }
         
         public async Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
+        {
+            var entity = new WayPointEntity(wayPoint);
+            return await SaveEntityAsync(entity,_wayPointsTable);
+        }
+
+        private async Task<bool> SaveEntityAsync(TableEntity entity, CloudTable table)
         {
             if (!_hasStorageAccess)
                 return false;
             try
             {
-                await _scoresTable.CreateIfNotExistsAsync();
-                var entity = new WayPointEntity(wayPoint);
+                await _wayPointsTable.CreateIfNotExistsAsync();
                 var insertOperation = TableOperation.InsertOrMerge(entity);
-                var result = await _scoresTable.ExecuteAsync(insertOperation);
+                await table.ExecuteAsync(insertOperation);
 
-                return result.Result is WayPointEntity;
+                return true;
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
-                _log.LogError(exception,exception.Message);
+                _log.LogError(exception, exception.Message);
                 return false;
             }
         }
@@ -67,9 +76,10 @@ namespace Sanet.SmartSkating.Azure.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> SaveSessionAsync(SessionDto session)
+        public async Task<bool> SaveSessionAsync(SessionDto session)
         {
-            throw new NotImplementedException();
+            var entity = new SessionEntity(session);
+            return await SaveEntityAsync(entity,_sessionsTable);
         }
 
         public Task<List<SessionDto>> GetAllSessionsAsync()
