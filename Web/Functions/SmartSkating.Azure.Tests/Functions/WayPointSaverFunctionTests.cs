@@ -12,45 +12,45 @@ using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Web.Functions;
 using Xunit;
 
-namespace SessionSaverFunctionTests
+namespace Sanet.SmartSkating.Azure.Tests.Functions
 {
-    public class SessionSaverFunctionTests
+    public class WayPointSaverFunctionTests
     {
-        private readonly SessionSaverFunction _sut;
+        private readonly WayPointSaverFunction _sut;
         private readonly IDataService _dataService;
-        private readonly List<SessionDto> _sessionsStub = new List<SessionDto>()
+        private readonly List<WayPointDto> _wayPointsStub = new List<WayPointDto>()
         {
-            new SessionDto()
+            new WayPointDto()
             {
+                Coordinate = new CoordinateDto(),
                 Id = "0",
-                AccountId = "0",
-                IsSaved = false,
-                IsCompleted = false
+                SessionId = "0",
+                WayPointType = "na"
             },
-            new SessionDto()
+            new WayPointDto()
             {
+                Coordinate = new CoordinateDto(),
                 Id = "1",
-                AccountId = "0",
-                IsSaved = false,
-                IsCompleted = false
+                SessionId = "0",
+                WayPointType = "na"
             }
         };
 
-        public SessionSaverFunctionTests()
+        public WayPointSaverFunctionTests()
         {
             _dataService = Substitute.For<IDataService>();
-            _sut = new SessionSaverFunction();
+            _sut = new WayPointSaverFunction();
             _sut.SetService(_dataService);
         }
 
         [Fact]
-        public async Task RunningFunctionCallsSaveSessionsForEveryItem()
+        public async Task RunningFunctionCallsSaveWayPointForEveryItem()
         {
             await _sut.Run(Utils.CreateMockRequest(
-                    _sessionsStub),
+                    _wayPointsStub),
                 Substitute.For<ILogger>());
 
-            await _dataService.Received(2).SaveSessionAsync(Arg.Any<SessionDto>());
+            await _dataService.Received(2).SaveWayPointAsync(Arg.Any<WayPointDto>());
         }
 
         [Fact]
@@ -69,12 +69,12 @@ namespace SessionSaverFunctionTests
         }
         
         [Fact]
-        public async Task RunningFunctionReturnsListOfSavedSessionIds()
+        public async Task RunningFunctionReturnsListOfSavedWayPointIds()
         {
-            _dataService.SaveSessionAsync(Arg.Any<SessionDto>()).ReturnsForAnyArgs(Task.FromResult(true));
+            _dataService.SaveWayPointAsync(Arg.Any<WayPointDto>()).ReturnsForAnyArgs(Task.FromResult(true));
         
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _sessionsStub),
+                    _wayPointsStub),
                 Substitute.For<ILogger>()) as JsonResult;
         
             Assert.NotNull(actionResult);
@@ -83,8 +83,8 @@ namespace SessionSaverFunctionTests
             Assert.NotNull(response?.SyncedIds);
             Assert.Equal(200, response.ErrorCode);
             Assert.Equal(2, response.SyncedIds.Count);
-            Assert.Equal(_sessionsStub.First().Id,response.SyncedIds.First());
-            Assert.Equal(_sessionsStub.Last().Id,response.SyncedIds.Last());
+            Assert.Equal(_wayPointsStub.First().Id,response.SyncedIds.First());
+            Assert.Equal(_wayPointsStub.Last().Id,response.SyncedIds.Last());
         }
         
         [Fact]
@@ -95,7 +95,7 @@ namespace SessionSaverFunctionTests
             _dataService.SaveWayPointAsync(Arg.Any<WayPointDto>()).ReturnsForAnyArgs(Task.FromResult(false));
         
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _sessionsStub),
+                    _wayPointsStub),
                 Substitute.For<ILogger>()) as JsonResult;
         
             Assert.NotNull(actionResult);

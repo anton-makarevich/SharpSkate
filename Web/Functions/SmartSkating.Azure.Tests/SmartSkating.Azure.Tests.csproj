@@ -5,7 +5,7 @@
 
         <IsPackable>false</IsPackable>
 
-        <RootNamespace>WayPointSaverFunctionTests</RootNamespace>
+        <RootNamespace>Sanet.SmartSkating.Azure.Tests</RootNamespace>
 
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FunctionTestUtils\FunctionTestUtils.csproj" />
+      <ProjectReference Include="..\SessionSaverFunction\SessionSaverFunction.csproj" />
       <ProjectReference Include="..\WayPointSaverFunction\WayPointSaverFunction.csproj" />
     </ItemGroup>
 

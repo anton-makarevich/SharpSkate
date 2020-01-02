@@ -9,17 +9,27 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet test Web\Functions\WayPointSaverFunction.Tests\WayPointSaverFunction.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating]*
-  displayName: 'Run WayPointSaver tests'
+- script: dotnet test Web\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating]*
+  displayName: 'Run functions tests'
 
 - bash: |
     curl -s https://codecov.io/bash > codecov
     chmod +x codecov
-    ./codecov -f "Tests\Functions\LoginTests\coverage.opencover.xml" -t $(codecov.token)
-  displayName: 'Upload WayPointSaver tests results'
+    ./codecov -f "Tests\Functions\SmartSkating.Azure.Tests\coverage.opencover.xml" -t $(codecov.token)
+  displayName: 'Upload functions tests results'
 
 - script: dotnet build Web\Functions\WayPointSaverFunction\WayPointSaverFunction.csproj -c $(buildConfiguration) -v d
   displayName: 'Build WayPointSaver function'
+
+- script: dotnet build Web\Functions\SessionSaverFunction\SessionSaverFunction.csproj -c $(buildConfiguration) -v d
+  displayName: 'Build SessionSaver function'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'Web\Functions\SessionSaverFunction\bin\Release\netcoreapp3.0\'
+    Contents: '**'
+    TargetFolder: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
+  displayName: 'Copy SessionSaverFunction output'
 
 - task: ArchiveFiles@2
   inputs:
