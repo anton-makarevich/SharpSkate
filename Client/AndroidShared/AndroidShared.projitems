@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Services\Location\AndroidBleService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Location\BleScanCallBack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AndroidExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Location\LocationManagerService.cs" />
   </ItemGroup>
