@@ -137,7 +137,7 @@ namespace Sanet.SmartSkating.ViewModels
             }
 
             Laps = Session.LapsCount.ToString();
-            if (Session.Sectors.Any())
+            if (Session.Sectors.Count>0)
             {
                 var lastSector = Session.Sectors.Last();
                 LastSectorTime = lastSector.Time.ToString("mm\\:ss");
@@ -150,7 +150,7 @@ namespace Sanet.SmartSkating.ViewModels
                 LastSectorTime = NoValue;
                 BestSectorTime = NoValue;
             }
-            if (Session.WayPoints.Any())
+            if (Session.WayPoints.Count>0)
                 CurrentSector = $"Currently in {Session.WayPoints.Last().Type.GetSectorName()} sector";
         }
 

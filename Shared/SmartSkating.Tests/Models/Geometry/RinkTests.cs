@@ -99,7 +99,7 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         [Fact]
         public void FirstSectorIsDefined()
         {
-            Assert.True(_sut.FirstSector.Corners.Any());
+            Assert.True(_sut.FirstSector.Corners.Count>0);
         }
         
         [Fact]
@@ -133,7 +133,7 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         [Fact]
         public void SecondSectorIsDefined()
         {
-            Assert.True(_sut.SecondSector.Corners.Any());
+            Assert.True(_sut.SecondSector.Corners.Count>0);
         }
         
         [Fact]
@@ -145,7 +145,7 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         [Fact]
         public void ThirdSectorIsDefined()
         {
-            Assert.True(_sut.ThirdSector.Corners.Any());
+            Assert.True(_sut.ThirdSector.Corners.Count>0);
         }
         
         [Fact]
@@ -186,7 +186,7 @@ namespace Sanet.SmartSkating.Tests.Models.Geometry
         [Fact]
         public void FourthSectorIsDefined()
         {
-            Assert.True(_sut.FourthSector.Corners.Any());
+            Assert.True(_sut.FourthSector.Corners.Count>0);
         }
 
         [Fact]

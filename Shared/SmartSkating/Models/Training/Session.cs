@@ -34,7 +34,7 @@ namespace Sanet.SmartSkating.Models.Training
             if (!((point, _rink.Center).GetDistance() <= 100)) return;
 
             // we only record sectors in normal CCW order
-            var expectedSectorTypes = WayPoints.Any()
+            var expectedSectorTypes = WayPoints.Count>0
                 ? new List<WayPointTypes>
                 {
                     WayPoints.Last().Type,
@@ -43,7 +43,7 @@ namespace Sanet.SmartSkating.Models.Training
                 }
                 : new List<WayPointTypes>();
 
-            var expectedSectors = expectedSectorTypes.Any()
+            var expectedSectors = expectedSectorTypes.Count>0
                 ? _rink.Sectors.Where(s => expectedSectorTypes.Contains(s.Type)).ToList()
                 : _rink.Sectors;
 
@@ -67,7 +67,7 @@ namespace Sanet.SmartSkating.Models.Training
                 }
             }
 
-            if (expectedSectorTypes.Any() 
+            if (expectedSectorTypes.Count>0 
                 && type == expectedSectorTypes.Last() 
                 && date.Subtract(WayPoints.Last().Date).TotalSeconds>MaxSectorTimeInSeconds)
             {
@@ -89,7 +89,7 @@ namespace Sanet.SmartSkating.Models.Training
             if (type == WayPointTypes.Unknown)
                 return;
             
-            if (WayPoints.Any() && WayPoints.Last().Type != type)
+            if (WayPoints.Count>0 && WayPoints.Last().Type != type)
             {
                 var lastPoint = WayPoints.Last();
                 var separatingPointType = (lastPoint.Type, type).GetTypeSeparatingSectors();
@@ -118,7 +118,7 @@ namespace Sanet.SmartSkating.Models.Training
         public void AddSeparatingPoint(WayPointTypes type, DateTime date)
         {
             var location = type.GetSeparatingPointLocationForType(_rink).Item2;
-            if (WayPoints.Any())
+            if (WayPoints.Count>0)
             {
                 var previousSectorType = type.GetPreviousSectorType();
                 if (WayPoints.Last().Type!=previousSectorType)
@@ -155,7 +155,7 @@ namespace Sanet.SmartSkating.Models.Training
             }
             var section = new Section(firstPoint,separatingWayPoint);
 
-            if (Sectors.Any() )
+            if (Sectors.Count>0 )
                 if (BestSector == null || BestSector.Value.Time.TotalMilliseconds > section.Time.TotalMilliseconds)
                     BestSector = section;
             

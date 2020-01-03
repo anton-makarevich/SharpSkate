@@ -47,7 +47,7 @@ namespace Sanet.SmartSkating.Services.Api
             if (!await _connectivityService.IsConnected())
                 return;
             var wayPointsToSync = await _dataService.GetAllWayPointsAsync();
-            if (!wayPointsToSync.Any())
+            if (wayPointsToSync.Count==0)
                 return;
             var wayPointsIds = (await _apiService.PostWaypointsAsync(wayPointsToSync))
                 .SyncedIds;
@@ -65,7 +65,7 @@ namespace Sanet.SmartSkating.Services.Api
             var sessionsToSync = (await _dataService.GetAllSessionsAsync())
                 .Where(s=>!s.IsSaved||s.IsCompleted)
                 .ToList();
-            if (!sessionsToSync.Any())
+            if (sessionsToSync.Count==0)
                 return;
             var syncedIds = (await _apiService.PostSessionsAsync(sessionsToSync))
                 .SyncedIds;
