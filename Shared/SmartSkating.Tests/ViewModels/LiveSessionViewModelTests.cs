@@ -30,6 +30,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly ISessionService _sessionService = Substitute.For<ISessionService>();
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
         private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
+        private readonly IBleLocationService _bleLocationService = Substitute.For<IBleLocationService>();
 
         public LiveSessionViewModelTests()
         {
@@ -39,7 +40,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 _trackService,
                 _sessionService,
                 _accountService,
-                _dataSyncService);
+                _dataSyncService,
+                _bleLocationService);
         }
 
         [Fact]
@@ -97,7 +99,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
-        public void StopsLocationServiceWhenStopButtonPressed()
+        public void StopsLocationService_WhenStopButtonPressed()
         {
             _sut.StopCommand.Execute(null);
 
@@ -105,7 +107,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ChangesStateToIsRunningWhenStartButtonPressed()
+        public void ChangesStateToIsRunning_WhenStartButtonPressed()
         {
             var isRunningChanged = false;
             _sut.PropertyChanged += (s, e) =>
@@ -120,7 +122,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ChangesStateToNotIsRunningWhenStartButtonPressed()
+        public void ChangesStateToNotIsRunning_WhenStartButtonPressed()
         {
             _sut.StartCommand.Execute(null);
 
@@ -137,7 +139,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void StopsLocationServiceWhenLeavingThePage()
+        public void StopsLocationService_WhenLeavingThePage()
         {
             _sut.StartCommand.Execute(null);
 
@@ -148,7 +150,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void UpdatesLastLocationWithNewValueFromServiceIfServiceIsStarted()
+        public void UpdatesLastLocationWithNewValueFromService_IfServiceIsStarted()
         {
             InitViewModelWithRink();
             _sut.StartCommand.Execute(null);
@@ -434,5 +436,38 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             
             session.Received().SetStartTime(Arg.Any<DateTime>());
         }
+
+        #region Ble
+        [Fact]
+        public void StartsBleScan_WhenStartButtonPressed()
+        {
+            _sut.StartCommand.Execute(null);
+
+            _bleLocationService.Received().StartBleScan();
+        }
+        
+        [Fact]
+        public void StopsBleScan_WhenStopButtonPressed()
+        {
+            _sut.StopCommand.Execute(null);
+
+            _bleLocationService.Received().StopBleScan();
+        }
+        
+        [Fact]
+        public void AddsSectionSeparator_WhenCheckPointIsPassed()
+        {
+            var session = CreateSessionMock();
+            _sut.StartCommand.Execute(null);
+            const WayPointTypes checkPointType = WayPointTypes.Start;
+            var date = DateTime.Now;
+            
+            _bleLocationService.CheckPointPassed += Raise.EventWith(
+                null, 
+                new CheckPointEventArgs(checkPointType, date));
+
+            session.Received().AddSeparatingPoint(checkPointType,date);
+        }
+        #endregion
     }
 }

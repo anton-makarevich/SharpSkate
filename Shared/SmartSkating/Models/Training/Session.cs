@@ -105,7 +105,7 @@ namespace Sanet.SmartSkating.Models.Training
                     date,
                     distanceTo,
                     distanceFrom);
-                AddSeparatingPoint(separatingPointLocation.Item2,separatingPointDate,separatingPointType);
+                AddSeparatingPoint(separatingPointType, separatingPointDate);
             }
 
             WayPoints.Add(new WayPoint(
@@ -115,8 +115,9 @@ namespace Sanet.SmartSkating.Models.Training
                 type));
         }
 
-        public void AddSeparatingPoint(Coordinate location, DateTime date, WayPointTypes type)
+        public void AddSeparatingPoint(WayPointTypes type, DateTime date)
         {
+            var location = type.GetSeparatingPointLocationForType(_rink).Item2;
             if (WayPoints.Any())
             {
                 var previousSectorType = type.GetPreviousSectorType();

@@ -37,11 +37,12 @@ namespace Sanet.SmartSkating.ViewModels
         private string _bestSectorTime = string.Empty;
         private readonly IAccountService _accountService;
         private readonly IDataSyncService _dataSyncService;
+        private readonly IBleLocationService _bleLocationService;
 
         public LiveSessionViewModel(ILocationService locationService,
             IDataService storageService,
             ITrackService trackService, ISessionService sessionService, IAccountService accountService,
-            IDataSyncService dataSyncService)
+            IDataSyncService dataSyncService, IBleLocationService bleLocationService)
         {
             _locationService = locationService;
             _storageService = storageService;
@@ -49,12 +50,15 @@ namespace Sanet.SmartSkating.ViewModels
             _sessionService = sessionService;
             _accountService = accountService;
             _dataSyncService = dataSyncService;
+            _bleLocationService = bleLocationService;
         }
         
         public ICommand StartCommand => new SimpleCommand(() =>
         {
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
+            _bleLocationService.CheckPointPassed+= BleLocationServiceOnCheckPointPassed;
             _locationService.StartFetchLocation();
+            _bleLocationService.StartBleScan();
             Session?.SetStartTime(DateTime.UtcNow);
             IsRunning = true;
 #pragma warning disable 4014
@@ -62,6 +66,11 @@ namespace Sanet.SmartSkating.ViewModels
             SaveSessionAndSyncData();
 #pragma warning restore 4014
         });
+
+        private void BleLocationServiceOnCheckPointPassed(object sender, CheckPointEventArgs e)
+        {
+            Session?.AddSeparatingPoint(e.WayPointType,e.Date??DateTime.UtcNow);
+        }
 
         private async Task SaveSessionAndSyncData(bool isCompleted = false)
         {
@@ -150,7 +159,10 @@ namespace Sanet.SmartSkating.ViewModels
         private void StopLocationService()
         {
             _locationService.LocationReceived -= LocationServiceOnLocationReceived;
+            _bleLocationService.CheckPointPassed-= BleLocationServiceOnCheckPointPassed;
+
             _locationService.StopFetchLocation();
+            _bleLocationService.StopBleScan();
             
             IsRunning = false;
             InfoLabel = string.Empty;

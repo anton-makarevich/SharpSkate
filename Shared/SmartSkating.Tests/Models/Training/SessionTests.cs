@@ -235,7 +235,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         public void DoesNotAddSeparatorIfLastPointDoesNotBelongToPreviousSector()
         {
             _sut.AddPoint(_firstSectorPoint, DateTime.Now);
-            _sut.AddSeparatingPoint(_rink.Start3K,DateTime.Now.AddSeconds(10), WayPointTypes.Start3K);
+            _sut.AddSeparatingPoint(WayPointTypes.Start3K,DateTime.Now.AddSeconds(10));
 
             Assert.Single(_sut.WayPoints);
         }
