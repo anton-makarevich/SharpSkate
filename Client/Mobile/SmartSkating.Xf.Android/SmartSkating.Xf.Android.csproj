@@ -116,6 +116,10 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj">
+      <Project>{da620869-1efd-4593-add8-05d9904de1fb}</Project>
+      <Name>SmartSkating.Dto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj">
       <Project>{795C2FC0-D25E-48E9-AD4A-2A003447415A}</Project>
       <Name>SmartSkating</Name>

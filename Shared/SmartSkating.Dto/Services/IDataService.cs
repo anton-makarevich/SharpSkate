@@ -14,5 +14,7 @@ namespace Sanet.SmartSkating.Dto.Services
         Task<bool> SaveSessionAsync(SessionDto session);
         Task<List<SessionDto>> GetAllSessionsAsync();
         Task<bool> DeleteSessionAsync(string id);
+        
+        Task<bool> SaveBleAsync(BleScanResultDto session);
     }
 }

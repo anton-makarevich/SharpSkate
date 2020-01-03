@@ -14,6 +14,7 @@ namespace Sanet.SmartSkating.Services.Storage
         private const string SmartSkatingFolder = "SmartSkating";
         private const string WayPointsFolder = "WayPoints";
         private const string SessionsFolder = "Sessions";
+        private const string BleFolder = "Ble";
 
         private static string SmartSkatingPath =>
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), SmartSkatingFolder);
@@ -98,6 +99,11 @@ namespace Sanet.SmartSkating.Services.Storage
         public Task<bool> DeleteSessionAsync(string id)
         {
             return DeleteAsync(id, SessionsFolder);
+        }
+
+        public Task<bool> SaveBleAsync(BleScanResultDto bleScanResult)
+        {
+            return SaveAsync(bleScanResult,BleFolder);
         }
     }
 }

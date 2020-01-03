@@ -9,6 +9,7 @@
     <Import_RootNamespace>Sanet.SmartSkating.Droid</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Location\AndroidBleService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AndroidExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Location\LocationManagerService.cs" />
   </ItemGroup>
