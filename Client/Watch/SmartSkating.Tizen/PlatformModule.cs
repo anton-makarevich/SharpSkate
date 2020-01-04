@@ -1,5 +1,5 @@
 using Sanet.SmartSkating.Services.Location;
-using Sanet.SmartSkating.Tizen.Services;
+using Sanet.SmartSkating.Tizen.Services.Location;
 using Sanet.SmartSkating.Xf;
 using SimpleInjector;
 
@@ -18,7 +18,8 @@ namespace Sanet.SmartSkating.Tizen
             #if DEBUG
             container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 100));
             #else
-            container.RegisterInstance<ILocationService>(new EssentialsLocationService());
+            container.RegisterSingleton<ILocationService,EssentialsLocationService>();
+            container.RegisterSingleton<IBleLocationService,TizenBleService>();
 #endif
         }
     }
