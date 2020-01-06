@@ -2,7 +2,7 @@ using Android.App;
 using Refit;
 using Sanet.SmartSkating.Dto;
 #if DEBUG
-using Sanet.SmartSkating.Tizen.Services;
+using Sanet.SmartSkating.Tizen.Services.Location;
 #else
 using Sanet.SmartSkating.Droid.Services.Location;
 #endif

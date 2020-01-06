@@ -54,9 +54,6 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\SmartSkating.Tizen\Services\DummyLocationService.cs">
-      <Link>Services\DummyLocationService.cs</Link>
-    </Compile>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Models\TracksAdapter.cs" />
     <Compile Include="Models\TracksViewHolder.cs" />

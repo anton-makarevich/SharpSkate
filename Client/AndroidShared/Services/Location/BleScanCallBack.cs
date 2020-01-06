@@ -9,6 +9,7 @@ namespace Sanet.SmartSkating.Droid.Services.Location
     class BleScanCallBack : ScanCallback
     {
         private readonly IDataService _dataService;
+        public EventHandler<BleScanResultDto>? BeaconFound;
 
         public BleScanCallBack(IDataService dataService)
         {
@@ -18,7 +19,8 @@ namespace Sanet.SmartSkating.Droid.Services.Location
         public override void OnScanResult(ScanCallbackType callbackType, ScanResult result)
         {
             base.OnScanResult(callbackType, result);
-            ProcessScanResult(result);
+            if (callbackType!= ScanCallbackType.MatchLost) 
+                ProcessScanResult(result);
         }
 
         public override void OnScanFailed(ScanFailure errorCode)
@@ -47,6 +49,7 @@ namespace Sanet.SmartSkating.Droid.Services.Location
                 Time = DateTime.UtcNow
             };
             _dataService.SaveBleAsync(bleDto);
+            BeaconFound?.Invoke(this,bleDto);
         }
     }
 }
