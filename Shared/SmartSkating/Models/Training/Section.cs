@@ -1,4 +1,5 @@
 using System;
+using Sanet.SmartSkating.Dto.Models;
 
 namespace Sanet.SmartSkating.Models.Training
 {

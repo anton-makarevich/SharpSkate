@@ -1,6 +1,6 @@
 namespace Sanet.SmartSkating.Dto.Models
 {
-    public struct TrackDto
+    public class TrackDto:EntityBase
     {
         public string Name { get; set; }
         public CoordinateDto Start { get; set; }

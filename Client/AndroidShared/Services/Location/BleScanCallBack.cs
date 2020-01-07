@@ -9,7 +9,7 @@ namespace Sanet.SmartSkating.Droid.Services.Location
     class BleScanCallBack : ScanCallback
     {
         private readonly IDataService _dataService;
-        public EventHandler<BleScanResultDto>? BeaconFound;
+        public event EventHandler<BleScanResultDto>? BeaconFound;
 
         public BleScanCallBack(IDataService dataService)
         {

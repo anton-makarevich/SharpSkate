@@ -67,8 +67,8 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\Watch\SmartSkating.Tizen\Services\DummyLocationService.cs">
-      <Link>Services\DummyLocationService.cs</Link>
+    <Compile Include="..\..\Watch\SmartSkating.Tizen\Services\Location\DummyLocationService.cs">
+      <Link>Services\Location\DummyLocationService.cs</Link>
     </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />

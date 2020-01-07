@@ -1,33 +1,26 @@
-using System;
 using System.Collections.Generic;
 using Android.Bluetooth;
 using Android.Bluetooth.LE;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Models.EventArgs;
-using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Location;
 using ScanMode = Android.Bluetooth.LE.ScanMode;
 
 namespace Sanet.SmartSkating.Droid.Services.Location
 {
-    public class AndroidBleService:IBleLocationService
+    public class AndroidBleService:BaseBleLocationService
     {
-        private readonly IDataService _dataService;
         private readonly BluetoothLeScanner _bleScanner;
-        private BleScanCallBack _callBack;
+        private readonly BleScanCallBack _callBack;
 
-        public AndroidBleService(IDataService dataService)
+        public AndroidBleService(IDataService dataService, IBleDevicesProvider bleDevicesProvider):base(bleDevicesProvider)
         {
-            _dataService = dataService;
+            _callBack = new BleScanCallBack(dataService);
             _bleScanner = BluetoothAdapter.DefaultAdapter.BluetoothLeScanner;
         }
-
-        public event EventHandler<CheckPointEventArgs>? CheckPointPassed;
-        public void StartBleScan()
+        
+        public override void StartBleScan()
         {
-            _callBack = new BleScanCallBack(_dataService);
-            
             _callBack.BeaconFound += OnBeaconFound;
             
             var filter = new ScanFilter.Builder()
@@ -49,17 +42,15 @@ namespace Sanet.SmartSkating.Droid.Services.Location
             switch (e.DeviceAddress)
             {
                 case "C9:97:BF:3A:FE:41":
-                    CheckPointPassed?.Invoke(this,new CheckPointEventArgs(
-                        WayPointTypes.Start, e.Time));
+                    InvokeCheckPointPassed(WayPointTypes.Start, e.Time);
                     break;
                 case "DC:E6:99:19:95:41":
-                    CheckPointPassed?.Invoke(this,new CheckPointEventArgs(
-                        WayPointTypes.Finish, e.Time));
+                    InvokeCheckPointPassed(WayPointTypes.Finish, e.Time);
                     break;
             }
         }
 
-        public void StopBleScan()
+        public override void StopBleScan()
         {
             _bleScanner.StopScan(_callBack);
             _bleScanner.FlushPendingScanResults(_callBack);

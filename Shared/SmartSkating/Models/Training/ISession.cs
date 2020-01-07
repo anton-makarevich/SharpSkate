@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 

@@ -1,5 +1,6 @@
 using System;
 using FluentAssertions;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Tests.Models.Geometry;

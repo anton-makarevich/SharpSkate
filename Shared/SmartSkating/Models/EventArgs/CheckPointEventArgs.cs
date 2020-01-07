@@ -1,4 +1,5 @@
 using System;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Training;
 
 namespace Sanet.SmartSkating.Models.EventArgs

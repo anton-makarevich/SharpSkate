@@ -8,11 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Resources" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Remove="Resources\tracks.json" />
+      <EmbeddedResource Include="Resources\ble.json" />
       <EmbeddedResource Include="Resources\tracks.json" />
     </ItemGroup>
 

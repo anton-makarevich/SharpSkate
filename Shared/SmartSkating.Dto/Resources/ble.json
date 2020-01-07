@@ -1,0 +1,26 @@
+[
+    {
+        "Id": "C9:97:BF:3A:FE:41",
+        "ParentId": "EFD0CCFA06A54EAA9657772BF8AD2D30",
+        "DeviceName":"RDL51822",
+        "WayPointType":1
+    },
+    {
+        "Id": "DC:E6:99:19:95:41",
+        "ParentId": "EFD0CCFA06A54EAA9657772BF8AD2D30",
+        "DeviceName":"RDL51822",
+        "WayPointType":3
+    },
+    {
+        "Id": "AC:E6:99:19:95:41",
+        "ParentId": "EFD0CCFA06A54EAA9657772BF8AD2D30",
+        "DeviceName":"RDL51822",
+        "WayPointType":4
+    },
+    {
+        "Id": "BC:E6:99:19:95:41",
+        "ParentId": "EFD0CCFA06A54EAA9657772BF8AD2D30",
+        "DeviceName":"RDL51822",
+        "WayPointType":6
+    }
+]

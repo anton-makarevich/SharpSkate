@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using FluentAssertions;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;

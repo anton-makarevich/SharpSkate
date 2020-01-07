@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Utils;
@@ -33,7 +32,7 @@ namespace Sanet.SmartSkating.Services.Tracking
                 .OrderBy(o => o.Distance)
                 .Select(o=>o.Track)
                 .FirstOrDefault();
-            SelectedRink = !track.Equals(default(TrackDto))
+            SelectedRink = track!=null
                 ? new Rink(new Coordinate(track.Start), new Coordinate(track.Finish), track.Name)
                 : null;
         }
@@ -46,7 +45,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         public void SelectRinkByName(string name)
         {
             var track = Tracks.SingleOrDefault(r => r.Name == name);
-            SelectedRink = !string.IsNullOrEmpty(track.Name) 
+            SelectedRink = !string.IsNullOrEmpty(track?.Name) 
                 ? new Rink(new Coordinate(track.Start),new Coordinate(track.Finish), track.Name) 
                 : null;
         }
