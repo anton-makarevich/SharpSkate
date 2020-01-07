@@ -55,7 +55,6 @@ namespace Sanet.SmartSkating.Droid.Services.Location
             _bleScanner.StopScan(_callBack);
             _bleScanner.FlushPendingScanResults(_callBack);
             _callBack.BeaconFound -= OnBeaconFound;
-
         }
     }
 }

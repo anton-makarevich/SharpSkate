@@ -1,29 +1,28 @@
 using System;
-using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Services.Location;
 using Tizen.Network.Bluetooth;
 
 namespace Sanet.SmartSkating.Tizen.Services.Location
 {
-    public class TizenBleService:IBleLocationService
+    public class TizenBleService:BaseBleLocationService
     {
         private readonly IDataService _dataService;
-        public event EventHandler<CheckPointEventArgs>? CheckPointPassed;
 
-        public TizenBleService(IDataService dataService)
+        public TizenBleService(
+            IDataService dataService,
+            IBleDevicesProvider bleDevicesProvider):base(bleDevicesProvider)
         {
             _dataService = dataService;
         }
         
-        public void StartBleScan()
+        public override void StartBleScan()
         {
             RunScan();
         }
 
-        private async Task RunScan()
+        private void RunScan()
         {
             BluetoothAdapter.ScanResultChanged+= BluetoothAdapterOnScanResultChanged;
         }
@@ -41,9 +40,8 @@ namespace Sanet.SmartSkating.Tizen.Services.Location
             _dataService.SaveBleAsync(bleDto);
         }
 
-        public void StopBleScan()
+        public override void StopBleScan()
         {
-            
             BluetoothAdapter.ScanResultChanged-= BluetoothAdapterOnScanResultChanged;
         }
     }

@@ -29,8 +29,7 @@ namespace Sanet.SmartSkating.Services.Location
         public event EventHandler<CheckPointEventArgs>? CheckPointPassed;
         
         public abstract void StartBleScan();
-
-
+        
         public abstract void StopBleScan();
 
         protected void InvokeCheckPointPassed(WayPointTypes type, DateTime time)
