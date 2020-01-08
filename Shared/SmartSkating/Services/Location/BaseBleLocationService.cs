@@ -27,7 +27,6 @@ namespace Sanet.SmartSkating.Services.Location
         public async Task LoadDevicesData()
         {
             _devices=await DevicesProvider.GetBleDevicesAsync();
-            var t = 5;
         }
 
         protected  int GetWayPointForDeviceId(string deviceId)
@@ -65,6 +64,13 @@ namespace Sanet.SmartSkating.Services.Location
 
         private void CheckIfCheckPointHasPassed()
         {
+            bool IsSingleStackPassing(BleScansStack bleScansStack, WayPointTypes wayPointTypes)
+            {
+                if (bleScansStack.AverageRssi <= RssiNearThreshold) return false;
+                InvokeCheckPointPassed(wayPointTypes, bleScansStack.Time);
+                return true;
+            }
+
             if (ScanStacks.Count<0)
                 return;
             var closestStack = ScanStacks.OrderBy(f => f.AverageRssi).Last();
@@ -73,38 +79,15 @@ namespace Sanet.SmartSkating.Services.Location
                 return;
 
             var closestWayPointType = (WayPointTypes)GetWayPointForDeviceId(closestStack.DeviceId);
-            if (ScanStacks.Count == 1 && closestStack.AverageRssi > RssiNearThreshold)
-            {
-                InvokeCheckPointPassed(closestWayPointType,closestStack.Time);
-                return;
-            }
+            if (ScanStacks.Count == 1 && IsSingleStackPassing(closestStack, closestWayPointType)) return;
 
             var prevWayPointType = (int)closestWayPointType.GetPreviousSeparationPointType();
             var nextWayPointType = (int)closestWayPointType.GetNextSeparationPointType();
 
-            BleScansStack prevStack;
-            BleScansStack nextStack;
-            if (ScanStacks.Count == 2)
-            {
-                prevStack = ScanStacks
+            var prevStack = ScanStacks
                     .FirstOrDefault(s=>GetWayPointForDeviceId(s.DeviceId)==prevWayPointType);
-                if (prevStack != null && prevStack.RssiTrend == RssiTrends.Decrease)
-                {
-                    InvokeCheckPointPassed(closestWayPointType,closestStack.Time);
-                    return;
-                }
-                nextStack = ScanStacks
-                    .FirstOrDefault(s=>GetWayPointForDeviceId(s.DeviceId)==nextWayPointType);
-                if (nextStack != null && nextStack.RssiTrend == RssiTrends.Increase)
-                {
-                    InvokeCheckPointPassed(closestWayPointType,closestStack.Time);
-                    return;
-                }
-            }
-
-            prevStack = ScanStacks
-                .FirstOrDefault(s=>GetWayPointForDeviceId(s.DeviceId)==prevWayPointType);
-            nextStack = ScanStacks
+                
+            var nextStack = ScanStacks
                 .FirstOrDefault(s=>GetWayPointForDeviceId(s.DeviceId)==nextWayPointType);
             if (nextStack != null 
                 && nextStack.RssiTrend == RssiTrends.Increase 
@@ -112,7 +95,21 @@ namespace Sanet.SmartSkating.Services.Location
                 && prevStack.RssiTrend == RssiTrends.Decrease)
             {
                 InvokeCheckPointPassed(closestWayPointType,closestStack.Time);
+                return;
             }
+            if (nextStack != null && nextStack.RssiTrend == RssiTrends.Increase)
+            {
+                InvokeCheckPointPassed(closestWayPointType,closestStack.Time);
+                return;
+            }
+
+            if (prevStack != null && prevStack.RssiTrend == RssiTrends.Decrease)
+            {
+                InvokeCheckPointPassed(closestWayPointType, closestStack.Time);
+                return;
+            }
+
+            IsSingleStackPassing(closestStack, closestWayPointType);
         }
     }
 }
