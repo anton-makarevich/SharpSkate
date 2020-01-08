@@ -253,6 +253,20 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             checkPointPassedCalledTimes.Should().Be(1);
         }
 
+        [Fact]
+        public void SetsIsScanningToTrue_WhenStartIsCalled()
+        {
+            base.StartBleScan();
+            IsScanning.Should().BeTrue();
+        }
+        
+        [Fact]
+        public void SetsIsScanningToFalse_WhenStopIsCalled()
+        {
+            base.StopBleScan();
+            IsScanning.Should().BeFalse();
+        }
+
         private void AddCheckPointPassedScansAtFinishPoint()
         {
             foreach (var rssi in new[] {-50, -50, -60})

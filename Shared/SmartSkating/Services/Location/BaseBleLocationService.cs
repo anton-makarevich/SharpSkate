@@ -16,6 +16,8 @@ namespace Sanet.SmartSkating.Services.Location
         private List<BleDeviceDto> _devices;
         private const int RssiNearThreshold = -75;
 
+        public List<BleDeviceDto> KnownDevices => _devices;
+
         protected List<BleScansStack> ScanStacks { get; }
 
         protected BaseBleLocationService(IBleDevicesProvider devicesProvider)
@@ -38,10 +40,18 @@ namespace Sanet.SmartSkating.Services.Location
         }
 
         public event EventHandler<CheckPointEventArgs>? CheckPointPassed;
-        
-        public abstract void StartBleScan();
-        
-        public abstract void StopBleScan();
+
+        public virtual void StartBleScan()
+        {
+            IsScanning = true;
+        }
+
+        public bool IsScanning { get; private set; }
+
+        public virtual void StopBleScan()
+        {
+            IsScanning = false;
+        }
 
         protected void InvokeCheckPointPassed(WayPointTypes type, DateTime time)
         {
