@@ -152,19 +152,10 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         {
             await LoadDevicesData();
             // Start is decreasing
-            foreach (var i in new[]{1,2})
-            {
-                var scan = BleScansStackTests.GetScanDto(-60 +(-10*i), DateTime.Now, StartDeviceId);
-
-                ProceedNewScan(scan);
-            }
+            AddTwoDecreasingScansForStartPoint();
+            
             // Start300M is increasing
-            foreach (var i in new[]{1,2})
-            {
-                var scan = BleScansStackTests.GetScanDto(-80 +(10*i), DateTime.Now, Start300MDeviceId);
-
-                ProceedNewScan(scan);
-            }
+            AddTwoIncreasingScansForStart300MPoint();
 
             var checkPointType = WayPointTypes.Unknown;
             var checkPointPassedCalledTimes = 0;
@@ -174,17 +165,22 @@ namespace Sanet.SmartSkating.Tests.Services.Location
                 checkPointType = args.WayPointType;
             };
             //Finish is maximum, changed to decreasing and should be reported
-            foreach (var rssi in new []{-50,-50,-60})
-            {
-                var scan = BleScansStackTests.GetScanDto(rssi, DateTime.Now, FinishDeviceId);
-
-                ProceedNewScan(scan);
-            }
+            AddCheckPointPassedScansAtFinishPoint();
 
             checkPointType.Should().Be(WayPointTypes.Finish);
             checkPointPassedCalledTimes.Should().Be(1);
         }
-        
+
+        private void AddTwoIncreasingScansForStart300MPoint()
+        {
+            foreach (var i in new[] {1, 2})
+            {
+                var scan = BleScansStackTests.GetScanDto(-80 + (10 * i), DateTime.Now, Start300MDeviceId);
+
+                ProceedNewScan(scan);
+            }
+        }
+
         [Fact]
         public async Task FiresCheckPointPassed_WhenOnlySingleStackIsAvailableWithMaxAverage_AndChangedTrendToDecrease()
         {
@@ -198,12 +194,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
                 checkPointType = args.WayPointType;
             };
 
-            foreach (var rssi in new []{-50,-50,-60})
-            {
-                var scan = BleScansStackTests.GetScanDto(rssi, DateTime.Now, FinishDeviceId);
-
-                ProceedNewScan(scan);
-            }
+            AddCheckPointPassedScansAtFinishPoint();
 
             checkPointType.Should().Be(WayPointTypes.Finish);
             checkPointPassedCalledTimes.Should().Be(1);
@@ -214,12 +205,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         {
             await LoadDevicesData();
             // Start is decreasing
-            foreach (var i in new[]{1,2})
-            {
-                var scan = BleScansStackTests.GetScanDto(-60 +(-10*i), DateTime.Now, StartDeviceId);
-
-                ProceedNewScan(scan);
-            }
+            AddTwoDecreasingScansForStartPoint();
 
             var checkPointType = WayPointTypes.Unknown;
             var checkPointPassedCalledTimes = 0;
@@ -229,29 +215,29 @@ namespace Sanet.SmartSkating.Tests.Services.Location
                 checkPointType = args.WayPointType;
             };
             //Finish is maximum, changed to decreasing and should be reported
-            foreach (var rssi in new []{-50,-50,-60})
-            {
-                var scan = BleScansStackTests.GetScanDto(rssi, DateTime.Now, FinishDeviceId);
-
-                ProceedNewScan(scan);
-            }
+            AddCheckPointPassedScansAtFinishPoint();
 
             checkPointType.Should().Be(WayPointTypes.Finish);
             checkPointPassedCalledTimes.Should().Be(1);
         }
-        
+
+        private void AddTwoDecreasingScansForStartPoint()
+        {
+            foreach (var i in new[] {1, 2})
+            {
+                var scan = BleScansStackTests.GetScanDto(-60 + (-10 * i), DateTime.Now, StartDeviceId);
+
+                ProceedNewScan(scan);
+            }
+        }
+
         [Fact]
         public async Task FiresCheckPointPassed_WhenCorrespondingStackHasMaxAverage_ChangedTrendToDecrease_AndNextIncreasing()
         {
             await LoadDevicesData();
             
             // Start300M is increasing
-            foreach (var i in new[]{1,2})
-            {
-                var scan = BleScansStackTests.GetScanDto(-80 +(10*i), DateTime.Now, Start300MDeviceId);
-
-                ProceedNewScan(scan);
-            }
+            AddTwoIncreasingScansForStart300MPoint();
 
             var checkPointType = WayPointTypes.Unknown;
             var checkPointPassedCalledTimes = 0;
@@ -261,15 +247,20 @@ namespace Sanet.SmartSkating.Tests.Services.Location
                 checkPointType = args.WayPointType;
             };
             //Finish is maximum, changed to decreasing and should be reported
-            foreach (var rssi in new []{-50,-50,-60})
+            AddCheckPointPassedScansAtFinishPoint();
+
+            checkPointType.Should().Be(WayPointTypes.Finish);
+            checkPointPassedCalledTimes.Should().Be(1);
+        }
+
+        private void AddCheckPointPassedScansAtFinishPoint()
+        {
+            foreach (var rssi in new[] {-50, -50, -60})
             {
                 var scan = BleScansStackTests.GetScanDto(rssi, DateTime.Now, FinishDeviceId);
 
                 ProceedNewScan(scan);
             }
-
-            checkPointType.Should().Be(WayPointTypes.Finish);
-            checkPointPassedCalledTimes.Should().Be(1);
         }
 
         public override void StartBleScan()
