@@ -104,6 +104,38 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             _sut.RssiTrend.Should().Be(RssiTrends.Decrease);
         }
 
+        [Fact]
+        public void InitialValuesForHasRssiTrendChanged_IsFalse()
+        {
+            _sut.HasRssiTrendChanged.Should().Be(false);
+        }
+
+        [Fact]
+        public void HasRssiTrendChangedIsFalse_WhenAddScanDoesNotChangeTrendDirection()
+        {
+            var scan1 = GetScanDto(-80, DateTime.Now);
+            var scan2 = GetScanDto(-60, DateTime.Now);
+            
+            _sut.AddScan(scan1);
+            _sut.AddScan(scan2);
+
+            _sut.HasRssiTrendChanged.Should().Be(false);
+        }
+
+        [Fact]
+        public void HasRssiTrendChangedIsTrue_WhenAddScanChangesTrendDirection()
+        {
+            var scan0 = GetScanDto(-60, DateTime.Now);
+            var scan1 = GetScanDto(-60, DateTime.Now);
+            var scan2 = GetScanDto(-100, DateTime.Now);
+            
+            _sut.AddScan(scan0);
+            _sut.AddScan(scan1);
+            _sut.AddScan(scan2);
+
+            _sut.HasRssiTrendChanged.Should().Be(true);
+        }
+
         private BleScanResultDto GetScanDto(int rssi, DateTime time, string deviceId = "deviceId")
         {
             return new BleScanResultDto

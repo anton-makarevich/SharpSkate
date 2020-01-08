@@ -4,6 +4,6 @@ namespace Sanet.SmartSkating.Models.Location
     {
         Same = 0,
         Increase = 1,
-        Decrease = 0
+        Decrease = 2
     }
 }

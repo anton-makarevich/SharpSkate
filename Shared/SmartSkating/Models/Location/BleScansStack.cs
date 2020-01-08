@@ -9,9 +9,21 @@ namespace Sanet.SmartSkating.Models.Location
         private const int MinimumRssiValue = -100;
         public string DeviceId { get; }
         public int AverageRssi { get; private set; } = MinimumRssiValue;
-        public RssiTrends RssiTrend { get; private set; }
+
+        public RssiTrends RssiTrend
+        {
+            get => _rssiTrend;
+            private set
+            {
+                HasRssiTrendChanged = _rssiTrend != value;
+                _rssiTrend = value;
+            }
+        }
+
+        public bool HasRssiTrendChanged { get; private set; }
 
         private readonly Queue<BleScanResultDto> _stack = new Queue<BleScanResultDto>();
+        private RssiTrends _rssiTrend;
 
         public BleScansStack(string deviceId)
         {
