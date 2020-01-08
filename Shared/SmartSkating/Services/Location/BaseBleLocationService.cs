@@ -26,7 +26,7 @@ namespace Sanet.SmartSkating.Services.Location
             ScanStacks = new List<BleScansStack>();
         }
 
-        public async Task LoadDevicesData()
+        public async Task LoadDevicesDataAsync()
         {
             _devices=await DevicesProvider.GetBleDevicesAsync();
         }

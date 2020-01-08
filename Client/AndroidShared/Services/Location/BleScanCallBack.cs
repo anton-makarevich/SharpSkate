@@ -40,7 +40,6 @@ namespace Sanet.SmartSkating.Droid.Services.Location
 
         private void ProcessScanResult(ScanResult result)
         {
-            if (result.Device.Name != "RDL51822") return;
             var bleDto = new BleScanResultDto
             {
                 DeviceAddress = result.Device.Address,

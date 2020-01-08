@@ -67,6 +67,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
+        public async Task FetchesKnownBleDevices_WhenPageIsLoaded()
+        {
+            _sut.AttachHandlers();
+
+            await _bleLocationService.Received().LoadDevicesDataAsync();
+        }
+        
+        [Fact]
         public void StartsLocationServiceWhenPageIsLoaded()
         {
            _sut.AttachHandlers();

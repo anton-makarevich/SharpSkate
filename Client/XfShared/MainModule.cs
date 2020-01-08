@@ -21,7 +21,11 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
+            #if DEBUG
+            container.RegisterSingleton<IDataSyncService,DebugSyncService>();
+            #else
             container.RegisterSingleton<IDataSyncService,DataSyncService>();
+#endif
             container.RegisterSingleton<IDataService, JsonStorageService>();
             container.RegisterSingleton<ITrackProvider,LocalTrackProvider>();
             container.RegisterSingleton<IBleDevicesProvider,LocalBleDevicesProvider>();

@@ -66,14 +66,14 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         [Fact]
         public async Task FetchesDevices_OnServiceCreation()
         {
-            await LoadDevicesData();
+            await LoadDevicesDataAsync();
             await DevicesProvider.Received().GetBleDevicesAsync();
         }
 
         [Fact]
         public async Task ReturnsCorrectWayPoint_ForStartId()
         {
-            await LoadDevicesData();
+            await LoadDevicesDataAsync();
             var wayPointTypeInt = GetWayPointForDeviceId(StartDeviceId);
 
             wayPointTypeInt.Should().Be((int) WayPointTypes.Start);
@@ -82,7 +82,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         [Fact]
         public async Task ReturnsCorrectWayPoint_ForFinishId()
         {
-            await LoadDevicesData();
+            await LoadDevicesDataAsync();
             var wayPointTypeInt = GetWayPointForDeviceId(FinishDeviceId);
 
             wayPointTypeInt.Should().Be((int) WayPointTypes.Finish);
@@ -91,7 +91,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         [Fact]
         public async Task ReturnsCorrectWayPoint_ForStart300MId()
         {
-            await LoadDevicesData();
+            await LoadDevicesDataAsync();
             var wayPointTypeInt = GetWayPointForDeviceId(Start300MDeviceId);
 
             wayPointTypeInt.Should().Be((int) WayPointTypes.Start300M);
@@ -100,7 +100,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         [Fact]
         public async Task ReturnsCorrectWayPoint_ForStart3KId()
         {
-            await LoadDevicesData();
+            await LoadDevicesDataAsync();
             var wayPointTypeInt = GetWayPointForDeviceId(Start3KDeviceId);
 
             wayPointTypeInt.Should().Be((int) WayPointTypes.Start3K);
@@ -150,7 +150,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         [Fact]
         public async Task FiresCheckPointPassed_WhenCorrespondingStackHasMaxAverage_ChangedTrendToDecrease_AndPrevStackDecreasingAndNextIncreasing()
         {
-            await LoadDevicesData();
+            await LoadDevicesDataAsync();
             // Start is decreasing
             AddTwoDecreasingScansForStartPoint();
             
@@ -184,7 +184,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         [Fact]
         public async Task FiresCheckPointPassed_WhenOnlySingleStackIsAvailableWithMaxAverage_AndChangedTrendToDecrease()
         {
-            await LoadDevicesData();
+            await LoadDevicesDataAsync();
 
             var checkPointType = WayPointTypes.Unknown;
             var checkPointPassedCalledTimes = 0;
@@ -203,7 +203,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         [Fact]
         public async Task FiresCheckPointPassed_WhenCorrespondingStackHasMaxAverage_ChangedTrendToDecrease_AndPrevStackDecreasing()
         {
-            await LoadDevicesData();
+            await LoadDevicesDataAsync();
             // Start is decreasing
             AddTwoDecreasingScansForStartPoint();
 
@@ -234,7 +234,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         [Fact]
         public async Task FiresCheckPointPassed_WhenCorrespondingStackHasMaxAverage_ChangedTrendToDecrease_AndNextIncreasing()
         {
-            await LoadDevicesData();
+            await LoadDevicesDataAsync();
             
             // Start300M is increasing
             AddTwoIncreasingScansForStart300MPoint();

@@ -53,8 +53,9 @@ namespace Sanet.SmartSkating.ViewModels
             _bleLocationService = bleLocationService;
         }
         
-        public ICommand StartCommand => new SimpleCommand(() =>
+        public ICommand StartCommand => new SimpleCommand(async() =>
         {
+            await _bleLocationService.LoadDevicesDataAsync();
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
             _bleLocationService.CheckPointPassed+= BleLocationServiceOnCheckPointPassed;
             _locationService.StartFetchLocation();

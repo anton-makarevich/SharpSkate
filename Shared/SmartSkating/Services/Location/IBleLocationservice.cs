@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Sanet.SmartSkating.Models.EventArgs;
 
 namespace Sanet.SmartSkating.Services.Location
@@ -8,5 +9,6 @@ namespace Sanet.SmartSkating.Services.Location
         event EventHandler<CheckPointEventArgs>? CheckPointPassed;
         void StartBleScan();
         void StopBleScan();
+        Task LoadDevicesDataAsync();
     }
 }
