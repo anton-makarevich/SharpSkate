@@ -48,6 +48,22 @@ namespace Sanet.SmartSkating.Models.Training
                 _ => WayPointTypes.Unknown
             };
         }
+        
+        public static WayPointTypes GetNextSeparationPointType(this WayPointTypes currentType)
+        {
+            return currentType switch
+            {
+                WayPointTypes.Start => WayPointTypes.Finish,
+                WayPointTypes.Finish => WayPointTypes.Start300M,
+                WayPointTypes.Start300M => WayPointTypes.Start3K,
+                WayPointTypes.Start3K => WayPointTypes.Start,
+                WayPointTypes.FourthSector => WayPointTypes.Start,
+                WayPointTypes.FirstSector => WayPointTypes.Finish,
+                WayPointTypes.SecondSector => WayPointTypes.Start300M,
+                WayPointTypes.ThirdSector => WayPointTypes.Start3K,
+                _ => WayPointTypes.Unknown
+            };
+        }
 
         public static WayPointTypes GetPreviousSectorType(this WayPointTypes currentType)
         {

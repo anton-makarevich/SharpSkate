@@ -111,6 +111,23 @@ namespace Sanet.SmartSkating.Tests.Models.Location
         }
 
         [Fact]
+        public void InitialTime_HasMinValue()
+        {
+            _sut.Time.Should().Be(DateTime.MinValue);
+        }
+        
+        [Fact]
+        public void UpdatesTimeWithTomeOfScan_WhenScanAdded()
+        {
+            var time = DateTime.Now;
+
+            var scan = GetScanDto(-1, time);
+            _sut.AddScan(scan);
+            
+            _sut.Time.Should().Be(time);
+        }
+
+        [Fact]
         public void HasRssiTrendChangedIsFalse_WhenAddScanDoesNotChangeTrendDirection()
         {
             var scan1 = GetScanDto(-80, DateTime.Now);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sanet.SmartSkating.Dto.Models;
@@ -21,6 +22,7 @@ namespace Sanet.SmartSkating.Models.Location
         }
 
         public bool HasRssiTrendChanged { get; private set; }
+        public DateTime Time { get; private set; } = DateTime.MinValue;
 
         private readonly Queue<BleScanResultDto> _stack = new Queue<BleScanResultDto>();
         private RssiTrends _rssiTrend;
@@ -39,6 +41,7 @@ namespace Sanet.SmartSkating.Models.Location
                 _stack.Dequeue();
             
             _stack.Enqueue(scan);
+            Time = scan.Time;
             var prevAverage = AverageRssi;
             AverageRssi = (int)_stack.Average(f => f.Rssi);
             var trend = AverageRssi - prevAverage;
