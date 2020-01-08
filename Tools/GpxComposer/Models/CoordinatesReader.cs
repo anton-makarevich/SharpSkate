@@ -32,13 +32,39 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
         public void ReadFromBackup()
         {
             _wayPoints = new List<WayPointDto>();
-            var files = Directory.EnumerateFiles("/Users/amakarevich/OneDrive/SmartSkating/skatingData/antonShaatsnaacht2019/rawdata");
+            var files = Directory.EnumerateFiles(
+                "/Users/amakarevich/OneDrive/SmartSkating/skatingData/antonShaatsnaacht2019/rawdata");
             foreach (var file in files)
             {
                 var dateCoordinateString = $"{System.IO.Path.GetFileName(file)}: - {File.ReadAllText(file)}";
                 ParseDateCoordinateString(dateCoordinateString);
             }
             WriteGpx();
+        }
+
+        public void ReadBleFromBackup()
+        {
+            var bleEvents = new List<BleScanResultDto>();
+            var files = Directory.EnumerateFiles(
+                "/Users/amakarevich/OneDrive/SmartSkating/skatingData/anton010420/Ble");
+            
+            foreach (var file in files.Where(f=>!f.Contains(".DS")))
+            {
+                var dataString = File.ReadAllText(file);
+
+                try
+                {
+                    bleEvents.Add(JsonConvert.DeserializeObject<BleScanResultDto>(dataString));
+                }
+                catch (Exception e)
+                {
+                    var t = e.Message;
+                }
+            }
+            foreach (var bleEvent in bleEvents.OrderBy(b=>b.Time))
+            {
+                Console.WriteLine($"{bleEvent.Time.Hour}:{bleEvent.Time.Minute}:{bleEvent.Time.Second} --> {bleEvent.Rssi}");
+            }
         }
 
         private void WriteGpx()

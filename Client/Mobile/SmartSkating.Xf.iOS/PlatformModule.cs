@@ -1,7 +1,7 @@
 using Sanet.SmartSkating.Services.Location;
 using SimpleInjector;
 #if DEBUG
-using Sanet.SmartSkating.Tizen.Services; 
+using Sanet.SmartSkating.Tizen.Services.Location; 
 #endif
 
 namespace Sanet.SmartSkating.Xf.Ios

@@ -5,7 +5,7 @@ using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Services.Location;
 
-namespace Sanet.SmartSkating.Tizen.Services
+namespace Sanet.SmartSkating.Tizen.Services.Location
 {
     public class DummyLocationService:ILocationService
     {

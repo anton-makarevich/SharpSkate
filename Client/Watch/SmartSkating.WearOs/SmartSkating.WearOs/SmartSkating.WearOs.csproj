@@ -54,9 +54,6 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\SmartSkating.Tizen\Services\DummyLocationService.cs">
-      <Link>Services\DummyLocationService.cs</Link>
-    </Compile>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Models\TracksAdapter.cs" />
     <Compile Include="Models\TracksViewHolder.cs" />
@@ -104,6 +101,9 @@
   <ItemGroup>
     <PackageReference Include="Refit">
       <Version>5.0.23</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.4</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Percent" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.Wear" Version="28.0.0.3" />

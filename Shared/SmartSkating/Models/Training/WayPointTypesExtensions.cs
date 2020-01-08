@@ -1,23 +1,10 @@
 using System;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 
 namespace Sanet.SmartSkating.Models.Training
 {
-    public enum WayPointTypes
-    {
-        Unknown = 0,
-        Start = 1,
-        Finish1K =2,
-        Finish=3,
-        Start300M=4,
-        Start1K=5,
-        Start3K=6,
-        FirstSector=7,
-        SecondSector=8,
-        ThirdSector=9,
-        FourthSector=10
-    }
     
     public static class WayPointTypesExtensions
     {
@@ -58,6 +45,22 @@ namespace Sanet.SmartSkating.Models.Training
                 WayPointTypes.FirstSector => WayPointTypes.Start,
                 WayPointTypes.SecondSector => WayPointTypes.Finish,
                 WayPointTypes.ThirdSector => WayPointTypes.Start300M,
+                _ => WayPointTypes.Unknown
+            };
+        }
+        
+        public static WayPointTypes GetNextSeparationPointType(this WayPointTypes currentType)
+        {
+            return currentType switch
+            {
+                WayPointTypes.Start => WayPointTypes.Finish,
+                WayPointTypes.Finish => WayPointTypes.Start300M,
+                WayPointTypes.Start300M => WayPointTypes.Start3K,
+                WayPointTypes.Start3K => WayPointTypes.Start,
+                WayPointTypes.FourthSector => WayPointTypes.Start,
+                WayPointTypes.FirstSector => WayPointTypes.Finish,
+                WayPointTypes.SecondSector => WayPointTypes.Start300M,
+                WayPointTypes.ThirdSector => WayPointTypes.Start3K,
                 _ => WayPointTypes.Unknown
             };
         }

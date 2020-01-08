@@ -1,5 +1,7 @@
 # SmartSkating
-Speed skating activity tracker for long tracks (400m rinks)
+Speed skating activity tracker for long outdoor tracks (400m rinks). Both outdoor and indoor.
+
+[![license](https://badgen.net/badge/license/GPLv3/blue)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 **Code Quality**
 

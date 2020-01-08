@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 
@@ -16,7 +17,7 @@ namespace Sanet.SmartSkating.Models.Training
         TimeSpan BestLapTime { get; }
         Rink Rink { get; }
         void AddPoint(Coordinate location, DateTime date);
-        void AddSeparatingPoint(Coordinate location, DateTime date, WayPointTypes type);
+        void AddSeparatingPoint(WayPointTypes type, DateTime date);
         
         DateTime StartTime { get; }
         void SetStartTime(DateTime startTime);

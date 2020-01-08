@@ -1,4 +1,5 @@
 using System;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Utils;

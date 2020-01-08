@@ -22,7 +22,7 @@ namespace Sanet.SmartSkating.Droid.Utils
                 permissions.Add(Manifest.Permission.AccessFineLocation);
             }
 
-            if (permissions.Any())
+            if (permissions.Count>0)
             {
                 ActivityCompat.RequestPermissions(activity,
                     permissions.ToArray(), PermissionsRequestCode);

@@ -1,5 +1,6 @@
 using System;
 using FluentAssertions;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Tests.Models.Geometry;
@@ -319,6 +320,70 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             var result = WayPointTypes.SecondSector.GetNextSectorType();
             
             Assert.Equal(WayPointTypes.ThirdSector,result);
+        }
+
+        [Fact]
+        public void Start300MIsNextSeparationPointToFinish()
+        {
+            var result = WayPointTypes.Finish.GetNextSeparationPointType();
+            
+            Assert.Equal(WayPointTypes.Start300M,result);
+        }
+
+        [Fact]
+        public void Start3KIsNextSeparationPointToStart300M()
+        {
+            var result = WayPointTypes.Start300M.GetNextSeparationPointType();
+            
+            Assert.Equal(WayPointTypes.Start3K,result);
+        }
+        
+        [Fact]
+        public void StartIsNextSeparationPointToStart3K()
+        {
+            var result = WayPointTypes.Start3K.GetNextSeparationPointType();
+            
+            Assert.Equal(WayPointTypes.Start,result);
+        }
+        
+        [Fact]
+        public void FinishIsNextSeparationPointToStart()
+        {
+            var result = WayPointTypes.Start.GetNextSeparationPointType();
+            
+            Assert.Equal(WayPointTypes.Finish,result);
+        }
+        
+        [Fact]
+        public void FinishIsNextSeparationPointForFirstSection()
+        {
+            var result = WayPointTypes.FirstSector.GetNextSeparationPointType();
+            
+            Assert.Equal(WayPointTypes.Finish,result);
+        }
+
+        [Fact]
+        public void Start300MIsNextSeparationPointForSecondSector()
+        {
+            var result = WayPointTypes.SecondSector.GetNextSeparationPointType();
+            
+            Assert.Equal(WayPointTypes.Start300M,result);
+        }
+        
+        [Fact]
+        public void Start3KIsNextSeparationPointForThirdSector()
+        {
+            var result = WayPointTypes.ThirdSector.GetNextSeparationPointType();
+            
+            Assert.Equal(WayPointTypes.Start3K,result);
+        }
+        
+        [Fact]
+        public void StartIsNextSeparationPointForFourthSector()
+        {
+            var result = WayPointTypes.FourthSector.GetNextSeparationPointType();
+            
+            Assert.Equal(WayPointTypes.Start,result);
         }
     }
 }
