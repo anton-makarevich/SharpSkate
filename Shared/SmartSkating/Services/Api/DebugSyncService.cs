@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 
 namespace Sanet.SmartSkating.Services.Api
 {
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Debug.Mock", "1.0.0.0")]
     public class DebugSyncService:IDataSyncService
     {
         public void StartSyncing()
