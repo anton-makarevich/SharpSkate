@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Models.Location;
 
 namespace Sanet.SmartSkating.Services.Location
 {
@@ -12,10 +13,13 @@ namespace Sanet.SmartSkating.Services.Location
     {
         protected readonly IBleDevicesProvider DevicesProvider;
         private readonly List<BleDeviceDto> _devices = new List<BleDeviceDto>();
+        
+        protected List<BleScansStack> ScanStacks { get; }
 
         protected BaseBleLocationService(IBleDevicesProvider devicesProvider)
         {
             DevicesProvider = devicesProvider;
+            ScanStacks = new List<BleScansStack>();
         }
 
         protected async Task<int> GetWayPointForDeviceId(string deviceId)
@@ -35,6 +39,19 @@ namespace Sanet.SmartSkating.Services.Location
         protected void InvokeCheckPointPassed(WayPointTypes type, DateTime time)
         {
             CheckPointPassed?.Invoke(this,new CheckPointEventArgs(type, time));
+        }
+        
+        protected void ProceedNewScan(BleScanResultDto scan)
+        {
+            var stack = ScanStacks.FirstOrDefault(f => f.DeviceId == scan.DeviceAddress);
+            if (stack == null)
+            {
+                if (ScanStacks.Count == 4)
+                    return;
+                stack = new BleScansStack(scan.DeviceAddress);
+                ScanStacks.Add(stack);
+            }
+            stack.AddScan(scan);
         }
     }
 }

@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Location;
+using Sanet.SmartSkating.Tests.Models.Location;
 using Xunit;
 
 namespace Sanet.SmartSkating.Tests.Services.Location
@@ -100,14 +103,55 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             wayPointTypeInt.Should().Be((int) WayPointTypes.Start3K);
         }
 
+        [Fact]
+        public void CreatesNewStack_ForScansWithDifferentDeviceId()
+        {
+            const string deviceId = "device!";
+            var scan = BleScansStackTests.GetScanDto(-3, DateTime.Now, deviceId);
+
+            ProceedNewScan(scan);
+
+            ScanStacks.Count.Should().Be(1);
+            ScanStacks.First().DeviceId.Should().Be(deviceId);
+        }
+
+        [Fact]
+        public void AddsUpTo4Stacks_ForDifferentDeviceIds()
+        {
+            for (var i = 1; i < 5; i++)
+            {
+                var deviceId = $"device{i}";
+                var scan = BleScansStackTests.GetScanDto(-3, DateTime.Now, deviceId);
+
+                ProceedNewScan(scan);
+            }
+            
+            ScanStacks.Count.Should().Be(4);
+        }
+        
+        [Fact]
+        public void DoesNotMoreThan4Stacks_ForDifferentDeviceIds()
+        {
+            for (var i = 1; i < 7; i++)
+            {
+                var deviceId = $"device{i}";
+                var scan = BleScansStackTests.GetScanDto(-3, DateTime.Now, deviceId);
+
+                ProceedNewScan(scan);
+            }
+            
+            ScanStacks.Count.Should().Be(4);
+            ScanStacks.Last().DeviceId.Should().EndWith("4");
+        }
+
         public override void StartBleScan()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void StopBleScan()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

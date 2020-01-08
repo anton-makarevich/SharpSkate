@@ -136,7 +136,7 @@ namespace Sanet.SmartSkating.Tests.Models.Location
             _sut.HasRssiTrendChanged.Should().Be(true);
         }
 
-        private BleScanResultDto GetScanDto(int rssi, DateTime time, string deviceId = "deviceId")
+        public static BleScanResultDto GetScanDto(int rssi, DateTime time, string deviceId = "deviceId")
         {
             return new BleScanResultDto
             {
