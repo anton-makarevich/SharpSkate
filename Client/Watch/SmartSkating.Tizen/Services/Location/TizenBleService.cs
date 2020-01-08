@@ -13,7 +13,6 @@ namespace Sanet.SmartSkating.Tizen.Services.Location
         private readonly IDataService _dataService;
         private List<string> _allowedDeviceNames;
         private List<string> _allowedDeviceIds;
-        
 
         public TizenBleService(
             IDataService dataService,
