@@ -70,6 +70,9 @@
     <Compile Include="..\..\Watch\SmartSkating.Tizen\Services\Location\DummyLocationService.cs">
       <Link>Services\Location\DummyLocationService.cs</Link>
     </Compile>
+    <Compile Include="..\..\Watch\SmartSkating.Tizen\Services\Location\IosBleService.cs">
+      <Link>Services\Location\IosBleService.cs</Link>
+    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <None Include="Entitlements.plist" />
@@ -139,6 +142,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj">
+      <Project>{da620869-1efd-4593-add8-05d9904de1fb}</Project>
+      <Name>SmartSkating.Dto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj">
       <Project>{795C2FC0-D25E-48E9-AD4A-2A003447415A}</Project>
       <Name>SmartSkating</Name>
