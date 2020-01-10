@@ -13,10 +13,10 @@ namespace Sanet.SmartSkating.Services.Location
     public abstract class BaseBleLocationService:IBleLocationService
     {
         protected readonly IBleDevicesProvider DevicesProvider;
-        private List<BleDeviceDto> _devices;
+        private List<BleDeviceDto>? _devices;
         private const int RssiNearThreshold = -75;
 
-        public List<BleDeviceDto> KnownDevices => _devices;
+        public List<BleDeviceDto>? KnownDevices => _devices;
 
         protected List<BleScansStack> ScanStacks { get; }
 
@@ -33,7 +33,7 @@ namespace Sanet.SmartSkating.Services.Location
 
         protected  int GetWayPointForDeviceId(string deviceId)
         {
-            if (_devices.Count == 0)
+            if (_devices==null || _devices.Count == 0)
                 return (int) WayPointTypes.Unknown;
             var deviceById = _devices.FirstOrDefault(f => f.Id == deviceId);
             return deviceById?.WayPointType ?? (int)WayPointTypes.Unknown;

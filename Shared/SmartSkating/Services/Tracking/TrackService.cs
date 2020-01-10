@@ -45,7 +45,12 @@ namespace Sanet.SmartSkating.Services.Tracking
         public void SelectRinkByName(string name)
         {
             var track = Tracks.SingleOrDefault(r => r.Name == name);
-            SelectedRink = !string.IsNullOrEmpty(track?.Name) 
+            if (track == null)
+            {
+                SelectedRink = null;
+                return;
+            }
+            SelectedRink = !string.IsNullOrEmpty(track.Name) 
                 ? new Rink(new Coordinate(track.Start),new Coordinate(track.Finish), track.Name) 
                 : null;
         }
