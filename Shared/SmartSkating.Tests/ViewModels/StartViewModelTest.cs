@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using FluentAssertions;
 using NSubstitute;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
@@ -89,6 +90,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.AttachHandlers();
             
             Assert.Equal("Initializing GeoServices. Be sure you're in open air", _sut.InfoLabel);
+        }
+        
+        [Fact]
+        public void GeoServicesAreNotInitializedWhenCoordinateHasNotBeenReceived()
+        {
+            _sut.AttachHandlers();
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(new Coordinate()));
+            
+            _sut.AreGeoServicesInitialized.Should().BeFalse();
         }
         
         [Fact]
@@ -187,8 +197,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
-        public void CannotStartIfGpsIsNotInitialized()
+        public void CannotStartIfGpsIsInitializing()
         {
+            _sut.AttachHandlers();
             Assert.False(_sut.CanStart);
         }
 

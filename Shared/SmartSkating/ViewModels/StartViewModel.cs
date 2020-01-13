@@ -19,6 +19,8 @@ namespace Sanet.SmartSkating.ViewModels
         private bool _areGeoServicesInitialized;
         private bool _isInitializingGeoServices;
 
+        private const int GeoServicesInitTimeoutInSeconds = 30;
+
         public StartViewModel(ILocationService locationService, ITrackService tracksService,
             IDataSyncService dataSyncService)
         {
@@ -44,7 +46,7 @@ namespace Sanet.SmartSkating.ViewModels
             ?_tracksService.SelectedRink.Name
             :string.Empty;
 
-        public bool CanStart => AreGeoServicesInitialized && IsRinkSelected;
+        public bool CanStart => !IsInitializingGeoServices && IsRinkSelected;
         public ICommand StartCommand => new SimpleCommand(async () =>
             {
                 if (CanStart)
@@ -78,13 +80,18 @@ namespace Sanet.SmartSkating.ViewModels
             await _tracksService.LoadTracksAsync();
             IsInitializingGeoServices = true;
             _locationService.StartFetchLocation();
+            await Task.Delay(GeoServicesInitTimeoutInSeconds*30);
+            if (IsInitializingGeoServices)
+            {
+                LocationServiceOnLocationReceived(this, new CoordinateEventArgs(new Coordinate()));
+            }
         }
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
             IsInitializingGeoServices = false;
             AreGeoServicesInitialized = !e.Coordinate.Equals(default(Coordinate));
-            InfoLabel = string.Empty;
+            InfoLabel = AreGeoServicesInitialized? string.Empty: "Geo services are not available. Please select rink manually";
             if (AreGeoServicesInitialized)
             {
                 _tracksService.SelectRinkCloseTo(e.Coordinate);
