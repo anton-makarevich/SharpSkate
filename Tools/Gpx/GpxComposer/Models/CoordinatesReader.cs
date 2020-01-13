@@ -46,7 +46,7 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
         {
             var bleEvents = new List<BleScanResultDto>();
             var files = Directory.EnumerateFiles(
-                "/Users/amakarevich/OneDrive/SmartSkating/skatingData/anton010420/Ble");
+                "/Users/amakarevich/OneDrive/SmartSkating/skatingData/anton011120/Ble");
             
             foreach (var file in files.Where(f=>!f.Contains(".DS")))
             {
@@ -61,9 +61,14 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
                     var t = e.Message;
                 }
             }
-            foreach (var bleEvent in bleEvents.OrderBy(b=>b.Time))
+            foreach (var group in bleEvents.GroupBy(f=>f.DeviceAddress))
             {
-                Console.WriteLine($"{bleEvent.Time.Hour}:{bleEvent.Time.Minute}:{bleEvent.Time.Second} --> {bleEvent.Rssi}");
+                Console.WriteLine($"Device {group.Key}");
+                foreach (var bleEvent in group.OrderBy(b=>b.Time))
+                {
+                    Console.WriteLine($"{bleEvent.Time.Hour}:{bleEvent.Time.Minute}:{bleEvent.Time.Second} , {bleEvent.Rssi}  , {bleEvent.DeviceAddress}");
+                }
+                Console.WriteLine("-------");
             }
         }
 
