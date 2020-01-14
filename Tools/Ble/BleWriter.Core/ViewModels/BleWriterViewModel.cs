@@ -1,6 +1,6 @@
 using Sanet.SmartSkating.ViewModels.Base;
 
-namespace BleWriter.ViewModels
+namespace BleWriter.Core.ViewModels
 {
     public class BleWriterViewModel:BaseViewModel
     {

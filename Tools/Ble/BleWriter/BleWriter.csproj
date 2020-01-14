@@ -57,7 +57,6 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\BleWriterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -77,11 +76,12 @@
   <ItemGroup>
     <Folder Include="Assets" />
     <Folder Include="Services" />
+    <Folder Include="ViewModels" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj">
-      <Project>{795c2fc0-d25e-48e9-ad4a-2a003447415a}</Project>
-      <Name>SmartSkating</Name>
+    <ProjectReference Include="..\BleWriter.Core\BleWriter.Core.csproj">
+      <Project>{0e4227eb-4a87-4205-8874-608173a3c12b}</Project>
+      <Name>BleWriter.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
