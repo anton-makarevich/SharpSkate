@@ -35,6 +35,7 @@ namespace BleWriter.Core.Tests.ViewModelTests
         [Fact]
         public void StopsBleScan_WhenStopCommandIsExecuted()
         {
+            _sut.AttachHandlers();
             _sut.StopScanCommand.Execute(null);
             
             _bleLocationService.Received().StopBleScan();
@@ -67,10 +68,61 @@ namespace BleWriter.Core.Tests.ViewModelTests
             var deviceStub = new BleDeviceDto();
             _sut.AttachHandlers();
             _bleLocationService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(deviceStub));
-
+            _sut.StopScanCommand.Execute(null);
+            
             _sut.WriteIdsCommand.Execute(null);
 
             await _bleWriterService.Received().WriteDeviceIdAsync(deviceStub);
+        }
+
+        [Fact]
+        public void CannotWrite_WhenScanning()
+        {
+            _sut.AttachHandlers();
+
+            _sut.CanWrite.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void CannotWrite_WhenScanningIsStoppedButNoDevicesAreFound()
+        {
+            _sut.AttachHandlers();
+            _sut.StopScanCommand.Execute(null);
+
+            _sut.CanWrite.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void CanWrite_WhenScanningIsStoppedAndDeviceIsFound()
+        {
+            _sut.AttachHandlers();
+            _bleLocationService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(new BleDeviceDto()));
+            _sut.StopScanCommand.Execute(null);
+
+            _sut.CanWrite.Should().BeTrue();
+        }
+
+        [Fact]
+        public void CannotStopScan_WhenScanIsNotStarted()
+        {
+            _sut.CanStopScanning.Should().BeFalse();
+        }
+
+        [Fact]
+        public void CanStopScan_WhenScanIsStarted()
+        {
+            _sut.AttachHandlers();
+
+            _sut.CanStopScanning.Should().BeTrue();
+        }
+
+        [Fact]
+        public void CanNotStopScan_WhenAlreadyStopped()
+        {
+            _sut.AttachHandlers();
+            _sut.StopScanCommand.Execute(true);
+
+            _sut.CanStopScanning.Should().BeFalse();
         }
     }
 }

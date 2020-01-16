@@ -14,6 +14,8 @@ namespace BleWriter.ViewModels
     {
         private readonly IBleLocationService _bleLocationService;
         private readonly IBleWriterService _bleWriterService;
+        private bool _canWrite;
+        private bool _canStopScanning;
 
         public ObservableCollection<BleDeviceDto> BleDevices { get; } = new ObservableCollection<BleDeviceDto>();
 
@@ -26,8 +28,21 @@ namespace BleWriter.ViewModels
         public ICommand StopScanCommand => new SimpleCommand(StopBleScan);
         public ICommand WriteIdsCommand => new SimpleCommand(async() =>
         {
-            await WriteDeviceIds();
+            if (CanWrite)
+                await WriteDeviceIds();
         });
+
+        public bool CanWrite    
+        {
+            get => BleDevices.Count != 0 && _canWrite;
+            private set => SetProperty(ref _canWrite, value);
+        }
+
+        public bool CanStopScanning   
+        {
+            get => _canStopScanning;
+            private set => SetProperty(ref _canStopScanning, value);
+        }
 
         private async Task WriteDeviceIds()
         {
@@ -39,7 +54,11 @@ namespace BleWriter.ViewModels
 
         private void StopBleScan()
         {
+            if (!CanStopScanning)
+                return;
             _bleLocationService.StopBleScan();
+            CanWrite = true;
+            CanStopScanning = false;
             _bleLocationService.NewBleDeviceFound += BleLocationServiceOnNewBleDeviceFound;
         }
 
@@ -47,6 +66,12 @@ namespace BleWriter.ViewModels
         {
             base.AttachHandlers();
             _bleLocationService.NewBleDeviceFound += BleLocationServiceOnNewBleDeviceFound;
+            StartScanning();
+        }
+
+        private void StartScanning()
+        {
+            CanStopScanning = true;
             _bleLocationService.StartBleScan();
         }
 
