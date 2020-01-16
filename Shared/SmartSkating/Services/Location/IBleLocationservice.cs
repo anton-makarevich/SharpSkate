@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 
 namespace Sanet.SmartSkating.Services.Location
@@ -10,5 +11,6 @@ namespace Sanet.SmartSkating.Services.Location
         void StartBleScan();
         void StopBleScan();
         Task LoadDevicesDataAsync();
+        event EventHandler<BleDeviceEventArgs>? NewBleDeviceFound;
     }
 }

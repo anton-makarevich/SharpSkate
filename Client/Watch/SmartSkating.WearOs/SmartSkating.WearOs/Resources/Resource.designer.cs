@@ -210,6 +210,88 @@ namespace Sanet.SmartSkating.WearOs
 			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem_android_offset = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColorItem_android_offset;
 		}
 		
+		public partial class Fraction
+		{
+			
+			// aapt resource value: 0x7F090000
+			public const int action_drawer_item_first_item_top_padding = 2131296256;
+			
+			// aapt resource value: 0x7F090001
+			public const int action_drawer_item_last_item_bottom_padding = 2131296257;
+			
+			// aapt resource value: 0x7F090002
+			public const int action_drawer_item_left_padding = 2131296258;
+			
+			// aapt resource value: 0x7F090003
+			public const int action_drawer_item_right_padding = 2131296259;
+			
+			// aapt resource value: 0x7F090004
+			public const int confirmation_overlay_margin_above_text = 2131296260;
+			
+			// aapt resource value: 0x7F090005
+			public const int confirmation_overlay_margin_side = 2131296261;
+			
+			// aapt resource value: 0x7F090006
+			public const int nav_drawer_margin_2_items = 2131296262;
+			
+			// aapt resource value: 0x7F090007
+			public const int nav_drawer_margin_3_items = 2131296263;
+			
+			// aapt resource value: 0x7F090008
+			public const int nav_drawer_margin_4_items_horizontal = 2131296264;
+			
+			// aapt resource value: 0x7F090009
+			public const int nav_drawer_margin_4_items_vertical = 2131296265;
+			
+			// aapt resource value: 0x7F09000A
+			public const int nav_drawer_margin_5_items_horizontal_middle_row = 2131296266;
+			
+			// aapt resource value: 0x7F09000B
+			public const int nav_drawer_margin_5_items_horizontal_outer_rows = 2131296267;
+			
+			// aapt resource value: 0x7F09000C
+			public const int nav_drawer_margin_5_items_vertical = 2131296268;
+			
+			// aapt resource value: 0x7F09000D
+			public const int nav_drawer_margin_6_items_horizontal = 2131296269;
+			
+			// aapt resource value: 0x7F09000E
+			public const int nav_drawer_margin_6_items_vertical = 2131296270;
+			
+			// aapt resource value: 0x7F09000F
+			public const int nav_drawer_margin_7_items_horizontal_middle_row = 2131296271;
+			
+			// aapt resource value: 0x7F090010
+			public const int nav_drawer_margin_7_items_horizontal_outer_rows = 2131296272;
+			
+			// aapt resource value: 0x7F090011
+			public const int nav_drawer_margin_7_items_vertical = 2131296273;
+			
+			// aapt resource value: 0x7F090012
+			public const int nav_drawer_text_margin = 2131296274;
+			
+			// aapt resource value: 0x7F090013
+			public const int ws_action_drawer_item_first_item_top_padding = 2131296275;
+			
+			// aapt resource value: 0x7F090014
+			public const int ws_action_drawer_item_last_item_bottom_padding = 2131296276;
+			
+			// aapt resource value: 0x7F090015
+			public const int ws_action_drawer_item_left_padding = 2131296277;
+			
+			// aapt resource value: 0x7F090016
+			public const int ws_action_drawer_item_right_padding = 2131296278;
+			
+			static Fraction()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Fraction()
+			{
+			}
+		}
+		
 		public partial class Animation
 		{
 			
