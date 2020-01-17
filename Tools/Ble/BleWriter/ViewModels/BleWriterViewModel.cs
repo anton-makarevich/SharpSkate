@@ -12,16 +12,14 @@ namespace BleWriter.ViewModels
 {
     public class BleWriterViewModel:BaseViewModel
     {
-        private readonly IBleLocationService _bleLocationService;
         private readonly IBleWriterService _bleWriterService;
         private bool _canWrite;
         private bool _canStopScanning;
 
         public ObservableCollection<BleDeviceDto> BleDevices { get; } = new ObservableCollection<BleDeviceDto>();
 
-        public BleWriterViewModel(IBleLocationService bleLocationService, IBleWriterService bleWriterService)
+        public BleWriterViewModel(IBleWriterService bleWriterService)
         {
-            _bleLocationService = bleLocationService;
             _bleWriterService = bleWriterService;
         }
 
@@ -56,23 +54,23 @@ namespace BleWriter.ViewModels
         {
             if (!CanStopScanning)
                 return;
-            _bleLocationService.StopBleScan();
+            _bleWriterService.StopBleScan();
             CanWrite = true;
             CanStopScanning = false;
-            _bleLocationService.NewBleDeviceFound += BleLocationServiceOnNewBleDeviceFound;
+            _bleWriterService.NewBleDeviceFound += BleLocationServiceOnNewBleDeviceFound;
         }
 
         public override void AttachHandlers()
         {
             base.AttachHandlers();
-            _bleLocationService.NewBleDeviceFound += BleLocationServiceOnNewBleDeviceFound;
+            _bleWriterService.NewBleDeviceFound += BleLocationServiceOnNewBleDeviceFound;
             StartScanning();
         }
 
         private void StartScanning()
         {
             CanStopScanning = true;
-            _bleLocationService.StartBleScan();
+            _bleWriterService.StartBleScan();
         }
 
         private void BleLocationServiceOnNewBleDeviceFound(object sender, BleDeviceEventArgs e)

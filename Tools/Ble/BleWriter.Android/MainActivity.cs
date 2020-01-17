@@ -2,9 +2,6 @@
 using Android.Content.PM;
 using Android.OS;
 using BleWriter.Android.Services;
-using Sanet.SmartSkating.Droid.Services.Location;
-using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Services.Storage;
 
 namespace BleWriter.Android
 {
@@ -19,11 +16,7 @@ namespace BleWriter.Android
 
             base.OnCreate(savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App(
-                new AndroidBleService(
-                    new JsonStorageService(),
-                    new LocalBleDevicesProvider())
-                , new AndroidBleWriter() ));
+            LoadApplication(new App( new AndroidBleWriter() ));
         }
     }
 }

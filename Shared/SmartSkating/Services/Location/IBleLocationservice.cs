@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 
 namespace Sanet.SmartSkating.Services.Location

@@ -1,23 +1,21 @@
 ﻿using BleWriter.Services;
 using BleWriter.ViewModels;
 using BleWriter.Views;
-using Sanet.SmartSkating.Services.Location;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
 namespace BleWriter
 {
-    public partial class App : Application
+    public partial class App
     {
-        public App(IBleLocationService bleLocationService, IBleWriterService bleWriterService)
+        public App(IBleWriterService bleWriterService)
         {
             InitializeComponent();
             
             MainPage = new BleWriterView
             {
-                BindingContext = new BleWriterViewModel(bleLocationService,bleWriterService)
+                BindingContext = new BleWriterViewModel(bleWriterService)
             };
         }
 

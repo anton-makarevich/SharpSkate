@@ -13,14 +13,12 @@ namespace BleWriter.Core.Tests.ViewModelTests
     public class BleWriterViewModelTests
     {
         private readonly BleWriterViewModel _sut;
-        private readonly IBleLocationService _bleLocationService;
         private readonly IBleWriterService _bleWriterService;
 
         public BleWriterViewModelTests()
         {
-            _bleLocationService = Substitute.For<IBleLocationService>();
             _bleWriterService = Substitute.For<IBleWriterService>();
-            _sut = new BleWriterViewModel(_bleLocationService, _bleWriterService);
+            _sut = new BleWriterViewModel(_bleWriterService);
         }
 
 
@@ -29,7 +27,7 @@ namespace BleWriter.Core.Tests.ViewModelTests
         {
             _sut.AttachHandlers();
             
-            _bleLocationService.Received().StartBleScan();
+            _bleWriterService.Received().StartBleScan();
         }
 
         [Fact]
@@ -38,7 +36,7 @@ namespace BleWriter.Core.Tests.ViewModelTests
             _sut.AttachHandlers();
             _sut.StopScanCommand.Execute(null);
             
-            _bleLocationService.Received().StopBleScan();
+            _bleWriterService.Received().StopBleScan();
         }
 
         [Fact]
@@ -47,9 +45,9 @@ namespace BleWriter.Core.Tests.ViewModelTests
             _sut.AttachHandlers();
             
             for (var i = 0;i<4;i++)
-                _bleLocationService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(new BleDeviceDto()));
+                _bleWriterService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(new BleDeviceDto()));
             
-            _bleLocationService.Received().StopBleScan();
+            _bleWriterService.Received().StopBleScan();
         }
 
         [Fact]
@@ -57,7 +55,7 @@ namespace BleWriter.Core.Tests.ViewModelTests
         {
             _sut.AttachHandlers();
             
-            _bleLocationService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(new BleDeviceDto()));
+            _bleWriterService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(new BleDeviceDto()));
 
             _sut.BleDevices.Count.Should().Be(1);
         }
@@ -67,7 +65,7 @@ namespace BleWriter.Core.Tests.ViewModelTests
         {
             var deviceStub = new BleDeviceDto();
             _sut.AttachHandlers();
-            _bleLocationService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(deviceStub));
+            _bleWriterService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(deviceStub));
             _sut.StopScanCommand.Execute(null);
             
             _sut.WriteIdsCommand.Execute(null);
@@ -96,7 +94,7 @@ namespace BleWriter.Core.Tests.ViewModelTests
         public void CanWrite_WhenScanningIsStoppedAndDeviceIsFound()
         {
             _sut.AttachHandlers();
-            _bleLocationService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(new BleDeviceDto()));
+            _bleWriterService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(new BleDeviceDto()));
             _sut.StopScanCommand.Execute(null);
 
             _sut.CanWrite.Should().BeTrue();

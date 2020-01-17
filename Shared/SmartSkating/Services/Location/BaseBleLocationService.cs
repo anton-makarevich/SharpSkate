@@ -67,7 +67,7 @@ namespace Sanet.SmartSkating.Services.Location
                     return;
                 stack = new BleScansStack(scan.DeviceAddress);
                 ScanStacks.Add(stack);
-                var device = _devices.FirstOrDefault(d => d.Id == scan.DeviceAddress);
+                var device = _devices?.FirstOrDefault(d => d.Id == scan.DeviceAddress);
                 if (device!=null)
                     NewBleDeviceFound?.Invoke(this,new BleDeviceEventArgs(device));
             }
