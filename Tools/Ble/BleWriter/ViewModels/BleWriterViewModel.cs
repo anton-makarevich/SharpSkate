@@ -5,7 +5,6 @@ using BleWriter.Services;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
-using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.ViewModels.Base;
 
 namespace BleWriter.ViewModels

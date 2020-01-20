@@ -1,7 +1,10 @@
-﻿using Android.App;
+﻿using System.Linq;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using BleWriter.Android.Services;
+using Sanet.SmartSkating.Droid.Utils;
 
 namespace BleWriter.Android
 {
@@ -16,7 +19,19 @@ namespace BleWriter.Android
 
             base.OnCreate(savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App( new AndroidBleWriter() ));
+            
+            var permissions = this.RequestPermissions();
+            if (permissions.First() == Permission.Granted)
+                LoadApplication(new App( new AndroidBleWriter(this) ));
+        }
+        
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
+            [GeneratedEnum] Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            LoadApplication(new App( new AndroidBleWriter(this) ));
         }
     }
 }
