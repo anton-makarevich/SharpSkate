@@ -19,8 +19,8 @@ namespace Sanet.SmartSkating.Tizen
             container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 100));
             #else
             container.RegisterSingleton<ILocationService,EssentialsLocationService>();
-            container.RegisterSingleton<IBleLocationService,TizenBleService>();
 #endif
+            container.RegisterSingleton<IBleLocationService,TizenBleService>();
         }
     }
 }
