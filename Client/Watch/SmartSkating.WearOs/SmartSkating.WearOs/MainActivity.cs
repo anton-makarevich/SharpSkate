@@ -19,7 +19,7 @@ namespace Sanet.SmartSkating.WearOs
     public class MainActivity : WearableActivity
     {
         private readonly Container _container = new Container();
-        private INavigationService _navigationService;
+        private INavigationService? _navigationService;
         private StartViewModel? _viewModel;
         
         private TextView? _rinkNameText;
@@ -59,45 +59,46 @@ namespace Sanet.SmartSkating.WearOs
 
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (_viewModel == null) return;
             if (e.PropertyName == nameof(_viewModel.CanStart))
             {
-                _startButton.Enabled = _viewModel.CanStart;
+                if (_startButton != null) _startButton.Enabled = _viewModel.CanStart;
             }
             else if (e.PropertyName == nameof(_viewModel.InfoLabel))
             {
-                _infoText.Text = _viewModel.InfoLabel;
+                if (_infoText != null) _infoText.Text = _viewModel.InfoLabel;
             }
             else if (e.PropertyName == nameof(_viewModel.IsInitializingGeoServices))
             {
-                _selectRinkButton.Enabled = !_viewModel.IsInitializingGeoServices;
+                if (_selectRinkButton != null) _selectRinkButton.Enabled = !_viewModel.IsInitializingGeoServices;
             }
             else if (e.PropertyName == nameof(_viewModel.RinkName))
             {
-                _rinkNameText.Text = _viewModel.RinkName;
+                if (_rinkNameText != null) _rinkNameText.Text = _viewModel.RinkName;
             }
             else if (e.PropertyName == nameof(_viewModel.IsRinkSelected))
             {
                 if (_viewModel.IsRinkSelected)
                 {
-                    _rinkNameText.Visibility = ViewStates.Visible;
-                    _selectRinkButton.Visibility = ViewStates.Gone;
+                    if (_rinkNameText != null) _rinkNameText.Visibility = ViewStates.Visible;
+                    if (_selectRinkButton != null) _selectRinkButton.Visibility = ViewStates.Gone;
                 }
                 else
                 {
-                    _rinkNameText.Visibility = ViewStates.Gone;
-                    _selectRinkButton.Visibility = ViewStates.Visible;
+                    if (_rinkNameText != null) _rinkNameText.Visibility = ViewStates.Gone;
+                    if (_selectRinkButton != null) _selectRinkButton.Visibility = ViewStates.Visible;
                 }
             }
         }
 
         private async void SelectRinkButtonOnClick(object sender, EventArgs e)
         {
-            await _navigationService.NavigateToViewModelAsync<TracksViewModel>();
+            if (_navigationService != null) await _navigationService.NavigateToViewModelAsync<TracksViewModel>();
         }
 
         private async void StartButtonOnClick(object sender, EventArgs e)
         {
-            await _navigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
+            if (_navigationService != null) await _navigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
         }
 
         public override void OnRequestPermissionsResult(

@@ -8,8 +8,8 @@ namespace Sanet.SmartSkating.WearOs.Views.Components
 {
     public class TitledLabelView:LinearLayout
     {
-        private TextView _titleText;
-        private TextView _valueText;
+        private TextView? _titleText;
+        private TextView? _valueText;
 
         protected TitledLabelView(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
@@ -55,14 +55,20 @@ namespace Sanet.SmartSkating.WearOs.Views.Components
 
         public string TitleText
         {
-            get => _titleText.Text;
-            set => _titleText.Text = value;
+            get => _titleText?.Text??string.Empty;
+            set
+            {
+                if (_titleText != null) _titleText.Text = value;
+            }
         }
-        
+
         public string ValueText
         {
-            get => _valueText.Text;
-            set => _valueText.Text = value;
+            get => _valueText?.Text??string.Empty;
+            set
+            {
+                if (_valueText != null) _valueText.Text = value;
+            }
         }
     }
 }

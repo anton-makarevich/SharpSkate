@@ -38,13 +38,15 @@ namespace Sanet.SmartSkating.WearOs.Views
 
         private void ConfirmButtonOnClick(object sender, EventArgs e)
         {
-            ViewModel.ConfirmSelectionCommand.Execute(null);
+            ViewModel?.ConfirmSelectionCommand?.Execute(null);
         }
 
         private void SetViewModel()
         {
-            ViewModel = AndroidNavigationService.SharedInstance.Container.GetInstance<TracksViewModel>();
-            ViewModel.SetNavigationService(AndroidNavigationService.SharedInstance);
+            ViewModel = AndroidNavigationService.SharedInstance?.Container?.GetInstance<TracksViewModel>();
+            if (ViewModel == null) return;
+            if (AndroidNavigationService.SharedInstance != null)
+                ViewModel.SetNavigationService(AndroidNavigationService.SharedInstance);
             ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
             ViewModel.Tracks.CollectionChanged += TracksOnCollectionChanged;
             UpdateButtonsState();
@@ -54,6 +56,7 @@ namespace Sanet.SmartSkating.WearOs.Views
         {
             if (_recyclerView?.GetAdapter() is TracksAdapter tracksAdapter)
                 tracksAdapter.ItemClick-= AdapterOnItemClick;
+            if (ViewModel == null) return;
             var adapter = new TracksAdapter(ViewModel.Tracks.ToList());
             adapter.ItemClick+= AdapterOnItemClick;
             _recyclerView?.SetAdapter(adapter);
@@ -61,7 +64,7 @@ namespace Sanet.SmartSkating.WearOs.Views
 
         private void AdapterOnItemClick(object sender, int e)
         {
-            ViewModel.SelectTrack(ViewModel.Tracks[e]);
+            ViewModel?.SelectTrack(ViewModel.Tracks[e]);
         }
 
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -75,14 +78,15 @@ namespace Sanet.SmartSkating.WearOs.Views
         protected override void OnDestroy()
         {
             base.OnDestroy();
+            if (ViewModel == null) return;
             ViewModel.Tracks.CollectionChanged -= TracksOnCollectionChanged;
             ViewModel.PropertyChanged -= ViewModelOnPropertyChanged;
         }
         
         private void UpdateButtonsState()
         {
-            if (_confirmButton != null)
-                _confirmButton.Enabled = ViewModel.HasSelectedTrack;
+            if (_confirmButton == null || ViewModel == null) return;
+            _confirmButton.Enabled = ViewModel.HasSelectedTrack;
         }
     }
 }
