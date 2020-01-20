@@ -14,7 +14,7 @@
         <fragments:SessionView/>
     </w:CirclePage.Content>
     <w:CirclePage.ActionButton>
-        <w:ActionButtonItem x:Name="ActionButton"
+        <w:ActionButtonItem x:Name="StartStopButton"
             Clicked="ActionButtonOnClicked"
             Text="Start" />
     </w:CirclePage.ActionButton>

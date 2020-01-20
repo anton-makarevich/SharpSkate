@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
     <RootNamespace>Sanet.SmartSkating.Tests</RootNamespace>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

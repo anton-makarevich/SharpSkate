@@ -11,8 +11,8 @@ namespace Sanet.SmartSkating.Tizen.Services.Location
     public class TizenBleService:BaseBleLocationService
     {
         private readonly IDataService _dataService;
-        private List<string> _allowedDeviceNames;
-        private List<string> _allowedDeviceIds;
+        private List<string> _allowedDeviceNames = new List<string>();
+        private List<string> _allowedDeviceIds = new List<string>();
 
         public TizenBleService(
             IDataService dataService,

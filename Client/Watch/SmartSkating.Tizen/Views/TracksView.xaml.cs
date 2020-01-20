@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using Sanet.SmartSkating.ViewModels.Wrappers;
-using Sanet.SmartSkating.Xf.Views.Base;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,24 +18,27 @@ namespace Sanet.SmartSkating.Xf.Views
         private void OnTrackSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is TrackViewModel trackViewModel)
-                ViewModel.SelectTrack(trackViewModel);
+            {
+                ViewModel?.SelectTrack(trackViewModel);
+            }
         }
 
         protected override void OnViewModelSet()
         {
             base.OnViewModelSet();
-            ViewModel.PropertyChanged+= ViewModelOnPropertyChanged;
+            if (ViewModel != null) ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
         }
 
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (ViewModel == null) return;
             if (e.PropertyName == nameof(ViewModel.HasSelectedTrack))
                 ConfirmButton.IsEnable = ViewModel.HasSelectedTrack;
         }
 
         private void ConfirmButtonOnClicked(object sender, EventArgs e)
         {
-            ViewModel.ConfirmSelectionCommand.Execute(null);
+            ViewModel?.ConfirmSelectionCommand?.Execute(null);
         }
     }
 }

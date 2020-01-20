@@ -16,18 +16,19 @@ namespace Sanet.SmartSkating.Xf.Views
         protected override void OnViewModelSet()
         {
             base.OnViewModelSet();
-            ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
+            if (ViewModel != null) ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
         }
 
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (ViewModel==null) return;
             if (e.PropertyName == nameof(ViewModel.CanStart))
                 StartButton.IsEnable = ViewModel.CanStart;
         }
 
         private void StartButtonOnClicked(object sender, EventArgs e)
         {
-            ViewModel.StartCommand.Execute(null);
+            ViewModel?.StartCommand.Execute(null);
         }
     }
 }

@@ -234,16 +234,6 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             checkPointType.Should().Be(WayPointTypes.Finish);
             checkPointPassedCalledTimes.Should().Be(1);
         }
-        
-        private void AddTwoDecreasingScansForStartPoint()
-        {
-            foreach (var i in new[] {1, 2})
-            {
-                var scan = BleScansStackTests.GetScanDto(-60 + (-10 * i), DateTime.Now, StartDeviceId);
-
-                ProceedNewScan(scan);
-            }
-        }
 
         [Fact]
         public async Task FiresCheckPointPassed_WhenCorrespondingStackHasMaxAverage_ChangedTrendToDecrease_AndNextIncreasing()

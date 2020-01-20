@@ -71,10 +71,11 @@ namespace BleWriter.Android.Models
 
         private Task WriteNewNameAsync(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic)
         {
-            _writeTaskCompletionSource = new TaskCompletionSource<bool>?();
+            _writeTaskCompletionSource = new TaskCompletionSource<bool>();
             characteristic.SetValue(new byte[] {1, 2, 3});
             characteristic.WriteType = GattWriteType.Default;
             gatt.WriteCharacteristic(characteristic);
+            return _writeTaskCompletionSource.Task;
         }
 
         private readonly Dictionary<UUID,TaskCompletionSource<string>> _readTaskSources 
