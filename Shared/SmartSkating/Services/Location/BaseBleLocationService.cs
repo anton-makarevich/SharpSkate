@@ -77,8 +77,6 @@ namespace Sanet.SmartSkating.Services.Location
 
         private void CheckIfCheckPointHasPassed()
         {
-            if (ScanStacks.Count<0)
-                return;
             var closestStack = ScanStacks.OrderBy(f => f.AverageRssi).Last();
 
             if (!(closestStack.HasRssiTrendChanged && closestStack.RssiTrend == RssiTrends.Decrease))

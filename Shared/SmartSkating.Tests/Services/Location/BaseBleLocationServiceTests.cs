@@ -48,7 +48,9 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             WayPointType = 6
         };
 
-        public BaseBleLocationServiceTests() : this(Substitute.For<IBleDevicesProvider>())
+        private static readonly IBleDevicesProvider BleDevicesProvider = Substitute.For<IBleDevicesProvider>();
+
+        public BaseBleLocationServiceTests() : this(BleDevicesProvider)
         {
         }
         
@@ -68,6 +70,16 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         {
             await LoadDevicesDataAsync();
             await DevicesProvider.Received().GetBleDevicesAsync();
+        }
+        
+        [Fact]
+        public async Task GetWayPointForDeviceId_ReturnsUnknownId_WhenNoDevicesAreLoaded()
+        {
+            BleDevicesProvider.GetBleDevicesAsync().Returns(Task.FromResult(new List<BleDeviceDto>())); 
+            await LoadDevicesDataAsync();
+            var wayPointTypeInt = GetWayPointForDeviceId(StartDeviceId);
+
+            wayPointTypeInt.Should().Be((int) WayPointTypes.Unknown);
         }
 
         [Fact]
