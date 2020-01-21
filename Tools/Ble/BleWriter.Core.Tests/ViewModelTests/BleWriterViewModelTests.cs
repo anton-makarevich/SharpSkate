@@ -5,7 +5,6 @@ using FluentAssertions;
 using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.EventArgs;
-using Sanet.SmartSkating.Services.Location;
 using Xunit;
 
 namespace BleWriter.Core.Tests.ViewModelTests
@@ -20,8 +19,7 @@ namespace BleWriter.Core.Tests.ViewModelTests
             _bleWriterService = Substitute.For<IBleWriterService>();
             _sut = new BleWriterViewModel(_bleWriterService);
         }
-
-
+        
         [Fact]
         public void StartScanForBleDevices_WhenPageIsLoaded()
         {
@@ -44,7 +42,7 @@ namespace BleWriter.Core.Tests.ViewModelTests
         {
             _sut.AttachHandlers();
             
-            for (var i = 0;i<4;i++)
+            for (var i = 0; i<4; i++)
                 _bleWriterService.NewBleDeviceFound += Raise.EventWith(new BleDeviceEventArgs(new BleDeviceDto()));
             
             _bleWriterService.Received().StopBleScan();

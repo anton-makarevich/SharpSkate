@@ -7,7 +7,6 @@ namespace BleWriter.Services
 {
     public interface IBleWriterService
     {
-        
         Task WriteDeviceIdAsync(BleDeviceDto deviceStub);
         void StopBleScan();
         event EventHandler<BleDeviceEventArgs>? NewBleDeviceFound;

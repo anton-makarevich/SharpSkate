@@ -60,33 +60,39 @@ namespace Sanet.SmartSkating.WearOs
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (_viewModel == null) return;
-            if (e.PropertyName == nameof(_viewModel.CanStart))
+            switch (e.PropertyName)
             {
-                if (_startButton != null) _startButton.Enabled = _viewModel.CanStart;
-            }
-            else if (e.PropertyName == nameof(_viewModel.InfoLabel))
-            {
-                if (_infoText != null) _infoText.Text = _viewModel.InfoLabel;
-            }
-            else if (e.PropertyName == nameof(_viewModel.IsInitializingGeoServices))
-            {
-                if (_selectRinkButton != null) _selectRinkButton.Enabled = !_viewModel.IsInitializingGeoServices;
-            }
-            else if (e.PropertyName == nameof(_viewModel.RinkName))
-            {
-                if (_rinkNameText != null) _rinkNameText.Text = _viewModel.RinkName;
-            }
-            else if (e.PropertyName == nameof(_viewModel.IsRinkSelected))
-            {
-                if (_viewModel.IsRinkSelected)
+                case nameof(_viewModel.CanStart):
+                {
+                    if (_startButton != null) _startButton.Enabled = _viewModel.CanStart;
+                    break;
+                }
+                case nameof(_viewModel.InfoLabel):
+                {
+                    if (_infoText != null) _infoText.Text = _viewModel.InfoLabel;
+                    break;
+                }
+                case nameof(_viewModel.IsInitializingGeoServices):
+                {
+                    if (_selectRinkButton != null) _selectRinkButton.Enabled = !_viewModel.IsInitializingGeoServices;
+                    break;
+                }
+                case nameof(_viewModel.RinkName):
+                {
+                    if (_rinkNameText != null) _rinkNameText.Text = _viewModel.RinkName;
+                    break;
+                }
+                case nameof(_viewModel.IsRinkSelected) when _viewModel.IsRinkSelected:
                 {
                     if (_rinkNameText != null) _rinkNameText.Visibility = ViewStates.Visible;
                     if (_selectRinkButton != null) _selectRinkButton.Visibility = ViewStates.Gone;
+                    break;
                 }
-                else
+                case nameof(_viewModel.IsRinkSelected):
                 {
                     if (_rinkNameText != null) _rinkNameText.Visibility = ViewStates.Gone;
                     if (_selectRinkButton != null) _selectRinkButton.Visibility = ViewStates.Visible;
+                    break;
                 }
             }
         }
