@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Android.Bluetooth;
 using Java.Util;
@@ -62,17 +63,22 @@ namespace BleWriter.Android.Models
                         var value = await ReadCharacteristicAsync(gatt, characteristic);
                         if (value == _device.Name)
                         {
-                            await WriteNewNameAsync(gatt, characteristic);
+                            if (characteristic.Properties.HasFlag(GattProperty.Write))
+                            {
+                                var writeresult = await WriteNewNameAsync(gatt, characteristic);
+                                var b = writeresult;
+                            }
                         }
                     }
                 }
             }
         }
 
-        private Task WriteNewNameAsync(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic)
+        private Task<bool> WriteNewNameAsync(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic)
         {
             _writeTaskCompletionSource = new TaskCompletionSource<bool>();
-            characteristic.SetValue(new byte[] {1, 2, 3});
+            var bytesValue = Encoding.ASCII.GetBytes("AG");
+            characteristic.SetValue(bytesValue);
             characteristic.WriteType = GattWriteType.Default;
             gatt.WriteCharacteristic(characteristic);
             return _writeTaskCompletionSource.Task;
@@ -107,6 +113,12 @@ namespace BleWriter.Android.Models
                 ? characteristic.GetStringValue(0)
                 : status.ToString());
             base.OnCharacteristicRead(gatt, characteristic, status);
+        }
+
+        public override void OnCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, GattStatus status)
+        {
+            _writeTaskCompletionSource.SetResult(status == GattStatus.Success);
+            base.OnCharacteristicWrite(gatt, characteristic, status);
         }
     }
 }
