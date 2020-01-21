@@ -7,7 +7,7 @@
 
         <RootNamespace>Sanet.SmartSkating.Azure.Tests</RootNamespace>
 
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

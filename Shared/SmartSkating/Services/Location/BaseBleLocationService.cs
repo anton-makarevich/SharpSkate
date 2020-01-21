@@ -98,7 +98,9 @@ namespace Sanet.SmartSkating.Services.Location
                 .Skip(1)  // remove 0 (difference with itself)
                 .ToList();
 
-            if (rssiDifferences.Last() / rssiDifferences.First() < 2)
+            if (rssiDifferences.Count > 1 
+                && rssiDifferences.First() > 10 
+                && rssiDifferences.Last() / rssiDifferences.First() < 2)
             {
                 InvokeCheckPointPassed(closestWayPointType, closestStack.Time);
             }
