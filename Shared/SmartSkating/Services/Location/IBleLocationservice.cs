@@ -9,7 +9,6 @@ namespace Sanet.SmartSkating.Services.Location
         event EventHandler<CheckPointEventArgs>? CheckPointPassed;
         void StartBleScan();
         void StopBleScan();
-        Task LoadDevicesDataAsync();
-        event EventHandler<BleDeviceEventArgs>? NewBleDeviceFound;
+        Task LoadDevicesDataAsync(); 
     }
 }

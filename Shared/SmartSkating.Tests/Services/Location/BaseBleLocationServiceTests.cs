@@ -207,27 +207,6 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             checkPointPassedCalledTimes.Should().Be(0);
         }
 
-        private void AddTwoRandomScans(int aboutRssi, string deviceId)
-        {
-            foreach (var unused in new[] {1, 2})
-            {
-                var rssi = -1 * new Random().Next(aboutRssi - 5, aboutRssi + 5);
-                var scan = BleScansStackTests.GetScanDto(rssi, DateTime.Now, deviceId);
-
-                ProceedNewScan(scan);
-            }
-        }
-        
-        private void AddTwoIncreasingScansForStart300MPoint()
-        {
-            foreach (var i in new[] {1, 2})
-            {
-                var scan = BleScansStackTests.GetScanDto(-80 + (10 * i), DateTime.Now, Start300MDeviceId);
-
-                ProceedNewScan(scan);
-            }
-        }
-
         [Fact]
         public async Task FiresCheckPointPassed_WhenOnlySingleStackIsAvailableWithMaxAverage_AndChangedTrendToDecrease()
         {
@@ -282,7 +261,28 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             base.StopBleScan();
             IsScanning.Should().BeFalse();
         }
+        
+        private void AddTwoRandomScans(int aboutRssi, string deviceId)
+        {
+            foreach (var unused in new[] {1, 2})
+            {
+                var rssi = -1 * new Random().Next(aboutRssi - 5, aboutRssi + 5);
+                var scan = BleScansStackTests.GetScanDto(rssi, DateTime.Now, deviceId);
 
+                ProceedNewScan(scan);
+            }
+        }
+        
+        private void AddTwoIncreasingScansForStart300MPoint()
+        {
+            foreach (var i in new[] {1, 2})
+            {
+                var scan = BleScansStackTests.GetScanDto(-80 + (10 * i), DateTime.Now, Start300MDeviceId);
+
+                ProceedNewScan(scan);
+            }
+        }
+        
         private void AddCheckPointPassedScansAtFinishPoint()
         {
             foreach (var rssi in new[] {-50, -50, -60})
