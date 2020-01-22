@@ -4,6 +4,7 @@ using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Services.Api;
+using Sanet.SmartSkating.Services.Hardware;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
@@ -15,6 +16,7 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly ILocationService _locationService;
         private readonly ITrackService _tracksService;
         private readonly IDataSyncService _dataSyncService;
+        private readonly IBluetoothService _bluetoothService;
         private string _infoLabel = string.Empty;
         private bool _areGeoServicesInitialized;
         private bool _isInitializingGeoServices;
@@ -22,11 +24,12 @@ namespace Sanet.SmartSkating.ViewModels
         private const int GeoServicesInitTimeoutInSeconds = 30;
 
         public StartViewModel(ILocationService locationService, ITrackService tracksService,
-            IDataSyncService dataSyncService)
+            IDataSyncService dataSyncService, IBluetoothService bluetoothService)
         {
             _locationService = locationService;
             _tracksService = tracksService;
             _dataSyncService = dataSyncService;
+            _bluetoothService = bluetoothService;
         }
 
         public string InfoLabel
@@ -48,10 +51,15 @@ namespace Sanet.SmartSkating.ViewModels
 
         public bool CanStart => !IsInitializingGeoServices && IsRinkSelected;
         public ICommand StartCommand => new SimpleCommand(async () =>
+        {
+            if (_bluetoothService.IsBluetoothAvailable())
             {
                 if (CanStart)
                     await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
-            });
+            }
+            else
+                await _bluetoothService.EnableBluetoothAsync();
+        });
 
         public bool IsInitializingGeoServices
         {
@@ -60,9 +68,12 @@ namespace Sanet.SmartSkating.ViewModels
         }
 
         public ICommand SelectRinkCommand => new SimpleCommand(async () =>
-            {
+        {
+            if (_bluetoothService.IsBluetoothAvailable())
                 await NavigationService.NavigateToViewModelAsync<TracksViewModel>();
-            });
+            else
+                await _bluetoothService.EnableBluetoothAsync();
+        });
 
         public override void AttachHandlers()
         {

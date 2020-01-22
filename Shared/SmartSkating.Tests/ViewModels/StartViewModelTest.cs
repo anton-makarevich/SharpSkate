@@ -6,6 +6,7 @@ using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Api;
+using Sanet.SmartSkating.Services.Hardware;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.Tests.Models.Geometry;
@@ -22,6 +23,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly ITrackService _tracksService;
         private readonly INavigationService _navigationService;
         private readonly IDataSyncService _dataSyncService;
+        private readonly IBluetoothService _bluetoothService;
 
         public StartViewModelTest()
         {
@@ -29,7 +31,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _tracksService = Substitute.For<ITrackService>();
             _locationService = Substitute.For<ILocationService>();
             _dataSyncService = Substitute.For<IDataSyncService>();
-            _sut = new StartViewModel(_locationService,_tracksService, _dataSyncService);
+            _bluetoothService = Substitute.For<IBluetoothService>();
+            _sut = new StartViewModel(_locationService,_tracksService, _dataSyncService, _bluetoothService);
             _sut.SetNavigationService(_navigationService);
         }
 
@@ -240,8 +243,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public async Task StartCommandNavigatesToSessionPageWhenCanStart()
+        public async Task StartCommandNavigatesToSessionPage_WhenCanStart_AndBtIsOn()
         {
+            _bluetoothService.IsBluetoothAvailable().Returns(true);
             _tracksService.SelectedRink.Returns(new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish));
             _sut.AttachHandlers();
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
@@ -252,7 +256,40 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
-        public async Task StartCommandDoesNotNavigateToSessionPageWhenCannotStart()
+        public async Task StartCommandDoesNotNavigateToSessionPage_WhenCanStart_ButBtIsOff()
+        {
+            _bluetoothService.IsBluetoothAvailable().Returns(false);
+            _tracksService.SelectedRink.Returns(new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish));
+            _sut.AttachHandlers();
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            _sut.StartCommand.Execute(null);
+
+            await _navigationService.DidNotReceive().NavigateToViewModelAsync<LiveSessionViewModel>();
+        }
+        
+        [Fact]
+        public async Task StartCommandAsksToTurnBtOn_WhenBtIsOff()
+        {
+            _bluetoothService.IsBluetoothAvailable().Returns(false);
+            
+            _sut.StartCommand.Execute(null);
+
+            await _bluetoothService.Received().EnableBluetoothAsync();
+        }
+        
+        [Fact]
+        public async Task StartCommandDoesNotAskToTurnBtOn_WhenBtIsOn()
+        {
+            _bluetoothService.IsBluetoothAvailable().Returns(true);
+            
+            _sut.StartCommand.Execute(null);
+
+            await _bluetoothService.DidNotReceive().EnableBluetoothAsync();
+        }
+        
+        [Fact]
+        public async Task StartCommandDoesNotNavigateToSessionPage_WhenCannotStart()
         {
             _sut.StartCommand.Execute(null);
 
@@ -260,11 +297,41 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public async Task SelectRinkCommandNavigatesToTracksPage()
+        public async Task SelectRinkCommandNavigatesToTracksPage_WhenBtIsAvailable()
         {
+            _bluetoothService.IsBluetoothAvailable().Returns(true);
+            
             _sut.SelectRinkCommand.Execute(null);
 
             await _navigationService.Received().NavigateToViewModelAsync<TracksViewModel>();
+        }
+        
+        [Fact]
+        public async Task SelectRinkCommandDoesNotAskToTurnBtOn_WhenBtIsAvailable()
+        {
+            _bluetoothService.IsBluetoothAvailable().Returns(true);
+            
+            _sut.SelectRinkCommand.Execute(null);
+
+            await _bluetoothService.DidNotReceive().EnableBluetoothAsync();
+        }
+        
+        [Fact]
+        public async Task SelectRinkCommandDoesNotNavigatesToTracksPage_IfBluetoothIsNotOn()
+        {
+            _bluetoothService.IsBluetoothAvailable().Returns(false);
+            _sut.SelectRinkCommand.Execute(null);
+
+            await _navigationService.DidNotReceive().NavigateToViewModelAsync<TracksViewModel>();
+        }
+        
+        [Fact]
+        public async Task SelectRinkCommandAsksToEnableBluetoothFirst_IfBluetoothIsNotOn()
+        {
+            _bluetoothService.IsBluetoothAvailable().Returns(false);
+            _sut.SelectRinkCommand.Execute(null);
+
+            await _bluetoothService.Received().EnableBluetoothAsync();
         }
     }
 }

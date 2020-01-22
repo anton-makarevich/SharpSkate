@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)..\Watch\SmartSkating.Tizen\Services\Location\DummyLocationService.cs">
       <Link>Services\Location\DummyLocationService.cs</Link>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Hardware\AndroidBluetoothService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Location\AndroidBleService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Location\BleScanCallBack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AndroidExtensions.cs" />

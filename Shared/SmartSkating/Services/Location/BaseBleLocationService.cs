@@ -29,7 +29,6 @@ namespace Sanet.SmartSkating.Services.Location
         {
             _devices=await DevicesProvider.GetBleDevicesAsync();
         }
-
         protected  int GetWayPointForDeviceId(string deviceId)
         {
             if (_devices==null || _devices.Count == 0)
