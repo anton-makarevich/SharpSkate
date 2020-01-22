@@ -1,4 +1,6 @@
+using Sanet.SmartSkating.Services.Hardware;
 using Sanet.SmartSkating.Services.Location;
+using Sanet.SmartSkating.Tizen.Services.Hardware;
 using Sanet.SmartSkating.Tizen.Services.Location;
 using Sanet.SmartSkating.Xf;
 using SimpleInjector;
@@ -21,6 +23,7 @@ namespace Sanet.SmartSkating.Tizen
             container.RegisterSingleton<ILocationService,EssentialsLocationService>();
 #endif
             container.RegisterSingleton<IBleLocationService,TizenBleService>();
+            container.RegisterSingleton<IBluetoothService,TizenBluetoothService>();
         }
     }
 }

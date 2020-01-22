@@ -11,10 +11,12 @@ using Sanet.SmartSkating.Droid.Services.Location;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
+using Sanet.SmartSkating.Services.Hardware;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
+using Sanet.SmartSkating.Xf.Droid.AndroidShared.Services.Hardware;
 using SimpleInjector;
 
 namespace Sanet.SmartSkating.WearOs
@@ -48,6 +50,7 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterSingleton<IBleLocationService,AndroidBleService>();
             container.RegisterSingleton<ITrackService, TrackService>();
             container.RegisterSingleton<ISessionService, SessionService>();
+            container.RegisterInstance<IBluetoothService>(new AndroidBluetoothService(activity));
         }
     }
 }

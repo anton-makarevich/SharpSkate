@@ -1,6 +1,8 @@
 using Android.App;
 using Sanet.SmartSkating.Droid.Services.Location;
+using Sanet.SmartSkating.Services.Hardware;
 using Sanet.SmartSkating.Services.Location;
+using Sanet.SmartSkating.Xf.Droid.AndroidShared.Services.Hardware;
 #if DEBUG
 using Sanet.SmartSkating.Tizen.Services.Location;
 #endif
@@ -25,6 +27,7 @@ namespace Sanet.SmartSkating.Xf.Droid
             container.RegisterInstance<ILocationService>(new LocationManagerService(activity));
 #endif
             container.RegisterSingleton<IBleLocationService,AndroidBleService>();
+            container.RegisterInstance<IBluetoothService>(new AndroidBluetoothService(activity));
         }
     }
 }
