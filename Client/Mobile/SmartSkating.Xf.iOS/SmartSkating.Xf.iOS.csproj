@@ -67,9 +67,6 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\Watch\SmartSkating.Tizen\Services\Location\DummyLocationService.cs">
-      <Link>Services\Location\DummyLocationService.cs</Link>
-    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Services\Location\IosBleService.cs" />
@@ -165,4 +162,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Import Project="..\..\DummyServices\DummyServices.projitems" Label="Shared" />
 </Project>

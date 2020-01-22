@@ -164,4 +164,5 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\..\AndroidShared\AndroidShared.projitems" Label="Shared" />
+  <Import Project="..\..\..\DummyServices\DummyServices.projitems" Label="Shared" />
 </Project>

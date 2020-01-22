@@ -72,6 +72,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BleWriter", "Tools\Ble\BleW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BleWriter.Android", "Tools\Ble\BleWriter.Android\BleWriter.Android.csproj", "{DE6C0F7A-ED4F-40E4-92BC-1627FD4443FC}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DummyServices", "Client\DummyServices\DummyServices.shproj", "{F4E6962A-A1AB-4BED-A4A0-7194BAED0D96}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Client\XfShared\XfShared.projitems*{037f168e-c37f-40ea-85c4-448e4f05107f}*SharedItemsImports = 13
@@ -386,6 +388,7 @@ Global
 		{44CCBE91-069D-4D82-91B7-D06CF66FEF6B} = {816BF284-1327-4317-9531-954C95DD2B9F}
 		{4099B919-43D7-4197-AA39-3DF84BC9CF57} = {816BF284-1327-4317-9531-954C95DD2B9F}
 		{DE6C0F7A-ED4F-40E4-92BC-1627FD4443FC} = {816BF284-1327-4317-9531-954C95DD2B9F}
+		{F4E6962A-A1AB-4BED-A4A0-7194BAED0D96} = {74B53A76-A019-428B-A44D-EBB20D43163B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3FBC07CE-2F49-4B83-94B6-C1DD05A66813}

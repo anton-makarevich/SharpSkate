@@ -44,23 +44,18 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
 
         public void ReadBleFromBackup()
         {
-            var bleEvents = new List<BleScanResultDto>();
             var files = Directory.EnumerateFiles(
                 "/Users/amakarevich/OneDrive/SmartSkating/skatingData/anton011120/Ble");
-            
-            foreach (var file in files.Where(f=>!f.Contains(".DS")))
-            {
-                var dataString = File.ReadAllText(file);
 
-                try
-                {
-                    bleEvents.Add(JsonConvert.DeserializeObject<BleScanResultDto>(dataString));
-                }
-                catch (Exception e)
-                {
-                    var t = e.Message;
-                }
-            }
+            var bleEvents = files
+                .Where(f => !f.Contains(".DS"))
+                .Select(File.ReadAllText)
+                .Select(JsonConvert.DeserializeObject<BleScanResultDto>)
+                .ToList();
+
+            var bleData = JsonConvert.SerializeObject(bleEvents.OrderBy(b => b.Time));
+            File.WriteAllText("/Users/amakarevich/OneDrive/SmartSkating/skatingData/anton011120/Ble.ble", bleData);
+            
             foreach (var group in bleEvents.GroupBy(f=>f.DeviceAddress))
             {
                 Console.WriteLine($"Device {group.Key}");

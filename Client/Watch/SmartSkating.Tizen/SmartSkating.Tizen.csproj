@@ -35,5 +35,6 @@
     <ProjectReference Include="..\..\..\Tools\Gpx\GpxTools\GpxTools.csproj" />
   </ItemGroup>
   <Import Project="..\..\XfShared\XfShared.projitems" Label="Shared" Condition="Exists('..\..\XfShared\XfShared.projitems')" />
+  <Import Project="..\..\DummyServices\DummyServices.projitems" Label="Shared" />
 </Project>
 

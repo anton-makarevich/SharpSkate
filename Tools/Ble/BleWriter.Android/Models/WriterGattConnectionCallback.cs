@@ -117,7 +117,7 @@ namespace BleWriter.Android.Models
 
         public override void OnCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, GattStatus status)
         {
-            _writeTaskCompletionSource.SetResult(status == GattStatus.Success);
+            _writeTaskCompletionSource?.SetResult(status == GattStatus.Success);
             base.OnCharacteristicWrite(gatt, characteristic, status);
         }
     }
