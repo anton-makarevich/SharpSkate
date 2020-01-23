@@ -31,8 +31,7 @@ namespace Sanet.SmartSkating.Xf.Droid
             container.RegisterInstance<IBleLocationService>(
                 new DummyBleLocationService(
                     resourceReader, 
-                    new LocalBleDevicesProvider(resourceReader),
-                    1)
+                    new LocalBleDevicesProvider(resourceReader), container.GetInstance<IDataService>())
             );
             container.RegisterSingleton<IBluetoothService,DummyBluetoothService>();
 #else

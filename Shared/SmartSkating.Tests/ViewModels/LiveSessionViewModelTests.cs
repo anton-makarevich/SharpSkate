@@ -451,7 +451,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut.StartCommand.Execute(null);
 
-            _bleLocationService.Received().StartBleScan();
+            _bleLocationService.Received().StartBleScan(Arg.Any<string>());
         }
         
         [Fact]

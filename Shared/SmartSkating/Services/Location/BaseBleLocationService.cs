@@ -12,16 +12,19 @@ namespace Sanet.SmartSkating.Services.Location
     public abstract class BaseBleLocationService:IBleLocationService
     {
         protected readonly IBleDevicesProvider DevicesProvider;
+        private readonly IDataService _dataService;
         private List<BleDeviceDto>? _devices;
+        private string _sessionId = string.Empty;
         private const int RssiNearThreshold = -75;
 
         public List<BleDeviceDto>? KnownDevices => _devices;
 
         protected List<BleScansStack> ScanStacks { get; }
 
-        protected BaseBleLocationService(IBleDevicesProvider devicesProvider)
+        protected BaseBleLocationService(IBleDevicesProvider devicesProvider, IDataService dataService)
         {
             DevicesProvider = devicesProvider;
+            _dataService = dataService;
             ScanStacks = new List<BleScansStack>();
         }
 
@@ -39,8 +42,9 @@ namespace Sanet.SmartSkating.Services.Location
 
         public event EventHandler<CheckPointEventArgs>? CheckPointPassed;
 
-        public virtual void StartBleScan()
+        public virtual void StartBleScan(string sessionId)
         {
+            _sessionId = sessionId;
             IsScanning = true;
         }
 
@@ -66,7 +70,10 @@ namespace Sanet.SmartSkating.Services.Location
                 stack = new BleScansStack(scan.DeviceAddress);
                 ScanStacks.Add(stack);
             }
+
+            scan.SessionId = _sessionId;
             stack.AddScan(scan);
+            _dataService.SaveBleScanAsync(scan);
             CheckIfCheckPointHasPassed();
         }
 

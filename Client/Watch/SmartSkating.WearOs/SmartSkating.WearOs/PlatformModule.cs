@@ -30,6 +30,7 @@ namespace Sanet.SmartSkating.WearOs
 
         private static void RegisterWearOsModule(this Container container, Activity activity)
         {
+            var dataService = new JsonStorageService();
             container.Register<TracksViewModel>();
             container.Register<LiveSessionViewModel>();
             container.Register<StartViewModel>();
@@ -40,7 +41,8 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterInstance<IBleLocationService>(
                 new DummyBleLocationService(
                     resourceReader, 
-                    new LocalBleDevicesProvider(resourceReader),
+                    new LocalBleDevicesProvider(resourceReader), 
+                    dataService,
                     0.5)
                 );
             container.RegisterSingleton<IBluetoothService,DummyBluetoothService>();
@@ -55,7 +57,7 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
             container.RegisterSingleton<IDataSyncService,DataSyncService>();
-            container.RegisterSingleton<IDataService, JsonStorageService>();
+            container.RegisterInstance<IDataService>(dataService);
             container.RegisterSingleton<ITrackProvider, LocalTrackProvider>();
             container.RegisterSingleton<IBleDevicesProvider,LocalBleDevicesProvider>();
             container.RegisterSingleton<IBleLocationService,AndroidBleService>();

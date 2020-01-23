@@ -10,19 +10,19 @@ namespace Sanet.SmartSkating.Xf.Droid.DummyServices.Services
         private readonly double _speedCoeff;
         private readonly IResourceReader _resourceReader;
 
-        public DummyBleLocationService(
-            IResourceReader resourceReader,
-            IBleDevicesProvider devicesProvider, 
+        public DummyBleLocationService(IResourceReader resourceReader,
+            IBleDevicesProvider devicesProvider,
+            IDataService dataService,
             double speedCoeff = 1) 
-            : base(devicesProvider)
+            : base(devicesProvider,dataService)
         {
             _speedCoeff = speedCoeff;
             _resourceReader = resourceReader;
         }
 
-        public override void StartBleScan()
+        public override void StartBleScan(string sessionId)
         {
-            base.StartBleScan();
+            base.StartBleScan(sessionId);
             
 #pragma warning disable 4014
             RunDummyScan();

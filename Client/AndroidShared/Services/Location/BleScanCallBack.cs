@@ -47,7 +47,7 @@ namespace Sanet.SmartSkating.Droid.Services.Location
                 Rssi = result.Rssi,
                 Time = DateTime.UtcNow
             };
-            _dataService.SaveBleAsync(bleDto);
+            _dataService.SaveBleScanAsync(bleDto);
             BeaconFound?.Invoke(this,bleDto);
         }
     }

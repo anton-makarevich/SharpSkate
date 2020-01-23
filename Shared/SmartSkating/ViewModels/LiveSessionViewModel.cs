@@ -59,7 +59,7 @@ namespace Sanet.SmartSkating.ViewModels
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
             _bleLocationService.CheckPointPassed+= BleLocationServiceOnCheckPointPassed;
             _locationService.StartFetchLocation();
-            _bleLocationService.StartBleScan();
+            _bleLocationService.StartBleScan(Session?.SessionId??string.Empty);
             Session?.SetStartTime(DateTime.UtcNow);
             IsRunning = true;
 #pragma warning disable 4014

@@ -10,18 +10,16 @@ namespace Sanet.SmartSkating.Tizen.Services.Location
 {
     public class TizenBleService:BaseBleLocationService
     {
-        private readonly IDataService _dataService;
         private List<string> _allowedDeviceNames = new List<string>();
         private List<string> _allowedDeviceIds = new List<string>();
 
         public TizenBleService(
             IDataService dataService,
-            IBleDevicesProvider bleDevicesProvider):base(bleDevicesProvider)
+            IBleDevicesProvider bleDevicesProvider):base(bleDevicesProvider,dataService)
         {
-            _dataService = dataService;
         }
         
-        public override void StartBleScan()
+        public override void StartBleScan(string sessionId)
         {
             if (KnownDevices==null || KnownDevices.Count == 0)
                 return;
@@ -29,7 +27,7 @@ namespace Sanet.SmartSkating.Tizen.Services.Location
             _allowedDeviceNames = KnownDevices.Select(d => d.DeviceName).ToList();
             _allowedDeviceIds = KnownDevices.Select(d => d.Id).ToList();
             
-            base.StartBleScan();
+            base.StartBleScan(sessionId);
             RunScan();
         }
 
@@ -52,7 +50,6 @@ namespace Sanet.SmartSkating.Tizen.Services.Location
                 Rssi = e.DeviceData.Rssi,
                 Time = DateTime.UtcNow
             };
-            _dataService.SaveBleAsync(bleDto);
             ProceedNewScan(bleDto);
         }
 

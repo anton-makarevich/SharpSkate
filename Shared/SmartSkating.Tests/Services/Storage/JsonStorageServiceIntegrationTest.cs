@@ -56,5 +56,28 @@ namespace Sanet.SmartSkating.Tests.Services.Storage
             var isDeleted = await sut.DeleteSessionAsync(loadedSession.Id);
             Assert.True(isDeleted);
         }
+        
+        [Fact]
+        public async Task SavesBleScanAsJsonFileToLocalFileSystemReadsItAndDeletes()
+        {
+            var sut = new JsonStorageService();
+            var bleScanDto = new BleScanResultDto()
+            {
+                Id = "0",
+                DeviceAddress = "8", 
+                SessionId = "1",
+                Rssi = -77,
+                Time = DateTime.UtcNow
+            };
+
+            var isSaved = await sut.SaveBleScanAsync(bleScanDto);
+            Assert.True(isSaved);
+
+            var loadedScan = (await sut.GetAllBleScansAsync()).First();
+            loadedScan.Should().BeEquivalentTo(bleScanDto);
+
+            var isDeleted = await sut.DeleteBleScanAsync(loadedScan.Id);
+            Assert.True(isDeleted);
+        }
     }
 }

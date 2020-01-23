@@ -92,7 +92,17 @@ namespace Sanet.SmartSkating.Azure.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> SaveBleAsync(BleScanResultDto session)
+        public Task<bool> SaveBleScanAsync(BleScanResultDto session)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<BleScanResultDto>> GetAllBleScansAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteBleScanAsync(string bleScanId)
         {
             throw new NotImplementedException();
         }

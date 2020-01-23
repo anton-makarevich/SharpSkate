@@ -21,19 +21,26 @@ namespace Sanet.SmartSkating.Droid.Services.Location
 
         private DateTime _startTime;
 
-        public AndroidBleService(IDataService dataService, IBleDevicesProvider bleDevicesProvider):base(bleDevicesProvider)
+        public AndroidBleService(
+            IDataService dataService, 
+            IBleDevicesProvider bleDevicesProvider):base(bleDevicesProvider,dataService)
         {
             _callBack = new BleScanCallBack(dataService);
             _bleScanner = BluetoothAdapter.DefaultAdapter.BluetoothLeScanner;
         }
         
-        public override void StartBleScan()
+        public override void StartBleScan(string sessionId)
         {
             if (KnownDevices == null || KnownDevices.Count == 0)
                 return;
-            base.StartBleScan();
+            base.StartBleScan(sessionId);
+            StartAndroidBleScan();
+        }
+
+        private void StartAndroidBleScan()
+        {
             _callBack.BeaconFound += OnBeaconFound;
-            CheckPointPassed+= OnCheckPointPassed;
+            CheckPointPassed += OnCheckPointPassed;
 
             var filters = KnownDevices
                 .Select(f => new ScanFilter.Builder().SetDeviceName(f.DeviceName)
@@ -49,7 +56,7 @@ namespace Sanet.SmartSkating.Droid.Services.Location
                 filters,
                 settings,
                 _callBack);
-            
+
             _startTime = DateTime.Now;
         }
 
@@ -71,7 +78,7 @@ namespace Sanet.SmartSkating.Droid.Services.Location
             _callBack.BeaconFound -= OnBeaconFound;
             CheckPointPassed-= OnCheckPointPassed;
             if (IsScanning)
-                StartBleScan();
+                StartAndroidBleScan();
         }
 
         public override void StopBleScan()

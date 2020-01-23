@@ -49,12 +49,14 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         };
 
         private static readonly IBleDevicesProvider BleDevicesProvider = Substitute.For<IBleDevicesProvider>();
+        private static readonly IDataService DataService = Substitute.For<IDataService>();
 
-        public BaseBleLocationServiceTests() : this(BleDevicesProvider)
+        public BaseBleLocationServiceTests() : this(BleDevicesProvider, DataService)
         {
         }
         
-        protected BaseBleLocationServiceTests(IBleDevicesProvider devicesProvider) : base(devicesProvider)
+        protected BaseBleLocationServiceTests(IBleDevicesProvider devicesProvider, IDataService dataService) 
+            : base(devicesProvider, dataService)
         {
             devicesProvider.GetBleDevicesAsync().Returns(Task.FromResult(new List<BleDeviceDto>
             {
@@ -249,9 +251,31 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         }
 
         [Fact]
+        public async Task SavesScan_WhenProceedingIt()
+        {
+            var scan = BleScansStackTests.GetScanDto(-67, DateTime.Now, FinishDeviceId);
+
+            ProceedNewScan(scan);
+
+            await DataService.Received().SaveBleScanAsync(scan);
+        }
+
+        [Fact]
+        public void AssignsSessionIdToScan_WhenProceedingIt()
+        {
+            const string sessionId = "SomeSessionId";
+            base.StartBleScan(sessionId);
+            var scan = BleScansStackTests.GetScanDto(-67, DateTime.Now, FinishDeviceId);
+
+            ProceedNewScan(scan);
+
+            scan.SessionId.Should().Be(sessionId);
+        }
+
+        [Fact]
         public void SetsIsScanningToTrue_WhenStartIsCalled()
         {
-            base.StartBleScan();
+            base.StartBleScan("id");
             IsScanning.Should().BeTrue();
         }
         
@@ -293,7 +317,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             }
         }
 
-        public override void StartBleScan()
+        public override void StartBleScan(string sessionId)
         {
             throw new NotImplementedException();
         }
