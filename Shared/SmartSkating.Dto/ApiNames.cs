@@ -13,6 +13,12 @@ namespace Sanet.SmartSkating.Dto
             public const string Path= "/sessions";
             public const string Route = "sessions";
         }
+        
+        public static class BleScansResource
+        {
+            public const string Path= "/scans";
+            public const string Route = "scans";
+        }
 
         public static string BaseUrl = "https://smartskating.azure-api.net/smartskating";
     }
