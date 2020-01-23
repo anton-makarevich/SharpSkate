@@ -15,9 +15,11 @@ namespace Sanet.SmartSkating.Azure.Services
         private readonly ILogger _log;
         private const string WayPointsTableName = "WayPointsTable";
         private const string SessionsTableName = "SessionsTable";
+        private const string BleScansTableName = "BleScansTable";
 
         private readonly CloudTable _wayPointsTable;
         private readonly CloudTable _sessionsTable;
+        private readonly CloudTable _scansTable;
 
         private readonly bool _hasStorageAccess;
 
@@ -38,12 +40,13 @@ namespace Sanet.SmartSkating.Azure.Services
             
             _wayPointsTable = tableClient.GetTableReference(WayPointsTableName);
             _sessionsTable = tableClient.GetTableReference(SessionsTableName);
+            _scansTable = tableClient.GetTableReference(BleScansTableName);
         }
         
-        public async Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
+        public Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
         {
             var entity = new WayPointEntity(wayPoint);
-            return await SaveEntityAsync(entity,_wayPointsTable);
+            return SaveEntityAsync(entity,_wayPointsTable);
         }
 
         private async Task<bool> SaveEntityAsync(TableEntity entity, CloudTable table)
@@ -76,10 +79,10 @@ namespace Sanet.SmartSkating.Azure.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> SaveSessionAsync(SessionDto session)
+        public Task<bool> SaveSessionAsync(SessionDto session)
         {
             var entity = new SessionEntity(session);
-            return await SaveEntityAsync(entity,_sessionsTable);
+            return SaveEntityAsync(entity,_sessionsTable);
         }
 
         public Task<List<SessionDto>> GetAllSessionsAsync()
@@ -92,9 +95,10 @@ namespace Sanet.SmartSkating.Azure.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> SaveBleScanAsync(BleScanResultDto session)
+        public Task<bool> SaveBleScanAsync(BleScanResultDto bleScan)
         {
-            throw new NotImplementedException();
+            var entity = new BleScanEntity(bleScan);
+            return SaveEntityAsync(entity,_scansTable);
         }
 
         public Task<List<BleScanResultDto>> GetAllBleScansAsync()
