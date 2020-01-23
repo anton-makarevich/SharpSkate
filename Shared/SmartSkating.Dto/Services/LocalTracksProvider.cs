@@ -15,8 +15,7 @@ namespace Sanet.SmartSkating.Dto.Services
 
         public Task<List<TrackDto>> GetAllTracksAsync()
         {
-            return _resourceReader.ReadEmbeddedResourceAsync<LocalTrackProvider, TrackDto>("tracks.json",
-                "Missing local tracks file");
+            return _resourceReader.ReadEmbeddedResourceAsync<LocalTrackProvider, TrackDto>("tracks.json");
         }
     }
 }

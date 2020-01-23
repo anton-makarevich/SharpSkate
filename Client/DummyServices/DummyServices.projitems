@@ -12,8 +12,9 @@
     <Folder Include="$(MSBuildThisFileDirectory)Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Services\BleResourceReader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DummyLocationService.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DummyBluetoothService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DummyBleLocationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DummyLocationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Test.ble" />

@@ -44,7 +44,7 @@ namespace Sanet.SmartSkating.Models.Location
             Time = scan.Time;
             var prevAverage = AverageRssi;
             AverageRssi = (int)_stack.Average(f => f.Rssi);
-            var trend = AverageRssi - prevAverage;
+            var trend = scan.Rssi - prevAverage;
             if (trend > 0)
                 RssiTrend = RssiTrends.Increase;
             else if (trend < 0)

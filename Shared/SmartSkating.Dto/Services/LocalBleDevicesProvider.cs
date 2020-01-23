@@ -14,9 +14,7 @@ namespace Sanet.SmartSkating.Dto.Services
         }
         public Task<List<BleDeviceDto>> GetBleDevicesAsync()
         {
-            return _resourceReader.ReadEmbeddedResourceAsync<LocalBleDevicesProvider, BleDeviceDto>(
-                "ble.json",
-                "Missing local ble devices file");
+            return _resourceReader.ReadEmbeddedResourceAsync<LocalBleDevicesProvider, BleDeviceDto>("ble.json");
         }
     }
 }
