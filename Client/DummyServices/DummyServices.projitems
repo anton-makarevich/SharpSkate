@@ -9,10 +9,13 @@
     <Import_RootNamespace>Sanet.SmartSkating.Dummy</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Services" />
     <Folder Include="$(MSBuildThisFileDirectory)Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BleResourceReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DummyLocationService.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Test.ble" />
   </ItemGroup>
 </Project>

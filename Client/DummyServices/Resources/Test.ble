@@ -1,0 +1,3668 @@
+[
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -74,
+        "Time": "2020-01-11T07:21:09.3147Z",
+        "Id": "4087728a28a646abb4fca21a03be8516"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:21:09.533714Z",
+        "Id": "cc35232112d940b0bcd9f1a806a3e191"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:21:09.898277Z",
+        "Id": "55fa1b72bbf04a98bc323924dd7ae0e9"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:21:10.323925Z",
+        "Id": "db2b0a032f9345f59a9fce76a6d626ac"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:21:10.339505Z",
+        "Id": "36667237c63c430a9c8a50a6abca2a39"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:21:11.322742Z",
+        "Id": "d156da5545f94d8caa6dd89afb06a529"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:21:11.342361Z",
+        "Id": "6fab0e8560d3476f8a355ba9916276ee"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:21:12.31269Z",
+        "Id": "95b2396446764db4b003fae0c194d09b"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:21:12.546803Z",
+        "Id": "e2e1eb95ac2f4a18a91571c11fdfa169"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:21:13.553203Z",
+        "Id": "2ffd6ceb122b404e941904cac3c21767"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:21:14.337565Z",
+        "Id": "f258cca3a0594fe3bfa4968ccfa3f2c5"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:21:14.936594Z",
+        "Id": "1be046d7d669464c93d0a35639a05a6a"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:21:15.345017Z",
+        "Id": "5788ea92d5d345bdbd88f698cfe4912f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:21:15.353856Z",
+        "Id": "e6b3870676d045b398bd29e61b5179ad"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:21:15.562345Z",
+        "Id": "07c346b8cb9c4e0796b6419abd3d8379"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:21:15.932028Z",
+        "Id": "cb9f7cfcbd63465eaac3a5176f2fedfa"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:21:16.369049Z",
+        "Id": "6bdc1549d6114efe93804fcd289bf499"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:21:17.339146Z",
+        "Id": "de1a47110d9c4160a1d372136ae401cd"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:21:17.566697Z",
+        "Id": "fde00d09da234585b6bb068784439b4f"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -75,
+        "Time": "2020-01-11T07:21:18.35921Z",
+        "Id": "331b0a6d6c2d45158bd9cb9eb42ac1a9"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:21:19.590509Z",
+        "Id": "8f56d544698740d3b7d18a89343f97b9"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:21:20.380222Z",
+        "Id": "6c22d9ec35e740c5b26b6ef2ea7e39cb"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:21:21.382074Z",
+        "Id": "ce9e8d2a84024a8b8f53fc4176030135"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:21:21.383662Z",
+        "Id": "3ae7d030fdb44381a473caf81a4d5498"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:21:23.389987Z",
+        "Id": "2a79e36cb1e74fd5bc16ad7376d88b58"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:21:23.391256Z",
+        "Id": "7d02946e668841d891f164fe2b523e48"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:21:23.609257Z",
+        "Id": "eec2503ebb3c4e85b3537df820c4913d"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:21:24.403503Z",
+        "Id": "6ebdf41a3c7f4c8f9f1931bdc6fbc54b"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:21:24.970438Z",
+        "Id": "4f317298cf204561a060a713e6071f5b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:21:29.424026Z",
+        "Id": "4caba535fce3411a9047b13a24e17e7d"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:21:30.427662Z",
+        "Id": "142af292a8914baeae3ac4cba3c10a9c"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:21:30.430116Z",
+        "Id": "8b6ae421d186433eb492701a81d059ab"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:21:31.018059Z",
+        "Id": "52f1f8432447418797fd3cf50db69c17"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:21:32.428117Z",
+        "Id": "87073f16a5ba4339bb3cfe382fa55758"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:21:32.431605Z",
+        "Id": "9c6580ce4e4b4060a8b7d9436af197c0"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:21:33.43658Z",
+        "Id": "4feeb06e28074cc489cc8fb208592209"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:21:33.43895Z",
+        "Id": "cb733d6079dc49e0a8e5a57dba1448ab"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:21:34.429571Z",
+        "Id": "1ced682a48a942f1ab17fbeafa613c31"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:21:34.441095Z",
+        "Id": "d46628947e6448089e7bd57b7e34d297"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:21:34.671445Z",
+        "Id": "6f06eeebe8074bbb9154b6b9e4feb0c0"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:21:35.040122Z",
+        "Id": "4e942be89f1c4b98a27592a80c8149cc"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:21:35.45955Z",
+        "Id": "94de4ec220d2489db1728da2e3fd500b"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:21:36.039715Z",
+        "Id": "4b21bf327e4a4953864092d6f9317713"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:21:36.428815Z",
+        "Id": "ca29a3d8a8024389ae1f973e1f4375a5"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:21:36.440636Z",
+        "Id": "6add97e5beca4cf69f675249201b5f0c"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:21:38.473337Z",
+        "Id": "4e47ff5bda1a4d559ec704d0840c36f1"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:21:39.051278Z",
+        "Id": "5c5131e00bfa40b285c3db20d49d8804"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:21:39.467963Z",
+        "Id": "a76a3c818d744bd98a3d8b69f0aa0d3a"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:21:40.470705Z",
+        "Id": "7012ad3ec6cf4cbfa505eff1f235e1ba"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:21:40.472237Z",
+        "Id": "51437aeba0064ae1956436ece639ae29"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:21:41.478846Z",
+        "Id": "f002867e42d04013a7b393168d689c5c"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:21:41.48037Z",
+        "Id": "d81ac8e34068401fb05a417c7551d6b2"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -79,
+        "Time": "2020-01-11T07:21:42.481253Z",
+        "Id": "d8b4d8dc07ac451e9a7d71a0eafa80b8"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -99,
+        "Time": "2020-01-11T07:21:42.716772Z",
+        "Id": "b6cad664f47349e49baa7be362d384c5"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:21:43.06088Z",
+        "Id": "264c7c9ccad7404a90d7cfbdb62f33ca"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:21:44.071353Z",
+        "Id": "daf83fc8d20d443082b77fca7bcbebf7"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:21:44.496714Z",
+        "Id": "4f2034935dcd4b9cb0f5bd46833d637c"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:21:50.515874Z",
+        "Id": "7af368db44da467eb7f831229a9ebad7"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -69,
+        "Time": "2020-01-11T07:21:50.517439Z",
+        "Id": "ca0f87edc1df470ab77b96b698304bde"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:21:51.519285Z",
+        "Id": "17956253c20149b49e9502cdd25266c1"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -72,
+        "Time": "2020-01-11T07:21:52.532698Z",
+        "Id": "c4d8d20577c548cdbf0a00eea279f45d"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:21:53.114031Z",
+        "Id": "b595d583a03049cfbde3fc3d8423fbdb"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:21:53.735729Z",
+        "Id": "555afe1de3504195ab130fad3b50c29c"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:21:54.135149Z",
+        "Id": "7905e0ce58fc4e558c6d1968e6f8fde8"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:21:54.541178Z",
+        "Id": "3ea741311d4a46b7849622e091c03e27"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:21:55.128172Z",
+        "Id": "c151395ed3594b24843c6b71c0fd7024"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:21:56.134291Z",
+        "Id": "d116363f4c7b4be19552626dbdabb674"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:21:56.548678Z",
+        "Id": "8a1b1e42fa05466c812be6f4c7ad07ee"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:21:58.158567Z",
+        "Id": "b38468f19249410dab1ce84c083ac00e"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:21:58.571694Z",
+        "Id": "9beface58dea4181883747fe869934b3"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:21:59.148275Z",
+        "Id": "c4b4af00166b489cbe04e4fb8a503d39"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:22:01.169845Z",
+        "Id": "655ccabaea504f4e9ae62e460c2383c6"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:22:01.801095Z",
+        "Id": "efc7ba8742a7404cb1902db9b9fb89bf"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:22:02.56474Z",
+        "Id": "0bc5692642944cd49cfc6e49d3719534"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:22:02.816237Z",
+        "Id": "77f8cbd68b6b4bdab73f3cea749ae540"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:22:03.598485Z",
+        "Id": "8479f03e47744ba59d302d32865d5c91"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:22:04.821922Z",
+        "Id": "0f1e3d3594c44b18ba7529a420d48506"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:22:05.17853Z",
+        "Id": "ad1183817910458eb19fa8d2409cd99e"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:22:05.810256Z",
+        "Id": "f28e3938fa3c416f93c2efccccec1d21"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:22:06.179816Z",
+        "Id": "fafbe1c4fc2a42c5b0c8407e999e2c47"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:22:07.591402Z",
+        "Id": "517dbaefd8134b629702e0155640f801"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:22:07.834477Z",
+        "Id": "6d47767070f74be1be1384c358fa7ea3"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -81,
+        "Time": "2020-01-11T07:22:09.220876Z",
+        "Id": "9fdc6daea3a74373869be5aaeb18af73"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:22:09.626058Z",
+        "Id": "3525d1bb0573494bb3f9bc6b5ec66b84"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:22:09.838078Z",
+        "Id": "55ccca9072a04edc9244febaa9a6a4a5"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:22:10.236479Z",
+        "Id": "810e11e061cd43fc8270007b40f1d8cf"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:22:10.619013Z",
+        "Id": "7cdc5eb16918480499de49b5821188c1"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:22:11.232535Z",
+        "Id": "4919fb1b1a4a481f9f0a78214755c611"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:22:12.232765Z",
+        "Id": "fa9ec644f39b4eadbe9c364e89e8bedc"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:22:12.64801Z",
+        "Id": "ee6a72f6caaa4958914998c22d2f1e79"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:22:14.666986Z",
+        "Id": "548efe3b8d694273a6838ed4ab0fe474"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:22:15.249342Z",
+        "Id": "a17ae253e18742f9b70666d2e2788548"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:22:15.886981Z",
+        "Id": "9597088c0ede432ebdbf7d844a07a60c"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:22:16.252183Z",
+        "Id": "59bf9d13b1404b739a4ffa811993c324"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -73,
+        "Time": "2020-01-11T07:22:17.255504Z",
+        "Id": "088fabfd72814736b95d8997387f035c"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:22:17.669435Z",
+        "Id": "1d90008aa3d34cedbc9b0dd36772aad9"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -62,
+        "Time": "2020-01-11T07:22:18.255368Z",
+        "Id": "5f0e7eb7551746d3bac95dd99a7e3592"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:22:18.677762Z",
+        "Id": "c3e8600c4eec4999957bac28ce115195"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:22:18.889895Z",
+        "Id": "aa34b1268aeb4875b1f2d2d8f1dcf104"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:22:20.667386Z",
+        "Id": "f289de8565bf41a9af6e7c3bddc3eb76"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:22:20.674763Z",
+        "Id": "57bf90ee3de3490898d90f6a50da6ed1"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:22:20.904076Z",
+        "Id": "ddcbf4a5195748cd8347304c2edb5dc8"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:22:21.281182Z",
+        "Id": "5b1b395b4d034d468dfcbf7ee59f2b64"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:22:25.93171Z",
+        "Id": "7027adb930a74f478223c517bb2fa2f2"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:22:26.30091Z",
+        "Id": "e4e017ce01e648cb86eb145cec8887be"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:22:27.702158Z",
+        "Id": "1e17710d78b2436aafe2e66a3f4853d2"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:22:27.707274Z",
+        "Id": "8bf4fc6a354945baa0298bd0f5138a55"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:22:27.938692Z",
+        "Id": "cdcdb226c2624420925c68c5251d0f92"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:22:28.306153Z",
+        "Id": "d81f51ab34bc45649c45565ae0c78ae3"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:22:29.703263Z",
+        "Id": "6854830c9f604a6e874ebf1aa78a2bed"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:22:30.707495Z",
+        "Id": "4d46ac3e6c21445391e043b1bb56eb13"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:22:30.709077Z",
+        "Id": "fdafc677654d48a5bc019d91821a4960"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:22:31.324407Z",
+        "Id": "da8b169294c9455db79da1594aa7d491"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:22:31.731755Z",
+        "Id": "661ee828dd744851ba6c91d7c1552270"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -101,
+        "Time": "2020-01-11T07:22:32.717539Z",
+        "Id": "1e5ba66738d64a3f924252b9a8a074b9"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:22:32.719966Z",
+        "Id": "811b499340bd4463b9e1a9baf6a444c1"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:22:33.327743Z",
+        "Id": "f6f2776f8c324f4cbf0d617c4306d901"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:22:34.968288Z",
+        "Id": "4eae6e2701d54b68adb4a61a7d63ac20"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:22:35.336221Z",
+        "Id": "d2cfd5e77d314ef9b4f6f1dcc32626fe"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:22:36.978556Z",
+        "Id": "951dd4faacd54f809ef1f5e324a02216"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:22:37.339363Z",
+        "Id": "d26ef0e8d3414039bcc0ce686849b0bd"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:22:37.738894Z",
+        "Id": "fb4dc0cef162440c9b134ac28030a904"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:22:37.969065Z",
+        "Id": "329c1fcc471b4c6cab6d6a0aca0a3e07"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:22:38.767674Z",
+        "Id": "6a9f774547384ddfbc5a2bdc21acd4d1"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:22:38.771766Z",
+        "Id": "048eeae3a1d240bfb3bfd4a332cbe6ba"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -81,
+        "Time": "2020-01-11T07:22:38.977085Z",
+        "Id": "eeb356acac944caeb8d706cce9508ebe"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:22:39.366332Z",
+        "Id": "b1746ae0ac764578bdab0704701f14b0"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:22:39.98829Z",
+        "Id": "f465ef98dd154124986450ce22bd9366"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:22:40.369422Z",
+        "Id": "b6fbed89e6954df49055a7a3bc13dba8"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -75,
+        "Time": "2020-01-11T07:22:40.984094Z",
+        "Id": "9c998c95bb684805beb21f4817ab1fd9"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:22:41.778325Z",
+        "Id": "ae752b1ac4214fbf83d4c3bdd793ecd2"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:22:46.799733Z",
+        "Id": "364f186a2116411c862620e6ee6b2c8c"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -67,
+        "Time": "2020-01-11T07:22:47.003956Z",
+        "Id": "f2b41b710a7d4902bc3d7fceba6dd0c4"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:22:48.000028Z",
+        "Id": "02d321ea53634d3c8dbc1df7229f5200"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:22:49.018254Z",
+        "Id": "d0613b9e14d542fc870e9d8646680dd1"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:22:49.82059Z",
+        "Id": "976938398ee74b58a2b183f90d0e43d8"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:22:50.797034Z",
+        "Id": "fbcdc4053cd74a10996f6b702c4dbb02"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:22:51.022285Z",
+        "Id": "d26040d0914840b281c3587b18c3dfba"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:22:51.799786Z",
+        "Id": "c18d49c1d4dc42f198572513858be67e"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:22:52.029435Z",
+        "Id": "e0ca4103d8e04391bc7cbfc8f2637b1b"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:22:52.83393Z",
+        "Id": "6dde248b0d774b87a8a11b431f067291"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:22:53.817743Z",
+        "Id": "4f5c888edc394dada63eeeee75b17dc3"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:22:54.043964Z",
+        "Id": "5654eaa0d3b446b0862357e20c4f7325"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:22:54.447992Z",
+        "Id": "4844e147b10149e2b03fd227ba05279d"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:22:54.838449Z",
+        "Id": "fcea5b48b1a240349744670482a5d39c"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:22:55.026135Z",
+        "Id": "8b2d29230f61449591008b3e530d7b8e"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:22:55.847029Z",
+        "Id": "5f575dfb79114b7296e517d98951880a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:22:56.032705Z",
+        "Id": "81d1d02a5e4140b7b0bb02779796806c"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:22:56.821368Z",
+        "Id": "7e6037b3468544618afc0298a6312c52"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:22:56.828015Z",
+        "Id": "bb46c959293845dc88abffb15753831b"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:22:57.461742Z",
+        "Id": "ad98952dee1b4a168ff05f2522acd2b3"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:22:57.823915Z",
+        "Id": "e17378647b514c5eb9f06f383dd3c963"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:22:58.051528Z",
+        "Id": "ad856da1e2b044be9136dcf1c3f314f4"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:22:58.457393Z",
+        "Id": "4992269d993e477c9d59d66a9757f652"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:22:58.817768Z",
+        "Id": "d5fda4b11b3a4af9865b234c7235d34a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:22:59.052798Z",
+        "Id": "72613022bd624ad1a587713fb9a226df"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:22:59.854529Z",
+        "Id": "cfc54b9af1d8463c943f19aa281fc202"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:23:00.47385Z",
+        "Id": "5a03bb3718984cf0ac3142fb537a10d6"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:23:00.838174Z",
+        "Id": "a828ca2f3a8e4a5a9a45f2f9555b71df"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:23:01.471594Z",
+        "Id": "a2a4dd1c746642a2851dd76480442f1c"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:23:02.068588Z",
+        "Id": "8929c59b3df34433a33ac665becf82c7"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:23:07.111392Z",
+        "Id": "b5b0555002ea4f9fb1e04f72d481d340"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:23:08.487925Z",
+        "Id": "8a9bec9ef0714487b7f67b9d405793b3"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:23:08.872566Z",
+        "Id": "a438f862316a44f0bc0383dd9518bbc4"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:23:09.888958Z",
+        "Id": "decf61dd86bf41dda4cb26482a3288b8"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -65,
+        "Time": "2020-01-11T07:23:10.886243Z",
+        "Id": "1025b4aca13b4969919596e9ff9ec5f5"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -73,
+        "Time": "2020-01-11T07:23:12.904193Z",
+        "Id": "e2b7db214bfe496086f2f03c9c878eb6"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -99,
+        "Time": "2020-01-11T07:23:14.50585Z",
+        "Id": "b2fbe6dfbb794a2bb31015f8a9fd8db7"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:23:14.910042Z",
+        "Id": "0890bc10e08442008982e012128229ee"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:23:15.924751Z",
+        "Id": "1ffe3a0ad8b24835a17f31c0b98140a8"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:23:15.93511Z",
+        "Id": "67258f4a3a8e41f5a8d80036087c1b81"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:23:16.96967Z",
+        "Id": "5312d86dc2224c1fa1ee1d5d577e688b"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:23:17.1525Z",
+        "Id": "d8fe06b5246442f69e74330d7ecb4e96"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:23:17.938437Z",
+        "Id": "8fb39a922693407c9df6b7d9c2cf4dbe"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:23:17.952712Z",
+        "Id": "3b1daa8c75274c54b073fa18427704f2"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:23:19.536284Z",
+        "Id": "e0773a2fb0454d4fa87dc46b6074d90b"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:23:19.975088Z",
+        "Id": "f8239bf6986c49dfacb8cda09ef7f481"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:23:20.52787Z",
+        "Id": "3ed2289ae02d46dd912a70e2f9987933"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:23:21.176498Z",
+        "Id": "5559b6762e5c46808d36739c235989a9"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:23:21.542314Z",
+        "Id": "b56c0bcf643e414a9114cc777610a6e7"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:23:21.987073Z",
+        "Id": "e1716c23dc8f43708cbe2164eb2e1611"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:23:27.975835Z",
+        "Id": "ef5fbd9505c24f63ad3a1a088a0e6750"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:23:28.004079Z",
+        "Id": "d7a2aec4e3134252b5d870cce9af108d"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:23:29.040572Z",
+        "Id": "ba6b6420594546afb7da83590063876b"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -100,
+        "Time": "2020-01-11T07:23:29.583492Z",
+        "Id": "2bae307c4abb470696a02ab6e38cff73"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:23:31.590535Z",
+        "Id": "18dbba8cc7814be48ba1c4eb6b5f528e"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:23:31.989812Z",
+        "Id": "847babfbb14c4939b686dbb7ece36bad"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:23:33.997963Z",
+        "Id": "16a264cc5459430eb03f0d543c64c1c4"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -68,
+        "Time": "2020-01-11T07:23:34.034744Z",
+        "Id": "930fc799a4704be39426aa248e8e0838"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:23:34.994616Z",
+        "Id": "0f1c7eb719164add87cde1c121a8bfcf"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -62,
+        "Time": "2020-01-11T07:23:35.044344Z",
+        "Id": "4b60d8f16d2849f0a8d62627b3ac3009"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -63,
+        "Time": "2020-01-11T07:23:36.065829Z",
+        "Id": "f8761404403847acbff0f460f9f6d68a"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -65,
+        "Time": "2020-01-11T07:23:37.073452Z",
+        "Id": "a28822d1e3ae4e5eb61b8a5530ac1b4d"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:23:37.601677Z",
+        "Id": "ef377b5a114c4d9aa15c6ad26605fe9c"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:23:38.061952Z",
+        "Id": "de2c0e4199ea4703835d1cc5a253745d"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -100,
+        "Time": "2020-01-11T07:23:39.280457Z",
+        "Id": "43e81f2dc5064e528fb61733fcf7739f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:23:40.084832Z",
+        "Id": "aa54d45149c04667b64bfc21d76e5d80"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:23:40.264664Z",
+        "Id": "c942170061f74d79bc2bb210f57b82e0"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:23:41.028144Z",
+        "Id": "7379e93019e14ccc8f976d2f391fbe09"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:23:41.082932Z",
+        "Id": "5b43c0b8df48436ebb397e9836803fa7"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:23:42.104498Z",
+        "Id": "3bbe1d35e03548b2984cc388e93be6c2"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:23:43.104662Z",
+        "Id": "ee6e4e2c4a19416a952731fb9839da26"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:23:48.057929Z",
+        "Id": "bef5fbf3623c41ec856213ce0dbdc655"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:23:48.107861Z",
+        "Id": "4c44b8aa48024a3bae78a63142c80f18"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:23:48.684028Z",
+        "Id": "f0988d4239544744a742437f7c85a75d"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:23:49.128448Z",
+        "Id": "2f4776dc1b544ce18755dc68924cabdc"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:23:49.300545Z",
+        "Id": "5109bc5b31fd4c8f93a8710923268d08"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:23:49.679751Z",
+        "Id": "3c5fd4a096b0419a9a95098d4f70aca4"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:23:50.307051Z",
+        "Id": "1ccba2e78ad440579dfd2426eecdc2c8"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:23:50.687219Z",
+        "Id": "772276b76560424a84b8d044a2a39106"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:23:51.15465Z",
+        "Id": "3c560950bca0419faba82e665f8495a8"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:23:52.68706Z",
+        "Id": "1b9da86ffe6c423cb409c8e7ac36a1ed"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:23:53.331754Z",
+        "Id": "988ee60f4a5349a888569339b0fbb8b7"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:23:54.70118Z",
+        "Id": "b17b5b60bc764fe2a301711577dfbb77"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:23:55.703595Z",
+        "Id": "ba9bcd56674a486aa0fa8444f65df6fe"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:23:57.091594Z",
+        "Id": "74a8a39f30ff4c2f9e3d9036e2c12e5b"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:23:57.351361Z",
+        "Id": "8fa6a7f049324c9e893d07b16c21301c"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -79,
+        "Time": "2020-01-11T07:23:58.713379Z",
+        "Id": "911fb1dd8d9343fd8cd2545754d6a568"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:23:59.711595Z",
+        "Id": "c3cc7b3c2fd24139b03d00e92d7eca36"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:24:00.099969Z",
+        "Id": "74ca62fd1ca04270a980eea1e4ded4ac"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:24:00.377717Z",
+        "Id": "c71f5378c9ad43f7b572de4f0985afb6"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:24:00.726799Z",
+        "Id": "5ca925fec9ff448a83ada99b1c49c3b6"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:24:02.387149Z",
+        "Id": "d4d3512856f64932837e02e0ea84f837"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -69,
+        "Time": "2020-01-11T07:24:02.731469Z",
+        "Id": "feca1f1e023343dca976259d85bc7092"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:24:03.11878Z",
+        "Id": "f4f1c5edb72b4f7098f3c7ad952afb95"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:24:03.183573Z",
+        "Id": "5827f08565df4eee9ecfcdfbed2cfd40"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:24:03.383406Z",
+        "Id": "aef605a8559241b29ffc17eab7a8a33b"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -72,
+        "Time": "2020-01-11T07:24:03.73942Z",
+        "Id": "0b489b174e7c46849d8992e6762ab1dd"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:24:08.141394Z",
+        "Id": "f78ce067f3f344dda812a178f9bfe314"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:24:08.435842Z",
+        "Id": "46e8959e49d540acb2996d5191f47b74"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:24:08.763911Z",
+        "Id": "9ea698b30d9c423d87d3c6b08f11c74b"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:24:10.225785Z",
+        "Id": "84e75eed853c41e6926f6b758e6620fe"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:24:12.792531Z",
+        "Id": "dd5b57ddfe584fe484cea34af8e58317"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:24:13.809292Z",
+        "Id": "7eb3f7f6af684767a93d03bf5ca79ad5"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:24:14.807777Z",
+        "Id": "d483e621ec1c48e3b35e3b58a463680f"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:24:15.163775Z",
+        "Id": "d795323b434b447ca304419a244a1952"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:24:15.239238Z",
+        "Id": "8c51a1aed2cf485dba310e57399dbf2c"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:24:16.174519Z",
+        "Id": "46be8868640f4dc78d6e27226cb22efb"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:24:16.235529Z",
+        "Id": "896691003050427ab8b57c7b141b91ee"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:24:17.817789Z",
+        "Id": "4ee36288914f4f3bac853f342e0248ec"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:24:18.255064Z",
+        "Id": "24a9921edc6a49518a06247875bad8f4"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:24:18.483838Z",
+        "Id": "38aac93bf86147f49f0e27e5d1c55f4a"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:24:18.821506Z",
+        "Id": "33be798d15794f51944c8392ae8a208f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:24:19.261247Z",
+        "Id": "6ee193c327c04694a432c09a100a974c"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:24:19.481502Z",
+        "Id": "9383af02fdad4cfcb7d4b99524952652"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:24:20.277007Z",
+        "Id": "4908dbb7b8bd4f5d8632601f4eb9df86"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:24:20.496774Z",
+        "Id": "9c802121060d449e8cfa32f5e837c2f0"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:24:21.500146Z",
+        "Id": "77eb6ffe94df4db183c3ec174b8bfe53"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:24:21.838239Z",
+        "Id": "dcde97150a864a5fa35208227e8a3f16"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:24:22.503055Z",
+        "Id": "7607ab7452f348f08bc593fa830b691b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:24:23.183873Z",
+        "Id": "79baae51e5bb42658584d36b59c57e4a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:24:23.507272Z",
+        "Id": "35c8a58b06614414ae514de3990a84a6"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:24:23.826255Z",
+        "Id": "88f178cd058d4d579c2e7d914537640b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:24:24.192158Z",
+        "Id": "f4bda8a9a69944c0916050d7c2ccdaf9"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:24:24.285909Z",
+        "Id": "0f7d0aa23c914d92bcd51d708657b5da"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:24:28.539434Z",
+        "Id": "adfd88d07a5243639d1d7734c9614e4c"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:24:29.228089Z",
+        "Id": "df194c30794741da84a426c49be7c9ab"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -72,
+        "Time": "2020-01-11T07:24:29.529657Z",
+        "Id": "4b21dec18c0a495485b07123524e9100"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:24:30.221151Z",
+        "Id": "cd2f4a8e5d3441f18798f65aedb36d50"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:24:30.322052Z",
+        "Id": "35e868f9acf94d37a019dc59d3cb09bb"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -68,
+        "Time": "2020-01-11T07:24:30.532174Z",
+        "Id": "b7f22c9a10704fb6af5042ff76e17196"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:24:31.236534Z",
+        "Id": "7de63eb19f9d41c3b79d767fda3b36ca"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:24:31.322396Z",
+        "Id": "f739f673af534c70ae37fed30f1e4299"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -73,
+        "Time": "2020-01-11T07:24:31.539056Z",
+        "Id": "b6d14002d23b4b519c5e2ff6e383faee"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:24:32.537759Z",
+        "Id": "4881a26193af49a5ad4ae0cb8b63dbc0"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:24:33.337943Z",
+        "Id": "1b33ba8eafdc4627b010443aaa11aed6"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:24:33.529226Z",
+        "Id": "fdfad4fc77964cb38b5e9381a54eb147"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:24:34.539613Z",
+        "Id": "83634f8d84bd42a88884b9612e9995bc"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:24:35.235914Z",
+        "Id": "3aa53fe2d4a04c26895b21fed53ade8a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:24:35.555169Z",
+        "Id": "f2e2d61a7cfb4efb942920b4ffc9f423"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:24:36.541907Z",
+        "Id": "4108bc62ae7d494aac1cc237f0b9852b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:24:38.256847Z",
+        "Id": "24474b2555ca4d0489a90d6c0c23d0bc"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:24:38.354505Z",
+        "Id": "3c08bb218548439cb7a45be2138baa22"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:24:38.573069Z",
+        "Id": "28e9997a2b424cc88d379e0bc76a3619"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:24:39.277015Z",
+        "Id": "2edf7b86c5014d03b04b9056f75f6c1f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:24:39.35513Z",
+        "Id": "e99ecf76f4264f899cfa363d309e204d"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -81,
+        "Time": "2020-01-11T07:24:39.578267Z",
+        "Id": "008953844f0e4ae59d710429b4557eee"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:24:40.273365Z",
+        "Id": "29c4471bdce7491f8dbf58ef0934d63b"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:24:40.359612Z",
+        "Id": "dddea1b972ad44efabbd3059d2b318ad"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:24:40.573456Z",
+        "Id": "5c427e86d2884f6a8ad4720ad14c5e30"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:24:42.289874Z",
+        "Id": "b237f0c4b9d34857a88663496a8ad99c"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:24:42.376283Z",
+        "Id": "9c2eec80c8bd41859fc189c5b3f5709a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:24:42.592559Z",
+        "Id": "27904f33b28649888ef23b96aa9c24e8"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:24:43.293918Z",
+        "Id": "0346667db80b49efbc68d2179e7ba279"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:24:43.369918Z",
+        "Id": "a1c6981400ef4846a81ace227f5707db"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:24:43.59459Z",
+        "Id": "44c68006c7e344f3b7eb67a33b43086c"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:24:44.289798Z",
+        "Id": "0fed48b0b8df45239a7cf60d8e7305f6"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:24:48.960018Z",
+        "Id": "d0eda19b5b374508a77c5d377fe3bfcf"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:24:49.31282Z",
+        "Id": "52fb0b33aeab4f77981a3d9511284ab8"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:24:49.406777Z",
+        "Id": "e3e4d9a9bcae4f7181c990da9a41102d"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:24:49.619981Z",
+        "Id": "213d8c45c90549658c2b0ab685805568"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:24:49.974334Z",
+        "Id": "425138d801a043b1918985635e428a88"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:24:50.320108Z",
+        "Id": "3d8032bb04a4460ba9d82d27338e3a34"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -74,
+        "Time": "2020-01-11T07:24:51.321652Z",
+        "Id": "90e8c5d1c9034557a3017768102bd58b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -71,
+        "Time": "2020-01-11T07:24:52.328918Z",
+        "Id": "04dcd9942c43456d978535db1d4b6aed"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:24:52.631607Z",
+        "Id": "988f64cd07014bdcb1d3dc2f1786b0dd"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -74,
+        "Time": "2020-01-11T07:24:53.330492Z",
+        "Id": "b63df50186df4bc0ab6af39f606d5fe8"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:24:55.421455Z",
+        "Id": "022d7cda01bf40fe8668aea80b70127f"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:24:55.635536Z",
+        "Id": "a2b7d082fda84cf69d052ad9cc03647a"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:24:56.349218Z",
+        "Id": "95672994a13a42fe96ed8a1035a38d77"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:24:56.429212Z",
+        "Id": "ab371d7b72714f368b2d4c9f83a80026"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:24:57.34484Z",
+        "Id": "e95ebd81cd61413daf1ee79630214979"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:24:58.35071Z",
+        "Id": "2b6cb26bf3244e41bbc128668d687614"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:24:58.430561Z",
+        "Id": "72b5a27f4c964b409a3ddad9ccce79ee"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:24:59.359143Z",
+        "Id": "396464f3fba14cadb7f314c14a0568ba"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:24:59.431536Z",
+        "Id": "5cd68a5ea93645a68852cc37c5e3f6cf"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:00.36229Z",
+        "Id": "2ac8622700374b70b84324af04fec645"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -79,
+        "Time": "2020-01-11T07:25:01.376142Z",
+        "Id": "43f34a3b851547d1acbb497f62990e48"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -79,
+        "Time": "2020-01-11T07:25:02.3624Z",
+        "Id": "982bbe4a69394137ac928af519fbb0cc"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:25:02.685062Z",
+        "Id": "fbcea0f98e774a0fa5f052f87c8d6408"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:03.452846Z",
+        "Id": "faf411a2398a40a4938665a0aa99299b"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:25:04.034955Z",
+        "Id": "b103837b97ab47ddbedbf5ce9eae33dc"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -75,
+        "Time": "2020-01-11T07:25:09.491029Z",
+        "Id": "69305521b634496a803cc45f027e6810"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:25:10.406369Z",
+        "Id": "538a394c1a18436ea89e9b9f4b6549a1"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:25:10.486683Z",
+        "Id": "5e5ffbe81b204c389cfb02eca29de222"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:25:11.411305Z",
+        "Id": "a63223f1647b4f999a9805f00e4bbb03"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:25:12.414308Z",
+        "Id": "b0ceb249cbae4534a8f5f7695f65ca69"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:25:12.495661Z",
+        "Id": "01e8686b9a944d08945801ee0c6f70d8"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:25:13.507671Z",
+        "Id": "6d914886e488497db39fecf1212e484a"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:25:14.415064Z",
+        "Id": "b36826bbcd1e42988b0e18031b1572ac"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:25:14.500059Z",
+        "Id": "25160dbca30a4c5da644a34b66f9719f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -67,
+        "Time": "2020-01-11T07:25:15.52051Z",
+        "Id": "9dc0a11ddc1548928bae7ab4a5fcc975"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -101,
+        "Time": "2020-01-11T07:25:15.759975Z",
+        "Id": "4808a02acfad4f19848f4624cc789b61"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -60,
+        "Time": "2020-01-11T07:25:16.532945Z",
+        "Id": "c9a4423a2c11485d9366d5bf71938b6e"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -60,
+        "Time": "2020-01-11T07:25:17.532167Z",
+        "Id": "ae6eaf1df7004357b553c0fec876274f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -73,
+        "Time": "2020-01-11T07:25:18.540009Z",
+        "Id": "d2ab5b19f54d49cf8188a8276ef1d5b8"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:25:19.557247Z",
+        "Id": "8a9a86752ab74c0f8d8bf51e436d4c25"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:25:20.112447Z",
+        "Id": "8eafa49a7cac40d0b9e00dc27326fbb8"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:25:20.453955Z",
+        "Id": "aeb8a7ee4d4c4f3880de8f9e02ffd71a"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -75,
+        "Time": "2020-01-11T07:25:20.533253Z",
+        "Id": "c4539df177ae4225a3f1777f4031c5b1"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:25:21.577185Z",
+        "Id": "28f7360060b24f6a87c19b4beec6289f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -75,
+        "Time": "2020-01-11T07:25:22.557972Z",
+        "Id": "b6bc3a40ad554fadbc9e06e5c786d34c"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:25:23.118992Z",
+        "Id": "0a5a2c5676c44627abb5aa11bc0c9959"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:25:24.116163Z",
+        "Id": "862a3a6bd1774acc9e032b439cdb5f1f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:25:24.569103Z",
+        "Id": "352dd34f4976484db791a0cf5c270ce6"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:25:25.578451Z",
+        "Id": "252dee98e8d24e26af83985a19f8b8b3"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:25:25.799487Z",
+        "Id": "b45b61a910274f53a7e23e18402a1808"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:30.15929Z",
+        "Id": "d0f647846c9c46be94060c00cb2035fe"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:25:30.495414Z",
+        "Id": "e6a54dfbca9b498cb39bc7b6f2ff8185"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:25:30.597738Z",
+        "Id": "9165392a1b88484c90a43302fa299e01"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:25:30.816981Z",
+        "Id": "ad147453610a4d22860d32ffa3fba6de"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:25:31.166906Z",
+        "Id": "13602c806b5245e8aac8022247661645"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:25:31.819572Z",
+        "Id": "fcb12c2417fb4fb79c6359bbe62fe639"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:25:32.624097Z",
+        "Id": "5f671e29f40d41798b539168cae4f228"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:32.811977Z",
+        "Id": "207f577132b74f55a950c85a8f718e6e"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:33.175106Z",
+        "Id": "51b0e454ac6c4b2898c2bcfbede43a26"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:33.627052Z",
+        "Id": "c7d0bc3190dd426a9f0299d3d95cb3a8"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -99,
+        "Time": "2020-01-11T07:25:34.526643Z",
+        "Id": "9369b9a617b74aff844d9eb483032fa8"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:25:34.617811Z",
+        "Id": "a4b1fa33e26f42778fe26591e4f65f8a"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:25:35.181632Z",
+        "Id": "d8f392c1ca234b6397bfe154944ed901"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:25:36.196009Z",
+        "Id": "ec1a91daacaf4531bd2dcc1ef1382cd4"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:36.827536Z",
+        "Id": "b4880e9d56a64c6fb830952182bf96ba"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:25:37.207316Z",
+        "Id": "8762d94de9154d37a1d8824c96a80bdc"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:25:37.518563Z",
+        "Id": "2897257e5d644e878759590d0b691abd"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:38.650253Z",
+        "Id": "70700cd4dece4ada895a60f5db26d285"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:25:38.828148Z",
+        "Id": "239cf84ed1bf434bb6ebc7265d07f424"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:25:39.215538Z",
+        "Id": "e2f2f0a02aaf443ba48e79d635beacb5"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:25:40.227795Z",
+        "Id": "79b641fdd25e4409a5683d1fa2b98f49"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:25:40.544149Z",
+        "Id": "28d65abf92bb48e2befd85732d2e29a9"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:25:41.229567Z",
+        "Id": "4f0c97b69c5a4939818972a6b34bbd67"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:25:43.230287Z",
+        "Id": "cb407039e275487a8f83790f6229e810"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -67,
+        "Time": "2020-01-11T07:25:44.23758Z",
+        "Id": "c5cc3756baaf449faacc86bb1ddbba2f"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -63,
+        "Time": "2020-01-11T07:25:45.236528Z",
+        "Id": "329632f94a28453785ca481d250c00bd"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -70,
+        "Time": "2020-01-11T07:25:46.246916Z",
+        "Id": "3d6445b7836841508eb26240c5780125"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:25:51.269103Z",
+        "Id": "78a4109b66ee4caa936e2790ec72d6bc"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:25:51.615813Z",
+        "Id": "e34d674acd8a49a696a0c394275a5a89"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:25:51.718311Z",
+        "Id": "eafbba46a77943ec9421e8277ebd8a2a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:25:51.922151Z",
+        "Id": "2c3d38d30cff41688dd4548fcba0f444"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:25:52.740222Z",
+        "Id": "0002e03bc7a343309216eb393687f1de"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:25:52.90937Z",
+        "Id": "2c69e378415f4a8f959a2d8863c07fc8"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:25:53.918234Z",
+        "Id": "6e842648c3f54f5080ac73d9770a31fd"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:25:54.271647Z",
+        "Id": "912e048e4302406380e68190718a0388"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:25:54.759351Z",
+        "Id": "8f280f93c7ba4b519968d761772b840c"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:54.922621Z",
+        "Id": "9216176ecb864db39bfe6c231b90bb7a"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:25:55.286164Z",
+        "Id": "9111f26ba1d94edcb3523541ec1551c6"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:25:55.93125Z",
+        "Id": "8270617991ce4cbc93bad211e95b6657"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:25:56.940389Z",
+        "Id": "407981910b0f4a48aeae486e5ba747f9"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:25:57.282135Z",
+        "Id": "04ae39ecc4a04dc3b96d19ba721f4bda"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:25:57.643299Z",
+        "Id": "8fcb17d652684ce3875362dc8300a7e2"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:25:57.755552Z",
+        "Id": "c21b6fb312c146b386690c37aec5149a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:25:57.939176Z",
+        "Id": "f0cf23f621e6404097ec2a131c99b06d"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:25:58.28969Z",
+        "Id": "7650430050e9422d81407e32c3e6248d"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:25:58.659109Z",
+        "Id": "80274b16df064a1c8882a6f4c8ecd927"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:25:58.76165Z",
+        "Id": "488e1b2214ea4bd8bd0485b81e0e30aa"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:25:58.9405Z",
+        "Id": "a8f2eb187d894230be0786a372ed5662"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -81,
+        "Time": "2020-01-11T07:25:59.959219Z",
+        "Id": "e6da385edaff483c8906955135d0dadf"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:26:00.661425Z",
+        "Id": "d6da37365adf409e949d3f72bd8f3a30"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:26:00.955064Z",
+        "Id": "4e4fbb87e3674dc7a3f1d102cd096a32"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:26:02.979633Z",
+        "Id": "58b7c6a9404843c08eebdfe0842de523"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:26:03.968565Z",
+        "Id": "56493d213bea4ac4a6ed0d92a3c17040"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -73,
+        "Time": "2020-01-11T07:26:05.977068Z",
+        "Id": "24637a41429743678dbfc19bb082abfd"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:26:06.343843Z",
+        "Id": "a79a7e7944b74676815398692a110dc7"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:26:06.693015Z",
+        "Id": "9255326b9b67477f952f848483a8581d"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:26:11.713062Z",
+        "Id": "38e359f05a3e4812bbb4f4e5ece77511"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -69,
+        "Time": "2020-01-11T07:26:12.005188Z",
+        "Id": "1e805fd76a064271a6a2b7256891b81d"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:26:12.722158Z",
+        "Id": "b8fda968cef34d898910e94f810c19f8"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:26:13.01262Z",
+        "Id": "e960be87d05e40149904c51a4d75b124"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:26:13.723641Z",
+        "Id": "50e0f440c4c24b53bc37733e8093785f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:26:13.855356Z",
+        "Id": "9324ff470bc548de9a65e9bfbf947b52"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:26:14.005967Z",
+        "Id": "8a2886e0a4344913ab363daa129a4855"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:26:15.013254Z",
+        "Id": "6566f676db3b4ccd8853e1ebc1190f7b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:26:15.728696Z",
+        "Id": "630ce43fc6c248d2b6759b2b60769d0f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:26:15.865033Z",
+        "Id": "d56d4465bd4f42809f165e630f90164a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:26:16.006915Z",
+        "Id": "7cb534beaa38460686f245fbed9a03c4"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:26:16.893318Z",
+        "Id": "590c1df8d9074f5b9bd0f42959fe37c5"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:26:17.011391Z",
+        "Id": "cb12a4ba606346d388eb6eff418ce972"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:26:17.750378Z",
+        "Id": "11789fe9279f4ea8b4954c9b25f1af5e"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:26:17.879304Z",
+        "Id": "814c5aac22324a4b9d890f57cec6a3c4"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:26:18.014381Z",
+        "Id": "7b41c57988864f52818466d05cafe5d8"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:26:18.756534Z",
+        "Id": "90679b83511b464e84095c36287b55d0"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:26:19.033688Z",
+        "Id": "63188c276d7e4f77bc5abf772ada52b5"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:26:19.759464Z",
+        "Id": "e39e3275e4b74f598397d2cc3324550b"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:26:19.888642Z",
+        "Id": "0aba649593f94d44960f7b1875cd933b"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:26:20.034421Z",
+        "Id": "5c3090fc19a648e5954675915534d2bd"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:26:20.767482Z",
+        "Id": "fa2aace9b3f84cf8ae8763358479e5fa"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:26:20.887545Z",
+        "Id": "67d1e998953041b2a5c5fa391faa83ba"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:26:21.771122Z",
+        "Id": "056e34b1712c4f3cafca92f3284bdabf"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:26:21.89238Z",
+        "Id": "659e9c1589ce45efa683bd0f806716a9"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:26:22.777473Z",
+        "Id": "c2bf0ab5c68644819e694e5677d74a72"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:26:22.904673Z",
+        "Id": "250d2de8a8b344188fe14d736820b252"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:26:23.046815Z",
+        "Id": "eeb14996ca2e4e28acccc729e2cb450a"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:26:23.916256Z",
+        "Id": "5854a78853ab4f7e957990b7c3db0aa2"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:26:24.048891Z",
+        "Id": "798cde8545364eb8846e163f53bb836b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:26:24.78572Z",
+        "Id": "c03c565341a54a15a8bdb5bd320d3730"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:26:24.908391Z",
+        "Id": "a2f82bb0cdd44f5ab8ee516c0419d2c1"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:26:25.782665Z",
+        "Id": "f5bf3e9f17de49af89c2866c06f77af2"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:26:27.071387Z",
+        "Id": "5a71bfddc5884b15b921193c925f0463"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -81,
+        "Time": "2020-01-11T07:26:31.825542Z",
+        "Id": "cf1ea8c25c0c489ba40232631994dd47"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:26:32.104888Z",
+        "Id": "3b25f4322b1b43b0b6247a1b9686adb8"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:26:32.47399Z",
+        "Id": "73d374e93ffe4fc2bb7dfdabee1a39f8"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:26:32.84621Z",
+        "Id": "cf3adf35ef3842458a5b503bb1e96bc0"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -70,
+        "Time": "2020-01-11T07:26:33.843088Z",
+        "Id": "8ead0730bd124a9eb2c9c9b1c6bd3931"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:26:33.929819Z",
+        "Id": "0373d467d04d436dbd1d950f93718b89"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -65,
+        "Time": "2020-01-11T07:26:34.842158Z",
+        "Id": "632a28f01cf4458dac339fe9181f68cc"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:26:35.112505Z",
+        "Id": "b543ffa7d2e1419997175f08e860aabf"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:26:35.494998Z",
+        "Id": "fa22f42b487e4c579ec48ca9f87bcc6a"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -75,
+        "Time": "2020-01-11T07:26:35.845975Z",
+        "Id": "c2b2e74f00544cab8e05dcb98b754159"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:26:35.938204Z",
+        "Id": "c4582736e7824a529f43c7ca096d64c3"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:26:36.853255Z",
+        "Id": "8e15e38db4184b638eccf5502e744ead"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:26:36.940774Z",
+        "Id": "032b753e7299495ab208b7c0817d5a6c"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:26:37.950682Z",
+        "Id": "e20e899e6a5140bb8f61edc416790cb6"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:26:38.852321Z",
+        "Id": "7ee44d9674f94852b06823d4bd0a8f53"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:26:38.94482Z",
+        "Id": "ef76287b64ec44bf8b683bed2f5381ec"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:26:40.128812Z",
+        "Id": "37ac552e25eb4f758519bc9b00582e9d"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:26:40.866551Z",
+        "Id": "69647f3f69584ffa9e5d9242548daab0"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:26:41.138174Z",
+        "Id": "6bed2fa55b324b8288a1374cb98e7964"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:26:41.863249Z",
+        "Id": "6e2d7feb1ba94bfd8a6e59c3b7dbfba8"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:26:41.962178Z",
+        "Id": "a79579f8cbef46108dae97f8beba630c"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:26:42.136551Z",
+        "Id": "f4c31f95d32b4f3e8da72772b35eae57"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:26:42.512946Z",
+        "Id": "44f072ea57354015ac10f9d4751fa59e"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:26:42.867743Z",
+        "Id": "d68c55c993864970b8104ac32959efca"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:26:43.870121Z",
+        "Id": "8eee4a12097845d2b1f00e2e4a104258"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -81,
+        "Time": "2020-01-11T07:26:43.975428Z",
+        "Id": "07a4aeb07a8a405b900df0e2328db3aa"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:26:44.52954Z",
+        "Id": "43bd88d1d5a048aaad668ec79ed6ef5b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:26:44.877788Z",
+        "Id": "83568c00db5048a0840d85f7ce525722"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:26:45.878498Z",
+        "Id": "ecae7d578ed74153be40b811b248f24a"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:26:45.981475Z",
+        "Id": "6e2fbd9751364742a14608a5b955bcd2"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:26:46.159893Z",
+        "Id": "09478346984f4d67b2c3b92449f3d527"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:26:46.893332Z",
+        "Id": "bce0a2c5ecc44f6682363c69cac49847"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:26:46.981849Z",
+        "Id": "eea13bb52bd34d5c98f242f2afa3093e"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -77,
+        "Time": "2020-01-11T07:26:52.02618Z",
+        "Id": "0dd3e93e6f1d4e7bb38f5181055f24e2"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -73,
+        "Time": "2020-01-11T07:26:53.027622Z",
+        "Id": "55ed0272c7e94e8e93e7e9e49ac5d85c"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -69,
+        "Time": "2020-01-11T07:26:54.031257Z",
+        "Id": "fddf2c0a28db47a5b8589a8cbee4f326"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:26:54.190947Z",
+        "Id": "2b9000ebebf646468bcbeccfc3284df3"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:26:54.907792Z",
+        "Id": "bdd3d113a5c74db9b4948f0c9a34d780"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:26:55.02804Z",
+        "Id": "790e805f88e34d19a55a6d2f51e34102"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -74,
+        "Time": "2020-01-11T07:26:56.040998Z",
+        "Id": "bda30924b6b5487d86676317d428603f"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:26:56.591412Z",
+        "Id": "57176643c10b4e918dedb54bdbdf4846"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:26:57.596722Z",
+        "Id": "fc2031df53624bf799e30af7805c3994"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -67,
+        "Time": "2020-01-11T07:26:58.050998Z",
+        "Id": "b29f9a791fb94a56954a72124844ccfd"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:26:58.605656Z",
+        "Id": "3f1e25a359d7484597dc17b3e6487b4c"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -100,
+        "Time": "2020-01-11T07:26:58.940469Z",
+        "Id": "5dc5994c3b0c4ac6981f2be74c4ce9e5"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -65,
+        "Time": "2020-01-11T07:26:59.042634Z",
+        "Id": "61b1c56eea0b45499cabf3d8de92845f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -64,
+        "Time": "2020-01-11T07:27:00.052611Z",
+        "Id": "a896936421ba4dc088172504f5f85fa1"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:27:01.059116Z",
+        "Id": "5521f7f8b29d4ecf86f47586eb21a5a8"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:27:01.609008Z",
+        "Id": "2eb3e40763244cfcaf3d199759a007fb"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:27:01.945099Z",
+        "Id": "30fb4f23206e4b41a65be66b00b0f85f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -72,
+        "Time": "2020-01-11T07:27:02.058637Z",
+        "Id": "f077643adddb4568b8b811a3a50406a1"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:27:03.066702Z",
+        "Id": "6508b33817604682b3183ad0842e174c"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:27:04.074306Z",
+        "Id": "7fe4ffbd92cf45eca0f59ad923a2911e"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:27:04.626937Z",
+        "Id": "dd5f12fadbec4a24947daadfa5a10ebf"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:27:05.62218Z",
+        "Id": "7c5397abd7724bad83bcc1ed1620b61a"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:27:06.633749Z",
+        "Id": "f9c096e536454ffaac96bc51d8606aaa"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -81,
+        "Time": "2020-01-11T07:27:07.101053Z",
+        "Id": "13e9b26a156a4d89af83267f93f80a28"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:27:07.263088Z",
+        "Id": "4c0648eef0914bac8272f7e6cd513058"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:27:07.63205Z",
+        "Id": "72edf9f4e98f493fbd5f77bdccf90637"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:27:08.104791Z",
+        "Id": "dd6dc77ae651400797556e9acb8d252b"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:27:14.66491Z",
+        "Id": "97dc3be8616942eabd5e67bc90db4a15"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:27:15.118281Z",
+        "Id": "8eaec39e48824544a5207c8565237c74"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:27:16.015816Z",
+        "Id": "b0fe69d360454049bf427b40a5e05542"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:27:16.118895Z",
+        "Id": "9b2ccbd5acbe49c3a963221c33b3ae3a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:27:16.289451Z",
+        "Id": "d89cf850e39c48f5bfec3304cd3279c6"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:27:17.131788Z",
+        "Id": "83767d434ff94fb18641484ddb258dc0"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:27:17.687774Z",
+        "Id": "2ad6aedf2f8940838ad8eda91012bb53"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:27:18.01258Z",
+        "Id": "67fcba63cfe945728808bdb8afdaf235"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:27:18.313673Z",
+        "Id": "d55f64ceb5b941ed818fa3ad00d372bb"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -81,
+        "Time": "2020-01-11T07:27:18.682245Z",
+        "Id": "1fc4cdc267994cba9f9e8cb427671e0f"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:27:19.021638Z",
+        "Id": "70a5f2a176ad47bd85a5be3db27a83a6"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:27:19.126664Z",
+        "Id": "9445879a7c8949a2b23e6c9f733b4006"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:27:21.322647Z",
+        "Id": "e13e46ab83774f219d5230c709c23265"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:27:21.704199Z",
+        "Id": "7997a7d3c179428a9b45a36c61c583cd"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:27:22.147477Z",
+        "Id": "e8cb495d5dec48c5af9aa5747a81115a"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -100,
+        "Time": "2020-01-11T07:27:23.050047Z",
+        "Id": "1c761ff23a3c40acadebb7a302b331cc"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:27:23.145249Z",
+        "Id": "d336b67831644226bd6db7f1cf466dd2"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:27:24.164134Z",
+        "Id": "b0c670b3b9134926b79a9e8b5d32c551"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:27:24.342758Z",
+        "Id": "6c7a262c0aee41bf8883510a6bd49641"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -71,
+        "Time": "2020-01-11T07:27:24.712715Z",
+        "Id": "5dcd93f095ee421f925798f7600bf096"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:27:25.166323Z",
+        "Id": "d530cc81af5c4282a285f4c5e64ffc5d"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -79,
+        "Time": "2020-01-11T07:27:25.702616Z",
+        "Id": "c63e992a41e349759e57b14124e7b30e"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:27:26.176799Z",
+        "Id": "d30a29ddd80f4607acfb6f6c41f87c04"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -71,
+        "Time": "2020-01-11T07:27:26.72424Z",
+        "Id": "9cf95c78d0e242eea87ef0438d2eb0bf"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:27:27.180316Z",
+        "Id": "3cbe7ace33214f5fa15cb1bedc9a45a6"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:27:28.188057Z",
+        "Id": "c3a769d089944872a639d6152eebbf11"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:27:33.392772Z",
+        "Id": "3ed19d8081db4337bb916a89ce2b82f3"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -99,
+        "Time": "2020-01-11T07:27:34.402894Z",
+        "Id": "1428274031e84c14bbee49b7900be87e"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:27:34.753789Z",
+        "Id": "1a81ef9e136649c6af10cef21adc4701"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:27:35.401608Z",
+        "Id": "7e13f3cbee9344be8095dda2b07993c0"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:27:35.754431Z",
+        "Id": "7ed533932b1143ceaa97d6172034042d"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:27:36.109287Z",
+        "Id": "929e4b9ba5c448d3b09a2fb888ccc99d"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:27:36.20452Z",
+        "Id": "e06bcc50328d41a8b3b8aa01c5c27c9a"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:27:37.124736Z",
+        "Id": "ca1bfa0a2dab473d97b9a8ec009f5ff9"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:27:37.393513Z",
+        "Id": "659e8d37a6eb48a0981ec8bcf90283fe"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:27:38.394261Z",
+        "Id": "3a7df8b714c64733909b96ddaad25b87"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:27:39.102816Z",
+        "Id": "fdc3312e5de844b1a66baeddb134c899"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:27:39.408244Z",
+        "Id": "726c2791883a4437bf603187aef88fd3"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:27:39.771152Z",
+        "Id": "c079c0595a1a4d829050eac7623347fc"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:27:40.115452Z",
+        "Id": "935644fbcb83481fbe429a0772f07587"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:27:41.413674Z",
+        "Id": "a3dd91bff4174efab6f40a7cbe718e5e"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:27:42.117272Z",
+        "Id": "a8e16be1950f4a65b9509700c1f7a37a"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:27:42.420482Z",
+        "Id": "0d083d2cd47b416eab09ff56ca0d180a"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:27:42.774487Z",
+        "Id": "56f97858d0954af6bf49d786fd9df7ae"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:27:43.42902Z",
+        "Id": "8280430d564145cf990a8c990df43c96"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:27:44.131493Z",
+        "Id": "41522b8175cc4384bc47d3794910e77b"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:27:44.242006Z",
+        "Id": "96384168ee2b4601a51b39819907bd46"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:27:45.129268Z",
+        "Id": "0c1c670aec0c40d1b129accfb94b00b2"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:27:45.253892Z",
+        "Id": "82000a41542747f587a8090645efa30d"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:27:45.793518Z",
+        "Id": "773cf0223d134bcc8806e343663c4bbf"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -101,
+        "Time": "2020-01-11T07:27:46.263862Z",
+        "Id": "de4ca10bcfda4cd9a67ff09d106da134"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:27:46.443816Z",
+        "Id": "d5512cb9dbf140628fd7aa761167962f"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:27:47.447576Z",
+        "Id": "3aa7b3d648024e978deaa413bb023ff5"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:27:48.157409Z",
+        "Id": "c5e665c994e54c969a54ac43f10c07de"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:27:48.462159Z",
+        "Id": "6f466a3a11944d45ac0bff288b7cc274"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:27:53.487509Z",
+        "Id": "1deea517834b4d40876b2c76fb5f0f6d"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:27:54.177616Z",
+        "Id": "30e696602fb24b88b892ee654e49f2de"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:27:55.186254Z",
+        "Id": "31540dcb8f76491dae6a77c0e22d2ce0"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -74,
+        "Time": "2020-01-11T07:27:55.503128Z",
+        "Id": "f9f7f5241fd047d69754f236b87c69cb"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:27:56.313218Z",
+        "Id": "bc20d954d1e14531adb99fdadc6228dc"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:27:56.486627Z",
+        "Id": "39d39008b8594b689947c4ea99eac01d"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -74,
+        "Time": "2020-01-11T07:27:57.496309Z",
+        "Id": "46baf27384a94e7ba954ecd13232f14d"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:27:58.207779Z",
+        "Id": "7869b3c80d16486f83dfa0f3b3fe496e"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:27:59.210477Z",
+        "Id": "14edea8fc1ed4cc18505a83ac21e76d0"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -73,
+        "Time": "2020-01-11T07:27:59.515427Z",
+        "Id": "e8ed948505e74dec9a03d67fa7d860dd"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:28:00.20863Z",
+        "Id": "2c06645b24684fa6a60348711dddf5e9"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -72,
+        "Time": "2020-01-11T07:28:00.510696Z",
+        "Id": "67da993fd94c4abc9f807f0dfb71b193"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:28:01.21775Z",
+        "Id": "85d2b7ad11ff489882700d557b8a609d"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -79,
+        "Time": "2020-01-11T07:28:01.51674Z",
+        "Id": "34bfbf3b0ae146aba74f89ab487650d6"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:28:02.21761Z",
+        "Id": "88e5d453c6b94c8eadcc9868eedd9575"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:28:02.531989Z",
+        "Id": "64e41d0b83da45c0a1223a493aba0894"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:28:02.856468Z",
+        "Id": "86b03731c7b542279ec53b2765e85f8b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:28:03.23461Z",
+        "Id": "d7a0b40c8a2a44c4873ea4e7509105a8"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -98,
+        "Time": "2020-01-11T07:28:03.332271Z",
+        "Id": "98ca0c0e1f3648c8875dacd798764237"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -83,
+        "Time": "2020-01-11T07:28:03.515992Z",
+        "Id": "fc9b8069545846b98af6f3422373f97a"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:28:04.349006Z",
+        "Id": "586fd7e15c664d44b401f4985444fcce"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:28:04.515749Z",
+        "Id": "72743472165944148d1c1a5e197085c0"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:28:05.237927Z",
+        "Id": "20e581c198a5471eb6c3b0fca0734b5b"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:28:05.528297Z",
+        "Id": "dc2b4cb210e84bafa6a0ae245e786fca"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:28:05.87462Z",
+        "Id": "0e41e7acda1a41acb6906777c120b198"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:28:06.234477Z",
+        "Id": "aa262f18cef64497bfee05367c2524fa"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:28:06.527059Z",
+        "Id": "422aaf44c405465eba3a6925fb147376"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:28:07.543437Z",
+        "Id": "fb18f64154ee4a06b230bd561638e260"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:28:08.369499Z",
+        "Id": "3246cc7c97934b01a59bb3151a2976fc"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -81,
+        "Time": "2020-01-11T07:28:08.539917Z",
+        "Id": "062f7c8062e34fb1ab014bec798e72bc"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -88,
+        "Time": "2020-01-11T07:28:09.261633Z",
+        "Id": "f059be6f5ee845d0a86b6dc004f5095d"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:28:09.371596Z",
+        "Id": "418bd5ac33a74ae5b65b4240a561ea7c"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -90,
+        "Time": "2020-01-11T07:28:09.54743Z",
+        "Id": "69c99dd828e94ac69d537788b7ee5758"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:28:13.915519Z",
+        "Id": "d23599d5bf004d80814712ed0308dbc4"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -94,
+        "Time": "2020-01-11T07:28:14.40863Z",
+        "Id": "fee1994b529a4ff1be8ac13891890191"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -73,
+        "Time": "2020-01-11T07:28:14.580082Z",
+        "Id": "e0e299d307d6496a950b3e80954d3dfd"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:28:15.284096Z",
+        "Id": "24960837f9d04af381b5f51981d16d4f"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -70,
+        "Time": "2020-01-11T07:28:15.600624Z",
+        "Id": "0da4ccbca81f49c7aee39245bf304b21"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -91,
+        "Time": "2020-01-11T07:28:17.425372Z",
+        "Id": "89320f0f5f68406aa473a9998e6e4749"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -74,
+        "Time": "2020-01-11T07:28:17.585922Z",
+        "Id": "e10af80a3ca44bccb3877759bd4a112b"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:28:19.304578Z",
+        "Id": "adbeb6dc1c4c4ee4861727a9f7456d01"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:28:19.429797Z",
+        "Id": "09696b6cd814400c9d0374a8485910a6"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -79,
+        "Time": "2020-01-11T07:28:19.600617Z",
+        "Id": "a72a51b8168a4eb987717cb05be2981c"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:28:20.31464Z",
+        "Id": "79559c70aa7b4ce19ed68846b206b65f"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -72,
+        "Time": "2020-01-11T07:28:20.619989Z",
+        "Id": "c86da2e5eb02414188467142acec9e1f"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -95,
+        "Time": "2020-01-11T07:28:21.313987Z",
+        "Id": "949c3858117840c99e92416f259067ab"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:28:21.432123Z",
+        "Id": "a4b4ea810a39431ba7b4fec772bb53aa"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -72,
+        "Time": "2020-01-11T07:28:21.604143Z",
+        "Id": "815fbe66252b40c0a8a8e58840729c08"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -86,
+        "Time": "2020-01-11T07:28:22.620628Z",
+        "Id": "2dac46f5736743eaafac88619b926ae4"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:28:23.315687Z",
+        "Id": "5572d5c703ca48e595985beaaab4bc6f"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -99,
+        "Time": "2020-01-11T07:28:24.468136Z",
+        "Id": "5585e62e91534debbad79ffb070d8c9b"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -78,
+        "Time": "2020-01-11T07:28:24.622047Z",
+        "Id": "7c895f524908461dbcb9c19027243ab1"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:28:25.32586Z",
+        "Id": "e36194be00fe47559e8067f5b8c33aec"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -76,
+        "Time": "2020-01-11T07:28:25.640911Z",
+        "Id": "3dd0672665154584934410109af2b192"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:28:26.321451Z",
+        "Id": "289b711031fd4130a33e558606f9050a"
+    },
+    {
+        "DeviceAddress": "F2:78:67:8C:31:AD",
+        "Rssi": -97,
+        "Time": "2020-01-11T07:28:26.966917Z",
+        "Id": "0d77bda1737f4be0b64250fffab780a0"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -89,
+        "Time": "2020-01-11T07:28:27.33248Z",
+        "Id": "c2abc7aeb9a04709ae17c25ab4cbfeec"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:28:27.648054Z",
+        "Id": "a99c8a19119849bb9deb56859f3b2e0f"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -70,
+        "Time": "2020-01-11T07:28:28.663635Z",
+        "Id": "d7174c2840db4ab2b551c137a564fef0"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -75,
+        "Time": "2020-01-11T07:28:29.660209Z",
+        "Id": "59749cf3238d4d5f8ce5bc2b8c87259b"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -80,
+        "Time": "2020-01-11T07:28:34.703009Z",
+        "Id": "ff10c12f308d48e1a790e0c1cd55b116"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:28:35.694855Z",
+        "Id": "a40fb2776b5c464a8764be7cdb3c77e1"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -84,
+        "Time": "2020-01-11T07:28:36.698974Z",
+        "Id": "cb2b5f5615a14d65a4c50d8b59940ff0"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -93,
+        "Time": "2020-01-11T07:28:37.519757Z",
+        "Id": "54f0ee79b5f14c24a6289f4a9ee748ca"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -82,
+        "Time": "2020-01-11T07:28:37.702289Z",
+        "Id": "b8b63fa5fa6e4956b0deac5c1ae913ce"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -96,
+        "Time": "2020-01-11T07:28:38.533956Z",
+        "Id": "c9ed4623c1ea4eb09e73849b94ac0335"
+    },
+    {
+        "DeviceAddress": "C9:97:BF:3A:FE:41",
+        "Rssi": -85,
+        "Time": "2020-01-11T07:28:39.388352Z",
+        "Id": "c2d77d6414ad4128a85ac83cddd04952"
+    },
+    {
+        "DeviceAddress": "DC:E6:99:19:95:41",
+        "Rssi": -92,
+        "Time": "2020-01-11T07:28:39.524852Z",
+        "Id": "dc6b9ccbd3f84bd593bf04ebeb642972"
+    },
+    {
+        "DeviceAddress": "E7:30:9F:1C:81:20",
+        "Rssi": -87,
+        "Time": "2020-01-11T07:28:39.708484Z",
+        "Id": "c533c7c289bb44fd91d73ba18bb0546f"
+    }
+]
