@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Services;
 
 namespace Sanet.SmartSkating.Services.Api
@@ -50,7 +51,9 @@ namespace Sanet.SmartSkating.Services.Api
             var wayPointsToSync = await _dataService.GetAllWayPointsAsync();
             if (wayPointsToSync.Count==0)
                 return;
-            var wayPointsIds = (await _apiService.PostWaypointsAsync(wayPointsToSync))
+            var wayPointsIds = (await _apiService.PostWaypointsAsync(
+                    wayPointsToSync, 
+                    ApiNames.AzureApiSubscriptionKey))
                 .SyncedIds;
             if (wayPointsIds == null) return;
             foreach (var syncedWayPoint in wayPointsIds)
@@ -68,7 +71,9 @@ namespace Sanet.SmartSkating.Services.Api
                 .ToList();
             if (sessionsToSync.Count==0)
                 return;
-            var syncedIds = (await _apiService.PostSessionsAsync(sessionsToSync))
+            var syncedIds = (await _apiService.PostSessionsAsync(
+                    sessionsToSync, 
+                    ApiNames.AzureApiSubscriptionKey))
                 .SyncedIds;
             if (syncedIds == null) return;
             foreach (var id in syncedIds)
@@ -91,7 +96,9 @@ namespace Sanet.SmartSkating.Services.Api
             var bleScansToSync = await _dataService.GetAllBleScansAsync();
             if (bleScansToSync.Count==0)
                 return;
-            var syncedIds = (await _apiService.PostBleScansAsync(bleScansToSync))
+            var syncedIds = (await _apiService.PostBleScansAsync(
+                    bleScansToSync, 
+                    ApiNames.AzureApiSubscriptionKey))
                 .SyncedIds;
             if (syncedIds == null) return;
             foreach (var syncedScan in syncedIds)

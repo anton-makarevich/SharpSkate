@@ -71,7 +71,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             _sut.StartSyncing();
 
-            await _apiService.Received().PostWaypointsAsync(_wayPoints);
+            await _apiService.Received().PostWaypointsAsync(_wayPoints, Arg.Any<string>());
         }
         
         [Fact]
@@ -82,7 +82,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             _sut.StartSyncing();
 
-            await _apiService.Received().PostWaypointsAsync(_wayPoints);
+            await _apiService.Received().PostWaypointsAsync(_wayPoints, Arg.Any<string>());
         }
         
         [Fact]
@@ -94,7 +94,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             _sut.StartSyncing();
             _sut.StartSyncing();
 
-            await _apiService.Received(1).PostWaypointsAsync(_wayPoints);
+            await _apiService.Received(1).PostWaypointsAsync(_wayPoints, Arg.Any<string>());
         }
         
         [Fact]
@@ -102,7 +102,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
         {
             _connectivityService.IsConnected().Returns(Task.FromResult(true));
             _dataService.GetAllWayPointsAsync().Returns(Task.FromResult(_wayPoints));
-            _apiService.PostWaypointsAsync(_wayPoints)
+            _apiService.PostWaypointsAsync(_wayPoints, Arg.Any<string>())
                 .Returns(Task.FromResult(
                 new SaveEntitiesResponse(){SyncedIds = _wayPoints.Select(f=>f.Id).ToList()}));
             
@@ -120,7 +120,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             _sut.StartSyncing();
 
-            await _apiService.Received().PostSessionsAsync(Arg.Any<List<SessionDto>>());
+            await _apiService.Received().PostSessionsAsync(Arg.Any<List<SessionDto>>(), Arg.Any<string>());
         }
         
         [Fact]
@@ -132,7 +132,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             _sut.StartSyncing();
 
-            await _apiService.DidNotReceive().PostSessionsAsync(Arg.Any<List<SessionDto>>());
+            await _apiService.DidNotReceive().PostSessionsAsync(Arg.Any<List<SessionDto>>(), Arg.Any<string>());
         }
         
         [Fact]
@@ -144,7 +144,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             _sut.StartSyncing();
 
-            await _apiService.DidNotReceive().PostSessionsAsync(savedSessions);
+            await _apiService.DidNotReceive().PostSessionsAsync(savedSessions, Arg.Any<string>());
         }
         
         [Fact]
@@ -156,7 +156,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             _sut.StartSyncing();
 
-            await _apiService.Received().PostSessionsAsync(Arg.Any<List<SessionDto>>());
+            await _apiService.Received().PostSessionsAsync(Arg.Any<List<SessionDto>>(), Arg.Any<string>());
         }
         
         [Fact]
@@ -165,7 +165,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             var notSavedSessions = GetSessionsStub(false, false);
             _connectivityService.IsConnected().Returns(Task.FromResult(true));
             _dataService.GetAllSessionsAsync().Returns(Task.FromResult(notSavedSessions));
-            _apiService.PostSessionsAsync(Arg.Any<List<SessionDto>>())
+            _apiService.PostSessionsAsync(Arg.Any<List<SessionDto>>(), Arg.Any<string>())
                 .Returns(Task.FromResult(
                     new SaveEntitiesResponse()
                     {
@@ -185,7 +185,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             var completeSessions = GetSessionsStub(false, true);
             _connectivityService.IsConnected().Returns(Task.FromResult(true));
             _dataService.GetAllSessionsAsync().Returns(Task.FromResult(completeSessions));
-            _apiService.PostSessionsAsync(Arg.Any<List<SessionDto>>())
+            _apiService.PostSessionsAsync(Arg.Any<List<SessionDto>>(), Arg.Any<string>())
                 .Returns(Task.FromResult(
                     new SaveEntitiesResponse()
                     {
@@ -207,7 +207,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             _sut.StartSyncing();
 
-            await _apiService.Received().PostBleScansAsync(_bleScans);
+            await _apiService.Received().PostBleScansAsync(_bleScans, Arg.Any<string>());
         }
         
         [Fact]
@@ -218,7 +218,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             _sut.StartSyncing();
 
-            await _apiService.DidNotReceive().PostBleScansAsync(_bleScans);
+            await _apiService.DidNotReceive().PostBleScansAsync(_bleScans, Arg.Any<string>());
         }
         
         [Fact]
@@ -227,7 +227,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             _connectivityService.IsConnected().Returns(Task.FromResult(true));
             _dataService.GetAllBleScansAsync().Returns(Task.FromResult(_bleScans));
             _dataService.GetAllWayPointsAsync().Returns(Task.FromResult(new List<WayPointDto>()));
-            _apiService.PostBleScansAsync(_bleScans)
+            _apiService.PostBleScansAsync(_bleScans, Arg.Any<string>())
                 .Returns(Task.FromResult(
                     new SaveEntitiesResponse(){SyncedIds = _bleScans.Select(f=>f.Id).ToList()}));
             
