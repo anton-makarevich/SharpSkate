@@ -13,5 +13,8 @@ namespace Sanet.SmartSkating.Services.Api
 
         [Post("/sessions")]
         Task<SaveEntitiesResponse> PostSessionsAsync([Body] List<SessionDto> sessions);
+        
+        [Post("/scans")]
+        Task<SaveEntitiesResponse> PostBleScansAsync([Body] List<BleScanResultDto> scans);
     }
 }

@@ -7,5 +7,6 @@ namespace Sanet.SmartSkating.Services.Api
         void StartSyncing();
         Task SyncWayPointsAsync();
         Task SyncSessionsAsync();
+        Task SyncBleScansAsync();
     }
 }

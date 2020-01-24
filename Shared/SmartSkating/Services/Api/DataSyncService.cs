@@ -36,6 +36,7 @@ namespace Sanet.SmartSkating.Services.Api
             {
                 await SyncSessionsAsync();
                 await SyncWayPointsAsync();
+                await SyncBleScansAsync();
             
                 await Task.Delay(30000);
             } while (true);
@@ -80,6 +81,22 @@ namespace Sanet.SmartSkating.Services.Api
                 }
                 if (session.IsCompleted)
                     await _dataService.DeleteSessionAsync(id);
+            }
+        }
+
+        public async Task SyncBleScansAsync()
+        {
+            if (!await _connectivityService.IsConnected())
+                return;
+            var bleScansToSync = await _dataService.GetAllBleScansAsync();
+            if (bleScansToSync.Count==0)
+                return;
+            var syncedIds = (await _apiService.PostBleScansAsync(bleScansToSync))
+                .SyncedIds;
+            if (syncedIds == null) return;
+            foreach (var syncedScan in syncedIds)
+            {
+                await _dataService.DeleteBleScanAsync(syncedScan);
             }
         }
     }

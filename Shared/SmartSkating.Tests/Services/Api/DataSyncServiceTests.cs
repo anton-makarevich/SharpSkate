@@ -28,6 +28,16 @@ namespace Sanet.SmartSkating.Tests.Services.Api
                 WayPointType = "na"
             }
         };
+        private readonly List<BleScanResultDto> _bleScans = new List<BleScanResultDto>
+        {
+            new BleScanResultDto()
+            {
+                Id = "0",
+                SessionId = "0",
+                Time = DateTime.Now,
+                DeviceAddress = "w"
+            }
+        };
 
         private List<SessionDto> GetSessionsStub(bool saved, bool completed)
         {
@@ -56,6 +66,17 @@ namespace Sanet.SmartSkating.Tests.Services.Api
 
         [Fact]
         public async Task WhenStartedAndHasConnectionReadsLocalWayPointsAndSendThemToApiIfFound()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _dataService.GetAllWayPointsAsync().Returns(Task.FromResult(_wayPoints));
+            
+            _sut.StartSyncing();
+
+            await _apiService.Received().PostWaypointsAsync(_wayPoints);
+        }
+        
+        [Fact]
+        public async Task WhenStartedButHasNoConnection_DoesNotSendScansToApi()
         {
             _connectivityService.IsConnected().Returns(Task.FromResult(true));
             _dataService.GetAllWayPointsAsync().Returns(Task.FromResult(_wayPoints));
@@ -101,6 +122,18 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             _sut.StartSyncing();
 
             await _apiService.Received().PostSessionsAsync(Arg.Any<List<SessionDto>>());
+        }
+        
+        [Fact]
+        public async Task DoesNotSendsSavedSessionToApi_WhenStartedButHasNoConnection()
+        {
+            var notSavedSessions = GetSessionsStub(false, false);
+            _connectivityService.IsConnected().Returns(Task.FromResult(false));
+            _dataService.GetAllSessionsAsync().Returns(Task.FromResult(notSavedSessions));
+            
+            _sut.StartSyncing();
+
+            await _apiService.DidNotReceive().PostSessionsAsync(Arg.Any<List<SessionDto>>());
         }
         
         [Fact]
@@ -164,5 +197,45 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             await _dataService.Received().DeleteSessionAsync(completeSessions.First().Id);
         }
+
+        #region BleScans sync
+        [Fact]
+        public async Task ReadsLocalScansAndSendThemToApiIfFound_WhenStarted_AndHasConnection()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _dataService.GetAllBleScansAsync().Returns(Task.FromResult(_bleScans));
+            _dataService.GetAllWayPointsAsync().Returns(Task.FromResult(new List<WayPointDto>()));
+            
+            _sut.StartSyncing();
+
+            await _apiService.Received().PostBleScansAsync(_bleScans);
+        }
+        
+        [Fact]
+        public async Task DoesNotSendScansToApi_WhenStarted_ButHasNoConnection()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(false));
+            _dataService.GetAllBleScansAsync().Returns(Task.FromResult(_bleScans));
+            
+            _sut.StartSyncing();
+
+            await _apiService.DidNotReceive().PostBleScansAsync(_bleScans);
+        }
+        
+        [Fact]
+        public async Task DeletesLocalBleScanWhenItSynced()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _dataService.GetAllBleScansAsync().Returns(Task.FromResult(_bleScans));
+            _dataService.GetAllWayPointsAsync().Returns(Task.FromResult(new List<WayPointDto>()));
+            _apiService.PostBleScansAsync(_bleScans)
+                .Returns(Task.FromResult(
+                    new SaveEntitiesResponse(){SyncedIds = _bleScans.Select(f=>f.Id).ToList()}));
+            
+            _sut.StartSyncing();
+
+            await _dataService.Received().DeleteBleScanAsync(_bleScans.First().Id);
+        }
+        #endregion
     }
 }

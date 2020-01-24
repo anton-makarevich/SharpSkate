@@ -17,9 +17,9 @@ namespace Sanet.SmartSkating.Azure.Services
         private const string SessionsTableName = "SessionsTable";
         private const string BleScansTableName = "BleScansTable";
 
-        private readonly CloudTable _wayPointsTable;
-        private readonly CloudTable _sessionsTable;
-        private readonly CloudTable _scansTable;
+        private readonly CloudTable? _wayPointsTable;
+        private readonly CloudTable? _sessionsTable;
+        private readonly CloudTable? _scansTable;
 
         private readonly bool _hasStorageAccess;
 
@@ -46,16 +46,18 @@ namespace Sanet.SmartSkating.Azure.Services
         public Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
         {
             var entity = new WayPointEntity(wayPoint);
-            return SaveEntityAsync(entity,_wayPointsTable);
+            return _wayPointsTable == null 
+                ? Task.FromResult(false) 
+                : SaveEntityAsync(entity,_wayPointsTable);
         }
 
         private async Task<bool> SaveEntityAsync(TableEntity entity, CloudTable table)
         {
-            if (!_hasStorageAccess)
+            if (!_hasStorageAccess || table==null)
                 return false;
             try
             {
-                await _wayPointsTable.CreateIfNotExistsAsync();
+                await table.CreateIfNotExistsAsync();
                 var insertOperation = TableOperation.InsertOrMerge(entity);
                 await table.ExecuteAsync(insertOperation);
 
@@ -82,7 +84,9 @@ namespace Sanet.SmartSkating.Azure.Services
         public Task<bool> SaveSessionAsync(SessionDto session)
         {
             var entity = new SessionEntity(session);
-            return SaveEntityAsync(entity,_sessionsTable);
+            return _sessionsTable!=null
+                ? SaveEntityAsync(entity,_sessionsTable)
+                : Task.FromResult(false);
         }
 
         public Task<List<SessionDto>> GetAllSessionsAsync()
@@ -98,7 +102,9 @@ namespace Sanet.SmartSkating.Azure.Services
         public Task<bool> SaveBleScanAsync(BleScanResultDto bleScan)
         {
             var entity = new BleScanEntity(bleScan);
-            return SaveEntityAsync(entity,_scansTable);
+            return _scansTable!=null
+                ? SaveEntityAsync(entity,_scansTable)
+                : Task.FromResult(false);
         }
 
         public Task<List<BleScanResultDto>> GetAllBleScansAsync()

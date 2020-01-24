@@ -9,14 +9,19 @@ namespace Sanet.SmartSkating.Services.Api
         {
         }
 
-        public async Task SyncWayPointsAsync()
+        public Task SyncWayPointsAsync()
         {
-            await Task.Delay(50);
+            return Task.Delay(50);
         }
 
-        public async Task SyncSessionsAsync()
+        public Task SyncSessionsAsync()
         {
-            await Task.Delay(50);
+            return Task.Delay(50);
+        }
+
+        public Task SyncBleScansAsync()
+        {
+            return Task.Delay(50);
         }
     }
 }
