@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using FluentAssertions;
 using FunctionTestUtils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,26 +20,26 @@ namespace Sanet.SmartSkating.Azure.Tests.Functions
     {
         private readonly BleScanSaverFunction _sut;
         private readonly IDataService _dataService;
-        private readonly List<BleScanResultDto> _scansStub = new List<BleScanResultDto>()
+        private readonly List<BleScanResultDto> _scansStub = new List<BleScanResultDto>();
+
+        private BleScanResultDto GetBleScanStub(int id)
         {
-            new BleScanResultDto
+            return new BleScanResultDto
             {
-                Id = "0",
+                Id = id.ToString(),
                 SessionId = "0",
                 DeviceAddress = "6",
-                Rssi = -87
-            },
-            new BleScanResultDto
-            {
-                Id = "1",
-                SessionId = "0",
-                DeviceAddress = "6",
-                Rssi = -87
-            }
-        };
+                Rssi = -87+id,
+                Time = DateTime.Now
+            };
+        }
 
         public BleScanSaverFunctionTests()
         {
+            foreach (var i in new[]{0,1})
+            {
+                _scansStub.Add(GetBleScanStub(i));
+            }
             _dataService = Substitute.For<IDataService>();
             _sut = new BleScanSaverFunction();
             _sut.SetService(_dataService);
@@ -87,13 +90,55 @@ namespace Sanet.SmartSkating.Azure.Tests.Functions
             Assert.NotNull(actionResult);
             var response = actionResult.Value as SaveEntitiesResponse;
             Assert.NotNull(response);
-            Assert.Equal(errorMessage, response.Message);
+            response.Message.Should().Contain(errorMessage);
         }
         
         [Fact]
         public async Task RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode()
         {
             await CommonFunctionsTests.RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode(_sut);
+        }
+        
+        [Fact]
+        public async Task ReturnsBadRequestWithAMessage_WhenTimeIsLessThanMinValueForEveryScan()
+        {
+            foreach (var bleScanResultDto in _scansStub)
+            {
+                bleScanResultDto.Time = DateTime.MinValue;
+            }
+            _dataService.SaveBleScanAsync(Arg.Any<BleScanResultDto>())
+                .ReturnsForAnyArgs(Task.FromResult(true));
+            var actionResult = await _sut.Run(Utils.CreateMockRequest(
+                    _scansStub),
+                Substitute.For<ILogger>()) as JsonResult;
+            
+            Assert.NotNull(actionResult);
+            var response = actionResult.Value as SaveEntitiesResponse;
+        
+            Assert.NotNull(response);
+            const int badRequestStatus = (int) HttpStatusCode.BadRequest;
+            response.ErrorCode.Should().Be(badRequestStatus);
+            response.Message.Should().NotBeNullOrEmpty();
+        }
+        
+        [Fact]
+        public async Task ReturnsOkWithAMessage_WhenTimeIsLessThanMinValueForNotEveryScan()
+        {
+            _scansStub.First().Time = DateTime.MinValue;
+            _dataService.SaveBleScanAsync(Arg.Any<BleScanResultDto>())
+                .ReturnsForAnyArgs(Task.FromResult(true));
+            
+            var actionResult = await _sut.Run(Utils.CreateMockRequest(
+                    _scansStub),
+                Substitute.For<ILogger>()) as JsonResult;
+            
+            Assert.NotNull(actionResult);
+            var response = actionResult.Value as SaveEntitiesResponse;
+        
+            Assert.NotNull(response);
+            const int okStatus = (int) HttpStatusCode.OK;
+            response.ErrorCode.Should().Be(okStatus);
+            response.Message.Should().NotBeNullOrEmpty();
         }
     }
 }

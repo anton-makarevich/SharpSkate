@@ -46,15 +46,18 @@ namespace Sanet.SmartSkating.Azure.Services
         public Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
         {
             var entity = new WayPointEntity(wayPoint);
-            return _wayPointsTable == null 
-                ? Task.FromResult(false) 
-                : SaveEntityAsync(entity,_wayPointsTable);
+            return SaveEntityAsync(entity,_wayPointsTable);
         }
 
-        private async Task<bool> SaveEntityAsync(TableEntity entity, CloudTable table)
+        private async Task<bool> SaveEntityAsync(TableEntity entity, CloudTable? table)
         {
-            if (!_hasStorageAccess || table==null)
+            if (!_hasStorageAccess || table == null)
+            {
+                if (string.IsNullOrEmpty(ErrorMessage))
+                    ErrorMessage = $"Table for {entity.GetType()} is not defined";
                 return false;
+            }
+
             try
             {
                 await table.CreateIfNotExistsAsync();
@@ -65,12 +68,13 @@ namespace Sanet.SmartSkating.Azure.Services
             }
             catch (Exception exception)
             {
+                ErrorMessage = ErrorMessage + "\n" + exception.Message;
                 _log.LogError(exception, exception.Message);
                 return false;
             }
         }
 
-        public string ErrorMessage { get; } = string.Empty;
+        public string ErrorMessage { get; private set; } = string.Empty;
         public Task<List<WayPointDto>> GetAllWayPointsAsync()
         {
             throw new NotImplementedException();
@@ -84,9 +88,7 @@ namespace Sanet.SmartSkating.Azure.Services
         public Task<bool> SaveSessionAsync(SessionDto session)
         {
             var entity = new SessionEntity(session);
-            return _sessionsTable!=null
-                ? SaveEntityAsync(entity,_sessionsTable)
-                : Task.FromResult(false);
+            return SaveEntityAsync(entity,_sessionsTable);
         }
 
         public Task<List<SessionDto>> GetAllSessionsAsync()
@@ -102,9 +104,7 @@ namespace Sanet.SmartSkating.Azure.Services
         public Task<bool> SaveBleScanAsync(BleScanResultDto bleScan)
         {
             var entity = new BleScanEntity(bleScan);
-            return _scansTable!=null
-                ? SaveEntityAsync(entity,_scansTable)
-                : Task.FromResult(false);
+            return SaveEntityAsync(entity,_scansTable);
         }
 
         public Task<List<BleScanResultDto>> GetAllBleScansAsync()

@@ -1,0 +1,36 @@
+openapi: 3.0.1
+info:
+  title: smartskating
+  description: Import from "smartskating" Function App
+  version: '1.0'
+servers:
+  - url: https://your_apim_service_name.azure-api.net/smartskating
+paths:
+  /waypoints:
+    post:
+      summary: WayPointSaverFunction
+      operationId: post-waypointsaverfunction
+      responses: { }
+  /scans:
+    post:
+      summary: BleScanSaverFunction
+      operationId: post-blescansaverfunction
+      responses: { }
+  /sessions:
+    post:
+      summary: SessionSaverFunction
+      operationId: post-sessionsaverfunction
+      responses: { }
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]

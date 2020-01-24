@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,8 @@ namespace Sanet.SmartSkating.Web.Functions
             _dataService = dataService;
         }
         
+        private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
+        
         [FunctionName("WayPointSaverFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function,
@@ -43,19 +46,30 @@ namespace Sanet.SmartSkating.Web.Functions
             if (requestObject == null)
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.BadRequest;
-                responseObject.Message = "Invalid request data";
+                _errorMessageBuilder.AppendLine(Constants.BadRequestErrorMessage);
             }
             else
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
                 foreach (var wayPoint in requestObject)
                 {
+                    if (wayPoint.Time.Year < 1601)
+                    {
+                        _errorMessageBuilder.AppendLine(Constants.DateTimeValidationErrorMessage);
+                        continue;
+                    }
                     if (_dataService != null && await _dataService.SaveWayPointAsync(wayPoint))
                         responseObject.SyncedIds.Add(wayPoint.Id);
                 }
 
-                if (_dataService != null) responseObject.Message = _dataService.ErrorMessage;
+                if (_dataService != null) 
+                    _errorMessageBuilder.AppendLine(_dataService.ErrorMessage);
             }
+            
+            responseObject.Message = _errorMessageBuilder.ToString();
+            if (responseObject.Message.Contains(Constants.DateTimeValidationErrorMessage)
+                && responseObject.SyncedIds.Count == 0)
+                responseObject.ErrorCode = (int)HttpStatusCode.BadRequest;
             return new JsonResult(responseObject);
         }
     }

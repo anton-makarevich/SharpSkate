@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using FluentAssertions;
 using FunctionTestUtils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,26 +20,26 @@ namespace Sanet.SmartSkating.Azure.Tests.Functions
     {
         private readonly WayPointSaverFunction _sut;
         private readonly IDataService _dataService;
-        private readonly List<WayPointDto> _wayPointsStub = new List<WayPointDto>()
+        private readonly List<WayPointDto> _wayPointsStub = new List<WayPointDto>();
+
+        private WayPointDto GetWayPointStub(int id)
         {
-            new WayPointDto()
+            return new WayPointDto()
             {
                 Coordinate = new CoordinateDto(),
-                Id = "0",
+                Id = id.ToString(),
                 SessionId = "0",
-                WayPointType = "na"
-            },
-            new WayPointDto()
-            {
-                Coordinate = new CoordinateDto(),
-                Id = "1",
-                SessionId = "0",
-                WayPointType = "na"
-            }
-        };
+                WayPointType = "na",
+                Time = DateTime.Now
+            };
+        }
 
         public WayPointSaverFunctionTests()
         {
+            foreach (var i in new[]{0,1})
+            {
+                _wayPointsStub.Add(GetWayPointStub(i));
+            }
             _dataService = Substitute.For<IDataService>();
             _sut = new WayPointSaverFunction();
             _sut.SetService(_dataService);
@@ -85,13 +88,55 @@ namespace Sanet.SmartSkating.Azure.Tests.Functions
             Assert.NotNull(actionResult);
             var response = actionResult.Value as SaveEntitiesResponse;
             Assert.NotNull(response);
-            Assert.Equal(errorMessage, response.Message);
+            response.Message.Should().Contain(errorMessage);
         }
         
         [Fact]
         public async Task RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode()
         {
             await CommonFunctionsTests.RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode(_sut);
+        }
+        
+        [Fact]
+        public async Task ReturnsBadRequestWithAMessage_WhenTimeIsLessThanMinValueForEveryWayPoint()
+        {
+            foreach (var wayPointDto in _wayPointsStub)
+            {
+                wayPointDto.Time = DateTime.MinValue;
+            }
+            _dataService.SaveWayPointAsync(Arg.Any<WayPointDto>())
+                .ReturnsForAnyArgs(Task.FromResult(true));
+            var actionResult = await _sut.Run(Utils.CreateMockRequest(
+                    _wayPointsStub),
+                Substitute.For<ILogger>()) as JsonResult;
+            
+            Assert.NotNull(actionResult);
+            var response = actionResult.Value as SaveEntitiesResponse;
+        
+            Assert.NotNull(response);
+            const int badRequestStatus = (int) HttpStatusCode.BadRequest;
+            response.ErrorCode.Should().Be(badRequestStatus);
+            response.Message.Should().NotBeNullOrEmpty();
+        }
+        
+        [Fact]
+        public async Task ReturnsOkWithAMessage_WhenTimeIsLessThanMinValueForNotEveryWayPoint()
+        {
+            _wayPointsStub.First().Time = DateTime.MinValue;
+            _dataService.SaveWayPointAsync(Arg.Any<WayPointDto>())
+                .ReturnsForAnyArgs(Task.FromResult(true));
+            
+            var actionResult = await _sut.Run(Utils.CreateMockRequest(
+                    _wayPointsStub),
+                Substitute.For<ILogger>()) as JsonResult;
+            
+            Assert.NotNull(actionResult);
+            var response = actionResult.Value as SaveEntitiesResponse;
+        
+            Assert.NotNull(response);
+            const int okStatus = (int) HttpStatusCode.OK;
+            response.ErrorCode.Should().Be(okStatus);
+            response.Message.Should().NotBeNullOrEmpty();
         }
     }
 }
