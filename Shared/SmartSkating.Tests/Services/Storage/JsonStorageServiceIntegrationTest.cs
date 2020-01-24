@@ -23,8 +23,7 @@ namespace Sanet.SmartSkating.Tests.Services.Storage
                 },
                 Id = "0",
                 SessionId = "8",
-                Time = DateTime.Now,
-                WayPointType = "uu"
+                Time = DateTime.Now
             };
 
             var isSaved = await sut.SaveWayPointAsync(wayPointDto);

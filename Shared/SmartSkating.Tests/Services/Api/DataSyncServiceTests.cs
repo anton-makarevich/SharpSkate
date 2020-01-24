@@ -24,8 +24,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
                 Coordinate = new CoordinateDto {Latitude = 23, Longitude = 34},
                 Id = "0",
                 SessionId = "0",
-                Time = DateTime.Now,
-                WayPointType = "na"
+                Time = DateTime.Now
             }
         };
         private readonly List<BleScanResultDto> _bleScans = new List<BleScanResultDto>

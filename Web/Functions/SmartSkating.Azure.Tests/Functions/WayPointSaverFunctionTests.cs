@@ -29,7 +29,6 @@ namespace Sanet.SmartSkating.Azure.Tests.Functions
                 Coordinate = new CoordinateDto(),
                 Id = id.ToString(),
                 SessionId = "0",
-                WayPointType = "na",
                 Time = DateTime.Now
             };
         }

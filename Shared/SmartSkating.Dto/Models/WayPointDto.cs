@@ -6,7 +6,6 @@ namespace Sanet.SmartSkating.Dto.Models
     {
         public string SessionId { get; set; } = string.Empty;
         public CoordinateDto Coordinate { get; set; }
-        public string WayPointType { get; set; } = string.Empty;
         public DateTime Time { get; set; }
 
         public static WayPointDto FromSessionCoordinate(string sessionId, CoordinateDto coordinate, DateTime? time = null)
@@ -16,8 +15,7 @@ namespace Sanet.SmartSkating.Dto.Models
                 Coordinate = coordinate,
                 Id = Guid.NewGuid().ToString("N"),
                 SessionId = sessionId,
-                Time = time?? DateTime.UtcNow,
-                WayPointType = string.Empty
+                Time = time?? DateTime.UtcNow
             };
         }
     }
