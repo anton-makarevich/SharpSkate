@@ -26,7 +26,7 @@ namespace Sanet.SmartSkating.Web.Functions
             _dataService = dataService;
         }
         
-        [FunctionName("SessionSaverFunction")]
+        [FunctionName("BleScanSaverFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, 
                 "post",
