@@ -1,0 +1,10 @@
+#!/usr/bin/env dotnet dotnet-script
+#load "logger.csx"
+#load "dotnet-commands.csx"
+
+int checksCode = DotnetCommands.RunChecks();
+Logger.LogInfo($"Checks error code: {checksCode}");
+if (checksCode != 0) {
+    Logger.LogError("Failed to pass the checks");
+    Environment.Exit(-1);
+}
