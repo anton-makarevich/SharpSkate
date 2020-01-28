@@ -1,24 +1,35 @@
 using System;
+using Sanet.SmartSkating.Dto.Models;
 using Xamarin.Essentials;
 
 namespace Sanet.SmartSkating.Services.Account
 {
     public class EssentialsAccountService:IAccountService
     {
-        private const string userIdKey = "userId";
-        public string UserId
-        {
-            get
+        private const string UserIdKey = "userId";
+        private const string DeviceIdKey = "deviceId";
+        public string UserId => GetUniqueInstallationValue(UserIdKey);
+
+        public DeviceDto GetDeviceInfo() =>
+            new DeviceDto
             {
-                var userId = Preferences.Get(userIdKey,string.Empty);
+                DeviceId = GetUniqueInstallationValue(DeviceIdKey),
+                Manufacturer = DeviceInfo.Manufacturer,
+                Model = DeviceInfo.Model,
+                OsName = DeviceInfo.Platform.ToString(),
+                OsVersion = DeviceInfo.Version.ToString()
+            };
 
-                if (!string.IsNullOrEmpty(userId)) return userId;
-                
-                userId = Guid.NewGuid().ToString("N");
-                Preferences.Set(userIdKey,userId);
+        private static string GetUniqueInstallationValue(string key)
+        {
+            var userId = Preferences.Get(key, string.Empty);
 
-                return userId;
-            }
+            if (!string.IsNullOrEmpty(userId)) return userId;
+
+            userId = Guid.NewGuid().ToString("N");
+            Preferences.Set(key, userId);
+
+            return userId;
         }
     }
 }
