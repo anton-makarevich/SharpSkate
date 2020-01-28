@@ -60,7 +60,6 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterInstance<IDataService>(dataService);
             container.RegisterSingleton<ITrackProvider, LocalTrackProvider>();
             container.RegisterSingleton<IBleDevicesProvider,LocalBleDevicesProvider>();
-            container.RegisterSingleton<IBleLocationService,AndroidBleService>();
             container.RegisterSingleton<ITrackService, TrackService>();
             container.RegisterSingleton<ISessionService, SessionService>();
         }
