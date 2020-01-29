@@ -1,19 +1,22 @@
 using Android.App;
 using Refit;
+using Sanet.SmartSkating.Droid.Services.Location;
 using Sanet.SmartSkating.Dto;
 #if DEBUG
 using Sanet.SmartSkating.Tizen.Services.Location;
-#else
-using Sanet.SmartSkating.Droid.Services.Location;
+using Sanet.SmartSkating.Xf.Droid.Services;
 #endif
 
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
+using Sanet.SmartSkating.Services.Hardware;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
+using Sanet.SmartSkating.Xf.Droid.AndroidShared.Services.Hardware;
+using Sanet.SmartSkating.Xf.Droid.DummyServices.Services;
 using SimpleInjector;
 
 namespace Sanet.SmartSkating.WearOs
@@ -27,21 +30,34 @@ namespace Sanet.SmartSkating.WearOs
 
         private static void RegisterWearOsModule(this Container container, Activity activity)
         {
+            var dataService = new JsonStorageService();
             container.Register<TracksViewModel>();
             container.Register<LiveSessionViewModel>();
             container.Register<StartViewModel>();
             
             #if DEBUG
             container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 100));
+            var resourceReader = new EmbeddedResourceReader();
+            container.RegisterInstance<IBleLocationService>(
+                new DummyBleLocationService(
+                    resourceReader, 
+                    new LocalBleDevicesProvider(resourceReader), 
+                    dataService,
+                    0.5)
+                );
+            container.RegisterSingleton<IBluetoothService,DummyBluetoothService>();
             #else
             container.RegisterInstance<ILocationService>(new LocationManagerService(activity));
+            container.RegisterSingleton<IBleLocationService,AndroidBleService>();
+            container.RegisterInstance<IBluetoothService>(new AndroidBluetoothService(activity));
             #endif
             
+            container.RegisterSingleton<IResourceReader,EmbeddedResourceReader>();
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
             container.RegisterSingleton<IDataSyncService,DataSyncService>();
-            container.RegisterSingleton<IDataService, JsonStorageService>();
+            container.RegisterInstance<IDataService>(dataService);
             container.RegisterSingleton<ITrackProvider, LocalTrackProvider>();
             container.RegisterSingleton<IBleDevicesProvider,LocalBleDevicesProvider>();
             container.RegisterSingleton<ITrackService, TrackService>();

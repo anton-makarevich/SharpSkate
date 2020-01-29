@@ -145,7 +145,7 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="SimpleInjector">
-      <Version>4.8.1</Version>
+      <Version>4.9.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -157,11 +157,12 @@
       <Project>{795c2fc0-d25e-48e9-ad4a-2a003447415a}</Project>
       <Name>SmartSkating</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Tools\GpxTools\GpxTools.csproj">
+    <ProjectReference Include="..\..\..\..\Tools\Gpx\GpxTools\GpxTools.csproj">
       <Project>{fea47fee-4de0-43b2-b607-2632bb690ced}</Project>
       <Name>GpxTools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\..\AndroidShared\AndroidShared.projitems" Label="Shared" />
+  <Import Project="..\..\..\DummyServices\DummyServices.projitems" Label="Shared" />
 </Project>

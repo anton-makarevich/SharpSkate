@@ -122,7 +122,9 @@ namespace Sanet.SmartSkating.Models.Training
             if (WayPoints.Count>0)
             {
                 var previousSectorType = type.GetPreviousSectorType();
-                if (WayPoints.Last().Type!=previousSectorType)
+                var previousSeparationType = type.GetPreviousSeparationPointType();
+                var lastWayPoint = WayPoints.Last();
+                if (lastWayPoint.Type!=previousSectorType && lastWayPoint.Type!=previousSeparationType)
                     return;
             }
 

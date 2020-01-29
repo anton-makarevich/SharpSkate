@@ -15,12 +15,16 @@ namespace Sanet.SmartSkating.Azure.Services
         private readonly ILogger _log;
         private const string WayPointsTableName = "WayPointsTable";
         private const string SessionsTableName = "SessionsTable";
+        private const string BleScansTableName = "BleScansTable";
+        private const string DevicesTableName = "DevicesTable";
 
-        private readonly CloudTable _wayPointsTable;
-        private readonly CloudTable _sessionsTable;
+        private readonly CloudTable? _wayPointsTable;
+        private readonly CloudTable? _sessionsTable;
+        private readonly CloudTable? _scansTable;
+        private readonly CloudTable? _devicesTable;
 
         private readonly bool _hasStorageAccess;
-
+        
         public AzureTablesDataService(ILogger log)
         {
             _log = log;
@@ -38,21 +42,28 @@ namespace Sanet.SmartSkating.Azure.Services
             
             _wayPointsTable = tableClient.GetTableReference(WayPointsTableName);
             _sessionsTable = tableClient.GetTableReference(SessionsTableName);
+            _scansTable = tableClient.GetTableReference(BleScansTableName);
+            _devicesTable = tableClient.GetTableReference(DevicesTableName);
         }
         
-        public async Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
+        public Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
         {
             var entity = new WayPointEntity(wayPoint);
-            return await SaveEntityAsync(entity,_wayPointsTable);
+            return SaveEntityAsync(entity,_wayPointsTable);
         }
 
-        private async Task<bool> SaveEntityAsync(TableEntity entity, CloudTable table)
+        private async Task<bool> SaveEntityAsync(TableEntity entity, CloudTable? table)
         {
-            if (!_hasStorageAccess)
+            if (!_hasStorageAccess || table == null)
+            {
+                if (string.IsNullOrEmpty(ErrorMessage))
+                    ErrorMessage = $"Table for {entity.GetType()} is not defined";
                 return false;
+            }
+
             try
             {
-                await _wayPointsTable.CreateIfNotExistsAsync();
+                await table.CreateIfNotExistsAsync();
                 var insertOperation = TableOperation.InsertOrMerge(entity);
                 await table.ExecuteAsync(insertOperation);
 
@@ -60,12 +71,13 @@ namespace Sanet.SmartSkating.Azure.Services
             }
             catch (Exception exception)
             {
+                ErrorMessage = ErrorMessage + "\n" + exception.Message;
                 _log.LogError(exception, exception.Message);
                 return false;
             }
         }
 
-        public string ErrorMessage { get; } = string.Empty;
+        public string ErrorMessage { get; private set; } = string.Empty;
         public Task<List<WayPointDto>> GetAllWayPointsAsync()
         {
             throw new NotImplementedException();
@@ -76,10 +88,10 @@ namespace Sanet.SmartSkating.Azure.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> SaveSessionAsync(SessionDto session)
+        public Task<bool> SaveSessionAsync(SessionDto session)
         {
             var entity = new SessionEntity(session);
-            return await SaveEntityAsync(entity,_sessionsTable);
+            return SaveEntityAsync(entity,_sessionsTable);
         }
 
         public Task<List<SessionDto>> GetAllSessionsAsync()
@@ -92,9 +104,26 @@ namespace Sanet.SmartSkating.Azure.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> SaveBleAsync(BleScanResultDto session)
+        public Task<bool> SaveBleScanAsync(BleScanResultDto bleScan)
+        {
+            var entity = new BleScanEntity(bleScan);
+            return SaveEntityAsync(entity,_scansTable);
+        }
+
+        public Task<List<BleScanResultDto>> GetAllBleScansAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteBleScanAsync(string bleScanId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> SaveDeviceAsync(DeviceDto deviceDto)
+        {
+            var entity = new DeviceEntity(deviceDto);
+            return SaveEntityAsync(entity,_devicesTable);
         }
     }
 }

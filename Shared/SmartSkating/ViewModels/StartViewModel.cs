@@ -4,6 +4,7 @@ using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Services.Api;
+using Sanet.SmartSkating.Services.Hardware;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
@@ -15,16 +16,20 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly ILocationService _locationService;
         private readonly ITrackService _tracksService;
         private readonly IDataSyncService _dataSyncService;
+        private readonly IBluetoothService _bluetoothService;
         private string _infoLabel = string.Empty;
         private bool _areGeoServicesInitialized;
         private bool _isInitializingGeoServices;
 
+        private const int GeoServicesInitTimeoutInSeconds = 30;
+
         public StartViewModel(ILocationService locationService, ITrackService tracksService,
-            IDataSyncService dataSyncService)
+            IDataSyncService dataSyncService, IBluetoothService bluetoothService)
         {
             _locationService = locationService;
             _tracksService = tracksService;
             _dataSyncService = dataSyncService;
+            _bluetoothService = bluetoothService;
         }
 
         public string InfoLabel
@@ -44,12 +49,17 @@ namespace Sanet.SmartSkating.ViewModels
             ?_tracksService.SelectedRink.Name
             :string.Empty;
 
-        public bool CanStart => AreGeoServicesInitialized && IsRinkSelected;
+        public bool CanStart => !IsInitializingGeoServices && IsRinkSelected;
         public ICommand StartCommand => new SimpleCommand(async () =>
+        {
+            if (_bluetoothService.IsBluetoothAvailable())
             {
                 if (CanStart)
                     await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
-            });
+            }
+            else
+                await _bluetoothService.EnableBluetoothAsync();
+        });
 
         public bool IsInitializingGeoServices
         {
@@ -58,9 +68,12 @@ namespace Sanet.SmartSkating.ViewModels
         }
 
         public ICommand SelectRinkCommand => new SimpleCommand(async () =>
-            {
+        {
+            if (_bluetoothService.IsBluetoothAvailable())
                 await NavigationService.NavigateToViewModelAsync<TracksViewModel>();
-            });
+            else
+                await _bluetoothService.EnableBluetoothAsync();
+        });
 
         public override void AttachHandlers()
         {
@@ -78,13 +91,18 @@ namespace Sanet.SmartSkating.ViewModels
             await _tracksService.LoadTracksAsync();
             IsInitializingGeoServices = true;
             _locationService.StartFetchLocation();
+            await Task.Delay(GeoServicesInitTimeoutInSeconds*30);
+            if (IsInitializingGeoServices)
+            {
+                LocationServiceOnLocationReceived(this, new CoordinateEventArgs(new Coordinate()));
+            }
         }
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
             IsInitializingGeoServices = false;
             AreGeoServicesInitialized = !e.Coordinate.Equals(default(Coordinate));
-            InfoLabel = string.Empty;
+            InfoLabel = AreGeoServicesInitialized? string.Empty: "Geo services are not available. Please select rink manually";
             if (AreGeoServicesInitialized)
             {
                 _tracksService.SelectRinkCloseTo(e.Coordinate);

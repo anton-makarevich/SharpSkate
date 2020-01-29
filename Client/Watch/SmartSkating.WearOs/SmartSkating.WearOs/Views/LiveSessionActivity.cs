@@ -74,8 +74,10 @@ namespace Sanet.SmartSkating.WearOs.Views
         
         private void SetViewModel()
         {
-            ViewModel = AndroidNavigationService.SharedInstance.Container.GetInstance<LiveSessionViewModel>();
-            ViewModel.SetNavigationService(AndroidNavigationService.SharedInstance);
+            ViewModel = AndroidNavigationService.SharedInstance?.Container?.GetInstance<LiveSessionViewModel>();
+            if (ViewModel == null) return;
+            if (AndroidNavigationService.SharedInstance != null)
+                ViewModel.SetNavigationService(AndroidNavigationService.SharedInstance);
             ViewModel.PropertyChanged+= ViewModelOnPropertyChanged;
             
             UpdateButtonsState();
@@ -149,32 +151,32 @@ namespace Sanet.SmartSkating.WearOs.Views
         
         private void UpdateLastLapTime()
         {
-            if (_lastLapText != null) _lastLapText.ValueText = ViewModel?.LastLapTime;
+            if (_lastLapText != null) _lastLapText.ValueText = ViewModel?.LastLapTime??string.Empty;
         }
 
         private void UpdateDistance()
         {
-            if (_distanceText != null) _distanceText.Text = ViewModel?.Distance;
+            if (_distanceText != null) _distanceText.Text = ViewModel?.Distance??string.Empty;
         }
 
         private void UpdateBestLapTime()
         {
-            if (_lastLapText != null) _bestLapText.ValueText = ViewModel?.BestLapTime;
+            if (_bestLapText != null) _bestLapText.ValueText = ViewModel?.BestLapTime??string.Empty;
         }
 
         private void UpdateLaps()
         {
-            if (_lapsText != null) _lapsText.ValueText = ViewModel?.Laps;
+            if (_lapsText != null) _lapsText.ValueText = ViewModel?.Laps??string.Empty;
         }
 
         private void UpdateLastSector()
         {
-            if (_lastSectorText != null) _lastSectorText.ValueText = ViewModel?.LastSectorTime;
+            if (_lastSectorText != null) _lastSectorText.ValueText = ViewModel?.LastSectorTime??string.Empty;
         }
         
         private void UpdateBestSector()
         {
-            if (_bestSectorText != null) _bestSectorText.ValueText = ViewModel?.BestSectorTime;
+            if (_bestSectorText != null) _bestSectorText.ValueText = ViewModel?.BestSectorTime??string.Empty;
         }
     }
 }

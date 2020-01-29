@@ -67,11 +67,9 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\Watch\SmartSkating.Tizen\Services\Location\DummyLocationService.cs">
-      <Link>Services\Location\DummyLocationService.cs</Link>
-    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Services\Location\IosBleService.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="PlatformModule.cs" />
@@ -132,18 +130,22 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="5.0.23" />
-    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991265" />
+    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991477" />
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
     <PackageReference Include="SimpleInjector">
-      <Version>4.8.1</Version>
+      <Version>4.9.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj">
+      <Project>{da620869-1efd-4593-add8-05d9904de1fb}</Project>
+      <Name>SmartSkating.Dto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj">
       <Project>{795C2FC0-D25E-48E9-AD4A-2A003447415A}</Project>
       <Name>SmartSkating</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Tools\GpxTools\GpxTools.csproj">
+    <ProjectReference Include="..\..\..\Tools\Gpx\GpxTools\GpxTools.csproj">
       <Project>{fea47fee-4de0-43b2-b607-2632bb690ced}</Project>
       <Name>GpxTools</Name>
     </ProjectReference>
@@ -160,4 +162,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Import Project="..\..\DummyServices\DummyServices.projitems" Label="Shared" />
 </Project>

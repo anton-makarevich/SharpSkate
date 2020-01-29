@@ -163,11 +163,12 @@ namespace Sanet.SmartSkating.Xf.Services
 
             var taskCompletionSource = new TaskCompletionSource<TResult>();
 
-            void OnViewModelOnOnResult(object sender, object o)
+            void OnViewModelOnOnResult(object sender, object? o)
             {
-                viewModel.OnResult -= OnViewModelOnOnResult;
-                var result = o as TResult;
-                taskCompletionSource.TrySetResult(result);
+                if (viewModel != null) 
+                    viewModel.OnResult -= OnViewModelOnOnResult;
+                if (o is TResult result) 
+                    taskCompletionSource.TrySetResult(result);
             }
 
             viewModel.OnResult += OnViewModelOnOnResult;

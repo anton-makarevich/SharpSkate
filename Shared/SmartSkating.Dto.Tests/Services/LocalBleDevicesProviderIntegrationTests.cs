@@ -10,7 +10,7 @@ namespace SmartSkating.Dto.Tests.Services
         [Fact]
         public async Task ReturnsListOfDevicesFromLocalJsonFile()
         {
-            var sut = new LocalBleDevicesProvider();
+            var sut = new LocalBleDevicesProvider(new EmbeddedResourceReader());
 
             var localTracks = await sut.GetBleDevicesAsync();
             

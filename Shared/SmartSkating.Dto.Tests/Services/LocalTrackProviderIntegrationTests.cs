@@ -9,7 +9,7 @@ namespace SmartSkating.Dto.Tests.Services
         [Fact]
         public async Task ReturnsListOfTracksFromLocalJsonFile()
         {
-            var sut = new LocalTrackProvider();
+            var sut = new LocalTrackProvider(new EmbeddedResourceReader());
 
             var localTracks = await sut.GetAllTracksAsync();
             

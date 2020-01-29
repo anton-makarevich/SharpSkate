@@ -8,32 +8,32 @@ namespace Sanet.SmartSkating.WearOs.Views
     {
         private TViewModel? _viewModel;
         
-        public virtual TViewModel ViewModel
+        public virtual TViewModel? ViewModel
         {
-            get => _viewModel; 
-            set
+            get => _viewModel;
+            protected set
             {
                 _viewModel = value;
                 OnViewModelSet();
             }
         }
 
-        object IBaseView.ViewModel
+        object? IBaseView.ViewModel
         {
             get => _viewModel;
-            set => ViewModel = (TViewModel)value;
+            set => ViewModel = (TViewModel?)value;
         }
 
         protected override void OnStart()
         {
             base.OnStart();
-            ViewModel.AttachHandlers();
+            ViewModel?.AttachHandlers();
         }
 
         protected override void OnStop()
         {
             base.OnStop();
-            ViewModel.DetachHandlers();
+            ViewModel?.DetachHandlers();
         }
 
         protected virtual void OnViewModelSet() { }

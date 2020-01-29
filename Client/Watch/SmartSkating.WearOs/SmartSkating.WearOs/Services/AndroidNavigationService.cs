@@ -13,7 +13,7 @@ namespace Sanet.SmartSkating.WearOs.Services
     {
         private readonly Activity _activity;
 
-        public static AndroidNavigationService SharedInstance { get; private set; }
+        public static AndroidNavigationService? SharedInstance { get; private set; }
 
         public AndroidNavigationService(Activity activity, Container container)
         {

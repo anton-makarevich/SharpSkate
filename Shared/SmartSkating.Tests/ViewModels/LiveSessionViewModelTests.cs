@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FluentAssertions;
 using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
@@ -20,8 +21,6 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 {
     public class LiveSessionViewModelTests
     {
-        private const string NoValue = "- - -";
-        
         private readonly LiveSessionViewModel _sut;
         private readonly IAccountService _accountService = Substitute.For<IAccountService>();
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
@@ -42,6 +41,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 _accountService,
                 _dataSyncService,
                 _bleLocationService);
+        }
+
+        [Fact]
+        public void InitialTotalTimeIsZero()
+        {
+            var expectedTime = new TimeSpan().ToString(LiveSessionViewModel.TotalTimeFormat);
+            _sut.TotalTime.Should().Be(expectedTime);
+        }
+        
+        [Fact]
+        public void InitialCurrentSessionIsEqualToEmptyValue()
+        {
+            _sut.CurrentSector.Should().Be(LiveSessionViewModel.NoValue);
         }
 
         [Fact]
@@ -298,7 +310,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal(NoValue,_sut.LastLapTime);
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastLapTime);
         }
         
         [Fact]
@@ -323,7 +335,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal(NoValue,_sut.BestLapTime);
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestLapTime);
         }
         
         [Fact]
@@ -370,7 +382,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal(NoValue,_sut.LastSectorTime);
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastSectorTime);
         }
         
         [Fact]
@@ -393,7 +405,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            Assert.Equal(NoValue,_sut.BestSectorTime);
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestSectorTime);
         }
 
         private void CreateSessionMockWithOneSector()
@@ -451,7 +463,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut.StartCommand.Execute(null);
 
-            _bleLocationService.Received().StartBleScan();
+            _bleLocationService.Received().StartBleScan(Arg.Any<string>());
         }
         
         [Fact]

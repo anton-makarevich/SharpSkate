@@ -324,5 +324,38 @@ namespace Sanet.SmartSkating.Tests.Models.Training
 
             _sut.WayPoints.Count.Should().Be(5);
         }
+
+        [Fact]
+        public void AddsWaypoints_WhenOnlySeparatingPointsAreReportedAndTheyAreInOrder()
+        {
+            var startTime = DateTime.Now;
+            var secondTime = startTime.AddSeconds(10);
+            _sut.AddSeparatingPoint(WayPointTypes.Start,startTime);
+            _sut.AddSeparatingPoint(WayPointTypes.Finish, secondTime);
+
+            _sut.WayPoints.Count.Should().Be(2);
+        }
+        
+        [Fact]
+        public void AddsSection_WhenTwoSeparatingPointsAreReportedAndTheyAreInOrder()
+        {
+            var startTime = DateTime.Now;
+            var secondTime = startTime.AddSeconds(10);
+            _sut.AddSeparatingPoint(WayPointTypes.Start,startTime);
+            _sut.AddSeparatingPoint(WayPointTypes.Finish, secondTime);
+
+            _sut.Sectors.Count.Should().Be(1);
+        }
+        
+        [Fact]
+        public void DoesNotAddWaypoints_WhenOnlySeparatingPointsAreReportedAndTheyAreNotInOrder()
+        {
+            var startTime = DateTime.Now;
+            var secondTime = startTime.AddSeconds(10);
+            _sut.AddSeparatingPoint(WayPointTypes.Start,startTime);
+            _sut.AddSeparatingPoint(WayPointTypes.Start300M, secondTime);
+
+            _sut.WayPoints.Count.Should().Be(1);
+        }
     }
 }

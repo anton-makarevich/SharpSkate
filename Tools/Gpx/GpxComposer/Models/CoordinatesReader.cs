@@ -44,26 +44,26 @@ namespace Sanet.SmartSkating.Tools.GpxComposer.Models
 
         public void ReadBleFromBackup()
         {
-            var bleEvents = new List<BleScanResultDto>();
             var files = Directory.EnumerateFiles(
-                "/Users/amakarevich/OneDrive/SmartSkating/skatingData/anton010420/Ble");
-            
-            foreach (var file in files.Where(f=>!f.Contains(".DS")))
-            {
-                var dataString = File.ReadAllText(file);
+                "/Users/amakarevich/OneDrive/SmartSkating/skatingData/anton011120/Ble");
 
-                try
-                {
-                    bleEvents.Add(JsonConvert.DeserializeObject<BleScanResultDto>(dataString));
-                }
-                catch (Exception e)
-                {
-                    var t = e.Message;
-                }
-            }
-            foreach (var bleEvent in bleEvents.OrderBy(b=>b.Time))
+            var bleEvents = files
+                .Where(f => !f.Contains(".DS"))
+                .Select(File.ReadAllText)
+                .Select(JsonConvert.DeserializeObject<BleScanResultDto>)
+                .ToList();
+
+            var bleData = JsonConvert.SerializeObject(bleEvents.OrderBy(b => b.Time));
+            File.WriteAllText("/Users/amakarevich/OneDrive/SmartSkating/skatingData/anton011120/Ble.ble", bleData);
+            
+            foreach (var group in bleEvents.GroupBy(f=>f.DeviceAddress))
             {
-                Console.WriteLine($"{bleEvent.Time.Hour}:{bleEvent.Time.Minute}:{bleEvent.Time.Second} --> {bleEvent.Rssi}");
+                Console.WriteLine($"Device {group.Key}");
+                foreach (var bleEvent in group.OrderBy(b=>b.Time))
+                {
+                    Console.WriteLine($"{bleEvent.Time.Hour}:{bleEvent.Time.Minute}:{bleEvent.Time.Second} , {bleEvent.Rssi}  , {bleEvent.DeviceAddress}");
+                }
+                Console.WriteLine("-------");
             }
         }
 

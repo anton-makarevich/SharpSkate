@@ -15,7 +15,7 @@ namespace Sanet.SmartSkating.Xf.Views
         private void OnTrackSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is TrackViewModel trackViewModel)
-                ViewModel.SelectTrack(trackViewModel);
+                ViewModel?.SelectTrack(trackViewModel);
         }
     }
 }

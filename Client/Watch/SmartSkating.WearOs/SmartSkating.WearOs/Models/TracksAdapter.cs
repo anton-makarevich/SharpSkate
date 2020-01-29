@@ -19,9 +19,7 @@ namespace Sanet.SmartSkating.WearOs.Models
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            var viewHolder = holder as TracksViewHolder;
-
-            viewHolder.Name.Text = _tracks[position].Name;
+            if (holder is TracksViewHolder viewHolder) viewHolder.Name.Text = _tracks[position].Name;
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

@@ -12,7 +12,7 @@
 				"header": [
 					{
 						"key": "Ocp-Apim-Subscription-Key",
-						"value": "",
+						"value": "4e35cf8b9b3440e7b6ac2fdf5b1c010e",
 						"type": "text"
 					}
 				],
@@ -31,6 +31,37 @@
 					"path": [
 						"smartskating",
 						"waypoints"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST blescans",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "4e35cf8b9b3440e7b6ac2fdf5b1c010e",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n  \"id\": \"0\",\n  \"deviceAddress\": \"123\",\n  \"rssi\": -45,\n  \"time\": \"0001-01-01T00:00:00\",\n  \"sessionId\": \"1\"\n}\n]"
+				},
+				"url": {
+					"raw": "https://smartskating.azure-api.net/smartskating/scans",
+					"protocol": "https",
+					"host": [
+						"smartskating",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"smartskating",
+						"scans"
 					]
 				}
 			},

@@ -6,23 +6,25 @@ using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
-using Sanet.SmartSkating.Models.Training;
 
 namespace Sanet.SmartSkating.Services.Location
 {
     public abstract class BaseBleLocationService:IBleLocationService
     {
         protected readonly IBleDevicesProvider DevicesProvider;
-        private List<BleDeviceDto> _devices;
+        private readonly IDataService _dataService;
+        private List<BleDeviceDto>? _devices;
+        private string _sessionId = string.Empty;
         private const int RssiNearThreshold = -75;
 
-        public List<BleDeviceDto> KnownDevices => _devices;
+        public List<BleDeviceDto>? KnownDevices => _devices;
 
         protected List<BleScansStack> ScanStacks { get; }
 
-        protected BaseBleLocationService(IBleDevicesProvider devicesProvider)
+        protected BaseBleLocationService(IBleDevicesProvider devicesProvider, IDataService dataService)
         {
             DevicesProvider = devicesProvider;
+            _dataService = dataService;
             ScanStacks = new List<BleScansStack>();
         }
 
@@ -30,10 +32,9 @@ namespace Sanet.SmartSkating.Services.Location
         {
             _devices=await DevicesProvider.GetBleDevicesAsync();
         }
-
         protected  int GetWayPointForDeviceId(string deviceId)
         {
-            if (_devices.Count == 0)
+            if (_devices==null || _devices.Count == 0)
                 return (int) WayPointTypes.Unknown;
             var deviceById = _devices.FirstOrDefault(f => f.Id == deviceId);
             return deviceById?.WayPointType ?? (int)WayPointTypes.Unknown;
@@ -41,8 +42,9 @@ namespace Sanet.SmartSkating.Services.Location
 
         public event EventHandler<CheckPointEventArgs>? CheckPointPassed;
 
-        public virtual void StartBleScan()
+        public virtual void StartBleScan(string sessionId)
         {
+            _sessionId = sessionId;
             IsScanning = true;
         }
 
@@ -68,58 +70,40 @@ namespace Sanet.SmartSkating.Services.Location
                 stack = new BleScansStack(scan.DeviceAddress);
                 ScanStacks.Add(stack);
             }
+
+            scan.SessionId = _sessionId;
             stack.AddScan(scan);
+            _dataService.SaveBleScanAsync(scan);
             CheckIfCheckPointHasPassed();
         }
 
         private void CheckIfCheckPointHasPassed()
         {
-            bool IsSingleStackPassing(BleScansStack bleScansStack, WayPointTypes wayPointTypes)
-            {
-                if (bleScansStack.AverageRssi <= RssiNearThreshold) return false;
-                InvokeCheckPointPassed(wayPointTypes, bleScansStack.Time);
-                return true;
-            }
-
-            if (ScanStacks.Count<0)
-                return;
             var closestStack = ScanStacks.OrderBy(f => f.AverageRssi).Last();
 
             if (!(closestStack.HasRssiTrendChanged && closestStack.RssiTrend == RssiTrends.Decrease))
                 return;
 
             var closestWayPointType = (WayPointTypes)GetWayPointForDeviceId(closestStack.DeviceId);
-            if (ScanStacks.Count == 1 && IsSingleStackPassing(closestStack, closestWayPointType)) return;
-
-            var prevWayPointType = (int)closestWayPointType.GetPreviousSeparationPointType();
-            var nextWayPointType = (int)closestWayPointType.GetNextSeparationPointType();
-
-            var prevStack = ScanStacks
-                    .FirstOrDefault(s=>GetWayPointForDeviceId(s.DeviceId)==prevWayPointType);
-                
-            var nextStack = ScanStacks
-                .FirstOrDefault(s=>GetWayPointForDeviceId(s.DeviceId)==nextWayPointType);
-            if (nextStack != null 
-                && nextStack.RssiTrend == RssiTrends.Increase 
-                && prevStack != null 
-                && prevStack.RssiTrend == RssiTrends.Decrease)
+            if (ScanStacks.Count < 3)
             {
-                InvokeCheckPointPassed(closestWayPointType,closestStack.Time);
-                return;
-            }
-            if (nextStack != null && nextStack.RssiTrend == RssiTrends.Increase)
-            {
-                InvokeCheckPointPassed(closestWayPointType,closestStack.Time);
-                return;
-            }
+                if (closestStack.AverageRssi > RssiNearThreshold) 
+                  InvokeCheckPointPassed(closestWayPointType, closestStack.Time);
+                return;  
+            } 
 
-            if (prevStack != null && prevStack.RssiTrend == RssiTrends.Decrease)
+            var rssiDifferences = ScanStacks
+                .Select(s => Math.Abs(closestStack.AverageRssi - s.AverageRssi))
+                .OrderBy(a=>a)
+                .Skip(1)  // remove 0 (difference with itself)
+                .ToList();
+
+            if (rssiDifferences.Count > 1 
+                && rssiDifferences.First() > 10 
+                && rssiDifferences.Last() / rssiDifferences.First() < 2)
             {
                 InvokeCheckPointPassed(closestWayPointType, closestStack.Time);
-                return;
             }
-
-            IsSingleStackPassing(closestStack, closestWayPointType);
         }
     }
 }

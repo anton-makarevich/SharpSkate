@@ -4,7 +4,7 @@ using FunctionTestUtils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using Sanet.SmartSkating.Dto.Models.Responses;
+using Sanet.SmartSkating.Dto.Models.Responses.Base;
 using Xunit;
 
 namespace Sanet.SmartSkating.Azure.Tests.Functions
@@ -18,7 +18,7 @@ namespace Sanet.SmartSkating.Azure.Tests.Functions
                 Substitute.For<ILogger>()) as JsonResult;
         
             Assert.NotNull(actionResult);
-            var response = actionResult.Value as SaveEntitiesResponse;
+            var response = actionResult.Value as ResponseBase;
         
             Assert.NotNull(response);
             const int badRequestStatus = (int) HttpStatusCode.BadRequest;

@@ -1,11 +1,7 @@
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Resources;
 using System.Threading.Tasks;
 using GpxTools.Models.Gpx;
-using Sanet.SmartSkating.Tools.GpxComposer.Models.Gpx;
 
 namespace GpxTools.Services
 {
@@ -23,7 +19,7 @@ namespace GpxTools.Services
                 while (gpxReader.Read())
                 {
                     if (gpxReader.ObjectType == GpxObjectType.Route)
-                    return gpxReader.Route;
+                        return gpxReader.Route;
                 }
                 return null;
             }); 

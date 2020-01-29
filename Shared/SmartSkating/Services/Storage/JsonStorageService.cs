@@ -101,9 +101,24 @@ namespace Sanet.SmartSkating.Services.Storage
             return DeleteAsync(id, SessionsFolder);
         }
 
-        public Task<bool> SaveBleAsync(BleScanResultDto bleScanResult)
+        public Task<bool> SaveBleScanAsync(BleScanResultDto bleScanResult)
         {
             return SaveAsync(bleScanResult,BleFolder);
+        }
+
+        public Task<List<BleScanResultDto>> GetAllBleScansAsync()
+        {
+            return GetAllAsync<BleScanResultDto>(BleFolder);
+        }
+
+        public Task<bool> DeleteBleScanAsync(string bleScanId)
+        {
+            return DeleteAsync(bleScanId, BleFolder);
+        }
+
+        public Task<bool> SaveDeviceAsync(DeviceDto deviceDto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

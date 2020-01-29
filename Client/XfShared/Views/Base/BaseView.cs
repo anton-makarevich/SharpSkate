@@ -19,7 +19,7 @@ namespace Sanet.SmartSkating.Xf.Views.Base
     {
         protected bool NavigationBarEnabled;
 
-        private TViewModel _viewModel;
+        private TViewModel? _viewModel;
 
         protected BaseView()
         {
@@ -29,7 +29,7 @@ namespace Sanet.SmartSkating.Xf.Views.Base
             On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
 
-        public virtual TViewModel ViewModel
+        public virtual TViewModel? ViewModel
         {
             get => _viewModel; 
             set
@@ -40,22 +40,22 @@ namespace Sanet.SmartSkating.Xf.Views.Base
             }
         }
 
-        object IBaseView.ViewModel
+        object? IBaseView.ViewModel
         {
             get => _viewModel;
-            set => ViewModel = (TViewModel)value;
+            set => ViewModel = (TViewModel?)value;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            ViewModel.AttachHandlers();
+            ViewModel?.AttachHandlers();
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            ViewModel.DetachHandlers();
+            ViewModel?.DetachHandlers();
         }
 
         protected virtual void OnViewModelSet() { }
