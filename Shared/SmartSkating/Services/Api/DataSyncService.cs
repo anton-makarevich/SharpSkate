@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Services.Account;
 
 namespace Sanet.SmartSkating.Services.Api
 {
@@ -10,15 +11,17 @@ namespace Sanet.SmartSkating.Services.Api
         private readonly IDataService _dataService;
         private readonly IApiService _apiService;
         private readonly IConnectivityService _connectivityService;
+        private readonly IAccountService _accountService;
 
         private bool _isStarted;
 
         public DataSyncService(IDataService dataService, IApiService apiService,
-            IConnectivityService connectivityService)
+            IConnectivityService connectivityService, IAccountService accountService)
         {
             _dataService = dataService;
             _apiService = apiService;
             _connectivityService = connectivityService;
+            _accountService = accountService;
         }
 
         public void StartSyncing()
@@ -35,6 +38,7 @@ namespace Sanet.SmartSkating.Services.Api
         {
             do
             {
+                await SyncDeviceAsync();
                 await SyncSessionsAsync();
                 await SyncWayPointsAsync();
                 await SyncBleScansAsync();
@@ -42,6 +46,14 @@ namespace Sanet.SmartSkating.Services.Api
                 await Task.Delay(30000);
             } while (true);
             // ReSharper disable once FunctionNeverReturns
+        }
+
+        private async Task SyncDeviceAsync()
+        {
+            if (!await _connectivityService.IsConnected())
+                return;
+            var device = _accountService.GetDeviceInfo();
+            await _apiService.PostDeviceAsync(device, ApiNames.AzureApiSubscriptionKey);
         }
 
         public async Task SyncWayPointsAsync()

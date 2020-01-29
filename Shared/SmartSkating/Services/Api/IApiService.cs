@@ -25,5 +25,10 @@ namespace Sanet.SmartSkating.Services.Api
             [Body] List<BleScanResultDto> scans,
             [Header("Ocp-Apim-Subscription-Key")] string subscriptionKey
         );
+
+        [Post("/devices")]
+        Task<BooleanResponse> PostDeviceAsync(
+            [Body] DeviceDto device, 
+            [Header("Ocp-Apim-Subscription-Key")] string subscriptionKey);
     }
 }

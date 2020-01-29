@@ -6,6 +6,7 @@ using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 using Xunit;
 
@@ -17,6 +18,8 @@ namespace Sanet.SmartSkating.Tests.Services.Api
         private readonly IDataService _dataService;
         private readonly IApiService _apiService;
         private readonly IConnectivityService _connectivityService;
+        private readonly IAccountService _accountService;
+
         private readonly List<WayPointDto> _wayPoints = new List<WayPointDto>
         {
             new WayPointDto
@@ -52,13 +55,23 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             };
         }
         
+        private readonly DeviceDto _deviceStub = new DeviceDto
+        {
+            DeviceId = "1",
+            Manufacturer = "some",
+            Model = "device",
+            OsName = "os",
+            OsVersion = "1.0"
+        };
+        
         public DataSyncServiceTests()
         {
             _dataService = Substitute.For<IDataService>();
             _apiService = Substitute.For<IApiService>();
             _connectivityService = Substitute.For<IConnectivityService>();
+            _accountService = Substitute.For<IAccountService>();
             
-            _sut = new DataSyncService(_dataService,_apiService,_connectivityService);
+            _sut = new DataSyncService(_dataService,_apiService,_connectivityService, _accountService);
             
             _dataService.GetAllSessionsAsync().Returns(Task.FromResult(new List<SessionDto>()));
         }
@@ -236,5 +249,27 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             await _dataService.Received().DeleteBleScanAsync(_bleScans.First().Id);
         }
         #endregion
+        
+        [Fact]
+        public async Task GetsDeviceAndSendsItToApi_WhenConnected()
+        {
+            _accountService.GetDeviceInfo().Returns(_deviceStub);
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            
+            _sut.StartSyncing();
+
+            await _apiService.Received().PostDeviceAsync(_deviceStub, Arg.Any<string>());
+        }
+        
+        [Fact]
+        public async Task DoesNotSendDeviceToApi_WhenConnectionIsNotAvailable()
+        {
+            _accountService.GetDeviceInfo().Returns(_deviceStub);
+            _connectivityService.IsConnected().Returns(Task.FromResult(false));
+            
+            _sut.StartSyncing();
+
+            await _apiService.DidNotReceive().PostDeviceAsync(_deviceStub, Arg.Any<string>());
+        }
     }
 }
