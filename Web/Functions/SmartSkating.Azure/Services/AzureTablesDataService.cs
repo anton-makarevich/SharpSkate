@@ -23,7 +23,6 @@ namespace Sanet.SmartSkating.Azure.Services
         private readonly CloudTable? _scansTable;
         private readonly CloudTable? _devicesTable;
 
-
         private readonly bool _hasStorageAccess;
         
         public AzureTablesDataService(ILogger log)

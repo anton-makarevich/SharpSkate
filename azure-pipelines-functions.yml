@@ -36,14 +36,14 @@ steps:
     Contents: '**'
     TargetFolder: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
   displayName: 'Copy SessionSaverFunction output'
-  
+
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'Web\Functions\BleScanSaverFunction\bin\Release\netcoreapp3.0\'
     Contents: '**'
     TargetFolder: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
   displayName: 'Copy BleScanSaverFunction output'
-  
+
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'Web\Functions\DeviceSaverFunction\bin\Release\netcoreapp3.0\'
