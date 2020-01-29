@@ -16,13 +16,16 @@ namespace Sanet.SmartSkating.Azure.Services
         private const string WayPointsTableName = "WayPointsTable";
         private const string SessionsTableName = "SessionsTable";
         private const string BleScansTableName = "BleScansTable";
+        private const string DevicesTableName = "DevicesTable";
 
         private readonly CloudTable? _wayPointsTable;
         private readonly CloudTable? _sessionsTable;
         private readonly CloudTable? _scansTable;
+        private readonly CloudTable? _devicesTable;
+
 
         private readonly bool _hasStorageAccess;
-
+        
         public AzureTablesDataService(ILogger log)
         {
             _log = log;
@@ -41,6 +44,7 @@ namespace Sanet.SmartSkating.Azure.Services
             _wayPointsTable = tableClient.GetTableReference(WayPointsTableName);
             _sessionsTable = tableClient.GetTableReference(SessionsTableName);
             _scansTable = tableClient.GetTableReference(BleScansTableName);
+            _devicesTable = tableClient.GetTableReference(DevicesTableName);
         }
         
         public Task<bool> SaveWayPointAsync(WayPointDto wayPoint)
@@ -115,6 +119,12 @@ namespace Sanet.SmartSkating.Azure.Services
         public Task<bool> DeleteBleScanAsync(string bleScanId)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<bool> SaveDeviceAsync(DeviceDto deviceDto)
+        {
+            var entity = new DeviceEntity(deviceDto);
+            return SaveEntityAsync(entity,_devicesTable);
         }
     }
 }

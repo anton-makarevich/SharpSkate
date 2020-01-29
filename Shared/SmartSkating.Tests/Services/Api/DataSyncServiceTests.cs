@@ -57,7 +57,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
         
         private readonly DeviceDto _deviceStub = new DeviceDto
         {
-            DeviceId = "1",
+            Id = "1",
             Manufacturer = "some",
             Model = "device",
             OsName = "os",

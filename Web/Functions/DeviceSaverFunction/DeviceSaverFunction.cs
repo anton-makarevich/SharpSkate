@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -18,7 +17,7 @@ using Sanet.SmartSkating.Dto.Services;
 
 namespace Sanet.SmartSkating.Web.Functions
 {
-    public class WayPointSaverFunction: IAzureFunction
+    public class DeviceSaverFunction: IAzureFunction
     {
         private IDataService? _dataService;
 
@@ -29,19 +28,20 @@ namespace Sanet.SmartSkating.Web.Functions
         
         private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
         
-        [FunctionName("WayPointSaverFunction")]
+        [FunctionName("DeviceSaverFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function,
-                "post", 
-                Route = ApiNames.WayPointsResource.Route)] HttpRequest request,
+            [HttpTrigger(AuthorizationLevel.Function, 
+                "post",
+                Route = ApiNames.DevicesResource.Route)] HttpRequest request,
             ILogger log)
         {
             if (_dataService == null)
                 SetService(new AzureTablesDataService(log));
 
-            var responseObject = new SaveEntitiesResponse {SyncedIds = new List<string>()};
+            var responseObject = new BooleanResponse();
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
-            var requestObject = JsonConvert.DeserializeObject<List<WayPointDto>>(requestData);
+            
+            var requestObject = JsonConvert.DeserializeObject<DeviceDto>(requestData);
             
             if (requestObject == null)
             {
@@ -51,24 +51,16 @@ namespace Sanet.SmartSkating.Web.Functions
             else
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
-                foreach (var wayPoint in requestObject)
-                {
-                    if (wayPoint.Time.Year < 1601)
-                    {
-                        _errorMessageBuilder.AppendLine(Constants.DateTimeValidationErrorMessage);
-                        continue;
-                    }
-                    if (_dataService != null && await _dataService.SaveWayPointAsync(wayPoint))
-                        responseObject.SyncedIds.Add(wayPoint.Id);
-                }
-
+                
+                if (_dataService != null)
+                    responseObject.Result = await _dataService.SaveDeviceAsync(requestObject);
+                
                 if (!string.IsNullOrEmpty(_dataService?.ErrorMessage)) 
                     _errorMessageBuilder.AppendLine(_dataService.ErrorMessage);
             }
-            
+
             responseObject.Message = _errorMessageBuilder.ToString();
-            if (responseObject.Message.Contains(Constants.DateTimeValidationErrorMessage)
-                && responseObject.SyncedIds.Count == 0)
+            if (responseObject.Message.Contains(Constants.DateTimeValidationErrorMessage))
                 responseObject.ErrorCode = (int)HttpStatusCode.BadRequest;
             return new JsonResult(responseObject);
         }

@@ -62,7 +62,7 @@ namespace Sanet.SmartSkating.Web.Functions
                         responseObject.SyncedIds.Add(scanResultDto.Id);
                 }
                 
-                if (_dataService != null) 
+                if (!string.IsNullOrEmpty(_dataService?.ErrorMessage)) 
                     _errorMessageBuilder.AppendLine(_dataService.ErrorMessage);
             }
 

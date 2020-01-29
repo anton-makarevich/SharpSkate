@@ -22,5 +22,11 @@ namespace Sanet.SmartSkating.Dto
 
         public static readonly string BaseUrl = "https://smartskating.azure-api.net/smartskating";
         public static readonly string AzureApiSubscriptionKey = "<Ocp-Apim-Subscription-Key>";
+
+        public static class DevicesResource
+        {
+            public const string Path= "/devices";
+            public const string Route = "devices";
+        }
     }
 }

@@ -115,5 +115,10 @@ namespace Sanet.SmartSkating.Services.Storage
         {
             return DeleteAsync(bleScanId, BleFolder);
         }
+
+        public Task<bool> SaveDeviceAsync(DeviceDto deviceDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

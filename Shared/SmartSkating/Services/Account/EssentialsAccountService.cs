@@ -13,7 +13,7 @@ namespace Sanet.SmartSkating.Services.Account
         public DeviceDto GetDeviceInfo() =>
             new DeviceDto
             {
-                DeviceId = GetUniqueInstallationValue(DeviceIdKey),
+                Id = GetUniqueInstallationValue(DeviceIdKey),
                 Manufacturer = DeviceInfo.Manufacturer,
                 Model = DeviceInfo.Model,
                 OsName = DeviceInfo.Platform.ToString(),

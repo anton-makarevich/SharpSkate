@@ -26,6 +26,9 @@ steps:
 
 - script: dotnet build Web\Functions\BleScanSaverFunction\BleScanSaverFunction.csproj -c $(buildConfiguration) -v d
   displayName: 'Build BleScanSaver function'
+  
+- script: dotnet build Web\Functions\DeviceSaverFunction\DeviceSaverFunction.csproj -c $(buildConfiguration) -v d
+  displayName: 'Build DeviceSaver function'
 
 - task: CopyFiles@2
   inputs:
@@ -40,6 +43,13 @@ steps:
     Contents: '**'
     TargetFolder: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
   displayName: 'Copy BleScanSaverFunction output'
+  
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'Web\Functions\DeviceSaverFunction\bin\Release\netcoreapp3.0\'
+    Contents: '**'
+    TargetFolder: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
+  displayName: 'Copy DeviceSaverFunction output'
 
 - task: ArchiveFiles@2
   inputs:

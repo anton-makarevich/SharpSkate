@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BleScanSaverFunction\BleScanSaverFunction.csproj" />
+      <ProjectReference Include="..\DeviceSaverFunction\DeviceSaverFunction.csproj" />
       <ProjectReference Include="..\FunctionTestUtils\FunctionTestUtils.csproj" />
       <ProjectReference Include="..\SessionSaverFunction\SessionSaverFunction.csproj" />
       <ProjectReference Include="..\WayPointSaverFunction\WayPointSaverFunction.csproj" />

@@ -6,21 +6,37 @@ namespace SmartSkating.Dto.Tests
 {
     public class ApiNamesTests
     {
-        private readonly string _wayPointsApiName = "waypoints";
-        private readonly string _sessionsApiName = "sessions";
-        
+        private const string WayPointsApiName = "waypoints";
+        private const string SessionsApiName = "sessions";
+        private const string ScansApiName = "scans";
+        private const string DevicesApiName = "devices";
+
         [Fact]
         public void WayPointsApiResourceHasCorrectNames()
         {
-            ApiNames.WayPointsResource.Path.Should().Be($"/{_wayPointsApiName}");
-            ApiNames.WayPointsResource.Route.Should().Be(_wayPointsApiName);
+            ApiNames.WayPointsResource.Path.Should().Be($"/{WayPointsApiName}");
+            ApiNames.WayPointsResource.Route.Should().Be(WayPointsApiName);
         }
         
         [Fact]
         public void SessionsApiResourceHasCorrectName()
         {
-            ApiNames.SessionsResource.Path.Should().Be($"/{_sessionsApiName}");
-            ApiNames.SessionsResource.Route.Should().Be(_sessionsApiName);
+            ApiNames.SessionsResource.Path.Should().Be($"/{SessionsApiName}");
+            ApiNames.SessionsResource.Route.Should().Be(SessionsApiName);
+        }
+        
+        [Fact]
+        public void BleScansApiResourceHasCorrectName()
+        {
+            ApiNames.BleScansResource.Path.Should().Be($"/{ScansApiName}");
+            ApiNames.BleScansResource.Route.Should().Be(ScansApiName);
+        }
+        
+        [Fact]
+        public void DevicesApiResourceHasCorrectName()
+        {
+            ApiNames.DevicesResource.Path.Should().Be($"/{DevicesApiName}");
+            ApiNames.DevicesResource.Route.Should().Be(DevicesApiName);
         }
     }
 }

@@ -1,11 +1,10 @@
 namespace Sanet.SmartSkating.Dto.Models
 {
-    public struct DeviceDto
+    public class DeviceDto:EntityBase
     {
-        public string DeviceId { get; set; }
-        public string Manufacturer { get; set; }
-        public string Model { get; set; }
-        public string OsName { get; set; }
-        public string OsVersion { get; set; }
+        public string Manufacturer { get; set; } = string.Empty;
+        public string Model { get; set; } = string.Empty;
+        public string OsName { get; set; } = string.Empty;
+        public string OsVersion { get; set; } = string.Empty;
     }
 }
