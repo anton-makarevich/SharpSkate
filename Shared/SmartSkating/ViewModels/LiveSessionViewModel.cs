@@ -18,7 +18,8 @@ namespace Sanet.SmartSkating.ViewModels
 {
     public class LiveSessionViewModel:BaseViewModel
     {
-        private const string NoValue = "- - -";
+        public const string NoValue = "- - -";
+        public const string TotalTimeFormat = "h\\:mm\\:ss";
         
         private readonly ILocationService _locationService;
         private readonly IDataService _storageService;
@@ -27,7 +28,7 @@ namespace Sanet.SmartSkating.ViewModels
         private ISession? _currentSession;
         private bool _isRunning;
         private string _infoLabel = string.Empty;
-        private string _currentSector = string.Empty;
+        private string _currentSector = NoValue;
         private string _lastLapTime = string.Empty;
         private string _laps = string.Empty;
         private string _lastSectorTime = string.Empty;
@@ -51,6 +52,8 @@ namespace Sanet.SmartSkating.ViewModels
             _accountService = accountService;
             _dataSyncService = dataSyncService;
             _bleLocationService = bleLocationService;
+            
+            TotalTime = new TimeSpan().ToString(TotalTimeFormat);
         }
         
         public ICommand StartCommand => new SimpleCommand(async() =>
@@ -96,7 +99,7 @@ namespace Sanet.SmartSkating.ViewModels
                 await Task.Delay(1000);
                 if (Session == null) continue;
                 var time = DateTime.UtcNow.Subtract(Session.StartTime);
-                TotalTime = time.ToString("h\\:mm\\:ss");
+                TotalTime = time.ToString(TotalTimeFormat);
             } while (IsRunning);
         }
 
@@ -128,8 +131,8 @@ namespace Sanet.SmartSkating.ViewModels
             if (Session == null) return;
             if (Session.LapsCount > 0)
             {
-                LastLapTime = Session.LastLapTime.ToString("h\\:mm\\:ss");
-                BestLapTime = Session.BestLapTime.ToString("h\\:mm\\:ss");
+                LastLapTime = Session.LastLapTime.ToString(TotalTimeFormat);
+                BestLapTime = Session.BestLapTime.ToString(TotalTimeFormat);
             }
             else
             {
