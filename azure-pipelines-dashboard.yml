@@ -2,8 +2,34 @@ trigger:
 - develop
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
+
+variables:
+  - name: solution
+    value: 'SmartSkating.sln'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+
+- task: UseDotNet@2
+  displayName: 'Use dotnet sdk 3.x'
+  inputs:
+    version: 3.x
+    includePreviewVersions: false
+
+- script: dotnet restore $(solution)
+  displayName: 'Restore nuget packages'
+
+- task: MSBuild@1
+  inputs:
+    solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
+    configuration: 'Release'
+  displayName: 'Build dashboard wasm'
+
+- task: AzureFileCopy@3
+  inputs:
+    SourcePath: 'Client\Dashboard\Dashboard.Wasm\bin\Release\netstandard2.0\dist'
+    azureSubscription: 'AzureDevSubscription'
+    Destination: 'AzureBlob'
+    storage: 'smartskatingstorage'
+    ContainerName: '$web'
+  displayName: 'Deploy dashboard wasm to azure storage'
