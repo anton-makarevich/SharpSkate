@@ -10,20 +10,20 @@ variables:
 
 steps:
 
-- task: UseDotNet@2
-  displayName: 'Use dotnet sdk 3.x'
-  inputs:
-    version: 3.x
-    includePreviewVersions: false
+# - task: UseDotNet@2
+#   displayName: 'Use dotnet sdk 3.x'
+#   inputs:
+#     version: 3.x
+#     includePreviewVersions: false
 
-- script: dotnet restore $(solution)
-  displayName: 'Restore nuget packages'
+# - script: dotnet restore $(solution)
+#   displayName: 'Restore nuget packages'
 
-- task: MSBuild@1
-  inputs:
-    solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
-    configuration: 'Release'
-  displayName: 'Build dashboard wasm'
+# - task: MSBuild@1
+#   inputs:
+#     solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
+#     configuration: 'Release'
+#   displayName: 'Build dashboard wasm'
 
 - task: AzureCLI@2
   inputs:
