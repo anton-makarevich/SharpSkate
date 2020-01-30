@@ -30,14 +30,14 @@ steps:
     azureSubscription: 'AzureDevSubscription'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob delete-batch'
-    arguments: '--account-name $(storage-name) --source $web --pattern managed-*'
+    inlineScript: 'az storage blob delete-batch --account-name $(storage-name) --source $web --pattern managed-*'
+    arguments: ''
 
-- task: AzureFileCopy@3
-  inputs:
-    SourcePath: 'Client\Dashboard\Dashboard.Wasm\bin\Release\netstandard2.0\dist'
-    azureSubscription: 'AzureDevSubscription'
-    Destination: 'AzureBlob'
-    storage: $(storage-name)
-    ContainerName: '$web'
-  displayName: 'Deploy dashboard wasm to azure storage'
+# - task: AzureFileCopy@3
+#   inputs:
+#     SourcePath: 'Client\Dashboard\Dashboard.Wasm\bin\Release\netstandard2.0\dist'
+#     azureSubscription: 'AzureDevSubscription'
+#     Destination: 'AzureBlob'
+#     storage: $(storage-name)
+#     ContainerName: '$web'
+#   displayName: 'Deploy dashboard wasm to azure storage'
