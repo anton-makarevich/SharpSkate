@@ -10,7 +10,7 @@
 		<TextBlock
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="Hello, me!" 
+            Text="Hello, Anton!" 
             Margin="20" FontSize="30" />
     </Grid>
 </Page>
