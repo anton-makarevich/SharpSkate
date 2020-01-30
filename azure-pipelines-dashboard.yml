@@ -6,11 +6,19 @@ pool:
 
 steps:
 
+- task: UseDotNet@2
+  displayName: 'Use dotnet sdk 3.x'
+  inputs:
+    version: 3.x
+    includePreviewVersions: false
+
+- script: dotnet restore $(solution)
+  displayName: 'Restore nuget packages'
+
 - task: MSBuild@1
   inputs:
     solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
     configuration: 'Release'
-    restoreNugetPackages: true
   displayName: 'Build dashboard wasm'
 
 - task: AzureFileCopy@3
