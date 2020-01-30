@@ -2,8 +2,22 @@ trigger:
 - develop
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+
+- task: MSBuild@1
+  inputs:
+    solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
+    configuration: 'Release'
+    restoreNugetPackages: true
+  displayName: 'Build dashboard wasm'
+
+- task: AzureFileCopy@3
+  inputs:
+    SourcePath: 'Client\Dashboard\Dashboard.Wasm\bin\Release\netstandard2.0\dist'
+    azureSubscription: 'AzureDevSubscription'
+    Destination: 'AzureBlob'
+    storage: 'smartskatingstorage'
+    ContainerName: '$web'
+  displayName: 'Deploy dashboard wasm to azure storage'
