@@ -4,6 +4,10 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+variables:
+  - name: solution
+    value: 'SmartSkating.sln'
+
 steps:
 
 - task: UseDotNet@2
