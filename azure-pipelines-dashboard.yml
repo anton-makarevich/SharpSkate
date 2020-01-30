@@ -25,11 +25,19 @@ steps:
     configuration: 'Release'
   displayName: 'Build dashboard wasm'
 
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'AzureDevSubscription'
+    scriptType: 'batch'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az storage blob delete-batch'
+    arguments: '--account-name $(storage-name) --source $web --pattern managed-*'
+
 - task: AzureFileCopy@3
   inputs:
     SourcePath: 'Client\Dashboard\Dashboard.Wasm\bin\Release\netstandard2.0\dist'
     azureSubscription: 'AzureDevSubscription'
     Destination: 'AzureBlob'
-    storage: 'smartskatingstorage'
+    storage: $(storage-name)
     ContainerName: '$web'
   displayName: 'Deploy dashboard wasm to azure storage'
