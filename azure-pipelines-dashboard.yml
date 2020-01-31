@@ -1,0 +1,44 @@
+trigger:
+- develop
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - name: solution
+    value: 'SmartSkating.sln'
+
+steps:
+
+- task: UseDotNet@2
+  displayName: 'Use dotnet sdk 3.x'
+  inputs:
+    version: 3.x
+    includePreviewVersions: false
+
+- script: dotnet restore $(solution)
+  displayName: 'Restore nuget packages'
+
+- task: MSBuild@1
+  inputs:
+    solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
+    configuration: 'Release'
+  displayName: 'Build dashboard wasm'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'AzureDevSubscription'
+    scriptType: 'batch'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az storage blob delete-batch --account-name $(storage-name) --source $web --pattern managed-*'
+    arguments: ''
+  displayName: 'Delete old managed folders if exist'
+
+- task: AzureFileCopy@3
+  inputs:
+    SourcePath: 'Client\Dashboard\Dashboard.Wasm\bin\Release\netstandard2.0\dist'
+    azureSubscription: 'AzureDevSubscription'
+    Destination: 'AzureBlob'
+    storage: $(storage-name)
+    ContainerName: '$web'
+  displayName: 'Deploy dashboard wasm to azure storage'

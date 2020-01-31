@@ -1,15 +1,12 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 
 namespace Dashboard.Wasm
 {
-    public class Program
+    public static class Program
     {
-        private static App _app;
-
         static int Main(string[] args)
         {
-            Windows.UI.Xaml.Application.Start(_ => _app = new App());
+            Application.Start(_ => new App());
 
             return 0;
         }
