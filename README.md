@@ -13,9 +13,9 @@ Speed skating activity tracker for long outdoor tracks (400m rinks). Both outdoo
 
 ## Build status ##
 
-|Core   |Azure Functions   
-|:-:|:-:|
-|[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.Tests?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=7&branchName=develop)   |[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.AzureFunctions?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=8&branchName=develop)
+|Core   |Azure Functions   |Dashboard
+|:-:|:-:|:-:|
+|[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.Tests?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=7&branchName=develop)   |[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.AzureFunctions?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=8&branchName=develop)   |[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.Dashboard?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=9&branchName=develop)
 
 
 ## Supported Platforms ##
