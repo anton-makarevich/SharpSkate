@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{AE5D71
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watch", "Watch", "{ADADC88A-B331-4576-BEE2-35F5A97DC1F6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{7EE78E46-B275-4ACE-83C3-5B66B8A1F7EF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{7EE78E46-B275-4ACE-83C3-5B66B8A1F7EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{74B53A76-A019-428B-A44D-EBB20D43163B}"
 EndProject
@@ -52,15 +52,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GpxTools.Tests", "Tools\Gpx
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{29471952-12F0-4EB5-9E3B-029A0E9A613C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WayPointSaverFunction", "Web\Functions\WayPointSaverFunction\WayPointSaverFunction.csproj", "{2D0F04C4-240F-4F59-A600-340FF8C82500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WayPointSaverFunction", "Backend\Functions\WayPointSaverFunction\WayPointSaverFunction.csproj", "{2D0F04C4-240F-4F59-A600-340FF8C82500}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Azure", "Web\Functions\SmartSkating.Azure\SmartSkating.Azure.csproj", "{9C4CE921-2E87-4A71-B12F-7606F6AACA44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Azure", "Backend\Functions\SmartSkating.Azure\SmartSkating.Azure.csproj", "{9C4CE921-2E87-4A71-B12F-7606F6AACA44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Azure.Tests", "Web\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj", "{4CEADAD4-F6E6-4415-BA41-3AFA74A5B37D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Azure.Tests", "Backend\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj", "{4CEADAD4-F6E6-4415-BA41-3AFA74A5B37D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionTestUtils", "Web\Functions\FunctionTestUtils\FunctionTestUtils.csproj", "{9B522049-1A0F-4AB9-86EE-895B6690B279}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionTestUtils", "Backend\Functions\FunctionTestUtils\FunctionTestUtils.csproj", "{9B522049-1A0F-4AB9-86EE-895B6690B279}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SessionSaverFunction", "Web\Functions\SessionSaverFunction\SessionSaverFunction.csproj", "{8D7B3A99-69E9-421B-855D-7BF262365FA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SessionSaverFunction", "Backend\Functions\SessionSaverFunction\SessionSaverFunction.csproj", "{8D7B3A99-69E9-421B-855D-7BF262365FA1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gpx", "Gpx", "{D75C89F3-877E-413B-B44B-55EF8A3137D6}"
 EndProject
@@ -74,13 +74,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BleWriter.Android", "Tools\
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DummyServices", "Client\DummyServices\DummyServices.shproj", "{F4E6962A-A1AB-4BED-A4A0-7194BAED0D96}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BleScanSaverFunction", "Web\Functions\BleScanSaverFunction\BleScanSaverFunction.csproj", "{DC6C04B5-900A-4FB8-A13F-944EC9E43881}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BleScanSaverFunction", "Backend\Functions\BleScanSaverFunction\BleScanSaverFunction.csproj", "{DC6C04B5-900A-4FB8-A13F-944EC9E43881}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHooks", "GitHooks", "{CF0593E4-755F-48E8-B7CB-231E19035F82}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreCommitHooks", "Tools\GitHooks\PreCommitHooks\PreCommitHooks.csproj", "{047CE577-59EC-4A6F-8A8E-13A672053BEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeviceSaverFunction", "Web\Functions\DeviceSaverFunction\DeviceSaverFunction.csproj", "{88704032-A17E-4743-BCA7-1F657C74411A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeviceSaverFunction", "Backend\Functions\DeviceSaverFunction\DeviceSaverFunction.csproj", "{88704032-A17E-4743-BCA7-1F657C74411A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dashboard", "Dashboard", "{6F4B8720-4E00-4539-87FD-7FDA49D5C0E1}"
 EndProject
