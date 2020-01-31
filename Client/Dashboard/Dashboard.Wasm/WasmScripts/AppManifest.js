@@ -1,7 +1,5 @@
-﻿var UnoAppManifest = {
-
+﻿let UnoAppManifest = {
     splashScreenImage: "Assets/SplashScreen.scale-200.png",
     splashScreenColor: "#00f",
-    displayName: "Dashboard"
-
-}
+    displayName: "SmartSkating Dashboard"
+};
