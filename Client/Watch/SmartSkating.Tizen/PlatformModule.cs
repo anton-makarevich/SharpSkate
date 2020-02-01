@@ -17,7 +17,7 @@ namespace Sanet.SmartSkating.Tizen
 
         private static void RegisterTizenModule(this Container container)
         {
-            #if DEBUG
+            #if TEST
             container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 100));
             #else
             container.RegisterSingleton<ILocationService,EssentialsLocationService>();

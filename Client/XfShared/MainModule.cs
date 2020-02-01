@@ -22,7 +22,7 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
-            #if DEBUG
+            #if TEST
             container.RegisterSingleton<IDataSyncService,DebugSyncService>();
             #else
             container.RegisterSingleton<IDataSyncService,DataSyncService>();

@@ -2,7 +2,7 @@ using Android.App;
 using Refit;
 using Sanet.SmartSkating.Droid.Services.Location;
 using Sanet.SmartSkating.Dto;
-#if DEBUG
+#if TEST
 using Sanet.SmartSkating.Tizen.Services.Location;
 using Sanet.SmartSkating.Xf.Droid.Services;
 #endif
@@ -35,7 +35,7 @@ namespace Sanet.SmartSkating.WearOs
             container.Register<LiveSessionViewModel>();
             container.Register<StartViewModel>();
             
-            #if DEBUG
+            #if TEST
             container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 100));
             var resourceReader = new EmbeddedResourceReader();
             container.RegisterInstance<IBleLocationService>(
@@ -46,17 +46,18 @@ namespace Sanet.SmartSkating.WearOs
                     0.5)
                 );
             container.RegisterSingleton<IBluetoothService,DummyBluetoothService>();
+            container.RegisterSingleton<IDataSyncService, DebugSyncService>();
             #else
             container.RegisterInstance<ILocationService>(new LocationManagerService(activity));
             container.RegisterSingleton<IBleLocationService,AndroidBleService>();
             container.RegisterInstance<IBluetoothService>(new AndroidBluetoothService(activity));
+            container.RegisterSingleton<IDataSyncService,DataSyncService>();
             #endif
             
             container.RegisterSingleton<IResourceReader,EmbeddedResourceReader>();
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();
-            container.RegisterSingleton<IDataSyncService,DataSyncService>();
             container.RegisterInstance<IDataService>(dataService);
             container.RegisterSingleton<ITrackProvider, LocalTrackProvider>();
             container.RegisterSingleton<IBleDevicesProvider,LocalBleDevicesProvider>();
