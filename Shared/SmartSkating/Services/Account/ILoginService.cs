@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
+using Sanet.SmartSkating.Dto.Models;
 
 namespace Sanet.SmartSkating.Services.Account
 {
     public interface ILoginService
     {
-        Task<bool> LoginUserAsync(string username, string password);
+        Task<AccountDto?> LoginUserAsync(string username, string password);
     }
 }
