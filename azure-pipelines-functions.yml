@@ -9,7 +9,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet test Web\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating]*
+- script: dotnet test Backend\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating]*
   displayName: 'Run functions tests'
 
 - bash: |
@@ -18,45 +18,45 @@ steps:
     ./codecov -f "Tests\Functions\SmartSkating.Azure.Tests\coverage.opencover.xml" -t $(codecov.token)
   displayName: 'Upload functions tests results'
 
-- script: dotnet build Web\Functions\WayPointSaverFunction\WayPointSaverFunction.csproj -c $(buildConfiguration) -v d
+- script: dotnet build Backend\Functions\WayPointSaverFunction\WayPointSaverFunction.csproj -c $(buildConfiguration) -v d
   displayName: 'Build WayPointSaver function'
 
-- script: dotnet build Web\Functions\SessionSaverFunction\SessionSaverFunction.csproj -c $(buildConfiguration) -v d
+- script: dotnet build Backend\Functions\SessionSaverFunction\SessionSaverFunction.csproj -c $(buildConfiguration) -v d
   displayName: 'Build SessionSaver function'
 
-- script: dotnet build Web\Functions\BleScanSaverFunction\BleScanSaverFunction.csproj -c $(buildConfiguration) -v d
+- script: dotnet build Backend\Functions\BleScanSaverFunction\BleScanSaverFunction.csproj -c $(buildConfiguration) -v d
   displayName: 'Build BleScanSaver function'
 
-- script: dotnet build Web\Functions\DeviceSaverFunction\DeviceSaverFunction.csproj -c $(buildConfiguration) -v d
+- script: dotnet build Backend\Functions\DeviceSaverFunction\DeviceSaverFunction.csproj -c $(buildConfiguration) -v d
   displayName: 'Build DeviceSaver function'
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'Web\Functions\SessionSaverFunction\bin\Release\netcoreapp3.0\'
+    SourceFolder: 'Backend\Functions\SessionSaverFunction\bin\Release\netcoreapp3.0\'
     Contents: '**'
-    TargetFolder: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
+    TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
   displayName: 'Copy SessionSaverFunction output'
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'Web\Functions\BleScanSaverFunction\bin\Release\netcoreapp3.0\'
+    SourceFolder: 'Backend\Functions\BleScanSaverFunction\bin\Release\netcoreapp3.0\'
     Contents: '**'
-    TargetFolder: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
+    TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
   displayName: 'Copy BleScanSaverFunction output'
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'Web\Functions\DeviceSaverFunction\bin\Release\netcoreapp3.0\'
+    SourceFolder: 'Backend\Functions\DeviceSaverFunction\bin\Release\netcoreapp3.0\'
     Contents: '**'
-    TargetFolder: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
+    TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
   displayName: 'Copy DeviceSaverFunction output'
 
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: 'Web\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
+    rootFolderOrFile: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: 'Web\Functions\WayPointSaverFunction\bin\Release\Function.zip'
+    archiveFile: 'Backend\Functions\WayPointSaverFunction\bin\Release\Function.zip'
     replaceExistingArchive: true
     verbose: true
   displayName: 'Archive functions'
@@ -66,6 +66,6 @@ steps:
     azureSubscription: 'AzureDevSubscription'
     appType: 'functionApp'
     appName: 'smartskating'
-    package: 'Web\Functions\WayPointSaverFunction\bin\Release\Function.zip'
+    package: 'Backend\Functions\WayPointSaverFunction\bin\Release\Function.zip'
     deploymentMethod: 'auto'
   displayName: 'Publish functions'
