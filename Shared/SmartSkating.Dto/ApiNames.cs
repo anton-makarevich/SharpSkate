@@ -28,5 +28,11 @@ namespace Sanet.SmartSkating.Dto
             public const string Path= "/devices";
             public const string Route = "devices";
         }
+
+        public class AccountsResource
+        {
+            public const string Path= "/accounts";
+            public const string Route = "accounts";
+        }
     }
 }

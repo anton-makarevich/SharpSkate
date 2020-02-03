@@ -8,8 +8,6 @@ namespace Sanet.SmartSkating.Backend.Azure
 {
     public interface IAzureFunction
     {
-        void SetService(IDataService dataService);
-
         Task<IActionResult> Run(HttpRequest request, ILogger log);
     }
 }

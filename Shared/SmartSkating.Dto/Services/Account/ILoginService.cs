@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto.Models;
 
-namespace Sanet.SmartSkating.Services.Account
+namespace Sanet.SmartSkating.Dto.Services.Account
 {
     public interface ILoginService
     {

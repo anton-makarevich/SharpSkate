@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
+using Sanet.SmartSkating.Dto.Services.Account;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.ViewModels;
 using Xunit;

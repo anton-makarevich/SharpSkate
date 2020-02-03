@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Requests;
+using Sanet.SmartSkating.Dto.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 
 namespace Sanet.SmartSkating.Services.Account
