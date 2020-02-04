@@ -14,7 +14,7 @@ steps:
 - script: dotnet restore SmartSkating.sln
   displayName: 'Restore nuget packages'
 
-- script: dotnet test Shared/SmartSkating.Tests/SmartSkating.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating]*
+- script: dotnet test Shared/SmartSkating.Tests/SmartSkating.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=\"[SmartSkating]*,[SmartSkating.Dto]*\"
   displayName: 'Run Core tests'
 
 - bash: |
