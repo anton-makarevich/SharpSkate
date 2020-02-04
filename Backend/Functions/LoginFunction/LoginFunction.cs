@@ -29,6 +29,7 @@ namespace Sanet.SmartSkating.Backend.Functions
             _loginService = loginService;
         }
 
+        [FunctionName("LoginFunction")]
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, 
             "post",
             Route = ApiNames.AccountsResource.Route)]HttpRequest request, ILogger logger)

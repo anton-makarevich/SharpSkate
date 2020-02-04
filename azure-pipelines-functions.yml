@@ -9,13 +9,13 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet test Backend\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating]*
+- script: dotnet test Backend\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[Sanet.SmartSkating.*]*
   displayName: 'Run functions tests'
 
 - bash: |
     curl -s https://codecov.io/bash > codecov
     chmod +x codecov
-    ./codecov -f "Tests\Functions\SmartSkating.Azure.Tests\coverage.opencover.xml" -t $(codecov.token)
+    ./codecov -f "Backend\Functions\SmartSkating.Azure.Tests\coverage.opencover.xml" -t $(codecov.token)
   displayName: 'Upload functions tests results'
 
 - script: dotnet build Backend\Functions\WayPointSaverFunction\WayPointSaverFunction.csproj -c $(buildConfiguration) -v d
@@ -29,6 +29,9 @@ steps:
 
 - script: dotnet build Backend\Functions\DeviceSaverFunction\DeviceSaverFunction.csproj -c $(buildConfiguration) -v d
   displayName: 'Build DeviceSaver function'
+  
+- script: dotnet build Backend\Functions\LoginFunction\LoginFunction.csproj -c $(buildConfiguration) -v d
+  displayName: 'Build Login function'
 
 - task: CopyFiles@2
   inputs:
@@ -50,6 +53,13 @@ steps:
     Contents: '**'
     TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
   displayName: 'Copy DeviceSaverFunction output'
+  
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'Backend\Functions\LoginFunction\bin\Release\netcoreapp3.0\'
+    Contents: '**'
+    TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
+  displayName: 'Copy LoginFunction output'
 
 - task: ArchiveFiles@2
   inputs:
