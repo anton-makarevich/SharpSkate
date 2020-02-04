@@ -1,79 +1,79 @@
 trigger:
-- develop
+  - develop
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet test Backend\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating.Azure]*
-  displayName: 'Run functions tests'
+  - script: dotnet test Backend/Functions/SmartSkating.Azure.Tests/SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating.Azure]*
+    displayName: 'Run functions tests'
 
-- bash: |
-    bash <(curl -s https://codecov.io/bash) -f "Backend\Functions\SmartSkating.Azure.Tests\coverage.opencover.xml" -t $(codecov.token)
-  displayName: 'Upload functions tests results'
+  - bash: |
+      bash <(curl -s https://codecov.io/bash) -f "Backend/Functions/SmartSkating.Azure.Tests/coverage.opencover.xml" -t $(codecov.token)
+    displayName: 'Upload functions tests results'
 
-- script: dotnet build Backend\Functions\WayPointSaverFunction\WayPointSaverFunction.csproj -c $(buildConfiguration) -v d
-  displayName: 'Build WayPointSaver function'
+  - script: dotnet build Backend/Functions/WayPointSaverFunction/WayPointSaverFunction.csproj -c $(buildConfiguration) -v d
+    displayName: 'Build WayPointSaver function'
 
-- script: dotnet build Backend\Functions\SessionSaverFunction\SessionSaverFunction.csproj -c $(buildConfiguration) -v d
-  displayName: 'Build SessionSaver function'
+  - script: dotnet build Backend/Functions/SessionSaverFunction/SessionSaverFunction.csproj -c $(buildConfiguration) -v d
+    displayName: 'Build SessionSaver function'
 
-- script: dotnet build Backend\Functions\BleScanSaverFunction\BleScanSaverFunction.csproj -c $(buildConfiguration) -v d
-  displayName: 'Build BleScanSaver function'
+  - script: dotnet build Backend/Functions/BleScanSaverFunction/BleScanSaverFunction.csproj -c $(buildConfiguration) -v d
+    displayName: 'Build BleScanSaver function'
 
-- script: dotnet build Backend\Functions\DeviceSaverFunction\DeviceSaverFunction.csproj -c $(buildConfiguration) -v d
-  displayName: 'Build DeviceSaver function'
+  - script: dotnet build Backend/Functions/DeviceSaverFunction/DeviceSaverFunction.csproj -c $(buildConfiguration) -v d
+    displayName: 'Build DeviceSaver function'
 
-- script: dotnet build Backend\Functions\LoginFunction\LoginFunction.csproj -c $(buildConfiguration) -v d
-  displayName: 'Build Login function'
+  - script: dotnet build Backend/Functions/LoginFunction/LoginFunction.csproj -c $(buildConfiguration) -v d
+    displayName: 'Build Login function'
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'Backend\Functions\SessionSaverFunction\bin\Release\netcoreapp3.0\'
-    Contents: '**'
-    TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
-  displayName: 'Copy SessionSaverFunction output'
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'Backend/Functions/SessionSaverFunction/bin/Release/netcoreapp3.0/'
+      Contents: '**'
+      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+    displayName: 'Copy SessionSaverFunction output'
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'Backend\Functions\BleScanSaverFunction\bin\Release\netcoreapp3.0\'
-    Contents: '**'
-    TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
-  displayName: 'Copy BleScanSaverFunction output'
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'Backend/Functions/BleScanSaverFunction/bin/Release/netcoreapp3.0/'
+      Contents: '**'
+      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+    displayName: 'Copy BleScanSaverFunction output'
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'Backend\Functions\DeviceSaverFunction\bin\Release\netcoreapp3.0\'
-    Contents: '**'
-    TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
-  displayName: 'Copy DeviceSaverFunction output'
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'Backend/Functions/DeviceSaverFunction/bin/Release/netcoreapp3.0/'
+      Contents: '**'
+      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+    displayName: 'Copy DeviceSaverFunction output'
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'Backend\Functions\LoginFunction\bin\Release\netcoreapp3.0\'
-    Contents: '**'
-    TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
-  displayName: 'Copy LoginFunction output'
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'Backend/Functions/LoginFunction/bin/Release/netcoreapp3.0/'
+      Contents: '**'
+      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+    displayName: 'Copy LoginFunction output'
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: 'Backend\Functions\WayPointSaverFunction\bin\Release\Function.zip'
-    replaceExistingArchive: true
-    verbose: true
-  displayName: 'Archive functions'
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: 'Backend/Functions/WayPointSaverFunction/bin/Release/Function.zip'
+      replaceExistingArchive: true
+      verbose: true
+    displayName: 'Archive functions'
 
-- task: AzureFunctionApp@1
-  inputs:
-    azureSubscription: 'AzureDevSubscription'
-    appType: 'functionApp'
-    appName: 'smartskating'
-    package: 'Backend\Functions\WayPointSaverFunction\bin\Release\Function.zip'
-    deploymentMethod: 'auto'
-  displayName: 'Publish functions'
+  - task: AzureFunctionApp@1
+    inputs:
+      azureSubscription: 'AzureDevSubscription'
+      appType: 'functionApp'
+      appName: 'smartskating'
+      package: 'Backend/Functions/WayPointSaverFunction/bin/Release/Function.zip'
+      deploymentMethod: 'auto'
+    displayName: 'Publish functions'
