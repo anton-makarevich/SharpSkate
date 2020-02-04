@@ -9,7 +9,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet test Backend\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[Sanet.SmartSkating.*]*
+- script: dotnet test Backend\Functions\SmartSkating.Azure.Tests\SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating.Azure]*
   displayName: 'Run functions tests'
 
 - bash: |
@@ -29,7 +29,7 @@ steps:
 
 - script: dotnet build Backend\Functions\DeviceSaverFunction\DeviceSaverFunction.csproj -c $(buildConfiguration) -v d
   displayName: 'Build DeviceSaver function'
-  
+
 - script: dotnet build Backend\Functions\LoginFunction\LoginFunction.csproj -c $(buildConfiguration) -v d
   displayName: 'Build Login function'
 
@@ -53,7 +53,7 @@ steps:
     Contents: '**'
     TargetFolder: 'Backend\Functions\WayPointSaverFunction\bin\Release\netcoreapp3.0\'
   displayName: 'Copy DeviceSaverFunction output'
-  
+
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'Backend\Functions\LoginFunction\bin\Release\netcoreapp3.0\'
