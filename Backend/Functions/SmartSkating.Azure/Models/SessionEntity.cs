@@ -5,6 +5,9 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
 {
     public class SessionEntity:TableEntity
     {
+        public SessionEntity()
+        {
+        }
         public SessionEntity(SessionDto sessionDto)
         {
             PartitionKey = sessionDto.AccountId;
@@ -13,5 +16,16 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
         }
 
         public bool IsCompleted { get; set; }
+
+        public SessionDto ToDto()
+        {
+            return new SessionDto
+            {
+                Id = RowKey,
+                AccountId = PartitionKey,
+                IsCompleted = IsCompleted,
+                IsSaved = true
+            };
+        }
     }
 }

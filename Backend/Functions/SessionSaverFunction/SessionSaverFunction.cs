@@ -31,10 +31,10 @@ namespace Sanet.SmartSkating.Backend.Functions
             [HttpTrigger(AuthorizationLevel.Function, 
                 "post",
                 Route = ApiNames.SessionsResource.Route)] HttpRequest request,
-            ILogger log)
+            ILogger logger)
         {
             if (_dataService == null)
-                SetService(new AzureTablesDataService(log));
+                SetService(new AzureTablesDataService(logger));
 
             var responseObject = new SaveEntitiesResponse {SyncedIds = new List<string>()};
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();

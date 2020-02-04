@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -30,33 +31,44 @@ namespace Sanet.SmartSkating.Backend.Functions
 
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, 
             "post",
-            Route = ApiNames.AccountsResource.Route)]HttpRequest request, ILogger log)
+            Route = ApiNames.AccountsResource.Route)]HttpRequest request, ILogger logger)
         {
             if (_loginService == null)
-                SetService(new AzureLoginService());
+                SetService(new AzureLoginService(new AzureTablesDataService(logger)));
 
             var responseObject = new LoginResponse();
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
             
-            var requestObject = JsonConvert.DeserializeObject<LoginRequest>(requestData);
-            
-            if (requestObject.Equals(default))
+            LoginRequest requestObject;
+            try
+            {
+                requestObject = JsonConvert.DeserializeObject<LoginRequest>(requestData);
+            }
+            catch (Exception ex)
+            {
+                _errorMessageBuilder.AppendLine(ex.Message);
+                requestObject = default;
+            }
+
+            if (requestObject.Equals(default(LoginRequest)))
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.BadRequest;
                 _errorMessageBuilder.AppendLine(Constants.BadRequestErrorMessage);
             }
             else
             {
-                responseObject.ErrorCode = (int)HttpStatusCode.OK;
-                
                 if (_loginService != null)
                     responseObject.Account = await _loginService.LoginUserAsync(
                         requestObject.Username,
                         requestObject.Password);
-                
+                responseObject.ErrorCode = responseObject.Account == null
+                    ? (int) HttpStatusCode.NotFound
+                    : (int) HttpStatusCode.OK;
             }
 
             responseObject.Message = _errorMessageBuilder.ToString();
+            if (responseObject.ErrorCode!=200)
+                logger.LogInformation(responseObject.Message);
             return new JsonResult(responseObject);
         }
     }

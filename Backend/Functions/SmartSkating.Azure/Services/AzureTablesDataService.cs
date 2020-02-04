@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
@@ -124,6 +125,18 @@ namespace Sanet.SmartSkating.Backend.Azure.Services
         {
             var entity = new DeviceEntity(deviceDto);
             return SaveEntityAsync(entity,_devicesTable);
+        }
+
+        public async Task<List<SessionDto>> GetAllSessionsForAccountAsync(string accountId)
+        {
+            if (!await _sessionsTable.ExistsAsync()) return new List<SessionDto>();
+            var filterPk = TableQuery.GenerateFilterCondition(
+                nameof(SessionEntity.PartitionKey),
+                QueryComparisons.Equal, accountId);
+
+            var query = new TableQuery<SessionEntity>().Where(filterPk);
+            var result = await _sessionsTable.ExecuteQuerySegmentedAsync(query,null);
+            return result.Results.Select(f=>f.ToDto()).ToList();
         }
     }
 }
