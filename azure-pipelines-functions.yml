@@ -9,7 +9,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-  - script: dotnet test Backend/Functions/SmartSkating.Azure.Tests/SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=[SmartSkating.Azure]*
+  - script: dotnet test Backend/Functions/SmartSkating.Azure.Tests/SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=\"[SmartSkating.Azure]*,[SmartSkating.Dto]*,[*Function]*\"
     displayName: 'Run functions tests'
 
   - bash: |
