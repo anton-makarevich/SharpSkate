@@ -5,20 +5,25 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Sanet.SmartSkating.Dashboard.Views;
+using SimpleInjector;
 
-namespace Dashboard
+namespace Sanet.SmartSkating.Dashboard
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App
     {
-        /// <summary>
+	    public static Container Container { get; private set; }
+
+	    /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
-        public App()
-        {
+        public App(Container container)
+	    {
+		    Container = container;
             ConfigureFilters(Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory);
 
             this.InitializeComponent();
@@ -32,13 +37,6 @@ namespace Dashboard
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-#if DEBUG
-			if (System.Diagnostics.Debugger.IsAttached)
-			{
-				// this.DebugSettings.EnableFrameRateCounter = true;
-			}
-#endif
-
 	        // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (!(Window.Current.Content is Frame rootFrame))
@@ -52,13 +50,12 @@ namespace Dashboard
                 Window.Current.Content = rootFrame;
             }
             
-            if (e.PrelaunchActivated) return;
             if (rootFrame.Content == null)
             {
 	            // When the navigation stack isn't restored navigate to the first page,
 	            // configuring the new page by passing required information as a navigation
 	            // parameter
-	            rootFrame.Navigate(typeof(MainPage), e.Arguments);
+	            rootFrame.Navigate(typeof(LoginPage), e.Arguments);
             }
             // Ensure the current window is active
             Window.Current.Activate();
@@ -83,12 +80,9 @@ namespace Dashboard
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
-            deferral.Complete();
+
         }
-
-
+        
         /// <summary>
         /// Configures global logging
         /// </summary>
@@ -102,25 +96,25 @@ namespace Dashboard
                         { "Windows", LogLevel.Warning },
 
 						// Debug JS interop
-						// { "Uno.Foundation.WebAssemblyRuntime", LogLevel.Debug },
+						{ "Uno.Foundation.WebAssemblyRuntime", LogLevel.Debug },
 
 						// Generic Xaml events
-						// { "Windows.UI.Xaml", LogLevel.Debug },
-						// { "Windows.UI.Xaml.VisualStateGroup", LogLevel.Debug },
-						// { "Windows.UI.Xaml.StateTriggerBase", LogLevel.Debug },
-						// { "Windows.UI.Xaml.UIElement", LogLevel.Debug },
+						{ "Windows.UI.Xaml", LogLevel.Debug },
+						{ "Windows.UI.Xaml.VisualStateGroup", LogLevel.Debug },
+						{ "Windows.UI.Xaml.StateTriggerBase", LogLevel.Debug },
+						{ "Windows.UI.Xaml.UIElement", LogLevel.Debug },
 
-						// Layouter specific messages
-						// { "Windows.UI.Xaml.Controls", LogLevel.Debug },
-						// { "Windows.UI.Xaml.Controls.Layouter", LogLevel.Debug },
-						// { "Windows.UI.Xaml.Controls.Panel", LogLevel.Debug },
-						// { "Windows.Storage", LogLevel.Debug },
+						// Layout specific messages
+						{ "Windows.UI.Xaml.Controls", LogLevel.Debug },
+						{ "Windows.UI.Xaml.Controls.Layouter", LogLevel.Debug },
+						{ "Windows.UI.Xaml.Controls.Panel", LogLevel.Debug },
+						{ "Windows.Storage", LogLevel.Debug },
 
 						// Binding related messages
-						// { "Windows.UI.Xaml.Data", LogLevel.Debug },
+						{ "Windows.UI.Xaml.Data", LogLevel.Debug },
 
 						// DependencyObject memory references tracking
-						// { "ReferenceHolder", LogLevel.Debug },
+						{ "ReferenceHolder", LogLevel.Debug },
 					}
                 )
 #if DEBUG
