@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -6,6 +6,9 @@
 		<WasmHead>true</WasmHead>
 		<DefineConstants>$(DefineConstants);__WASM__</DefineConstants>
 		<NoWarn>NU1701</NoWarn>
+		<RootNamespace>Sanet.SmartSkating.Dashboard.Wasm</RootNamespace>
+		<LangVersion>8</LangVersion>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -30,14 +33,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SmartSkating\SmartSkating.csproj" />
+		<ProjectReference Include="..\SmartSkating.Dashboard\SmartSkating.Dashboard.csproj" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
-		<Compile Include="../SmartSkating.UWP/*.xaml.cs">
+		<Compile Include="../SmartSkating.Dashboard.UWP/*.xaml.cs">
 			<DependentUpon>%(FileName)</DependentUpon>
 		</Compile>
-		<Page Include="../SmartSkating.UWP/*.xaml" />
+		<Page Include="../SmartSkating.Dashboard.UWP/*.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>

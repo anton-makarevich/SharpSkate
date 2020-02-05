@@ -1,14 +1,10 @@
-﻿using System;
-using Windows.UI.Xaml;
-using Microsoft.Extensions.Logging;
-
-namespace SmartSkating.Wasm
+﻿namespace Sanet.SmartSkating.Dashboard.Wasm
 {
 	public class Program
 	{
 		static int Main(string[] args)
 		{
-            Windows.UI.Xaml.Application.Start(_ => new SmartSkating.UWP.App());
+            Windows.UI.Xaml.Application.Start(_ => new Sanet.SmartSkating.Dashboard.UWP.App());
 
 			return 0;
 		}

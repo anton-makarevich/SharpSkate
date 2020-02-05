@@ -1,7 +1,7 @@
 ﻿<linker>
-  <assembly fullname="SmartSkating.Wasm" />
+  <assembly fullname="SmartSkating.Dashboard.Wasm" />
   <assembly fullname="Uno.UI" />
-  <assembly fullname="SmartSkating" />
+  <assembly fullname="SmartSkating.Dashboard" />
 
   <assembly fullname="System.Core">
 	<!-- This is required by Json.NET and any expression.Compile caller -->
