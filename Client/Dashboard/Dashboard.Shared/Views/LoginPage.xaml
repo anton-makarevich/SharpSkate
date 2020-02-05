@@ -1,12 +1,10 @@
-﻿<base:BasePage
-    x:TypeArguments="viewModels:LoginViewModel" 
+﻿<base:LoginPageBase
     x:Class="Sanet.SmartSkating.Dashboard.Views.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:base="clr-namespace:Sanet.SmartSkating.Dashboard.Views.Base"
-    xmlns:viewModels="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
+    xmlns:base="clr-namespace:Sanet.SmartSkating.Dashboard.Views"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -16,4 +14,4 @@
             Text="This is a login page!" 
             Margin="20" FontSize="30" />
     </Grid>
-</base:BasePage>
+</base:LoginPageBase>
