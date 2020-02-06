@@ -1,7 +1,6 @@
 using System.Windows.Input;
 using Sanet.SmartSkating.Dto.Services.Account;
 using Sanet.SmartSkating.Models;
-using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.ViewModels.Base;
 
 namespace Sanet.SmartSkating.ViewModels
