@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "SmartSkating.Wasm": {
+    "Sanet.SmartSkating.Dashboard.Wasm": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
