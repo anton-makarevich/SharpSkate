@@ -129,7 +129,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Services
 
         public async Task<List<SessionDto>> GetAllSessionsForAccountAsync(string accountId)
         {
-            if (!await _sessionsTable.ExistsAsync()) return new List<SessionDto>();
+            if (_sessionsTable == null || !await _sessionsTable.ExistsAsync()) return new List<SessionDto>();
             var filterPk = TableQuery.GenerateFilterCondition(
                 nameof(SessionEntity.PartitionKey),
                 QueryComparisons.Equal, accountId);

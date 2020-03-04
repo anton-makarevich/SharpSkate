@@ -21,7 +21,7 @@ steps:
 
 - task: MSBuild@1
   inputs:
-    solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
+    solution: 'Client\Dashboard\SmartSkating.Dashboard.Wasm\SmartSkating.Dashboard.Wasm.csproj'
     configuration: 'Release'
   displayName: 'Build dashboard wasm'
 

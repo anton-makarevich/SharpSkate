@@ -1,0 +1,37 @@
+<base:BaseView 
+    x:TypeArguments="viewModels:LoginViewModel" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base;assembly=SmartSkating.Dashboard"
+               xmlns:viewModels="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
+               x:Class="Sanet.SmartSkating.Dashboard.Views.LoginView">
+    <Grid
+        BackgroundColor="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackLayout
+            Grid.Column="1"
+            VerticalOptions="Center">
+            <Label 
+                Text="Username"
+                   />
+            <Entry
+                Text="{Binding Username}"/>
+            <Label 
+                Text="Password"
+            />
+            <Entry
+                Text="{Binding Password}"
+                IsPassword="True"/>
+            <Label 
+                Text="{Binding ValidationMessage}"/>
+            <Button
+                Text="Login"
+                IsEnabled="{Binding CanLogin}"
+                Command="{Binding LoginCommand}"/>
+        </StackLayout>
+    </Grid>
+</base:BaseView>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<base:BaseView x:TypeArguments="viewModels:SessionsViewModel"
+               xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base;assembly=SmartSkating.Dashboard"
+               xmlns:viewModels="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
+               x:Class="Sanet.SmartSkating.Dashboard.Views.SessionsView">
+    <StackLayout>
+        <Label Text="Hello, world!"
+               VerticalOptions="CenterAndExpand"
+               HorizontalOptions="CenterAndExpand" />
+    </StackLayout>
+</base:BaseView>
