@@ -21,7 +21,7 @@ steps:
 
 - task: MSBuild@1
   inputs:
-    solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
+    solution: 'Client\Dashboard\SmartSkating.Dashboard.Wasm\SmartSkating.Dashboard.Wasm.csproj'
     configuration: 'Release'
   displayName: 'Build dashboard wasm'
 
@@ -36,7 +36,7 @@ steps:
 
 - task: AzureFileCopy@3
   inputs:
-    SourcePath: 'Client\Dashboard\Dashboard.Wasm\bin\Release\netstandard2.0\dist'
+    SourcePath: 'Client\Dashboard\SmartSkating.Dashboard.Wasm\bin\Release\netstandard2.0\dist'
     azureSubscription: 'AzureDevSubscription'
     Destination: 'AzureBlob'
     storage: $(storage-name)

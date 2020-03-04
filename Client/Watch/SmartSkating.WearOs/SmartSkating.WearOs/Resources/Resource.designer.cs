@@ -91,19 +91,19 @@ namespace Sanet.SmartSkating.WearOs
 			global::Xamarin.Essentials.Resource.Drawable.notification_template_icon_low_bg = global::Sanet.SmartSkating.WearOs.Resource.Drawable.notification_template_icon_low_bg;
 			global::Xamarin.Essentials.Resource.Drawable.notification_tile_bg = global::Sanet.SmartSkating.WearOs.Resource.Drawable.notification_tile_bg;
 			global::Xamarin.Essentials.Resource.Drawable.notify_panel_notification_icon_bg = global::Sanet.SmartSkating.WearOs.Resource.Drawable.notify_panel_notification_icon_bg;
+			global::Xamarin.Essentials.Resource.Id.actions = global::Sanet.SmartSkating.WearOs.Resource.Id.actions;
 			global::Xamarin.Essentials.Resource.Id.action_container = global::Sanet.SmartSkating.WearOs.Resource.Id.action_container;
 			global::Xamarin.Essentials.Resource.Id.action_divider = global::Sanet.SmartSkating.WearOs.Resource.Id.action_divider;
 			global::Xamarin.Essentials.Resource.Id.action_image = global::Sanet.SmartSkating.WearOs.Resource.Id.action_image;
 			global::Xamarin.Essentials.Resource.Id.action_text = global::Sanet.SmartSkating.WearOs.Resource.Id.action_text;
-			global::Xamarin.Essentials.Resource.Id.actions = global::Sanet.SmartSkating.WearOs.Resource.Id.actions;
 			global::Xamarin.Essentials.Resource.Id.all = global::Sanet.SmartSkating.WearOs.Resource.Id.all;
 			global::Xamarin.Essentials.Resource.Id.async = global::Sanet.SmartSkating.WearOs.Resource.Id.async;
 			global::Xamarin.Essentials.Resource.Id.blocking = global::Sanet.SmartSkating.WearOs.Resource.Id.blocking;
 			global::Xamarin.Essentials.Resource.Id.bottom = global::Sanet.SmartSkating.WearOs.Resource.Id.bottom;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_header_text = global::Sanet.SmartSkating.WearOs.Resource.Id.browser_actions_header_text;
+			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_items = global::Sanet.SmartSkating.WearOs.Resource.Id.browser_actions_menu_items;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_item_icon = global::Sanet.SmartSkating.WearOs.Resource.Id.browser_actions_menu_item_icon;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_item_text = global::Sanet.SmartSkating.WearOs.Resource.Id.browser_actions_menu_item_text;
-			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_items = global::Sanet.SmartSkating.WearOs.Resource.Id.browser_actions_menu_items;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_view = global::Sanet.SmartSkating.WearOs.Resource.Id.browser_actions_menu_view;
 			global::Xamarin.Essentials.Resource.Id.center = global::Sanet.SmartSkating.WearOs.Resource.Id.center;
 			global::Xamarin.Essentials.Resource.Id.center_horizontal = global::Sanet.SmartSkating.WearOs.Resource.Id.center_horizontal;
@@ -158,14 +158,12 @@ namespace Sanet.SmartSkating.WearOs
 			global::Xamarin.Essentials.Resource.Style.Widget_Compat_NotificationActionContainer = global::Sanet.SmartSkating.WearOs.Resource.Style.Widget_Compat_NotificationActionContainer;
 			global::Xamarin.Essentials.Resource.Style.Widget_Compat_NotificationActionText = global::Sanet.SmartSkating.WearOs.Resource.Style.Widget_Compat_NotificationActionText;
 			global::Xamarin.Essentials.Resource.Style.Widget_Support_CoordinatorLayout = global::Sanet.SmartSkating.WearOs.Resource.Style.Widget_Support_CoordinatorLayout;
-			global::Xamarin.Essentials.Resource.Xml.xamarin_essentials_fileprovider_file_paths = global::Sanet.SmartSkating.WearOs.Resource.Xml.xamarin_essentials_fileprovider_file_paths;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem = global::Sanet.SmartSkating.WearOs.Resource.Styleable.ColorStateListItem;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem_alpha = global::Sanet.SmartSkating.WearOs.Resource.Styleable.ColorStateListItem_alpha;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem_android_alpha = global::Sanet.SmartSkating.WearOs.Resource.Styleable.ColorStateListItem_android_alpha;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem_android_color = global::Sanet.SmartSkating.WearOs.Resource.Styleable.ColorStateListItem_android_color;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_keylines = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout_keylines;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout_statusBarBackground;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout_Layout;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor;
@@ -174,13 +172,8 @@ namespace Sanet.SmartSkating.WearOs
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline;
+			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::Sanet.SmartSkating.WearOs.Resource.Styleable.CoordinatorLayout_statusBarBackground;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamily = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderAuthority = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderAuthority;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderCerts = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderCerts;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderPackage = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderPackage;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderQuery = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderQuery;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamilyFont;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_android_font = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamilyFont_android_font;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_android_fontStyle = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamilyFont_android_fontStyle;
@@ -192,7 +185,16 @@ namespace Sanet.SmartSkating.WearOs
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_fontVariationSettings = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamilyFont_fontVariationSettings;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_fontWeight = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamilyFont_fontWeight;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_ttcIndex = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamilyFont_ttcIndex;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderAuthority = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderAuthority;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderCerts = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderCerts;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderPackage = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderPackage;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderQuery = global::Sanet.SmartSkating.WearOs.Resource.Styleable.FontFamily_fontProviderQuery;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColor;
+			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColorItem;
+			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem_android_color = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColorItem_android_color;
+			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem_android_offset = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColorItem_android_offset;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_centerColor = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColor_android_centerColor;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_centerX = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColor_android_centerX;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_centerY = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColor_android_centerY;
@@ -205,9 +207,7 @@ namespace Sanet.SmartSkating.WearOs
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_startY = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColor_android_startY;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_tileMode = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColor_android_tileMode;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_type = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColor_android_type;
-			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColorItem;
-			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem_android_color = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColorItem_android_color;
-			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem_android_offset = global::Sanet.SmartSkating.WearOs.Resource.Styleable.GradientColorItem_android_offset;
+			global::Xamarin.Essentials.Resource.Xml.xamarin_essentials_fileprovider_file_paths = global::Sanet.SmartSkating.WearOs.Resource.Xml.xamarin_essentials_fileprovider_file_paths;
 		}
 		
 		public partial class Fraction

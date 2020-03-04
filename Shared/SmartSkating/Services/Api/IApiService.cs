@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Refit;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Dto.Models.Requests;
 using Sanet.SmartSkating.Dto.Models.Responses;
 
 namespace Sanet.SmartSkating.Services.Api
@@ -29,6 +30,11 @@ namespace Sanet.SmartSkating.Services.Api
         [Post("/devices")]
         Task<BooleanResponse> PostDeviceAsync(
             [Body] DeviceDto device, 
+            [Header("Ocp-Apim-Subscription-Key")] string subscriptionKey);
+
+        [Post("/accounts")]
+        Task<LoginResponse> LoginAsync(
+            [Body] LoginRequest request, 
             [Header("Ocp-Apim-Subscription-Key")] string subscriptionKey);
     }
 }

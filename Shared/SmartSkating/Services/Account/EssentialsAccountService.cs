@@ -8,12 +8,21 @@ namespace Sanet.SmartSkating.Services.Account
     {
         private const string UserIdKey = "userId";
         private const string DeviceIdKey = "deviceId";
-        public string UserId => GetUniqueInstallationValue(UserIdKey);
+        
+        // should be changed to 
+        // => GetUniqueInstallationValue(UserIdKey);
+        // when ready for prod
+        public string UserId => GetDeviceInfo().Id; //
 
         public DeviceDto GetDeviceInfo() =>
             new DeviceDto
             {
-                Id = GetUniqueInstallationValue(DeviceIdKey),
+                Id =
+#if DEBUG
+                    "Debug",
+#else
+                    GetUniqueInstallationValue(DeviceIdKey),
+#endif
                 Manufacturer = DeviceInfo.Manufacturer,
                 Model = DeviceInfo.Model,
                 OsName = DeviceInfo.Platform.ToString(),

@@ -6,6 +6,21 @@ info:
 servers:
   - url: https://your_apim_service_name.azure-api.net/smartskating
 paths:
+  /sessions:
+    post:
+      summary: SessionSaverFunction
+      operationId: post-sessionsaverfunction
+      responses: { }
+  /accounts:
+    post:
+      summary: LoginFunction
+      operationId: post-loginfunction
+      responses: { }
+  /devices:
+    post:
+      summary: DeviceSaverFunction
+      operationId: post-devicesaverfunction
+      responses: { }
   /waypoints:
     post:
       summary: WayPointSaverFunction
@@ -15,11 +30,6 @@ paths:
     post:
       summary: BleScanSaverFunction
       operationId: post-blescansaverfunction
-      responses: { }
-  /sessions:
-    post:
-      summary: SessionSaverFunction
-      operationId: post-sessionsaverfunction
       responses: { }
 components:
   securitySchemes:

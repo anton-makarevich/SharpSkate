@@ -10,6 +10,7 @@ namespace SmartSkating.Dto.Tests
         private const string SessionsApiName = "sessions";
         private const string ScansApiName = "scans";
         private const string DevicesApiName = "devices";
+        private const string AccountsApiName = "accounts";
 
         [Fact]
         public void WayPointsApiResourceHasCorrectNames()
@@ -37,6 +38,13 @@ namespace SmartSkating.Dto.Tests
         {
             ApiNames.DevicesResource.Path.Should().Be($"/{DevicesApiName}");
             ApiNames.DevicesResource.Route.Should().Be(DevicesApiName);
+        }
+        
+        [Fact]
+        public void AccountsApiResourceHasCorrectName()
+        {
+            ApiNames.AccountsResource.Path.Should().Be($"/{AccountsApiName}");
+            ApiNames.AccountsResource.Route.Should().Be(AccountsApiName);
         }
     }
 }

@@ -120,5 +120,10 @@ namespace Sanet.SmartSkating.Services.Storage
         {
             throw new NotImplementedException();
         }
+
+        public Task<List<SessionDto>> GetAllSessionsForAccountAsync(string accountId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

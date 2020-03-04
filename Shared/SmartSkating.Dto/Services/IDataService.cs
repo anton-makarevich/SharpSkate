@@ -19,5 +19,6 @@ namespace Sanet.SmartSkating.Dto.Services
         Task<List<BleScanResultDto>> GetAllBleScansAsync();
         Task<bool> DeleteBleScanAsync(string bleScanId);
         Task<bool> SaveDeviceAsync(DeviceDto deviceDto);
+        Task<List<SessionDto>> GetAllSessionsForAccountAsync(string accountId);
     }
 }

@@ -4,7 +4,7 @@ using Sanet.SmartSkating.Services.Hardware;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Xf.Droid.DummyServices.Services;
 using Sanet.SmartSkating.Xf.Droid.Services;
-#if DEBUG
+#if TEST
 using Sanet.SmartSkating.Tizen.Services.Location;
 #else
 using Sanet.SmartSkating.Xf.Droid.AndroidShared.Services.Hardware;
@@ -25,7 +25,7 @@ namespace Sanet.SmartSkating.Xf.Droid
 
         private static void RegisterAndroidModule(this Container container, Activity activity)
         {
-#if DEBUG
+#if TEST
             container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 100));
             var resourceReader = new EmbeddedResourceReader();
             container.RegisterInstance<IBleLocationService>(

@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+
+        <IsPackable>false</IsPackable>
+
+        <RootNamespace>Sanet.SmartSkating.Backend.Azure.Tests</RootNamespace>
+
+        <Nullable>disable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.msbuild" Version="2.8.0" />
+        <PackageReference Include="FluentAssertions" Version="5.10.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+        <PackageReference Include="NSubstitute" Version="4.2.1" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BleScanSaverFunction\BleScanSaverFunction.csproj" />
+      <ProjectReference Include="..\DeviceSaverFunction\DeviceSaverFunction.csproj" />
+      <ProjectReference Include="..\FunctionTestUtils\FunctionTestUtils.csproj" />
+      <ProjectReference Include="..\LoginFunction\LoginFunction.csproj" />
+      <ProjectReference Include="..\SessionSaverFunction\SessionSaverFunction.csproj" />
+      <ProjectReference Include="..\WayPointSaverFunction\WayPointSaverFunction.csproj" />
+    </ItemGroup>
+
+</Project>
