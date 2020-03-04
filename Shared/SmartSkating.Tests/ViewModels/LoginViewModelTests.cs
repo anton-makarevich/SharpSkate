@@ -182,5 +182,20 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.ValidationMessage.Should().BeEmpty();
         }
+
+        [Fact]
+        public void UpdatesCanLogin_WhenPageIsLoaded()
+        {
+            var canLoginUpdatedTimes =0;
+            _sut.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(_sut.CanLogin))
+                {
+                    canLoginUpdatedTimes++;
+                }
+            };
+            _sut.AttachHandlers();
+            canLoginUpdatedTimes.Should().Be(1);
+        }
     }
 }
