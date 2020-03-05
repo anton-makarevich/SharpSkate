@@ -31,3 +31,10 @@ Speed skating activity tracker for long outdoor tracks (400m rinks). Both outdoo
 |Tizen   |WearOs   
 |:-:|:-:|
 |![Tizen](Screenshots/Tizen/241219.gif)   |![AndroidWear](Screenshots/WearOs/241219.gif)
+
+**Dashboard**
+
+|Web (UNO Wasm)   |Mac   |UWP
+|:-:|:-:|
+|[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.Dashboard?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=9&branchName=develop)   |
+|https://smartskating.azureedge.net/

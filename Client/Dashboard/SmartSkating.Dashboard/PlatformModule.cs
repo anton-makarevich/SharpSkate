@@ -6,7 +6,7 @@ using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.ViewModels;
 using SimpleInjector;
 
-namespace Sanet.SmartSkating.Dashboard.Wasm
+namespace Sanet.SmartSkating.Dashboard
 {
     public static class ContainerExtensions
     {
