@@ -1,8 +1,4 @@
-﻿// SmartSkating. Speed Skating activity tracker app
-// Main.cs
-// Copyrigh 2020 amakarevich anton.makarevich@hotmail.com
-
-using AppKit;
+﻿using AppKit;
 
 namespace Sanet.SmartSkating.Dashboard.Mac
 {
