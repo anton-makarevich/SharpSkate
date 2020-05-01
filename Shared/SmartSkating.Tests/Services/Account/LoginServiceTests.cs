@@ -1,5 +1,8 @@
+using System;
 using System.Threading.Tasks;
+using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Sanet.SmartSkating.Dto.Models.Requests;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
@@ -11,6 +14,8 @@ namespace Sanet.SmartSkating.Tests.Services.Account
     {
         private readonly LoginService _sut;
         private readonly IApiService _apiService;
+        private const string Username = "username";
+        private const string Password = "password";
 
         public LoginServiceTests()
         {
@@ -21,17 +26,26 @@ namespace Sanet.SmartSkating.Tests.Services.Account
         [Fact]
         public async Task CallsApiServiceLogin_WhenLoginAsyncIsInvoked()
         {
-            const string username = "username";
-            const string password = "password";
             var request = new LoginRequest
             {
-                Username = username,
-                Password = password
+                Username = Username,
+                Password = Password
             };
             
-            await _sut.LoginUserAsync(username, password);
+            await _sut.LoginUserAsync(Username, Password);
 
             await _apiService.Received().LoginAsync(request, Arg.Any<string>());
         }
+
+        [Fact]
+        public async Task LoginMethodReturnsNull_WhenApiExceptionOccurs()
+        {
+            _apiService.LoginAsync(Arg.Any<LoginRequest>(), Arg.Any<string>())
+                .ThrowsForAnyArgs(new Exception());
+
+            var account = await _sut.LoginUserAsync(Username,Password);
+
+            account.Should().BeNull();
+        } 
     }
 }

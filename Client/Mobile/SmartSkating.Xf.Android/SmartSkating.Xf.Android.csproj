@@ -64,10 +64,10 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Refit" Version="5.0.23" />
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
+    <PackageReference Include="Refit" Version="5.1.67" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.657" />
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.1" />
     <PackageReference Include="Xamarin.Android.Support.Collections" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.Annotations" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Arch.Core.Common" Version="1.1.1.3" />
@@ -82,7 +82,7 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <PackageReference Include="SimpleInjector">
-      <Version>4.9.0</Version>
+      <Version>4.10.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

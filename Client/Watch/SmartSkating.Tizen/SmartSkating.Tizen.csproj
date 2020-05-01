@@ -22,11 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Refit" Version="5.0.23" />
+    <PackageReference Include="Refit" Version="5.1.67" />
     <PackageReference Include="Tizen.Wearable.CircularUI" Version="1.4.0" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.0" />
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
-    <PackageReference Include="SimpleInjector" Version="4.9.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.1" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.657" />
+    <PackageReference Include="SimpleInjector" Version="4.10.2" />
   </ItemGroup>
 
   <ItemGroup>
