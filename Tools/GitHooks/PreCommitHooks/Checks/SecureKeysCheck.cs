@@ -17,8 +17,8 @@ namespace PreCommitHooks.Checks
             var apiFilesLines = File.ReadAllLines(apiFileInSolutionPath);
             return apiFilesLines
                 .Select(line => line.Trim())
-                .Where(trimmedLine => trimmedLine.StartsWith("public static readonly string AzureApiSubscriptionKey"))
-                .All(trimmedLine => trimmedLine.EndsWith("<Ocp-Apim-Subscription-Key>\";"));
+                .Count(trimmedLine => trimmedLine.StartsWith("public static string AzureApiSubscriptionKey")
+                                                                  && trimmedLine.Contains("SSS_AZURE_API_KEY")) == 1;
         }
     }
 }
