@@ -98,7 +98,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{CEF31EE5-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeysProvider", "Tools\Misc\KeysProvider\KeysProvider.csproj", "{7EBECC32-EF3D-4746-B6E5-6D5C6D741380}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeysProviderTests", "Tools\Misc\KeysProviderTests\KeysProviderTests.csproj", "{86CF53D9-85F4-450B-B0C8-7CFC41145241}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeysProvider.Tests", "Tools\Misc\KeysProvider.Tests\KeysProvider.Tests.csproj", "{86CF53D9-85F4-450B-B0C8-7CFC41145241}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectHelpers", "Tools\Misc\ProjectHelpers\ProjectHelpers.csproj", "{F8DE2749-EBDC-4650-AC9E-7A0832C5EF6F}"
 EndProject
