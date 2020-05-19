@@ -35,7 +35,7 @@ namespace KeysProviderTests.Services
         [Fact]
         public void Throws_WhenFileDoesNotContainPlaceholder()
         {
-            _configurationMock[SolutionConstants.EnvAzureApiKey].Returns("someValue");
+            _configurationMock[SolutionConstants.VarAzureApiKey].Returns("someValue");
             _projectFilesServiceMock.ReadProjectFile(ApiNamesFileNameStub).Returns("noPlaceholder");
 
 
@@ -46,7 +46,7 @@ namespace KeysProviderTests.Services
         public void ReplacesPlaceholder_WithApiKeyValueFromConfig()
         {
             const string apiKeyValue = "someValue";
-            _configurationMock[SolutionConstants.EnvAzureApiKey].Returns(apiKeyValue);
+            _configurationMock[SolutionConstants.VarAzureApiKey].Returns(apiKeyValue);
             _projectFilesServiceMock
                 .ReadProjectFile(ApiNamesFileNameStub)
                 .Returns($"this is {SolutionConstants.PlaceholderAzureApiKey}");

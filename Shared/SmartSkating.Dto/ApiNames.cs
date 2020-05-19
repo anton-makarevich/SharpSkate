@@ -23,7 +23,7 @@ namespace Sanet.SmartSkating.Dto
         }
 
         public const string BaseUrl = "https://smartskating.azure-api.net/smartskating";
-        public static string AzureApiSubscriptionKey => Environment.GetEnvironmentVariable("SSS_AZURE_API_KEY");
+        public const string AzureApiSubscriptionKey = "<AzureApiKey>";
 
         public static class DevicesResource
         {

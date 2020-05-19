@@ -20,7 +20,7 @@ namespace PreCommitHooks.Checks
             return apiFilesLines
                 .Select(line => line.Trim())
                 .Count(trimmedLine => trimmedLine
-                                          .StartsWith($"public static string {SolutionConstants.VarAzureApiKey}") 
+                                          .StartsWith($"public const string {SolutionConstants.VarAzureApiKey}") 
                                       && trimmedLine.Contains(SolutionConstants.PlaceholderAzureApiKey)) == 1;
         }
     }

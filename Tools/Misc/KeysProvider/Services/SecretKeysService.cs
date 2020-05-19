@@ -18,9 +18,9 @@ namespace KeysProvider.Services
         }
         public void SetSecrets()
         {
-            var azureApiKeyValue = _config[SolutionConstants.EnvAzureApiKey];
+            var azureApiKeyValue = _config[SolutionConstants.VarAzureApiKey];
             if (string.IsNullOrEmpty(azureApiKeyValue))
-                throw new NoNullAllowedException($"Config var {SolutionConstants.EnvAzureApiKey} is not found");
+                throw new NoNullAllowedException($"Config var {SolutionConstants.VarAzureApiKey} is not found");
             var apiFileNamePath = _projectFilesService.GetProjectFilePath(SolutionConstants.FileApiNames);
             var fileContent = _projectFilesService.ReadProjectFile(apiFileNamePath);
             if (!fileContent.Contains(SolutionConstants.PlaceholderAzureApiKey))
