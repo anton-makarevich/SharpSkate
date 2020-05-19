@@ -25,15 +25,16 @@ namespace KeysProviderTests.Services
                 .Returns(ApiNamesFileNameStub);
             _sut = new SecretKeysService(_projectFilesServiceMock,_configurationMock);
         }
-        
+
+        #region SetSecrets
         [Fact]
-        public void Throws_WhenConfigDoesNotContainApiKeyValue()
+        public void SetSecretsThrows_WhenConfigDoesNotContainApiKeyValue()
         {
             Assert.Throws<NoNullAllowedException>(() => _sut.SetSecrets());
         }
 
         [Fact]
-        public void Throws_WhenFileDoesNotContainPlaceholder()
+        public void SetSecretsThrows_WhenFileDoesNotContainPlaceholder()
         {
             _configurationMock[SolutionConstants.VarAzureApiKey].Returns("someValue");
             _projectFilesServiceMock.ReadProjectFile(ApiNamesFileNameStub).Returns("noPlaceholder");
@@ -43,7 +44,7 @@ namespace KeysProviderTests.Services
         }
         
         [Fact]
-        public void ReplacesPlaceholder_WithApiKeyValueFromConfig()
+        public void SetSecretsReplacesPlaceholder_WithApiKeyValueFromConfig()
         {
             const string apiKeyValue = "someValue";
             _configurationMock[SolutionConstants.VarAzureApiKey].Returns(apiKeyValue);
@@ -57,5 +58,41 @@ namespace KeysProviderTests.Services
                 .Received()
                 .SaveProjectFile(ApiNamesFileNameStub,$"this is {apiKeyValue}");
         }
+        #endregion
+
+        #region RemoveSecrets
+
+        [Fact]
+        public void RemoveSecretsThrows_WhenConfigDoesNotContainApiKeyValue()
+        {
+            Assert.Throws<NoNullAllowedException>(() => _sut.RemoveSecrets());
+        }
+        
+        [Fact]
+        public void RemoveSecretsThrows_WhenFileDoesNotContainKey()
+        {
+            _configurationMock[SolutionConstants.VarAzureApiKey].Returns("someValue");
+            _projectFilesServiceMock.ReadProjectFile(ApiNamesFileNameStub).Returns("noPlaceholder");
+
+
+            Assert.Throws<Exception>(() => _sut.RemoveSecrets());
+        }
+        
+        [Fact]
+        public void RemoveSecretsReplacesApiKeyValue_WithPlaceholder()
+        {
+            const string apiKeyValue = "someValue";
+            _configurationMock[SolutionConstants.VarAzureApiKey].Returns(apiKeyValue);
+            _projectFilesServiceMock
+                .ReadProjectFile(ApiNamesFileNameStub)
+                .Returns($"this is {apiKeyValue}");
+
+            _sut.RemoveSecrets();
+            
+            _projectFilesServiceMock
+                .Received()
+                .SaveProjectFile(ApiNamesFileNameStub,$"this is {SolutionConstants.PlaceholderAzureApiKey}");
+        }
+        #endregion
     }
 }

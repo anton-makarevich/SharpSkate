@@ -18,9 +18,7 @@ namespace KeysProvider.Services
         }
         public void SetSecrets()
         {
-            var azureApiKeyValue = _config[SolutionConstants.VarAzureApiKey];
-            if (string.IsNullOrEmpty(azureApiKeyValue))
-                throw new NoNullAllowedException($"Config var {SolutionConstants.VarAzureApiKey} is not found");
+            var azureApiKeyValue = GetAzureApiKeyValue();
             var apiFileNamePath = _projectFilesService.GetProjectFilePath(SolutionConstants.FileApiNames);
             var fileContent = _projectFilesService.ReadProjectFile(apiFileNamePath);
             if (!fileContent.Contains(SolutionConstants.PlaceholderAzureApiKey))
@@ -29,9 +27,24 @@ namespace KeysProvider.Services
             _projectFilesService.SaveProjectFile(apiFileNamePath, fileContent);
         }
 
+        private string GetAzureApiKeyValue()
+        {
+            var azureApiKeyValue = _config[SolutionConstants.VarAzureApiKey];
+            if (string.IsNullOrEmpty(azureApiKeyValue))
+                throw new NoNullAllowedException($"Config var {SolutionConstants.VarAzureApiKey} is not found");
+            return azureApiKeyValue;
+        }
+
         public void RemoveSecrets()
         {
-            throw new System.NotImplementedException();
+            var azureApiKeyValue = GetAzureApiKeyValue();
+            var apiFileNamePath = _projectFilesService.GetProjectFilePath(SolutionConstants.FileApiNames);
+            var fileContent = _projectFilesService.ReadProjectFile(apiFileNamePath);
+            if (!fileContent.Contains(azureApiKeyValue))
+                throw new Exception($"Value for key {SolutionConstants.PlaceholderAzureApiKey} not found");
+            fileContent = fileContent
+                .Replace(azureApiKeyValue,SolutionConstants.PlaceholderAzureApiKey);
+            _projectFilesService.SaveProjectFile(apiFileNamePath, fileContent);
         }
     }
 }
