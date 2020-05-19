@@ -265,3 +265,4 @@ __pycache__/
 *.pyc
 *.bak
 *.old
+Tools/Misc/KeysProvider/appsettings.json

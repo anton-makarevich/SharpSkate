@@ -1,24 +1,27 @@
-using System.IO;
 using System.Linq;
-using System.Reflection;
+using ProjectHelpers;
+using ProjectHelpers.Services;
 
 namespace PreCommitHooks.Checks
 {
     public class SecureKeysCheck:IPreCommitCheck
     {
+        private readonly IProjectFilesService _projectFilesService;
+
+        public SecureKeysCheck(IProjectFilesService projectFilesService)
+        {
+            _projectFilesService = projectFilesService;
+        }
         public bool CanCommit()
         {
-            const string apiFilePath = "Shared/SmartSkating.Dto/ApiNames.cs";
-            var dllPath = Assembly.GetExecutingAssembly().Location;
-            const string solutionName = "SmartSkating";
-            var solutionPath = Path.Combine(dllPath.Split(solutionName).First(), solutionName);
-            var apiFileInSolutionPath = Path.Combine(solutionPath, apiFilePath);
+            var apiFileInSolutionPath = _projectFilesService.GetProjectFilePath(SolutionConstants.FileApiNames);
 
-            var apiFilesLines = File.ReadAllLines(apiFileInSolutionPath);
+            var apiFilesLines = _projectFilesService.ReadProjectFileLines(apiFileInSolutionPath);
             return apiFilesLines
                 .Select(line => line.Trim())
-                .Count(trimmedLine => trimmedLine.StartsWith("public static string AzureApiSubscriptionKey")
-                                                                  && trimmedLine.Contains("SSS_AZURE_API_KEY")) == 1;
+                .Count(trimmedLine => trimmedLine
+                                          .StartsWith($"public static string {SolutionConstants.VarAzureApiKey}") 
+                                      && trimmedLine.Contains(SolutionConstants.PlaceholderAzureApiKey)) == 1;
         }
     }
 }
