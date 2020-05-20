@@ -27,3 +27,10 @@ steps:
 - bash: |
     bash <(curl -s https://codecov.io/bash) -f "Shared/SmartSkating.Dto.Tests/coverage.opencover.xml" -t $(codecov.token)
   displayName: 'Upload Dto tests results'
+  
+- script: dotnet test Tools/Misc/KeysProvider.Tests/KeysProvider.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+  displayName: 'Run Tools.Keys Tests'
+
+- bash: |
+    bash <(curl -s https://codecov.io/bash) -f "Tools/Misc/KeysProvider.Tests/coverage.opencover.xml" -t $(codecov.token)
+  displayName: 'Upload Tools.Keys tests results'
