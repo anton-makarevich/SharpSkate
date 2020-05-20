@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "d41666a1-42ca-494e-a6d0-282d47e2c5b8",
+		"name": "Qlever",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Dummy",
+			"item": [
+				{
+					"name": "GET Rules",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://qdsz26noql.execute-api.eu-west-1.amazonaws.com/dev/rules",
+							"protocol": "https",
+							"host": [
+								"qdsz26noql",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"rules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Accounts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://qdsz26noql.execute-api.eu-west-1.amazonaws.com/dev/accounts",
+							"protocol": "https",
+							"host": [
+								"qdsz26noql",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

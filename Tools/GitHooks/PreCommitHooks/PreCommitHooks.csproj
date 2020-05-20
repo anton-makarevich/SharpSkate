@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Misc\ProjectHelpers\ProjectHelpers.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -23,7 +23,14 @@ namespace Sanet.SmartSkating.Services.Account
                 Username = username,
                 Password = password
             };
-            return (await _apiService.LoginAsync(request, ApiNames.AzureApiSubscriptionKey))?.Account;
+            try
+            {
+                return (await _apiService.LoginAsync(request, ApiNames.AzureApiSubscriptionKey))?.Account;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

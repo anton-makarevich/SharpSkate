@@ -1,3 +1,5 @@
+using System;
+
 namespace Sanet.SmartSkating.Dto
 {
     public static class ApiNames
@@ -21,7 +23,7 @@ namespace Sanet.SmartSkating.Dto
         }
 
         public const string BaseUrl = "https://smartskating.azure-api.net/smartskating";
-        public const string AzureApiSubscriptionKey = "<Ocp-Apim-Subscription-Key>";
+        public const string AzureApiSubscriptionKey = "<AzureApiKey>";
 
         public static class DevicesResource
         {

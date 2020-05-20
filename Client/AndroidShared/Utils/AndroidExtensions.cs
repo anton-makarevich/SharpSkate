@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using Android;
 using Android.App;
 using Android.Content.PM;
-using Android.Support.V4.App;
-using Android.Support.V4.Content;
+using AndroidX.Core.App;
+using AndroidX.Core.Content;
 
 namespace Sanet.SmartSkating.Droid.Utils
 {
