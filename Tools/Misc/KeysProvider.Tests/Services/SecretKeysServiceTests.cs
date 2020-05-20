@@ -38,8 +38,7 @@ namespace KeysProviderTests.Services
         {
             _configurationMock[SolutionConstants.VarAzureApiKey].Returns("someValue");
             _projectFilesServiceMock.ReadProjectFile(ApiNamesFileNameStub).Returns("noPlaceholder");
-
-
+            
             Assert.Throws<Exception>(() => _sut.SetSecrets());
         }
         
@@ -73,8 +72,7 @@ namespace KeysProviderTests.Services
         {
             _configurationMock[SolutionConstants.VarAzureApiKey].Returns("someValue");
             _projectFilesServiceMock.ReadProjectFile(ApiNamesFileNameStub).Returns("noPlaceholder");
-
-
+            
             Assert.Throws<Exception>(() => _sut.RemoveSecrets());
         }
         
