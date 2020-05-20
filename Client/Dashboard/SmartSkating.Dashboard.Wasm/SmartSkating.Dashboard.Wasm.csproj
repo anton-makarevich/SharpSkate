@@ -45,6 +45,6 @@
 		<PackageReference Include="Refit" Version="5.1.67" />
 		<PackageReference Include="Uno.Xamarin.Forms.Platform" Version="4.3.4" />
 		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.2.0" />
-		<DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.10" />
+		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.2.0" PrivateAssets="all" />
 	</ItemGroup>
 </Project>
