@@ -26,5 +26,19 @@
             "Latitude":51.348305,
             "Longitude":6.339573
         }
+    },
+    {
+        "Id": "255E877AFD3D493D958AF4479AD63761",
+        "Name": "Eindhoven Noord",
+        "Start":
+        {
+            "Latitude":51.4737078,
+            "Longitude":5.4546928
+        },
+        "Finish":
+        {
+            "Latitude":51.4745206,
+            "Longitude":5.4540336
+        }
     }
 ]

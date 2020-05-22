@@ -1,6 +1,7 @@
 using Refit;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Storage;
@@ -19,6 +20,7 @@ namespace Sanet.SmartSkating.Xf
             
             // Register services
             container.RegisterSingleton<IResourceReader,EmbeddedResourceReader>();
+            container.RegisterSingleton<ISettingsService, SettingsService>();
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
             container.RegisterSingleton<IAccountService,EssentialsAccountService>();

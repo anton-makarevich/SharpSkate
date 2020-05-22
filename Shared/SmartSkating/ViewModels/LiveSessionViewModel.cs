@@ -8,6 +8,7 @@ using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Location;
@@ -39,11 +40,12 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly IAccountService _accountService;
         private readonly IDataSyncService _dataSyncService;
         private readonly IBleLocationService _bleLocationService;
+        private readonly ISettingsService _settingsService;
 
         public LiveSessionViewModel(ILocationService locationService,
             IDataService storageService,
             ITrackService trackService, ISessionService sessionService, IAccountService accountService,
-            IDataSyncService dataSyncService, IBleLocationService bleLocationService)
+            IDataSyncService dataSyncService, IBleLocationService bleLocationService, ISettingsService settingsService)
         {
             _locationService = locationService;
             _storageService = storageService;
@@ -52,17 +54,25 @@ namespace Sanet.SmartSkating.ViewModels
             _accountService = accountService;
             _dataSyncService = dataSyncService;
             _bleLocationService = bleLocationService;
-            
+            _settingsService = settingsService;
+
             TotalTime = new TimeSpan().ToString(TotalTimeFormat);
         }
         
         public ICommand StartCommand => new SimpleCommand(async() =>
         {
-            await _bleLocationService.LoadDevicesDataAsync();
+            if (_settingsService.UseBle)
+                await _bleLocationService.LoadDevicesDataAsync();
+            
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
-            _bleLocationService.CheckPointPassed+= BleLocationServiceOnCheckPointPassed;
             _locationService.StartFetchLocation();
-            _bleLocationService.StartBleScan(Session?.SessionId??string.Empty);
+            
+            if (_settingsService.UseBle)
+            {
+                _bleLocationService.CheckPointPassed+= BleLocationServiceOnCheckPointPassed;
+                _bleLocationService.StartBleScan(Session?.SessionId??string.Empty);
+            }
+            
             Session?.SetStartTime(DateTime.UtcNow);
             IsRunning = true;
 #pragma warning disable 4014
