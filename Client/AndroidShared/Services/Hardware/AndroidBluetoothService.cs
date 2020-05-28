@@ -17,21 +17,17 @@ namespace Sanet.SmartSkating.Xf.Droid.AndroidShared.Services.Hardware
 
         public bool IsBluetoothAvailable()
         {
-            try
-            {
-                return BluetoothAdapter.DefaultAdapter.IsEnabled;
-            }
-            catch
-            {
-                return false;
-            }
+            return BluetoothAdapter.DefaultAdapter != null && BluetoothAdapter.DefaultAdapter.IsEnabled;
         }
 
         public Task EnableBluetoothAsync()
         {
             return Task.Run(() =>
             {
-                if (IsBluetoothAvailable()) return;
+                if (IsBluetoothAvailable())
+                    return;
+                if (BluetoothAdapter.DefaultAdapter == null)
+                    return;
                 var intent = new Intent(BluetoothAdapter.ActionRequestEnable);
                 _context.StartActivity(intent, Bundle.Empty);
             });
