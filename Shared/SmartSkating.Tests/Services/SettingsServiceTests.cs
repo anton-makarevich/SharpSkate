@@ -15,15 +15,21 @@ namespace Sanet.SmartSkating.Tests.Services
 
 
         [Fact]
-        public void UseGpsIsTrueByDefault()
+        public void UseGps_IsTrueByDefault()
         {
             _sut.UseGps.Should().BeTrue();
         }
         
         [Fact]
-        public void UseBleIsFalseByDefault()
+        public void UseBle_IsFalseByDefault()
         {
             _sut.UseBle.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void CanInterpolateSectors_IsFalseByDefault()
+        {
+            _sut.CanInterpolateSectors.Should().BeFalse();
         }
     }
 }

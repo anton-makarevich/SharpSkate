@@ -4,5 +4,7 @@ namespace Sanet.SmartSkating.Services
     {
         bool UseGps { get; set; }
         bool UseBle { get; set; }
+
+        bool CanInterpolateSectors { get; set; }
     }
 }

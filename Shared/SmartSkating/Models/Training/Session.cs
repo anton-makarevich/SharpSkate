@@ -4,6 +4,7 @@ using System.Linq;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Utils;
 
 namespace Sanet.SmartSkating.Models.Training
@@ -11,10 +12,12 @@ namespace Sanet.SmartSkating.Models.Training
     public class Session : ISession
     {
         private readonly Rink _rink;
+        private readonly ISettingsService _settingsService;
 
-        public Session(Rink rink)
+        public Session(Rink rink, ISettingsService settingsService)
         {
             _rink = rink;
+            _settingsService = settingsService;
             WayPoints = new List<WayPoint>();
             Sectors = new List<Section>();
             SessionId = Guid.NewGuid().ToString("N");
@@ -39,10 +42,14 @@ namespace Sanet.SmartSkating.Models.Training
                 ? new List<WayPointTypes>
                 {
                     WayPoints.Last().Type,
-                    WayPoints.Last().Type.GetNextSectorType(),
-                    WayPoints.Last().Type.GetNextSectorType().GetNextSectorType()
+                    WayPoints.Last().Type.GetNextSectorType()
                 }
                 : new List<WayPointTypes>();
+
+            if (expectedSectorTypes.Count > 1 && _settingsService.CanInterpolateSectors)
+            {
+                expectedSectorTypes.Add(WayPoints.Last().Type.GetNextSectorType().GetNextSectorType());
+            }
 
             var expectedSectors = expectedSectorTypes.Count>0
                 ? _rink.Sectors.Where(s => expectedSectorTypes.Contains(s.Type)).ToList()
@@ -68,25 +75,11 @@ namespace Sanet.SmartSkating.Models.Training
                 }
             }
 
-            if (expectedSectorTypes.Count>0 
-                && type == expectedSectorTypes.Last() 
-                && date.Subtract(WayPoints.Last().Date).TotalSeconds>MaxSectorTimeInSeconds)
+            if (_settingsService.CanInterpolateSectors)
             {
-                var lastPoint = WayPoints.Last();
-                var missingSector = _rink.Sectors
-                    .Single(s => s.Type == expectedSectorTypes[1]);
-                var distanceTo
-                    = (_rink.ToLocalCoordinateSystem(lastPoint.AdjustedCoordinate), missingSector.Center).GetDistance();
-                var distanceFrom
-                    = (missingSector.Center, adjustedPoint).GetDistance();
-                var missingSectorDate = InterpolateDate(
-                    lastPoint.Date, 
-                    date,
-                    distanceTo,
-                    distanceFrom);
-                AddPoint(_rink.ToGeoCoordinateSystem(missingSector.Center),missingSectorDate);
+                AddMissingSector(date, expectedSectorTypes, type, adjustedPoint);
             }
-            
+
             if (type == WayPointTypes.Unknown)
                 return;
             
@@ -114,6 +107,29 @@ namespace Sanet.SmartSkating.Models.Training
                 adjustedLocation,
                 date,
                 type));
+        }
+
+        private void AddMissingSector(DateTime date, 
+            IReadOnlyList<WayPointTypes> expectedSectorTypes, 
+            WayPointTypes type, 
+            Point adjustedPoint)
+        {
+            if (expectedSectorTypes.Count <= 0 
+                || type != expectedSectorTypes.Last() 
+                || !(date.Subtract(WayPoints.Last().Date).TotalSeconds > MaxSectorTimeInSeconds)) return;
+            var lastPoint = WayPoints.Last();
+            var missingSector = _rink.Sectors
+                .Single(s => s.Type == expectedSectorTypes[1]);
+            var distanceTo
+                = (_rink.ToLocalCoordinateSystem(lastPoint.AdjustedCoordinate), missingSector.Center).GetDistance();
+            var distanceFrom
+                = (missingSector.Center, adjustedPoint).GetDistance();
+            var missingSectorDate = InterpolateDate(
+                lastPoint.Date,
+                date,
+                distanceTo,
+                distanceFrom);
+            AddPoint(_rink.ToGeoCoordinateSystem(missingSector.Center), missingSectorDate);
         }
 
         public void AddSeparatingPoint(WayPointTypes type, DateTime date)
