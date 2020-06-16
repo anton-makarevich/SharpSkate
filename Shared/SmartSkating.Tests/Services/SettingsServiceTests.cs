@@ -13,7 +13,6 @@ namespace Sanet.SmartSkating.Tests.Services
             _sut = new SettingsService();
         }
 
-
         [Fact]
         public void UseGps_IsTrueByDefault()
         {
