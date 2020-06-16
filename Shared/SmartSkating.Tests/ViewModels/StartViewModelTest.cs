@@ -24,6 +24,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IDataSyncService _dataSyncService;
         private readonly IBluetoothService _bluetoothService;
+        private readonly ISettingsService _settingsService;
 
         public StartViewModelTest()
         {
@@ -32,7 +33,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _locationService = Substitute.For<ILocationService>();
             _dataSyncService = Substitute.For<IDataSyncService>();
             _bluetoothService = Substitute.For<IBluetoothService>();
-            _sut = new StartViewModel(_locationService,_tracksService, _dataSyncService, _bluetoothService);
+            _settingsService = Substitute.For<ISettingsService>();
+            _sut = new StartViewModel(_locationService,_tracksService, _dataSyncService,
+                _bluetoothService, _settingsService);
             _sut.SetNavigationService(_navigationService);
         }
 
@@ -297,8 +300,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public async Task SelectRinkCommandNavigatesToTracksPage_WhenBtIsAvailable()
+        public async Task SelectRinkCommandNavigatesToTracksPage_WhenBtIsAvailable_AndBleIsAllowed()
         {
+            _settingsService.UseBle.Returns(true);
             _bluetoothService.IsBluetoothAvailable().Returns(true);
             
             _sut.SelectRinkCommand.Execute(null);
@@ -317,8 +321,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
-        public async Task SelectRinkCommandDoesNotNavigatesToTracksPage_IfBluetoothIsNotOn()
+        public async Task SelectRinkCommandDoesNotNavigatesToTracksPage_IfBluetoothIsNotOn_ButAllowed()
         {
+            _settingsService.UseBle.Returns(true);
             _bluetoothService.IsBluetoothAvailable().Returns(false);
             _sut.SelectRinkCommand.Execute(null);
 
@@ -326,8 +331,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
-        public async Task SelectRinkCommandAsksToEnableBluetoothFirst_IfBluetoothIsNotOn()
+        public async Task SelectRinkCommandDoesNotNavigatesToTracksPage_IfBluetoothIsNotOn_AndNotAllowed()
         {
+            _settingsService.UseBle.Returns(false);
+            _bluetoothService.IsBluetoothAvailable().Returns(false);
+            _sut.SelectRinkCommand.Execute(null);
+
+            await _navigationService.Received().NavigateToViewModelAsync<TracksViewModel>();
+        }
+        
+        [Fact]
+        public async Task SelectRinkCommandAsksToEnableBluetoothFirst_IfBluetoothIsNotOn_ButAllowed()
+        {
+            _settingsService.UseBle.Returns(true);
             _bluetoothService.IsBluetoothAvailable().Returns(false);
             _sut.SelectRinkCommand.Execute(null);
 

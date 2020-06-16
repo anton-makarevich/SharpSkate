@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
 using FluentAssertions;
+using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Tests.Models.Geometry;
 using Xunit;
 
@@ -13,6 +15,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
     public class SessionTests
     {
         private readonly Rink _rink = new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish);
+        private readonly ISettingsService _settingsService = Substitute.For<ISettingsService>();
         
         private readonly Session _sut;
         private readonly Coordinate _firstSectorPoint;
@@ -22,7 +25,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
 
         public SessionTests()
         {
-            _sut = new Session(_rink);
+            _sut = new Session(_rink, _settingsService);
             _firstSectorPoint = new Coordinate(51.4153197,5.4724154);
             _fourthSectorPoint = new Coordinate(51.4159491,5.4728511);
             _secondSectorPoint = new Coordinate(51.4145113,5.4728282);
@@ -35,8 +38,10 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             _sut.SessionId.Should().NotBeEmpty();
         }
 
+        #region BasicWaypointsTests
+        
         [Fact]
-        public void WayPointIsNotAddedIfItIsOutOfRinkRange()
+        public void WayPointIsNotAdded_IfItIsOutOfRinkRange()
         {
             var location = new Coordinate(51.4159838,5.4709491);
 
@@ -46,7 +51,7 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         }
         
         [Fact]
-        public void WayPointIsAddedIfItIsWithinRinkRange()
+        public void WayPointIsAdded_IfItIsWithinRinkRange()
         {
             var location = new Coordinate(51.4153197,5.4724154);
 
@@ -58,13 +63,16 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         [Fact]
         public void AddedWayPointShouldHaveCorrespondingType()
         {
-            var location = new Coordinate(51.4153197,5.4724154);
+            var location = new Coordinate(51.4153197, 5.4724154);
 
             _sut.AddPoint(location, DateTime.Now);
-            
-            Assert.Equal(WayPointTypes.FirstSector,_sut.WayPoints.First().Type);
+
+            Assert.Equal(WayPointTypes.FirstSector, _sut.WayPoints.First().Type);
         }
 
+        #endregion
+        
+        #region WaypointWhenCrossingSectors
         [Fact]
         public void PointThatIsNotExactlyInTheSectorShouldBeAdjusted()
         {
@@ -153,15 +161,17 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             
             Assert.Single(_sut.WayPoints);
         }
-        
+
         [Fact]
         public void DoesNotAddAnyWayPointsWhenCrossingStart3KFromFourthSectorToThird()
         {
             _sut.AddPoint(_fourthSectorPoint, DateTime.Now);
             _sut.AddPoint(_thirdSectorPoint, DateTime.Now);
-            
+
             Assert.Single(_sut.WayPoints);
         }
+
+        #endregion
 
         [Fact]
         public void AddsSectorEntryWhenEntersNewSectorInOrder()
@@ -314,8 +324,10 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         }
 
         [Fact]
-        public void AddMissingSectorIfTimeIsMoreThanMaxReasonableSectorTime()
+        public void AddsMissingSector_IfTimeIsMoreThanMaxReasonableSectorTime_AndSettingsAllowsThat()
         {
+            _settingsService.CanInterpolateSectors.Returns(true);
+
             var startTime = DateTime.Now;
             var secondTime = startTime.AddSeconds(29);
             
@@ -323,6 +335,20 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             _sut.AddPoint(_thirdSectorPoint,secondTime);
 
             _sut.WayPoints.Count.Should().Be(5);
+        }
+        
+        [Fact]
+        public void DoesNotAddMissingSector_IfTimeIsMoreThanMaxReasonableSectorTime_ButSettingsDoesNotAllowThat()
+        {
+            _settingsService.CanInterpolateSectors.Returns(false);
+
+            var startTime = DateTime.Now;
+            var secondTime = startTime.AddSeconds(29);
+            
+            _sut.AddPoint(_firstSectorPoint,startTime);
+            _sut.AddPoint(_thirdSectorPoint,secondTime);
+
+            _sut.WayPoints.Count.Should().Be(1);
         }
 
         [Fact]

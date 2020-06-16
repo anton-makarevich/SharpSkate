@@ -9,6 +9,7 @@ using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Location;
@@ -30,6 +31,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
         private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
         private readonly IBleLocationService _bleLocationService = Substitute.For<IBleLocationService>();
+        private readonly ISettingsService _settingsService = Substitute.For<ISettingsService>();
 
         public LiveSessionViewModelTests()
         {
@@ -40,7 +42,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 _sessionService,
                 _accountService,
                 _dataSyncService,
-                _bleLocationService);
+                _bleLocationService,
+                _settingsService);
         }
 
         [Fact]
@@ -79,11 +82,21 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
-        public async Task FetchesKnownBleDevices_WhenPageIsLoaded()
+        public async Task FetchesKnownBleDevices_WhenPageIsLoaded_AndBleIsOnInSettings()
         {
+            _settingsService.UseBle.Returns(true);
             _sut.AttachHandlers();
 
             await _bleLocationService.Received().LoadDevicesDataAsync();
+        }
+        
+        [Fact]
+        public async Task DoesNotFetchKnownBleDevices_WhenPageIsLoaded_AndBleIsOffInSettings()
+        {
+            _settingsService.UseBle.Returns(false);
+            _sut.AttachHandlers();
+
+            await _bleLocationService.DidNotReceive().LoadDevicesDataAsync();
         }
         
         [Fact]
@@ -459,11 +472,21 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
         #region Ble
         [Fact]
-        public void StartsBleScan_WhenStartButtonPressed()
+        public void StartsBleScan_WhenStartButtonPressed_AndBleAllowedInSettings()
         {
+            _settingsService.UseBle.Returns(true);
             _sut.StartCommand.Execute(null);
 
             _bleLocationService.Received().StartBleScan(Arg.Any<string>());
+        }
+        
+        [Fact]
+        public void DoesNotStartBleScan_WhenStartButtonPressed_ButBleIsNotAllowedInSettings()
+        {
+            _settingsService.UseBle.Returns(false);
+            _sut.StartCommand.Execute(null);
+
+            _bleLocationService.DidNotReceive().StartBleScan(Arg.Any<string>());
         }
         
         [Fact]
@@ -477,6 +500,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void AddsSectionSeparator_WhenCheckPointIsPassed()
         {
+            _settingsService.UseBle.Returns(true);
             var session = CreateSessionMock();
             _sut.StartCommand.Execute(null);
             const WayPointTypes checkPointType = WayPointTypes.Start;

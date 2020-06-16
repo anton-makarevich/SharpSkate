@@ -13,7 +13,7 @@ namespace Sanet.SmartSkating.Droid.Services.Location
 {
     public class AndroidBleService:BaseBleLocationService
     {
-        private readonly BluetoothLeScanner _bleScanner;
+        private readonly BluetoothLeScanner? _bleScanner;
         private readonly BleScanCallBack _callBack;
 
         private const int TimeToRestartBleScanMinutes = 4;
@@ -26,7 +26,10 @@ namespace Sanet.SmartSkating.Droid.Services.Location
             IBleDevicesProvider bleDevicesProvider):base(bleDevicesProvider,dataService)
         {
             _callBack = new BleScanCallBack(dataService);
-            _bleScanner = BluetoothAdapter.DefaultAdapter.BluetoothLeScanner;
+            if (BluetoothAdapter.DefaultAdapter != null)
+            {
+                _bleScanner = BluetoothAdapter.DefaultAdapter.BluetoothLeScanner;
+            }
         }
         
         public override void StartBleScan(string sessionId)
@@ -52,7 +55,7 @@ namespace Sanet.SmartSkating.Droid.Services.Location
                 .SetMatchMode(BluetoothScanMatchMode.Aggressive)
                 .SetNumOfMatches(1)
                 .Build();
-            _bleScanner.StartScan(
+            _bleScanner?.StartScan(
                 filters,
                 settings,
                 _callBack);
@@ -74,7 +77,7 @@ namespace Sanet.SmartSkating.Droid.Services.Location
 
         private void RestartScan()
         {
-            _bleScanner.StopScan(_callBack);
+            _bleScanner?.StopScan(_callBack);
             _callBack.BeaconFound -= OnBeaconFound;
             CheckPointPassed-= OnCheckPointPassed;
             if (IsScanning)
@@ -84,8 +87,8 @@ namespace Sanet.SmartSkating.Droid.Services.Location
         public override void StopBleScan()
         {
             base.StopBleScan();
-            _bleScanner.StopScan(_callBack);
-            _bleScanner.FlushPendingScanResults(_callBack);
+            _bleScanner?.StopScan(_callBack);
+            _bleScanner?.FlushPendingScanResults(_callBack);
             _callBack.BeaconFound -= OnBeaconFound;
             CheckPointPassed -= OnCheckPointPassed;
         }

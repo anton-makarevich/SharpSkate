@@ -8,6 +8,7 @@ using Sanet.SmartSkating.Xf.Droid.Services;
 #endif
 
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Hardware;
@@ -63,6 +64,7 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterSingleton<IBleDevicesProvider,LocalBleDevicesProvider>();
             container.RegisterSingleton<ITrackService, TrackService>();
             container.RegisterSingleton<ISessionService, SessionService>();
+            container.RegisterSingleton<ISettingsService, SettingsService>();
         }
     }
 }
