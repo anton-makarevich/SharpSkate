@@ -10,8 +10,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
     public class SessionServiceTests
     {
         private readonly ISettingsService _settingsService = Substitute.For<ISettingsService>();
-
-
+        
         [Fact]
         public void ReturnsSessionForRink()
         {
