@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Hardware;
 using Sanet.SmartSkating.Services.Location;
@@ -17,6 +18,7 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly ITrackService _tracksService;
         private readonly IDataSyncService _dataSyncService;
         private readonly IBluetoothService _bluetoothService;
+        private readonly ISettingsService _settingsService;
         private string _infoLabel = string.Empty;
         private bool _areGeoServicesInitialized;
         private bool _isInitializingGeoServices;
@@ -24,12 +26,13 @@ namespace Sanet.SmartSkating.ViewModels
         private const int GeoServicesInitTimeoutInSeconds = 30;
 
         public StartViewModel(ILocationService locationService, ITrackService tracksService,
-            IDataSyncService dataSyncService, IBluetoothService bluetoothService)
+            IDataSyncService dataSyncService, IBluetoothService bluetoothService, ISettingsService settingsService)
         {
             _locationService = locationService;
             _tracksService = tracksService;
             _dataSyncService = dataSyncService;
             _bluetoothService = bluetoothService;
+            _settingsService = settingsService;
         }
 
         public string InfoLabel
@@ -69,10 +72,17 @@ namespace Sanet.SmartSkating.ViewModels
 
         public ICommand SelectRinkCommand => new SimpleCommand(async () =>
         {
-            if (_bluetoothService.IsBluetoothAvailable())
-                await NavigationService.NavigateToViewModelAsync<TracksViewModel>();
+            if (_settingsService.UseBle)
+            {
+                if (_bluetoothService.IsBluetoothAvailable())
+                    await NavigationService.NavigateToViewModelAsync<TracksViewModel>();
+                else
+                    await _bluetoothService.EnableBluetoothAsync();
+            }
             else
-                await _bluetoothService.EnableBluetoothAsync();
+            {
+                await NavigationService.NavigateToViewModelAsync<TracksViewModel>();
+            }
         });
 
         public override void AttachHandlers()
