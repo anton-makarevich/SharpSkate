@@ -136,7 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SimpleInjector">
-      <Version>4.10.2</Version>
+      <Version>5.2.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\WatchOS\Xamarin.WatchOS.App.CSharp.targets" />

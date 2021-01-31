@@ -7,6 +7,7 @@ pool:
 variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  runtime: 'netcoreapp3.1'
 
 steps:
   - script: dotnet test Backend/Functions/SmartSkating.Azure.Tests/SmartSkating.Azure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=\"[SmartSkating.Azure]*,[SmartSkating.Dto]*,[*Function]*\"
@@ -33,35 +34,35 @@ steps:
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: 'Backend/Functions/SessionSaverFunction/bin/Release/netcoreapp3.0/'
+      SourceFolder: 'Backend/Functions/SessionSaverFunction/bin/Release/$(runtime)/'
       Contents: '**'
-      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
     displayName: 'Copy SessionSaverFunction output'
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: 'Backend/Functions/BleScanSaverFunction/bin/Release/netcoreapp3.0/'
+      SourceFolder: 'Backend/Functions/BleScanSaverFunction/bin/Release/$(runtime)/'
       Contents: '**'
-      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
     displayName: 'Copy BleScanSaverFunction output'
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: 'Backend/Functions/DeviceSaverFunction/bin/Release/netcoreapp3.0/'
+      SourceFolder: 'Backend/Functions/DeviceSaverFunction/bin/Release/$(runtime)/'
       Contents: '**'
-      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
     displayName: 'Copy DeviceSaverFunction output'
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: 'Backend/Functions/LoginFunction/bin/Release/netcoreapp3.0/'
+      SourceFolder: 'Backend/Functions/LoginFunction/bin/Release/$(runtime)/'
       Contents: '**'
-      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
     displayName: 'Copy LoginFunction output'
 
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: 'Backend/Functions/WayPointSaverFunction/bin/Release/netcoreapp3.0/'
+      rootFolderOrFile: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
       includeRootFolder: false
       archiveType: 'zip'
       archiveFile: 'Backend/Functions/WayPointSaverFunction/bin/Release/Function.zip'
