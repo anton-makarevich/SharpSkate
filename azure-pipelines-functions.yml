@@ -17,55 +17,15 @@ steps:
       bash <(curl -s https://codecov.io/bash) -f "Backend/Functions/SmartSkating.Azure.Tests/coverage.opencover.xml" -t $(codecov.token)
     displayName: 'Upload functions tests results'
 
-  - script: dotnet build Backend/Functions/WayPointSaverFunction/WayPointSaverFunction.csproj -c $(buildConfiguration) -v d
-    displayName: 'Build WayPointSaver function'
-
-  - script: dotnet build Backend/Functions/SessionSaverFunction/SessionSaverFunction.csproj -c $(buildConfiguration) -v d
-    displayName: 'Build SessionSaver function'
-
-  - script: dotnet build Backend/Functions/BleScanSaverFunction/BleScanSaverFunction.csproj -c $(buildConfiguration) -v d
-    displayName: 'Build BleScanSaver function'
-
-  - script: dotnet build Backend/Functions/DeviceSaverFunction/DeviceSaverFunction.csproj -c $(buildConfiguration) -v d
-    displayName: 'Build DeviceSaver function'
-
-  - script: dotnet build Backend/Functions/LoginFunction/LoginFunction.csproj -c $(buildConfiguration) -v d
-    displayName: 'Build Login function'
-
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: 'Backend/Functions/SessionSaverFunction/bin/Release/$(runtime)/'
-      Contents: '**'
-      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
-    displayName: 'Copy SessionSaverFunction output'
-
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: 'Backend/Functions/BleScanSaverFunction/bin/Release/$(runtime)/'
-      Contents: '**'
-      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
-    displayName: 'Copy BleScanSaverFunction output'
-
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: 'Backend/Functions/DeviceSaverFunction/bin/Release/$(runtime)/'
-      Contents: '**'
-      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
-    displayName: 'Copy DeviceSaverFunction output'
-
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: 'Backend/Functions/LoginFunction/bin/Release/$(runtime)/'
-      Contents: '**'
-      TargetFolder: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
-    displayName: 'Copy LoginFunction output'
+  - script: dotnet build Backend/Functions/SmartSkating.Functions/SmartSkating.Functions.csproj -c $(buildConfiguration) -v d
+    displayName: 'Build functions'
 
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: 'Backend/Functions/WayPointSaverFunction/bin/Release/$(runtime)/'
+      rootFolderOrFile: 'Backend/Functions/SmartSkating.Functions/bin/Release/$(runtime)/'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: 'Backend/Functions/WayPointSaverFunction/bin/Release/Function.zip'
+      archiveFile: 'Backend/Functions/SmartSkating.Functions/bin/Release/Function.zip'
       replaceExistingArchive: true
       verbose: true
     displayName: 'Archive functions'
@@ -75,6 +35,6 @@ steps:
       azureSubscription: 'AzureDevSubscription'
       appType: 'functionApp'
       appName: 'smartskating'
-      package: 'Backend/Functions/WayPointSaverFunction/bin/Release/Function.zip'
+      package: 'Backend/Functions/SmartSkating.Functions/bin/Release/Function.zip'
       deploymentMethod: 'auto'
     displayName: 'Publish functions'
