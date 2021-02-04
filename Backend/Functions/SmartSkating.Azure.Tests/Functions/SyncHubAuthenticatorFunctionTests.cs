@@ -23,6 +23,10 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         public async Task CallsBinderWithCorrectArguments()
         {
             var request = Utils.CreateMockRequest(queryString: "?sessionId=123");
+
+            _binder.BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute())
+                .ReturnsForAnyArgs(new SignalRConnectionInfo());
+
             await _sut.Negotiate(request, _binder, _log);
 
             await _binder.Received(1).BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute
