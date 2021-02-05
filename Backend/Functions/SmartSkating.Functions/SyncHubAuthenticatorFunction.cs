@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,18 +21,27 @@ namespace Sanet.SmartSkating.Backend.Functions
             ILogger log)
         {
             var sessionId = req.Query["sessionId"].ToString();
-            var connectionInfo = await binder.BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute
-                {HubName = sessionId });
-            log.LogInformation($"negotiated {connectionInfo}");
-            // connectionInfo contains an access key token with a name identifier claim set to the authenticated user
-            var response = new SyncHubInfoResponse
+            var response = new SyncHubInfoResponse();
+
+            try
             {
-                SyncHubInfo = new SyncHubInfoDto
+                var connectionInfo = await binder
+                    .BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute
+                    {HubName = sessionId });
+                log.LogInformation($"negotiated {connectionInfo}");
+                // connectionInfo contains an access key token with a name identifier claim set to the authenticated user
+                response.SyncHubInfo = new SyncHubInfoDto
                 {
                     Url = connectionInfo.Url,
                     AccessToken = connectionInfo.AccessToken
-                }
-            };
+                };
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+                response.ErrorCode = StatusCodes.Status404NotFound;
+            }
+
             return new JsonResult(response);
         }
     }
