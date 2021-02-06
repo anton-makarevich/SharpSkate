@@ -1,21 +1,18 @@
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using DashboardUno.Views;
+using Microsoft.Extensions.DependencyInjection;
+using Sanet.SmartSkating.Services.Account;
+using Sanet.SmartSkating.Dto.Services.Account;
+using Sanet.SmartSkating.ViewModels;
+using Sanet.SmartSkating.Services.Api;
+using Sanet.SmartSkating.Dto;
+using Refit;
 
 namespace DashboardUno
 {
@@ -24,25 +21,43 @@ namespace DashboardUno
     /// </summary>
     public sealed partial class App : Application
 	{
+		private ServiceProvider _serviceProvider;
+
+		private readonly IServiceCollection _services;
+
 		/// <summary>
 		/// Initializes the singleton application object.  This is the first line of authored code
 		/// executed, and as such is the logical equivalent of main() or WinMain().
 		/// </summary>
 		public App()
 		{
+			_services = new ServiceCollection();
+			ConfigureServices(_services);
+
 			ConfigureFilters(global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory);
 
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
 		}
 
-		/// <summary>
-		/// Invoked when the application is launched normally by the end user.  Other entry points
-		/// will be used such as when the application is launched to open a specific file.
-		/// </summary>
-		/// <param name="e">Details about the launch request and process.</param>
-		protected override void OnLaunched(LaunchActivatedEventArgs e)
+        private void ConfigureServices(IServiceCollection services)
+        {
+			// Services
+			_services.AddSingleton(RestService.For<IApiService>(ApiNames.BaseUrl));
+			_services.AddSingleton<ILoginService, LoginService>();
+
+			// ViewModels
+			_services.AddSingleton<LoginViewModel, LoginViewModel>();
+        }
+
+        /// <summary>
+        /// Invoked when the application is launched normally by the end user.  Other entry points
+        /// will be used such as when the application is launched to open a specific file.
+        /// </summary>
+        /// <param name="e">Details about the launch request and process.</param>
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
 		{
+            _serviceProvider = _services.BuildServiceProvider();
 #if DEBUG
 			if (System.Diagnostics.Debugger.IsAttached)
 			{

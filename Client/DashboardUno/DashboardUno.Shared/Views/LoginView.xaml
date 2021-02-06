@@ -7,7 +7,32 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-		<TextBlock Text="Hello, world!" Margin="20" FontSize="30" />
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel
+            Grid.Column="1"
+            VerticalAlignment="Center">
+            <TextBlock 
+                Text="Username"
+                   />
+            <TextBox
+                Text="{Binding Username}"/>
+            <TextBlock 
+                Text="Password"
+            />
+            <PasswordBox
+                Password="{Binding Password}"
+                />
+            <TextBlock 
+                Text="{Binding ValidationMessage}"/>
+            <Button
+                Content="Login"
+                IsEnabled="{Binding CanLogin}"
+                Command="{Binding LoginCommand}"/>
+        </StackPanel>
     </Grid>
 </Page>
