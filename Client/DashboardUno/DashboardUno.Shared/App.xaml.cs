@@ -13,6 +13,8 @@ using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Dto;
 using Refit;
+using Sanet.SmartSkating.Services;
+using DashboardUno.Shared.Services;
 
 namespace DashboardUno
 {
@@ -24,6 +26,7 @@ namespace DashboardUno
 		private ServiceProvider _serviceProvider;
 
 		private readonly IServiceCollection _services;
+		private INavigationService _navigationService;
 
 		/// <summary>
 		/// Initializes the singleton application object.  This is the first line of authored code
@@ -91,6 +94,8 @@ namespace DashboardUno
 				// Place the frame in the current Window
 				window.Content = rootFrame;
 			}
+
+			_navigationService = new UwpNavigationService(rootFrame, _serviceProvider);
 
 #if !(NET5_0 && WINDOWS)
 			if (e.PrelaunchActivated == false)
