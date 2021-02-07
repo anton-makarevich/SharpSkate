@@ -1,6 +1,3 @@
-using System;
-using Windows.UI.Xaml;
-
 namespace DashboardUno.Wasm
 {
     public class Program
