@@ -23,7 +23,10 @@ namespace DashboardUno
     /// </summary>
     public sealed partial class App : Application
 	{
-		private ServiceProvider _serviceProvider;
+		private IServiceProvider _serviceProvider;
+
+		public IServiceProvider Container => _serviceProvider;
+		public INavigationService NavigationService => _navigationService;
 
 		private readonly IServiceCollection _services;
 		private INavigationService _navigationService;

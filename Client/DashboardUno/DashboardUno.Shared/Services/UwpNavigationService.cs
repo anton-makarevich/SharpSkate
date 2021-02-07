@@ -1,6 +1,10 @@
-﻿using Sanet.SmartSkating.Services;
+﻿using DashboardUno.Views;
+using Sanet.SmartSkating.Services;
+using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.ViewModels.Base;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
@@ -8,6 +12,9 @@ namespace DashboardUno.Shared.Services
 {
     class UwpNavigationService : INavigationService
     {
+        private readonly List<BaseViewModel> _viewModels = new List<BaseViewModel>();
+        private readonly Dictionary<Type, Type> _viewModelViewDictionary = new Dictionary<Type, Type>();
+
         private readonly Frame _rootFrame;
         private readonly IServiceProvider _container;
 
@@ -15,6 +22,43 @@ namespace DashboardUno.Shared.Services
         {
             _rootFrame = rootFrame;
             _container = container;
+
+            RegisterViewModels();
+        }
+
+        private void RegisterViewModels()
+        {
+            //For now jist manual registration
+            _viewModelViewDictionary.Add(typeof(LoginViewModel), typeof(LoginView));
+        }
+
+        private T CreateViewModel<T>() where T : BaseViewModel
+        {
+            var vm = _container.GetService(typeof(T)) as T;
+            vm.SetNavigationService(this);
+            return vm;
+        }
+
+        private Task OpenViewModelAsync<T>(T viewModel, bool modalPresentation = false)
+            where T : BaseViewModel
+        {
+            return  Task.Run(() => {
+                if (viewModel == null)
+                    return;
+                if (viewModel.NavigationService == null)
+                    viewModel.SetNavigationService(this);
+                var viewType = CreateView(viewModel);
+                {
+                    _rootFrame.Navigate(viewType);
+                }
+            });
+        }
+
+        private Type CreateView(BaseViewModel viewModel)
+        {
+            var viewModelType = viewModel.GetType();
+
+            return _viewModelViewDictionary[viewModelType];
         }
 
         public Task CloseAsync()
@@ -24,22 +68,39 @@ namespace DashboardUno.Shared.Services
 
         public T GetNewViewModel<T>() where T : BaseViewModel
         {
-            throw new NotImplementedException();
+            var vm = (T)_viewModels.FirstOrDefault(f => f is T);
+
+            if (vm != null)
+            {
+                _viewModels.Remove(vm);
+            }
+
+            vm = CreateViewModel<T>();
+            _viewModels.Add(vm);
+            return vm;
         }
 
         public T GetViewModel<T>() where T : BaseViewModel
         {
-            throw new NotImplementedException();
+            var vm = (T)_viewModels.FirstOrDefault(f => f is T);
+            if (vm != null) return vm;
+            vm = CreateViewModel<T>();
+            _viewModels.Add(vm);
+            return vm;
         }
 
         public bool HasViewModel<T>() where T : BaseViewModel
         {
-            throw new NotImplementedException();
+            var vm = (T)_viewModels.FirstOrDefault(f => f is T);
+            return (vm != null);
         }
 
         public Task NavigateBackAsync()
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                _rootFrame.GoBack();
+            });
         }
 
         public Task NavigateToRootAsync()
@@ -49,22 +110,23 @@ namespace DashboardUno.Shared.Services
 
         public Task NavigateToViewModelAsync<T>(T viewModel) where T : BaseViewModel
         {
-            throw new NotImplementedException();
+            return OpenViewModelAsync(viewModel);
         }
 
         public Task NavigateToViewModelAsync<T>() where T : BaseViewModel
         {
-            throw new NotImplementedException();
+            var vm = GetViewModel<T>();
+            return OpenViewModelAsync(vm);
         }
 
         public Task ShowViewModelAsync<T>(T viewModel) where T : BaseViewModel
         {
-            throw new NotImplementedException();
+            return NavigateToViewModelAsync(viewModel);
         }
 
         public Task ShowViewModelAsync<T>() where T : BaseViewModel
         {
-            throw new NotImplementedException();
+            return NavigateToViewModelAsync<T>();
         }
 
         public Task<TResult> ShowViewModelForResultAsync<T, TResult>(T viewModel)
