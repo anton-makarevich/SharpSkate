@@ -1,6 +1,8 @@
 <linker>
   <assembly fullname="DashboardUno.Wasm" />
   <assembly fullname="Uno.UI" />
+    <assembly fullname="SmartSkating" />
+    <assembly fullname="SmartSkating.Dto" />
 
   <assembly fullname="System.Core">
 	<!-- This is required by JSon.NET and any expression.Compile caller -->

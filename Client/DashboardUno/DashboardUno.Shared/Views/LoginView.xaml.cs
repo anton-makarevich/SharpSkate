@@ -1,3 +1,4 @@
+using Windows.UI.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Sanet.SmartSkating.ViewModels;
 using Windows.UI.Xaml.Controls;
@@ -9,18 +10,18 @@ namespace DashboardUno.Views
     /// </summary>
     public sealed partial class LoginView : Page
     {
-        private LoginViewModel _viewModel;
+        private LoginViewModel? _viewModel;
 
         public LoginView()
         {
             this.InitializeComponent();
-            var container = ((App)App.Current).Container;
+            var container = ((App)Application.Current).Container;
             var vm = ActivatorUtilities.GetServiceOrCreateInstance(container, typeof(LoginViewModel)) as LoginViewModel;
-            vm.SetNavigationService(((App)App.Current).NavigationService);
+            vm?.SetNavigationService(((App)Application.Current).NavigationService);
             ViewModel = vm;
         }
 
-        public LoginViewModel ViewModel
+        public LoginViewModel? ViewModel
         {
             get => _viewModel;
             private set

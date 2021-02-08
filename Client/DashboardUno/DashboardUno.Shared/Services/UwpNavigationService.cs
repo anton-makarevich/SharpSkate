@@ -32,10 +32,10 @@ namespace DashboardUno.Shared.Services
             _viewModelViewDictionary.Add(typeof(LoginViewModel), typeof(LoginView));
         }
 
-        private T CreateViewModel<T>() where T : BaseViewModel
+        private T? CreateViewModel<T>() where T : BaseViewModel
         {
             var vm = _container.GetService(typeof(T)) as T;
-            vm.SetNavigationService(this);
+            vm?.SetNavigationService(this);
             return vm;
         }
 
@@ -43,10 +43,6 @@ namespace DashboardUno.Shared.Services
             where T : BaseViewModel
         {
             return  Task.Run(() => {
-                if (viewModel == null)
-                    return;
-                if (viewModel.NavigationService == null)
-                    viewModel.SetNavigationService(this);
                 var viewType = CreateView(viewModel);
                 {
                     _rootFrame.Navigate(viewType);
@@ -83,8 +79,6 @@ namespace DashboardUno.Shared.Services
         public T GetViewModel<T>() where T : BaseViewModel
         {
             var vm = (T)_viewModels.FirstOrDefault(f => f is T);
-            if (vm != null) return vm;
-            vm = CreateViewModel<T>();
             _viewModels.Add(vm);
             return vm;
         }
