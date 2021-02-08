@@ -1,5 +1,4 @@
-﻿using DashboardUno.Views;
-using Sanet.SmartSkating.Services;
+﻿using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.ViewModels.Base;
 using System;
@@ -7,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Sanet.SmartSkating.Dashboard.Views;
 
-namespace DashboardUno.Shared.Services
+namespace Sanet.SmartSkating.Dashboard.Services
 {
     class UwpNavigationService : INavigationService
     {

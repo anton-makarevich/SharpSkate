@@ -5,7 +5,6 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using DashboardUno.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Dto.Services.Account;
@@ -14,9 +13,10 @@ using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Dto;
 using Refit;
 using Sanet.SmartSkating.Services;
-using DashboardUno.Shared.Services;
+using Sanet.SmartSkating.Dashboard.Services;
+using Sanet.SmartSkating.Dashboard.Views;
 
-namespace DashboardUno
+namespace Sanet.SmartSkating.Dashboard
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

@@ -6,6 +6,8 @@
         <NoWarn>NU1701</NoWarn>
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
+        <AssemblyName>SmartSkating.Dashboard.Wasm</AssemblyName>
+        <RootNamespace>Sanet.SmartSkating.Dashboard.Wasm</RootNamespace>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <MonoRuntimeDebuggerEnabled>true</MonoRuntimeDebuggerEnabled>

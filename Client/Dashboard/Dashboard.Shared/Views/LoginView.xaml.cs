@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Sanet.SmartSkating.ViewModels;
 using Windows.UI.Xaml.Controls;
 
-namespace DashboardUno.Views
+namespace Sanet.SmartSkating.Dashboard.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.

@@ -1,4 +1,6 @@
-namespace DashboardUno.Wasm
+using Sanet.SmartSkating.Dashboard;
+
+namespace Sanet.SmartSkating.Dashboard.Wasm
 {
     public class Program
     {

@@ -6,8 +6,8 @@
         <ProjectGuid>22676667-92a0-4544-af97-4829e03e6fd4</ProjectGuid>
         <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
         <OutputType>Exe</OutputType>
-        <RootNamespace>DashboardUno.macOS</RootNamespace>
-        <AssemblyName>DashboardUno.macOS</AssemblyName>
+        <RootNamespace>Sanet.SmartSkating.Dashboard.macOS</RootNamespace>
+        <AssemblyName>SmartSkating.Dashboard.macOS</AssemblyName>
         <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
         <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
         <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
@@ -70,7 +70,7 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
     </ItemGroup>
-    <Import Project="..\Dashboard.Shared\Dashboard.Shared.projitems" Label="Shared" Condition="Exists('..\DashboardUno.Shared\DashboardUno.Shared.projitems')" />
+    <Import Project="..\Dashboard.Shared\Dashboard.Shared.projitems" Label="Shared" Condition="Exists('..\Dashboard.Shared\Dashboard.Shared.projitems')" />
     <ItemGroup>
         <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
         <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-128.png" />

@@ -1,5 +1,5 @@
 <linker>
-  <assembly fullname="DashboardUno.Wasm" />
+  <assembly fullname="SmartSkating.Dashboard.Wasm" />
   <assembly fullname="Uno.UI" />
     <assembly fullname="SmartSkating" />
     <assembly fullname="SmartSkating.Dto" />

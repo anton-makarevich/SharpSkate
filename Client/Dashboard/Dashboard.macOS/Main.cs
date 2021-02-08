@@ -1,6 +1,7 @@
 using AppKit;
+using Sanet.SmartSkating.Dashboard;
 
-namespace DashboardUno.macOS
+namespace Sanet.SmartSkating.Dashboard.macOS
 {
     static class MainClass
     {
