@@ -3,5 +3,4 @@ using Foundation;
 
 namespace DashboardUno.macOS
 {
-
 }

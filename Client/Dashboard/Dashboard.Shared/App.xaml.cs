@@ -140,7 +140,6 @@ namespace Sanet.SmartSkating.Dashboard
 			deferral.Complete();
 		}
 
-
 		/// <summary>
         /// Configures global logging
         /// </summary>
