@@ -32,7 +32,7 @@ namespace DashboardUno.Shared.Services
             _viewModelViewDictionary.Add(typeof(LoginViewModel), typeof(LoginView));
         }
 
-        private T? CreateViewModel<T>() where T : BaseViewModel
+        private T CreateViewModel<T>() where T : BaseViewModel
         {
             var vm = _container.GetService(typeof(T)) as T;
             vm?.SetNavigationService(this);

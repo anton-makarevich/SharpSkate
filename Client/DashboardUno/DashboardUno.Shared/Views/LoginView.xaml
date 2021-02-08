@@ -20,12 +20,12 @@
                 Text="Username"
                    />
             <TextBox
-                Text="{Binding Username}"/>
+                Text="{Binding Username, Mode=TwoWay}"/>
             <TextBlock 
                 Text="Password"
             />
             <PasswordBox
-                Password="{Binding Password}"
+                Password="{Binding Password, Mode=TwoWay}"
                 />
             <TextBlock 
                 Text="{Binding ValidationMessage}"/>
