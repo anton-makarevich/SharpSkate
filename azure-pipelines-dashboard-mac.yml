@@ -8,7 +8,7 @@ variables:
   - name: solution
     value: 'SmartSkating.sln'
   - name: project
-    value: 'Client/Dashboard/SmartSkating.Dashboard.Mac/SmartSkating.Dashboard.Mac.csproj'
+    value: 'Client/Dashboard/Dashboard.macOS/Dashboard.macOS.csproj'
   - name: buildPlatform
     value: 'iPhoneSimulator'
   - name: buildConfiguration
