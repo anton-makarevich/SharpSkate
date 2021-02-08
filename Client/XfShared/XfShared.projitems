@@ -9,15 +9,13 @@
     <Import_RootNamespace>XfShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Services" />
-    <Folder Include="$(MSBuildThisFileDirectory)Services\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Converters\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Views\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\InverseBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MainModule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\XamarinFormsNavigationService.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\InverseBooleanConverter.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\XamarinFormsNavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Base\BaseView.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Base\BaseView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Cells\TrackCell.xaml.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' ">
       <DependentUpon>..\..\..\Mobile\SmartSkating.Xf\Views\Cells\TrackCell.xaml</DependentUpon>
       <SubType>Code</SubType>

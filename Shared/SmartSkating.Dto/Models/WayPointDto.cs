@@ -10,7 +10,7 @@ namespace Sanet.SmartSkating.Dto.Models
 
         public static WayPointDto FromSessionCoordinate(string sessionId, CoordinateDto coordinate, DateTime? time = null)
         {
-            return new WayPointDto()
+            return new WayPointDto
             {
                 Coordinate = coordinate,
                 Id = Guid.NewGuid().ToString("N"),

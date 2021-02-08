@@ -26,12 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BleScanSaverFunction\BleScanSaverFunction.csproj" />
-      <ProjectReference Include="..\DeviceSaverFunction\DeviceSaverFunction.csproj" />
       <ProjectReference Include="..\FunctionTestUtils\FunctionTestUtils.csproj" />
-      <ProjectReference Include="..\LoginFunction\LoginFunction.csproj" />
-      <ProjectReference Include="..\SessionSaverFunction\SessionSaverFunction.csproj" />
-      <ProjectReference Include="..\WayPointSaverFunction\WayPointSaverFunction.csproj" />
+      <ProjectReference Include="..\SmartSkating.Functions\SmartSkating.Functions.csproj" />
     </ItemGroup>
 
 </Project>

@@ -61,7 +61,7 @@ namespace Sanet.SmartSkating.ViewModels
                 }
             }
             else
-                _validationMessage = CheckCredentialsMessage;
+                ValidationMessage = CheckCredentialsMessage;
         }
 
         public string ValidationMessage    
