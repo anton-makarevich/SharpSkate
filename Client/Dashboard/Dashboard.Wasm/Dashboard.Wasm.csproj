@@ -17,7 +17,7 @@
         <Content Include="Assets\SplashScreen.png" />
     </ItemGroup>
     <ItemGroup>
-        <UpToDateCheckInput Include="..\DashboardUno.Shared\**\*.xaml" />
+        <UpToDateCheckInput Include="..\Dashboard.Shared\**\*.xaml" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="WasmCSS\Fonts.css" />
@@ -41,5 +41,5 @@
       <ProjectReference Include="..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj" />
       <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj" />
     </ItemGroup>
-    <Import Project="..\DashboardUno.Shared\DashboardUno.Shared.projitems" Label="Shared" Condition="Exists('..\DashboardUno.Shared\DashboardUno.Shared.projitems')" />
+    <Import Project="..\Dashboard.Shared\Dashboard.Shared.projitems" Label="Shared" Condition="Exists('..\Dashboard.Shared\Dashboard.Shared.projitems')" />
 </Project>
