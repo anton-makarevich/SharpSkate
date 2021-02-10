@@ -6,6 +6,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Microsoft.Extensions.Logging;
+using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
 
@@ -15,7 +16,8 @@ namespace Sanet.SmartSkating.Backend.Functions
     {
         [FunctionName("SyncHubAuthenticatorFunction")]
         public async Task<IActionResult> Negotiate(
-            [HttpTrigger(AuthorizationLevel.Function, "get")]
+            [HttpTrigger(AuthorizationLevel.Function, "get",
+                Route = ApiNames.SyncHubResource.Route)]
             HttpRequest req,
             IBinder binder,
             ILogger log)
