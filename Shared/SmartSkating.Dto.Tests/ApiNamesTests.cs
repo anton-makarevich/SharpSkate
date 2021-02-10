@@ -11,6 +11,7 @@ namespace SmartSkating.Dto.Tests
         private const string ScansApiName = "scans";
         private const string DevicesApiName = "devices";
         private const string AccountsApiName = "accounts";
+        private const string SyncHubApiName = "synchubs";
 
         [Fact]
         public void WayPointsApiResourceHasCorrectNames()
@@ -18,33 +19,40 @@ namespace SmartSkating.Dto.Tests
             ApiNames.WayPointsResource.Path.Should().Be($"/{WayPointsApiName}");
             ApiNames.WayPointsResource.Route.Should().Be(WayPointsApiName);
         }
-        
+
         [Fact]
         public void SessionsApiResourceHasCorrectName()
         {
             ApiNames.SessionsResource.Path.Should().Be($"/{SessionsApiName}");
             ApiNames.SessionsResource.Route.Should().Be(SessionsApiName);
         }
-        
+
         [Fact]
         public void BleScansApiResourceHasCorrectName()
         {
             ApiNames.BleScansResource.Path.Should().Be($"/{ScansApiName}");
             ApiNames.BleScansResource.Route.Should().Be(ScansApiName);
         }
-        
+
         [Fact]
         public void DevicesApiResourceHasCorrectName()
         {
             ApiNames.DevicesResource.Path.Should().Be($"/{DevicesApiName}");
             ApiNames.DevicesResource.Route.Should().Be(DevicesApiName);
         }
-        
+
         [Fact]
         public void AccountsApiResourceHasCorrectName()
         {
             ApiNames.AccountsResource.Path.Should().Be($"/{AccountsApiName}");
             ApiNames.AccountsResource.Route.Should().Be(AccountsApiName);
+        }
+
+        [Fact]
+        public void SyncHubApiResourceHasCorrectName()
+        {
+            ApiNames.SyncHubResource.Path.Should().Be($"/{SyncHubApiName}");
+            ApiNames.SyncHubResource.Route.Should().Be(SyncHubApiName);
         }
     }
 }
