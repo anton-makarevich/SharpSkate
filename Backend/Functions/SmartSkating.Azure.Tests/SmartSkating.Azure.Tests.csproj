@@ -8,6 +8,8 @@
         <RootNamespace>Sanet.SmartSkating.Backend.Azure.Tests</RootNamespace>
 
         <Nullable>disable</Nullable>
+
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -25,12 +25,12 @@ namespace Sanet.SmartSkating.Backend.Functions
         {
             _dataService = dataService;
         }
-        
+
         private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
-        
+
         [FunctionName("DeviceSaverFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, 
+            [HttpTrigger(AuthorizationLevel.Function,
                 "post",
                 Route = ApiNames.DevicesResource.Route)] HttpRequest request,
             ILogger logger)
@@ -40,10 +40,11 @@ namespace Sanet.SmartSkating.Backend.Functions
 
             var responseObject = new BooleanResponse();
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
-            
-            var requestObject = JsonConvert.DeserializeObject<DeviceDto>(requestData);
-            
-            if (requestObject == null)
+
+            var requestObject = JsonConvert.DeserializeObject<DeviceDto?>(requestData);
+
+            if (string.IsNullOrEmpty(requestObject?.AccountId)
+                || string.IsNullOrEmpty(requestObject?.Id))
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.BadRequest;
                 _errorMessageBuilder.AppendLine(Constants.BadRequestErrorMessage);
@@ -51,11 +52,11 @@ namespace Sanet.SmartSkating.Backend.Functions
             else
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
-                
+
                 if (_dataService != null)
                     responseObject.Result = await _dataService.SaveDeviceAsync(requestObject);
-                
-                if (!string.IsNullOrEmpty(_dataService?.ErrorMessage)) 
+
+                if (!string.IsNullOrEmpty(_dataService?.ErrorMessage))
                     _errorMessageBuilder.AppendLine(_dataService.ErrorMessage);
             }
 

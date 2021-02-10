@@ -35,14 +35,14 @@ namespace Sanet.SmartSkating.WearOs
             container.Register<TracksViewModel>();
             container.Register<LiveSessionViewModel>();
             container.Register<StartViewModel>();
-            
+
             #if TEST
             container.RegisterInstance<ILocationService>(new DummyLocationService("Schaatsnaacht", 100));
             var resourceReader = new EmbeddedResourceReader();
             container.RegisterInstance<IBleLocationService>(
                 new DummyBleLocationService(
-                    resourceReader, 
-                    new LocalBleDevicesProvider(resourceReader), 
+                    resourceReader,
+                    new LocalBleDevicesProvider(resourceReader),
                     dataService,
                     0.5)
                 );
@@ -54,11 +54,13 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterInstance<IBluetoothService>(new AndroidBluetoothService(activity));
             container.RegisterSingleton<IDataSyncService,DataSyncService>();
             #endif
-            
+
             container.RegisterSingleton<IResourceReader,EmbeddedResourceReader>();
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
-            container.RegisterSingleton<IAccountService,EssentialsAccountService>();
+            container.RegisterSingleton<IDeviceInfo,EssentialsDeviceInfo>();
+            container.RegisterSingleton<IPreferences,EssentialsPreferences>();
+            container.RegisterSingleton<IAccountService,AccountService>();
             container.RegisterInstance<IDataService>(dataService);
             container.RegisterSingleton<ITrackProvider, LocalTrackProvider>();
             container.RegisterSingleton<IBleDevicesProvider,LocalBleDevicesProvider>();
