@@ -17,13 +17,15 @@ namespace Sanet.SmartSkating.Xf
         {
             // Register app start viewmodel
             container.Register<StartViewModel>();
-            
+
             // Register services
             container.RegisterSingleton<IResourceReader,EmbeddedResourceReader>();
             container.RegisterSingleton<ISettingsService, SettingsService>();
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
-            container.RegisterSingleton<IAccountService,EssentialsAccountService>();
+            container.RegisterSingleton<IDeviceInfo,EssentialsDeviceInfo>();
+            container.RegisterSingleton<IPreferences,EssentialsPreferences>();
+            container.RegisterSingleton<IAccountService,AccountService>();
             #if TEST
             container.RegisterSingleton<IDataSyncService,DebugSyncService>();
             #else

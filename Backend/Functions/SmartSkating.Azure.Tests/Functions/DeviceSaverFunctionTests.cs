@@ -18,7 +18,8 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         private readonly IDataService _dataService;
         private readonly DeviceDto _deviceStub = new DeviceDto
         {
-            Id = "1",
+            AccountId = "accountId",
+            Id = "deviceId",
             Manufacturer = "some",
             Model = "model",
             OsName = "os",
@@ -47,18 +48,18 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         {
             _dataService.SaveDeviceAsync(_deviceStub)
                 .ReturnsForAnyArgs(Task.FromResult(true));
-        
+
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
                     _deviceStub),
                 Substitute.For<ILogger>()) as JsonResult;
-        
+
             Assert.NotNull(actionResult);
             var response = actionResult.Value as BooleanResponse;
 
             response.Should().NotBeNull();
             response?.Result.Should().BeTrue();
         }
-        
+
         [Fact]
         public async Task ReturnsServiceErrorMessage_WhenSavingIsUnsuccessful()
         {
@@ -66,17 +67,17 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             _dataService.ErrorMessage.Returns(errorMessage);
             _dataService.SaveDeviceAsync(_deviceStub)
                 .ReturnsForAnyArgs(Task.FromResult(false));
-        
+
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
                     _deviceStub),
                 Substitute.For<ILogger>()) as JsonResult;
-        
+
             Assert.NotNull(actionResult);
             var response = actionResult.Value as BooleanResponse;
             Assert.NotNull(response);
             response.Message.Should().Contain(errorMessage);
         }
-        
+
         [Fact]
         public async Task RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode()
         {
