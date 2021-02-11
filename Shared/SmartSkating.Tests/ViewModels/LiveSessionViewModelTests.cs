@@ -52,7 +52,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             var expectedTime = new TimeSpan().ToString(LiveSessionViewModel.TotalTimeFormat);
             _sut.TotalTime.Should().Be(expectedTime);
         }
-        
+
         [Fact]
         public void InitialCurrentSessionIsEqualToEmptyValue()
         {
@@ -66,21 +66,32 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _locationService.Received().StartFetchLocation();
         }
-        
+
         [Fact]
         public void StartSavesSessionToLocalStorage()
         {
-            var session = CreateSessionMock();
+            var sessionId = "sessionId";
+            var session = CreateSessionMock(sessionId);
             const string userId = "123";
+            const string deviceId = "deviceId";
+            var deviceInfo = new DeviceDto
+            {
+                Id = deviceId
+            };
+
             _accountService.UserId.Returns(userId);
+            _accountService.GetDeviceInfo().Returns(deviceInfo);
 
             _sut.StartCommand.Execute(null);
 
             _storageService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
-                s.Id == session.SessionId 
-                && s.AccountId == userId));
+                s.Id == session.SessionId
+                && s.AccountId == userId
+                && s.RinkId == session.Rink.Name
+                && s.DeviceId == deviceId
+                ));
         }
-        
+
         [Fact]
         public async Task FetchesKnownBleDevices_WhenPageIsLoaded_AndBleIsOnInSettings()
         {
@@ -89,7 +100,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             await _bleLocationService.Received().LoadDevicesDataAsync();
         }
-        
+
         [Fact]
         public async Task DoesNotFetchKnownBleDevices_WhenPageIsLoaded_AndBleIsOffInSettings()
         {
@@ -98,7 +109,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             await _bleLocationService.DidNotReceive().LoadDevicesDataAsync();
         }
-        
+
         [Fact]
         public void StartsLocationServiceWhenPageIsLoaded()
         {
@@ -110,18 +121,28 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void StopSavesCompletedSessionToLocalStorage()
         {
-            var session = CreateSessionMock();
+            const string sessionId = "someSessionId";
+            var session = CreateSessionMock(sessionId);
             const string userId = "123";
             _accountService.UserId.Returns(userId);
-            
+            const string deviceId = "deviceId";
+            var deviceInfo = new DeviceDto
+            {
+                Id = deviceId
+            };
+            _accountService.GetDeviceInfo().Returns(deviceInfo);
+
             _sut.StopCommand.Execute(null);
 
             _storageService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
-                s.Id == session.SessionId 
+                s.Id == sessionId
                 && s.AccountId == userId
-                && s.IsCompleted));
+                && s.IsCompleted
+                && s.RinkId == session.Rink.Name
+                && s.DeviceId == deviceId
+                ));
         }
-        
+
         [Fact]
         public async Task StopSyncsDataForSessionsAndWayPoints()
         {
@@ -130,7 +151,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             await _dataSyncService.Received().SyncSessionsAsync();
             await _dataSyncService.Received().SyncWayPointsAsync();
         }
-        
+
         [Fact]
         public void StopsLocationService_WhenStopButtonPressed()
         {
@@ -246,10 +267,10 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public void CannotStartIfSessionIsNull()
         {
             _sut.AttachHandlers();
-            
+
             Assert.False(_sut.CanStart);
         }
-        
+
         [Fact]
         public void CanStartIfSessionIsCreated()
         {
@@ -257,10 +278,10 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 new Rink(RinkTests.EindhovenStart,
                     RinkTests.EindhovenFinish));
             _sut.AttachHandlers();
-            
+
             Assert.True(_sut.CanStart);
         }
-        
+
         [Fact]
         public void ChangesCanStartWhenSessionIsCreated()
         {
@@ -275,7 +296,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             };
 
             _sut.AttachHandlers();
-            
+
             Assert.True(canStartChanged);
         }
 
@@ -286,16 +307,18 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
-            
+
             session.Received().AddPoint(_locationStub, Arg.Any<DateTime>());
         }
 
-        private ISession CreateSessionMock()
+        private ISession CreateSessionMock(string sessionId = "sessionId")
         {
             var rink = new Rink(RinkTests.EindhovenStart,
-                RinkTests.EindhovenFinish);
+                RinkTests.EindhovenFinish, "Eindhoven");
             _trackService.SelectedRink.Returns(rink);
             var session = Substitute.For<ISession>();
+            session.SessionId.Returns(sessionId);
+            session.Rink.Returns(rink);
             _sessionService.CreateSessionForRink(rink).Returns(session);
             _sut.AttachHandlers();
             return session;
@@ -307,74 +330,74 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             var session = CreateSessionMock();
             session.LastLapTime.Returns(new TimeSpan(0, 0, 40));
             session.LapsCount.Returns(1);
-            
+
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
             Assert.Equal("0:00:40",_sut.LastLapTime);
         }
-        
+
         [Fact]
         public void ShowsPlaceholderForLastLapTimeIfNoLapsDone()
         {
             var session = CreateSessionMock();
             session.LapsCount.Returns(0);
-            
+
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastLapTime);
         }
-        
+
         [Fact]
         public void ShowsBestLapTime()
         {
             var session = CreateSessionMock();
             session.BestLapTime.Returns(new TimeSpan(0, 0, 40));
             session.LapsCount.Returns(1);
-            
+
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
             Assert.Equal("0:00:40",_sut.BestLapTime);
         }
-        
+
         [Fact]
         public void ShowsPlaceholderForBestLapTimeIfNoLapsDone()
         {
             var session = CreateSessionMock();
             session.LapsCount.Returns(0);
-            
+
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestLapTime);
         }
-        
+
         [Fact]
         public void ShowsAmountOfLaps()
         {
             var session = CreateSessionMock();
             session.LapsCount.Returns(1);
-            
+
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
             Assert.Equal("1",_sut.Laps);
         }
-        
+
         [Fact]
         public void ShowsZeroForAmountOfLapsIfNoLapsDone()
         {
             var session = CreateSessionMock();
             session.LapsCount.Returns(0);
-            
+
             _sut.StartCommand.Execute(null);
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
             Assert.Equal("0",_sut.Laps);
         }
-        
+
         [Fact]
         public void ShowsLastSectorTime()
         {
@@ -385,7 +408,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             Assert.Equal("00:10",_sut.LastSectorTime);
         }
-        
+
         [Fact]
         public void ShowsPlaceholderForLastSectorTimeIfNoSectorsDone()
         {
@@ -397,7 +420,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastSectorTime);
         }
-        
+
         [Fact]
         public void ShowsBestSectorTime()
         {
@@ -408,7 +431,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             Assert.Equal("00:10",_sut.BestSectorTime);
         }
-        
+
         [Fact]
         public void ShowsPlaceholderForBestSectorTimeIfNoSectorsDone()
         {
@@ -430,12 +453,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 new WayPoint(
                     _locationStub,
                     _locationStub,
-                    startTime, 
+                    startTime,
                     WayPointTypes.Start),
                 new WayPoint(
-                    _locationStub, 
                     _locationStub,
-                    endTime, 
+                    _locationStub,
+                    endTime,
                     WayPointTypes.Finish)
             );
             session.Sectors.Returns(new List<Section>() {section});
@@ -464,9 +487,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 new WayPoint(_locationStub,_locationStub,endTime, WayPointTypes.Finish)
             );
             session.Sectors.Returns(new List<Section>(){section});
-            
+
             _sut.StartCommand.Execute(null);
-            
+
             session.Received().SetStartTime(Arg.Any<DateTime>());
         }
 
@@ -479,7 +502,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _bleLocationService.Received().StartBleScan(Arg.Any<string>());
         }
-        
+
         [Fact]
         public void DoesNotStartBleScan_WhenStartButtonPressed_ButBleIsNotAllowedInSettings()
         {
@@ -488,7 +511,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _bleLocationService.DidNotReceive().StartBleScan(Arg.Any<string>());
         }
-        
+
         [Fact]
         public void StopsBleScan_WhenStopButtonPressed()
         {
@@ -496,7 +519,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _bleLocationService.Received().StopBleScan();
         }
-        
+
         [Fact]
         public void AddsSectionSeparator_WhenCheckPointIsPassed()
         {
@@ -505,9 +528,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
             const WayPointTypes checkPointType = WayPointTypes.Start;
             var date = DateTime.Now;
-            
+
             _bleLocationService.CheckPointPassed += Raise.EventWith(
-                null, 
+                null,
                 new CheckPointEventArgs(checkPointType, date));
 
             session.Received().AddSeparatingPoint(checkPointType,date);

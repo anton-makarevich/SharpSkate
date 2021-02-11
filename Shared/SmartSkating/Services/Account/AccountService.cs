@@ -33,6 +33,9 @@ namespace Sanet.SmartSkating.Services.Account
         {
             if (key == UserIdKey)
                 return "AntonM";
+#if DEBUG
+            return "Debug";
+#endif
             var userId = _preferences.Get(key, "");
 
             if (!string.IsNullOrEmpty(userId)) return userId;

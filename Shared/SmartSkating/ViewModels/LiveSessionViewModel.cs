@@ -21,7 +21,7 @@ namespace Sanet.SmartSkating.ViewModels
     {
         public const string NoValue = "- - -";
         public const string TotalTimeFormat = "h\\:mm\\:ss";
-        
+
         private readonly ILocationService _locationService;
         private readonly IDataService _storageService;
         private readonly ITrackService _trackService;
@@ -58,21 +58,21 @@ namespace Sanet.SmartSkating.ViewModels
 
             TotalTime = new TimeSpan().ToString(TotalTimeFormat);
         }
-        
+
         public ICommand StartCommand => new SimpleCommand(async() =>
         {
             if (_settingsService.UseBle)
                 await _bleLocationService.LoadDevicesDataAsync();
-            
+
             _locationService.LocationReceived+= LocationServiceOnLocationReceived;
             _locationService.StartFetchLocation();
-            
+
             if (_settingsService.UseBle)
             {
                 _bleLocationService.CheckPointPassed+= BleLocationServiceOnCheckPointPassed;
                 _bleLocationService.StartBleScan(Session?.SessionId??string.Empty);
             }
-            
+
             Session?.SetStartTime(DateTime.UtcNow);
             IsRunning = true;
 #pragma warning disable 4014
@@ -156,7 +156,7 @@ namespace Sanet.SmartSkating.ViewModels
                 var lastSector = Session.Sectors.Last();
                 LastSectorTime = lastSector.Time.ToString("mm\\:ss");
                 Distance = $"{Math.Round(Session.Sectors.Count * 0.1f,1)}Km";
-                if (Session.BestSector != null) 
+                if (Session.BestSector != null)
                     BestSectorTime = Session.BestSector.Value.Time.ToString("mm\\:ss");
             }
             else
@@ -177,10 +177,10 @@ namespace Sanet.SmartSkating.ViewModels
 
             _locationService.StopFetchLocation();
             _bleLocationService.StopBleScan();
-            
+
             IsRunning = false;
             InfoLabel = string.Empty;
-            
+
 #pragma warning disable 4014
             SaveSessionAndSyncData(true);
 #pragma warning restore 4014
@@ -224,7 +224,7 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _lastLapTime, value);
         }
 
-        public string Laps    
+        public string Laps
         {
             get => _laps;
             private set => SetProperty(ref _laps, value);
@@ -278,11 +278,14 @@ namespace Sanet.SmartSkating.ViewModels
         {
             if (Session == null)
                 return null;
-            return new SessionDto
+            var s = new SessionDto
             {
                 Id = Session.SessionId,
                 AccountId = _accountService.UserId,
+                DeviceId = _accountService.GetDeviceInfo().Id,
+                RinkId = _trackService.SelectedRink?.Name??""
             };
+            return s;
         }
     }
 }
