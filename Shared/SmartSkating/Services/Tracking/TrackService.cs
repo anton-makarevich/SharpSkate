@@ -33,7 +33,7 @@ namespace Sanet.SmartSkating.Services.Tracking
                 .Select(o=>o.Track)
                 .FirstOrDefault();
             SelectedRink = track!=null
-                ? new Rink(new Coordinate(track.Start), new Coordinate(track.Finish), track.Name)
+                ? new Rink(new Coordinate(track.Start), new Coordinate(track.Finish), track.Id, track.Name)
                 : null;
         }
 
@@ -50,8 +50,8 @@ namespace Sanet.SmartSkating.Services.Tracking
                 SelectedRink = null;
                 return;
             }
-            SelectedRink = !string.IsNullOrEmpty(track.Name) 
-                ? new Rink(new Coordinate(track.Start),new Coordinate(track.Finish), track.Name) 
+            SelectedRink = !string.IsNullOrEmpty(track.Name)
+                ? new Rink(new Coordinate(track.Start),new Coordinate(track.Finish),track.Id, track.Name)
                 : null;
         }
     }
