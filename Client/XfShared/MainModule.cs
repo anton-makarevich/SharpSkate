@@ -17,6 +17,8 @@ namespace Sanet.SmartSkating.Xf
         {
             // Register app start viewmodel
             container.Register<StartViewModel>();
+            container.Register<TracksViewModel>();
+            container.Register<LiveSessionViewModel>();
 
             // Register services
             container.RegisterSingleton<IResourceReader,EmbeddedResourceReader>();
