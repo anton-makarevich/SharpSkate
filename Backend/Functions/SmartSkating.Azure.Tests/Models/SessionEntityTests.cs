@@ -16,15 +16,19 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Models
                 Id = "id",
                 AccountId = "accountId",
                 IsCompleted = true,
-                IsSaved = true
+                IsSaved = true,
+                DeviceId = "deviceId",
+                RinkId = "rinkId"
             };
             var sut = new SessionEntity(dto);
 
             sut.IsCompleted.Should().BeTrue();
             sut.PartitionKey.Should().Be(dto.AccountId);
             sut.RowKey.Should().Be(dto.Id);
+            sut.DeviceId.Should().Be(dto.DeviceId);
+            sut.RinkId.Should().Be(dto.RinkId);
         }
-        
+
         [Fact]
         public void CanBeExportedToDto()
         {
@@ -34,7 +38,9 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Models
                 PartitionKey = "accountId",
                 RowKey = "id",
                 Timestamp = DateTimeOffset.Now,
-                IsCompleted = true
+                IsCompleted = true,
+                DeviceId = "deviceId",
+                RinkId = "rinkId"
             };
 
             var dto = sut.ToDto();

@@ -18,7 +18,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         private const string FinishDeviceId = "finish";
         private const string Start300MDeviceId = "start300M";
         private const string Start3KDeviceId = "start3K";
-        
+
         private readonly BleDeviceDto _startDevice = new BleDeviceDto
         {
             Id = StartDeviceId,
@@ -54,8 +54,8 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         public BaseBleLocationServiceTests() : this(BleDevicesProvider, DataService)
         {
         }
-        
-        protected BaseBleLocationServiceTests(IBleDevicesProvider devicesProvider, IDataService dataService) 
+
+        protected BaseBleLocationServiceTests(IBleDevicesProvider devicesProvider, IDataService dataService)
             : base(devicesProvider, dataService)
         {
             devicesProvider.GetBleDevicesAsync().Returns(Task.FromResult(new List<BleDeviceDto>
@@ -73,11 +73,11 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             await LoadDevicesDataAsync();
             await DevicesProvider.Received().GetBleDevicesAsync();
         }
-        
+
         [Fact]
         public async Task GetWayPointForDeviceId_ReturnsUnknownId_WhenNoDevicesAreLoaded()
         {
-            BleDevicesProvider.GetBleDevicesAsync().Returns(Task.FromResult(new List<BleDeviceDto>())); 
+            BleDevicesProvider.GetBleDevicesAsync().Returns(Task.FromResult(new List<BleDeviceDto>()));
             await LoadDevicesDataAsync();
             var wayPointTypeInt = GetWayPointForDeviceId(StartDeviceId);
 
@@ -92,7 +92,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
 
             wayPointTypeInt.Should().Be((int) WayPointTypes.Start);
         }
-        
+
         [Fact]
         public async Task ReturnsCorrectWayPoint_ForFinishId()
         {
@@ -101,7 +101,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
 
             wayPointTypeInt.Should().Be((int) WayPointTypes.Finish);
         }
-        
+
         [Fact]
         public async Task ReturnsCorrectWayPoint_ForStart300MId()
         {
@@ -110,7 +110,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
 
             wayPointTypeInt.Should().Be((int) WayPointTypes.Start300M);
         }
-        
+
         [Fact]
         public async Task ReturnsCorrectWayPoint_ForStart3KId()
         {
@@ -142,10 +142,10 @@ namespace Sanet.SmartSkating.Tests.Services.Location
 
                 ProceedNewScan(scan);
             }
-            
+
             ScanStacks.Count.Should().Be(4);
         }
-        
+
         [Fact]
         public void DoesNotAddMoreThan4Stacks_ForDifferentDeviceIds()
         {
@@ -156,21 +156,21 @@ namespace Sanet.SmartSkating.Tests.Services.Location
 
                 ProceedNewScan(scan);
             }
-            
+
             ScanStacks.Count.Should().Be(4);
             ScanStacks.Last().DeviceId.Should().EndWith("4");
         }
 
         [Fact]
         public async Task
-            FiresCheckPointPassed_WhenStackHasMaxAverage_AndAverageDifferenceToTheClosestIsAtLeastTwoTimeLessThanToTheFurthest()
+            FiresCheckPointPassed_WhenStackHasMaxAverage_AndAverageDifference_ToTheClosest_IsAtLeastTwoTimeaLessThanToTheFurthest()
         {
             await LoadDevicesDataAsync();
 
             AddTwoRandomScans(90, StartDeviceId);
             AddTwoRandomScans(80, Start300MDeviceId);
             AddTwoRandomScans(95, Start3KDeviceId);
-            
+
             var checkPointType = WayPointTypes.Unknown;
             var checkPointPassedCalledTimes = 0;
             CheckPointPassed += (sender, args) =>
@@ -184,7 +184,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             checkPointType.Should().Be(WayPointTypes.Finish);
             checkPointPassedCalledTimes.Should().Be(1);
         }
-        
+
         [Fact]
         public async Task
             DoesNotFireCheckPointPassed_WhenStackHasMaxAverage_AndAverageDifferenceToTheClosestIsLessThanTwoTimeLessThanToTheFurthest()
@@ -194,7 +194,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             AddTwoRandomScans(90, StartDeviceId);
             AddTwoRandomScans(60, Start300MDeviceId);
             AddTwoRandomScans(95, Start3KDeviceId);
-            
+
             var checkPointType = WayPointTypes.Unknown;
             var checkPointPassedCalledTimes = 0;
             CheckPointPassed += (sender, args) =>
@@ -232,7 +232,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         public async Task FiresCheckPointPassed_WhenCorrespondingStackHasMaxAverage_ChangedTrendToDecrease_AndNextIncreasing()
         {
             await LoadDevicesDataAsync();
-            
+
             // Start300M is increasing
             AddTwoIncreasingScansForStart300MPoint();
 
@@ -278,14 +278,14 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             base.StartBleScan("id");
             IsScanning.Should().BeTrue();
         }
-        
+
         [Fact]
         public void SetsIsScanningToFalse_WhenStopIsCalled()
         {
             base.StopBleScan();
             IsScanning.Should().BeFalse();
         }
-        
+
         private void AddTwoRandomScans(int aboutRssi, string deviceId)
         {
             foreach (var unused in new[] {1, 2})
@@ -296,7 +296,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
                 ProceedNewScan(scan);
             }
         }
-        
+
         private void AddTwoIncreasingScansForStart300MPoint()
         {
             foreach (var i in new[] {1, 2})
@@ -306,7 +306,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
                 ProceedNewScan(scan);
             }
         }
-        
+
         private void AddCheckPointPassedScansAtFinishPoint()
         {
             foreach (var rssi in new[] {-50, -50, -60})

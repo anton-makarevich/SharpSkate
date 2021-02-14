@@ -13,7 +13,13 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
             PartitionKey = sessionDto.AccountId;
             RowKey = sessionDto.Id;
             IsCompleted = sessionDto.IsCompleted;
+            DeviceId = sessionDto.DeviceId;
+            RinkId= sessionDto.RinkId;
         }
+
+        public string RinkId { get; set; }
+
+        public string DeviceId { get; set; }
 
         public bool IsCompleted { get; set; }
 
@@ -24,7 +30,9 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
                 Id = RowKey,
                 AccountId = PartitionKey,
                 IsCompleted = IsCompleted,
-                IsSaved = true
+                IsSaved = true,
+                DeviceId = DeviceId,
+                RinkId = RinkId
             };
         }
     }
