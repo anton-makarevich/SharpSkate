@@ -19,8 +19,9 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Models
                 {
                     Latitude = 1.2,
                     Longitude = 3.2
-                }, 
-                Time = DateTime.Now
+                },
+                Time = DateTime.Now,
+                DeviceId = "deviceId"
             };
             var sut = new WayPointEntity(dto);
 
@@ -29,6 +30,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Models
             sut.Latitude.Should().Be(dto.Coordinate.Latitude);
             sut.Longitude.Should().Be(dto.Coordinate.Longitude);
             sut.Time.Should().Be(dto.Time);
+            sut.DeviceId.Should().Be(dto.DeviceId);
         }
     }
 }

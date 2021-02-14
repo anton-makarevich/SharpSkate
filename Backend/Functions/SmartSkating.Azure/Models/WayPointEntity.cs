@@ -10,16 +10,19 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
         {
             PartitionKey = wayPoint.SessionId;
             RowKey = wayPoint.Id;
-            
+
             Latitude = wayPoint.Coordinate.Latitude;
             Longitude = wayPoint.Coordinate.Longitude;
             Time = wayPoint.Time;
+            DeviceId = wayPoint.DeviceId;
         }
 
         public double Longitude { get; set; }
 
         public double Latitude { get; set; }
-        
+
         public DateTime Time { get; set; }
+
+        public string DeviceId { get; set; }
     }
 }

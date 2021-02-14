@@ -126,6 +126,7 @@ namespace Sanet.SmartSkating.ViewModels
             {
                 var pointDto = WayPointDto.FromSessionCoordinate(
                     Session.SessionId,
+                    _accountService.DeviceId,
                     LastCoordinate.ToDto(),
                     e.Date);
                 _storageService.SaveWayPointAsync(pointDto);
