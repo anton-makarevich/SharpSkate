@@ -6,6 +6,7 @@ using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Services.Account;
 
 namespace Sanet.SmartSkating.Services.Location
 {
@@ -13,6 +14,8 @@ namespace Sanet.SmartSkating.Services.Location
     {
         protected readonly IBleDevicesProvider DevicesProvider;
         private readonly IDataService _dataService;
+        private readonly IAccountService _accountService;
+
         private List<BleDeviceDto>? _devices;
         private string _sessionId = string.Empty;
         private const int RssiNearThreshold = -75;
@@ -21,10 +24,12 @@ namespace Sanet.SmartSkating.Services.Location
 
         protected List<BleScansStack> ScanStacks { get; }
 
-        protected BaseBleLocationService(IBleDevicesProvider devicesProvider, IDataService dataService)
+        protected BaseBleLocationService(IBleDevicesProvider devicesProvider, IDataService dataService,
+            IAccountService accountService)
         {
             DevicesProvider = devicesProvider;
             _dataService = dataService;
+            _accountService = accountService;
             ScanStacks = new List<BleScansStack>();
         }
 
@@ -59,9 +64,10 @@ namespace Sanet.SmartSkating.Services.Location
         {
             CheckPointPassed?.Invoke(this,new CheckPointEventArgs(type, time));
         }
-        
+
         protected void ProceedNewScan(BleScanResultDto scan)
         {
+            scan.ReceiverId = _accountService.DeviceId;
             var stack = ScanStacks.FirstOrDefault(f => f.DeviceId == scan.DeviceAddress);
             if (stack == null)
             {
@@ -87,10 +93,10 @@ namespace Sanet.SmartSkating.Services.Location
             var closestWayPointType = (WayPointTypes)GetWayPointForDeviceId(closestStack.DeviceId);
             if (ScanStacks.Count < 3)
             {
-                if (closestStack.AverageRssi > RssiNearThreshold) 
+                if (closestStack.AverageRssi > RssiNearThreshold)
                   InvokeCheckPointPassed(closestWayPointType, closestStack.Time);
-                return;  
-            } 
+                return;
+            }
 
             var rssiDifferences = ScanStacks
                 .Select(s => Math.Abs(closestStack.AverageRssi - s.AverageRssi))
@@ -98,8 +104,8 @@ namespace Sanet.SmartSkating.Services.Location
                 .Skip(1)  // remove 0 (difference with itself)
                 .ToList();
 
-            if (rssiDifferences.Count > 1 
-                && rssiDifferences.First() > 10 
+            if (rssiDifferences.Count > 1
+                && rssiDifferences.First() > 10
                 && rssiDifferences.Last() / rssiDifferences.First() < 2)
             {
                 InvokeCheckPointPassed(closestWayPointType, closestStack.Time);

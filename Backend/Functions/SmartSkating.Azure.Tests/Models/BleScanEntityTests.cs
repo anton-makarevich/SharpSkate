@@ -26,6 +26,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Models
             sut.Rssi.Should().Be(dto.Rssi);
             sut.Time.Should().Be(dto.Time);
             sut.DeviceId.Should().Be(dto.DeviceAddress);
+            sut.ReceiverId.Should().Be(dto.ReceiverId);
         }
     }
 }

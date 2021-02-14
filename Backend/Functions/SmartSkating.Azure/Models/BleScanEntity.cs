@@ -10,10 +10,9 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
         {
             PartitionKey = bleScan.SessionId;
             RowKey = bleScan.Id;
-
+            ReceiverId = bleScan.ReceiverId;
             DeviceId = bleScan.DeviceAddress;
             Rssi = bleScan.Rssi;
-  
             Time = bleScan.Time;
         }
 
@@ -22,5 +21,6 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
         public int Rssi { get; set; }
 
         public DateTime Time { get; set; }
+        public string ReceiverId { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using FluentAssertions;
 using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Tests.Models.Location;
 using Xunit;
@@ -50,13 +51,16 @@ namespace Sanet.SmartSkating.Tests.Services.Location
 
         private static readonly IBleDevicesProvider BleDevicesProvider = Substitute.For<IBleDevicesProvider>();
         private static readonly IDataService DataService = Substitute.For<IDataService>();
+        private static readonly IAccountService AccountService = Substitute.For<IAccountService>();
 
-        public BaseBleLocationServiceTests() : this(BleDevicesProvider, DataService)
+        public BaseBleLocationServiceTests() : this(BleDevicesProvider, DataService, AccountService)
         {
         }
 
-        protected BaseBleLocationServiceTests(IBleDevicesProvider devicesProvider, IDataService dataService)
-            : base(devicesProvider, dataService)
+        protected BaseBleLocationServiceTests(IBleDevicesProvider devicesProvider,
+            IDataService dataService,
+            IAccountService accountService)
+            : base(devicesProvider, dataService,accountService)
         {
             devicesProvider.GetBleDevicesAsync().Returns(Task.FromResult(new List<BleDeviceDto>
             {
@@ -258,6 +262,18 @@ namespace Sanet.SmartSkating.Tests.Services.Location
             ProceedNewScan(scan);
 
             await DataService.Received().SaveBleScanAsync(scan);
+        }
+
+        [Fact]
+        public void SetsReceiverDeviceId_WhenProceedingScan()
+        {
+            const string deviceId = "deviceId";
+            AccountService.DeviceId.Returns(deviceId);
+            var scan = BleScansStackTests.GetScanDto(-67, DateTime.Now, FinishDeviceId);
+
+            ProceedNewScan(scan);
+
+            scan.ReceiverId.Should().Be(deviceId);
         }
 
         [Fact]
