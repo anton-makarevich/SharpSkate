@@ -7,6 +7,8 @@ namespace Sanet.SmartSkating.Services.Account
     {
         private readonly IPreferences _preferences;
         private readonly IDeviceInfo _deviceInfo;
+        private string _userId;
+        private string _deviceId;
         private const string UserIdKey = "userId";
         private const string DeviceIdKey = "deviceId";
 
@@ -16,12 +18,30 @@ namespace Sanet.SmartSkating.Services.Account
             _deviceInfo = deviceInfo;
         }
 
-        public string UserId => GetUniqueInstallationValue(UserIdKey);
+        public string UserId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_userId))
+                    _userId =GetUniqueInstallationValue(UserIdKey);
+                return _userId;
+            }
+        }
+
+        public string DeviceId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_deviceId))
+                    _deviceId = GetUniqueInstallationValue(DeviceIdKey);
+                return _deviceId;
+            }
+        }
 
         public DeviceDto GetDeviceInfo() =>
             new DeviceDto
             {
-                Id = GetUniqueInstallationValue(DeviceIdKey),
+                Id = DeviceId,
                 AccountId = UserId,
                 Manufacturer = _deviceInfo.Manufacturer,
                 Model = _deviceInfo.Model,
