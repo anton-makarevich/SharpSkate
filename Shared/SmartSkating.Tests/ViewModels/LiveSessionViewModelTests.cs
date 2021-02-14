@@ -22,6 +22,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 {
     public class LiveSessionViewModelTests
     {
+        private const string RinkId = "rinkId";
+
         private readonly LiveSessionViewModel _sut;
         private readonly IAccountService _accountService = Substitute.For<IAccountService>();
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
@@ -70,8 +72,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void StartSavesSessionToLocalStorage()
         {
-            var sessionId = "sessionId";
-            var session = CreateSessionMock(sessionId);
+            const string rinkId ="rinkId";
+            const string sessionId = "sessionId";
+            CreateSessionMock(sessionId, rinkId);
             const string userId = "123";
             const string deviceId = "deviceId";
             var deviceInfo = new DeviceDto
@@ -85,9 +88,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
 
             _storageService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
-                s.Id == session.SessionId
+                s.Id == sessionId
                 && s.AccountId == userId
-                && s.RinkId == session.Rink.Name
+                && s.RinkId == rinkId
                 && s.DeviceId == deviceId
                 ));
         }
@@ -121,8 +124,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void StopSavesCompletedSessionToLocalStorage()
         {
+            const string rinkId ="rinkId";
             const string sessionId = "someSessionId";
-            var session = CreateSessionMock(sessionId);
+            CreateSessionMock(sessionId, rinkId);
             const string userId = "123";
             _accountService.UserId.Returns(userId);
             const string deviceId = "deviceId";
@@ -138,7 +142,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 s.Id == sessionId
                 && s.AccountId == userId
                 && s.IsCompleted
-                && s.RinkId == session.Rink.Name
+                && s.RinkId == rinkId
                 && s.DeviceId == deviceId
                 ));
         }
@@ -256,7 +260,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private Rink InitViewModelWithRink()
         {
             var rink = new Rink(RinkTests.EindhovenStart,
-                RinkTests.EindhovenFinish);
+                RinkTests.EindhovenFinish,RinkId);
             _trackService.SelectedRink.Returns(rink);
 
             _sut.AttachHandlers();
@@ -276,7 +280,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _trackService.SelectedRink.Returns(
                 new Rink(RinkTests.EindhovenStart,
-                    RinkTests.EindhovenFinish));
+                    RinkTests.EindhovenFinish,RinkId));
             _sut.AttachHandlers();
 
             Assert.True(_sut.CanStart);
@@ -287,7 +291,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _trackService.SelectedRink.Returns(
                 new Rink(RinkTests.EindhovenStart,
-                    RinkTests.EindhovenFinish));
+                    RinkTests.EindhovenFinish,RinkId));
 
             var canStartChanged = false;
             _sut.PropertyChanged += (s, e) =>
@@ -311,10 +315,10 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             session.Received().AddPoint(_locationStub, Arg.Any<DateTime>());
         }
 
-        private ISession CreateSessionMock(string sessionId = "sessionId")
+        private ISession CreateSessionMock(string sessionId = "sessionId", string rinkId = "RinkId")
         {
             var rink = new Rink(RinkTests.EindhovenStart,
-                RinkTests.EindhovenFinish, "Eindhoven");
+                RinkTests.EindhovenFinish, rinkId, "Eindhoven");
             _trackService.SelectedRink.Returns(rink);
             var session = Substitute.For<ISession>();
             session.SessionId.Returns(sessionId);

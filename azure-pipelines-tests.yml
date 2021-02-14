@@ -4,6 +4,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  buildConfiguration: 'Release'
+
 steps:
 - task: UseDotNet@2
   displayName: 'Use dotnet sdk 3.x'
@@ -14,7 +17,8 @@ steps:
 - script: dotnet restore SmartSkating.sln
   displayName: 'Restore nuget packages'
 
-- script: dotnet test Shared/SmartSkating.Tests/SmartSkating.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=\"[SmartSkating]*,[SmartSkating.Dto]*\"
+
+- script: dotnet test Shared/SmartSkating.Tests/SmartSkating.Tests.csproj -c $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=GeneratedCodeAttribute /p:Include=\"[SmartSkating]*,[SmartSkating.Dto]*\"
   displayName: 'Run Core tests'
 
 - bash: |

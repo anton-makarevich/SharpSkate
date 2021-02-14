@@ -74,5 +74,17 @@ namespace Sanet.SmartSkating.Tests.Services.Account
             deviceInfo.OsName.Should().Be(osName);
             deviceInfo.OsVersion.Should().Be(osVersion);
         }
+
+        [Fact]
+        public void Getting_DeviceId_Calls_Preferences_Only_Once()
+        {
+            _preferences.Get("deviceId", "").Returns("id");
+
+            var id1 = _sut.DeviceId;
+            var id2 = _sut.DeviceId;
+
+            id1.Should().Be(id2);
+            _preferences.Received(1).Get(Arg.Any<string>(),Arg.Any<string>());
+        }
     }
 }

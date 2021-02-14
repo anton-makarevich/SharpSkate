@@ -283,7 +283,7 @@ namespace Sanet.SmartSkating.ViewModels
                 Id = Session.SessionId,
                 AccountId = _accountService.UserId,
                 DeviceId = _accountService.GetDeviceInfo().Id,
-                RinkId = _trackService.SelectedRink?.Name??""
+                RinkId = _trackService.SelectedRink?.Id??""
             };
             return s;
         }

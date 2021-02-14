@@ -16,11 +16,12 @@ namespace Sanet.SmartSkating.Models.Geometry
 
         private readonly double _longitudeFactor;
 
-        public Rink(Coordinate start, Coordinate finish, string name = "Unknown")
+        public Rink(Coordinate start, Coordinate finish, string id, string name = "Unknown")
         {
             Start = start;
             Finish = finish;
             Name = name;
+            Id = id;
 
             _longitudeFactor = Start.Latitude.GetLongitudeFactor();
 
@@ -39,26 +40,26 @@ namespace Sanet.SmartSkating.Models.Geometry
                 (Start300MLocal.Y + Start3KLocal.Y) * 0.5);
 
             FirstSector = CreateStraightSector(
-                StartLocal, 
-                FinishLocal, 
+                StartLocal,
+                FinishLocal,
                 WayPointTypes.FirstSector);
             ThirdSector = CreateStraightSector(
-                Start300MLocal, 
-                Start3KLocal, 
+                Start300MLocal,
+                Start3KLocal,
                 WayPointTypes.ThirdSector);
 
             var (secondSectorPoint1, secondSectorPoint2)
                 = (FirstSector.FinishLine, ThirdSector.StartLine).FindOppositePoints();
             SecondSector = CreateCornerSector(
-                secondSectorPoint1, 
-                secondSectorPoint2, 
+                secondSectorPoint1,
+                secondSectorPoint2,
                 WayPointTypes.SecondSector);
 
             var (forthSectorPoint1, forthSectorPoint2)
                 = (ThirdSector.FinishLine, FirstSector.StartLine).FindOppositePoints();
             FourthSector = CreateCornerSector(
-                forthSectorPoint1, 
-                forthSectorPoint2, 
+                forthSectorPoint1,
+                forthSectorPoint2,
                 WayPointTypes.FourthSector);
 
             var center = (new Line(FirstSector.Center, ThirdSector.Center),
@@ -70,6 +71,7 @@ namespace Sanet.SmartSkating.Models.Geometry
                 throw new NoNullAllowedException("No center point for sector");
         }
 
+        public string Id { get; set; }
         public Coordinate Start { get; }
         public Coordinate Finish { get; }
         public Coordinate Start300M { get; }
