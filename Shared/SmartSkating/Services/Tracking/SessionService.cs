@@ -13,7 +13,10 @@ namespace Sanet.SmartSkating.Services.Tracking
         }
         public ISession CreateSessionForRink(Rink rink)
         {
-            return new Session(rink,_settingsService);
+            CurrentSession = new Session(rink,_settingsService);
+            return CurrentSession;
         }
+
+        public ISession? CurrentSession { get; private set; }
     }
 }
