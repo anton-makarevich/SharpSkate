@@ -37,15 +37,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
         public LiveSessionViewModelTests()
         {
-            _sut = new LiveSessionViewModel(
-                _locationService,
-                _storageService,
-                _trackService,
-                _sessionService,
-                _accountService,
-                _dataSyncService,
-                _bleLocationService,
-                _settingsService);
+            _sut = new LiveSessionViewModel(_sessionService,_trackService);
         }
 
         [Fact]
@@ -62,15 +54,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void StartsLocationServiceWhenStartButtonPressed()
+        public void Starts_Session_WhenStartButtonPressed()
         {
             _sut.StartCommand.Execute(null);
 
-            _locationService.Received().StartFetchLocation();
+            _sessionService.Received().StartSession();
         }
 
         [Fact]
-        public void StartSavesSessionToLocalStorage()
+        public void Start_Saves_Session_To_Local_Storage()
         {
             const string rinkId ="rinkId";
             const string sessionId = "sessionId";
@@ -205,16 +197,6 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _locationService.Received().StopFetchLocation();
             Assert.False(_sut.IsRunning);
-        }
-
-        [Fact]
-        public void UpdatesLastLocationWithNewValueFromService_IfServiceIsStarted()
-        {
-            InitViewModelWithRink();
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
-
-            Assert.Equal(_locationStub, _sut.LastCoordinate);
         }
 
         [Fact]

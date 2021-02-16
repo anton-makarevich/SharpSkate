@@ -33,6 +33,7 @@ namespace Sanet.SmartSkating.Models.Training
 
         public void AddPoint(Coordinate location, DateTime date)
         {
+            LastCoordinate = location;
             var point = _rink.ToLocalCoordinateSystem(location);
             var adjustedPoint = point;
             if (!((point, _rink.Center).GetDistance() <= 100)) return;
@@ -82,7 +83,7 @@ namespace Sanet.SmartSkating.Models.Training
 
             if (type == WayPointTypes.Unknown)
                 return;
-            
+
             if (WayPoints.Count>0 && WayPoints.Last().Type != type)
             {
                 var lastPoint = WayPoints.Last();
@@ -95,7 +96,7 @@ namespace Sanet.SmartSkating.Models.Training
                 var distanceFrom
                     = (adjustedPoint, separatingPointLocation.Item1).GetDistance();
                 var separatingPointDate = InterpolateDate(
-                    lastPoint.Date, 
+                    lastPoint.Date,
                     date,
                     distanceTo,
                     distanceFrom);
@@ -109,13 +110,13 @@ namespace Sanet.SmartSkating.Models.Training
                 type));
         }
 
-        private void AddMissingSector(DateTime date, 
-            IReadOnlyList<WayPointTypes> expectedSectorTypes, 
-            WayPointTypes type, 
+        private void AddMissingSector(DateTime date,
+            IReadOnlyList<WayPointTypes> expectedSectorTypes,
+            WayPointTypes type,
             Point adjustedPoint)
         {
-            if (expectedSectorTypes.Count <= 0 
-                || type != expectedSectorTypes.Last() 
+            if (expectedSectorTypes.Count <= 0
+                || type != expectedSectorTypes.Last()
                 || !(date.Subtract(WayPoints.Last().Date).TotalSeconds > MaxSectorTimeInSeconds)) return;
             var lastPoint = WayPoints.Last();
             var missingSector = _rink.Sectors
@@ -161,6 +162,8 @@ namespace Sanet.SmartSkating.Models.Training
             StartTime = startTime;
         }
 
+        public Coordinate? LastCoordinate { get; private set; }
+
         private void AddSection(WayPoint separatingWayPoint)
         {
             var firstPointType = separatingWayPoint.Type.GetPreviousSeparationPointType();
@@ -177,7 +180,7 @@ namespace Sanet.SmartSkating.Models.Training
             if (Sectors.Count>0 )
                 if (BestSector == null || BestSector.Value.Time.TotalMilliseconds > section.Time.TotalMilliseconds)
                     BestSector = section;
-            
+
             Sectors.Add(section);
 
             UpdateMetaData();
@@ -211,8 +214,8 @@ namespace Sanet.SmartSkating.Models.Training
         }
 
         private DateTime InterpolateDate(
-            DateTime previousDate, 
-            DateTime currentDate, 
+            DateTime previousDate,
+            DateTime currentDate,
             double previousDistance,
             double currentDistance)
         {

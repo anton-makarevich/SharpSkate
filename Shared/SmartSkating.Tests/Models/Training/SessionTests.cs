@@ -183,6 +183,14 @@ namespace Sanet.SmartSkating.Tests.Models.Training
         }
 
         [Fact]
+        public void AddPoint_Updates_LastCoordinate()
+        {
+            _sut.AddPoint(_firstSectorPoint, DateTime.Now);
+
+            _sut.LastCoordinate.Should().Be(_firstSectorPoint);
+        }
+
+        [Fact]
         public void CorrectlyCalculatesSectorTime()
         {
             var fourthSectorTime = DateTime.Now;
