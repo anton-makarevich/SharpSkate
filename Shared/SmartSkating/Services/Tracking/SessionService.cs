@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
-using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
@@ -37,15 +36,19 @@ namespace Sanet.SmartSkating.Services.Tracking
             _bleLocationService = bleLocationService;
             _settingsService = settingsService;
         }
-        public ISession CreateSessionForRink(Rink rink)
-        {
-            CurrentSession = new Session(rink,_settingsService);
-            return CurrentSession;
-        }
 
         public ISession? CurrentSession { get; private set; }
+        public bool IsRunning { get; private set; }
+
         public async Task StartSession()
         {
+            var rink = _trackService.SelectedRink;
+            if (rink==null)
+                return;
+            // TODO
+            // rename this server to SessionManager
+            // and one more dependency SessionsProvider that will give either new or running session from the BE
+            CurrentSession = new Session(rink,_settingsService);
             if (_settingsService.UseBle)
                 await _bleLocationService.LoadDevicesDataAsync();
 
@@ -57,7 +60,9 @@ namespace Sanet.SmartSkating.Services.Tracking
                 _bleLocationService.CheckPointPassed+= BleLocationServiceOnCheckPointPassed;
                 _bleLocationService.StartBleScan(CurrentSession?.SessionId??string.Empty);
             }
+#pragma warning disable 4014
             SaveSessionAndSyncData();
+#pragma warning restore 4014
         }
 
         public void StopSession()
@@ -77,14 +82,11 @@ namespace Sanet.SmartSkating.Services.Tracking
                 _storageService.SaveWayPointAsync(pointDto);
                 CurrentSession?.AddPoint(e.Coordinate,pointDto.Time);
             }
-
-            //UpdateMetaData();
         }
 
         private void BleLocationServiceOnCheckPointPassed(object sender, CheckPointEventArgs e)
         {
             CurrentSession?.AddSeparatingPoint(e.WayPointType,e.Date??DateTime.UtcNow);
-            //UpdateMetaData();
         }
 
         private async Task SaveSessionAndSyncData(bool isCompleted = false)

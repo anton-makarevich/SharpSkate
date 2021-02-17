@@ -15,8 +15,6 @@ namespace Sanet.SmartSkating.ViewModels
         public const string TotalTimeFormat = "h\\:mm\\:ss";
 
         private readonly ISessionService _sessionService;
-        private readonly ITrackService _trackService;
-        private bool _isRunning;
         private string _infoLabel = string.Empty;
         private string _currentSector = NoValue;
         private string _lastLapTime = string.Empty;
@@ -27,10 +25,9 @@ namespace Sanet.SmartSkating.ViewModels
         private string _bestLapTime = string.Empty;
         private string _bestSectorTime = string.Empty;
 
-        public LiveSessionViewModel( ISessionService sessionService, ITrackService trackService)
+        public LiveSessionViewModel( ISessionService sessionService)
         {
             _sessionService = sessionService;
-            _trackService = trackService;
 
             TotalTime = new TimeSpan().ToString(TotalTimeFormat);
         }
@@ -39,10 +36,6 @@ namespace Sanet.SmartSkating.ViewModels
         {
             await _sessionService.StartSession();
             _sessionService.CurrentSession?.SetStartTime(DateTime.UtcNow);
-            IsRunning = true;
-#pragma warning disable 4014
-            TrackTime();
-#pragma warning restore 4014
         });
 
 
@@ -54,7 +47,8 @@ namespace Sanet.SmartSkating.ViewModels
                 if (_sessionService.CurrentSession == null) continue;
                 var time = DateTime.UtcNow.Subtract(_sessionService.CurrentSession.StartTime);
                 TotalTime = time.ToString(TotalTimeFormat);
-            } while (IsRunning);
+                UpdateUi();
+            } while (IsActive);
         }
 
         public string TotalTime
@@ -63,7 +57,7 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _totalTime, value);
         }
 
-        private void UpdateMetaData()
+        public void UpdateUi()
         {
             if (_sessionService.CurrentSession == null) return;
             InfoLabel = _sessionService.CurrentSession.LastCoordinate.ToString();
@@ -100,15 +94,10 @@ namespace Sanet.SmartSkating.ViewModels
         public ICommand StopCommand => new SimpleCommand(() =>
         {
             _sessionService.StopSession();
-            IsRunning = false;
             InfoLabel = "";
         });
 
-        public bool IsRunning
-        {
-            get => _isRunning;
-            private set => SetProperty(ref _isRunning, value);
-        }
+        public bool IsActive { get; private set; }
 
         public string InfoLabel
         {
@@ -119,7 +108,7 @@ namespace Sanet.SmartSkating.ViewModels
         public string CurrentSector
         {
             get => _currentSector;
-            set => SetProperty(ref _currentSector, value);
+            private set => SetProperty(ref _currentSector, value);
         }
 
         public bool CanStart => _sessionService.CurrentSession != null;
@@ -163,15 +152,16 @@ namespace Sanet.SmartSkating.ViewModels
         public override void AttachHandlers()
         {
             base.AttachHandlers();
-            CreateSession();
-            StartCommand.Execute(null);
+            IsActive = true;
+#pragma warning disable 4014
+            TrackTime();
+#pragma warning restore 4014
         }
 
-        private void CreateSession()
+        public override void DetachHandlers()
         {
-            //only if doesn't exists
-            if (_trackService.SelectedRink != null)
-                _sessionService.CreateSessionForRink(_trackService.SelectedRink);
+            base.DetachHandlers();
+            IsActive = false;
         }
     }
 }
