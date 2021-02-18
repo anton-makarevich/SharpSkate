@@ -4,7 +4,7 @@ using Sanet.SmartSkating.Models.Training;
 
 namespace Sanet.SmartSkating.Services.Tracking
 {
-    public interface ISessionService
+    public interface ISessionManager
     {
         ISession? CurrentSession { get; }
 

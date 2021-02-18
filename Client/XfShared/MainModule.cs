@@ -37,7 +37,7 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<ITrackProvider,LocalTrackProvider>();
             container.RegisterSingleton<IBleDevicesProvider,LocalBleDevicesProvider>();
             container.RegisterSingleton<ITrackService, TrackService>();
-            container.RegisterSingleton<ISessionService,SessionService>();
+            container.RegisterSingleton<ISessionManager,SessionManager>();
         }
     }
 }

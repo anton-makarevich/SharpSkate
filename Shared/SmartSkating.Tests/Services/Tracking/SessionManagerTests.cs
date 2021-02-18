@@ -17,13 +17,13 @@ using Xunit;
 
 namespace Sanet.SmartSkating.Tests.Services.Tracking
 {
-    public class SessionServiceTests
+    public class SessionManagerTests
     {
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
         private readonly Rink _rink = new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId");
 
         private readonly ISettingsService _settingsService = Substitute.For<ISettingsService>();
-        private readonly SessionService _sut;
+        private readonly SessionManager _sut;
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
         private readonly IDataService _dataService = Substitute.For<IDataService>();
         private readonly ITrackService _trackService = Substitute.For<ITrackService>();
@@ -31,9 +31,9 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
         private readonly IBleLocationService _bleLocationService = Substitute.For<IBleLocationService>();
 
-        public SessionServiceTests()
+        public SessionManagerTests()
         {
-            _sut = new SessionService(_locationService,
+            _sut = new SessionManager(_locationService,
                 _dataService,
                 _trackService,
                 _accountService,

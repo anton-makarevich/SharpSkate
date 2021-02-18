@@ -10,7 +10,7 @@ using Sanet.SmartSkating.Services.Location;
 
 namespace Sanet.SmartSkating.Services.Tracking
 {
-    public class SessionService:ISessionService
+    public class SessionManager:ISessionManager
     {
         private readonly ILocationService _locationService;
         private readonly IDataService _storageService;
@@ -20,7 +20,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         private readonly IBleLocationService _bleLocationService;
         private readonly ISettingsService _settingsService;
 
-        public SessionService(ILocationService locationService,
+        public SessionManager(ILocationService locationService,
             IDataService storageService,
             ITrackService trackService,
             IAccountService accountService,

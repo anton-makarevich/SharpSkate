@@ -14,7 +14,7 @@ namespace Sanet.SmartSkating.ViewModels
         public const string NoValue = "- - -";
         public const string TotalTimeFormat = "h\\:mm\\:ss";
 
-        private readonly ISessionService _sessionService;
+        private readonly ISessionManager _sessionManager;
         private string _infoLabel = string.Empty;
         private string _currentSector = NoValue;
         private string _lastLapTime = string.Empty;
@@ -25,17 +25,17 @@ namespace Sanet.SmartSkating.ViewModels
         private string _bestLapTime = string.Empty;
         private string _bestSectorTime = string.Empty;
 
-        public LiveSessionViewModel( ISessionService sessionService)
+        public LiveSessionViewModel( ISessionManager sessionManager)
         {
-            _sessionService = sessionService;
+            _sessionManager = sessionManager;
 
             TotalTime = new TimeSpan().ToString(TotalTimeFormat);
         }
 
         public ICommand StartCommand => new SimpleCommand(async() =>
         {
-            await _sessionService.StartSession();
-            _sessionService.CurrentSession?.SetStartTime(DateTime.UtcNow);
+            await _sessionManager.StartSession();
+            _sessionManager.CurrentSession?.SetStartTime(DateTime.UtcNow);
         });
 
 
@@ -44,8 +44,8 @@ namespace Sanet.SmartSkating.ViewModels
             do
             {
                 await Task.Delay(1000);
-                if (_sessionService.CurrentSession == null) continue;
-                var time = DateTime.UtcNow.Subtract(_sessionService.CurrentSession.StartTime);
+                if (_sessionManager.CurrentSession == null) continue;
+                var time = DateTime.UtcNow.Subtract(_sessionManager.CurrentSession.StartTime);
                 TotalTime = time.ToString(TotalTimeFormat);
                 UpdateUi();
             } while (IsActive);
@@ -59,13 +59,13 @@ namespace Sanet.SmartSkating.ViewModels
 
         public void UpdateUi()
         {
-            if (_sessionService.CurrentSession == null) return;
-            InfoLabel = _sessionService.CurrentSession.LastCoordinate.ToString();
+            if (_sessionManager.CurrentSession == null) return;
+            InfoLabel = _sessionManager.CurrentSession.LastCoordinate.ToString();
 
-            if (_sessionService.CurrentSession.LapsCount > 0)
+            if (_sessionManager.CurrentSession.LapsCount > 0)
             {
-                LastLapTime = _sessionService.CurrentSession.LastLapTime.ToString(TotalTimeFormat);
-                BestLapTime = _sessionService.CurrentSession.BestLapTime.ToString(TotalTimeFormat);
+                LastLapTime = _sessionManager.CurrentSession.LastLapTime.ToString(TotalTimeFormat);
+                BestLapTime = _sessionManager.CurrentSession.BestLapTime.ToString(TotalTimeFormat);
             }
             else
             {
@@ -73,27 +73,27 @@ namespace Sanet.SmartSkating.ViewModels
                 BestLapTime = NoValue;
             }
 
-            Laps = _sessionService.CurrentSession.LapsCount.ToString();
-            if (_sessionService.CurrentSession.Sectors.Count>0)
+            Laps = _sessionManager.CurrentSession.LapsCount.ToString();
+            if (_sessionManager.CurrentSession.Sectors.Count>0)
             {
-                var lastSector = _sessionService.CurrentSession.Sectors.Last();
+                var lastSector = _sessionManager.CurrentSession.Sectors.Last();
                 LastSectorTime = lastSector.Time.ToString("mm\\:ss");
-                Distance = $"{Math.Round(_sessionService.CurrentSession.Sectors.Count * 0.1f,1)}Km";
-                if (_sessionService.CurrentSession.BestSector != null)
-                    BestSectorTime = _sessionService.CurrentSession.BestSector.Value.Time.ToString("mm\\:ss");
+                Distance = $"{Math.Round(_sessionManager.CurrentSession.Sectors.Count * 0.1f,1)}Km";
+                if (_sessionManager.CurrentSession.BestSector != null)
+                    BestSectorTime = _sessionManager.CurrentSession.BestSector.Value.Time.ToString("mm\\:ss");
             }
             else
             {
                 LastSectorTime = NoValue;
                 BestSectorTime = NoValue;
             }
-            if (_sessionService.CurrentSession.WayPoints.Count>0)
-                CurrentSector = $"Currently in {_sessionService.CurrentSession.WayPoints.Last().Type.GetSectorName()} sector";
+            if (_sessionManager.CurrentSession.WayPoints.Count>0)
+                CurrentSector = $"Currently in {_sessionManager.CurrentSession.WayPoints.Last().Type.GetSectorName()} sector";
         }
 
         public ICommand StopCommand => new SimpleCommand(() =>
         {
-            _sessionService.StopSession();
+            _sessionManager.StopSession();
             InfoLabel = "";
         });
 
@@ -111,7 +111,7 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _currentSector, value);
         }
 
-        public bool CanStart => _sessionService.CurrentSession != null;
+        public bool CanStart => _sessionManager.CurrentSession != null;
 
         public string LastLapTime
         {

@@ -15,12 +15,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
     public class LiveSessionViewModelTests
     {
         private readonly LiveSessionViewModel _sut;
-        private readonly ISessionService _sessionService = Substitute.For<ISessionService>();
+        private readonly ISessionManager _sessionManager = Substitute.For<ISessionManager>();
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
 
         public LiveSessionViewModelTests()
         {
-            _sut = new LiveSessionViewModel(_sessionService);
+            _sut = new LiveSessionViewModel(_sessionManager);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut.StartCommand.Execute(null);
 
-            _sessionService.Received().StartSession();
+            _sessionManager.Received().StartSession();
         }
 
         [Fact]
@@ -219,7 +219,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void CanNotStart_When_Session_DoesNot_Exist()
         {
-            _sessionService.CurrentSession.ReturnsNull();
+            _sessionManager.CurrentSession.ReturnsNull();
             _sut.CanStart.Should().BeFalse();
         }
 
@@ -247,7 +247,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private ISession CreateSessionMock()
         {
             var session = Substitute.For<ISession>();
-            _sessionService.CurrentSession.Returns(session);
+            _sessionManager.CurrentSession.Returns(session);
             return session;
         }
     }
