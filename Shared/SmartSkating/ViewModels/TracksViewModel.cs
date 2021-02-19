@@ -12,20 +12,23 @@ namespace Sanet.SmartSkating.ViewModels
     public class TracksViewModel:BaseViewModel
     {
         private readonly ITrackService _trackService;
+        private readonly ISessionProvider _sessionProvider;
 
-        public TracksViewModel(ITrackService trackService)
+        public TracksViewModel(ITrackService trackService, ISessionProvider sessionProvider)
         {
             _trackService = trackService;
+            _sessionProvider = sessionProvider;
         }
 
         public ObservableCollection<TrackViewModel> Tracks { get; } = new ObservableCollection<TrackViewModel>();
 
         public bool HasSelectedTrack => Tracks.Any(t => t.IsSelected);
         public ICommand ConfirmSelectionCommand => new SimpleCommand(async () =>
-            {
-                if (HasSelectedTrack)
-                    await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
-            });
+        {
+            if (!HasSelectedTrack || _trackService.SelectedRink == null) return;
+            _sessionProvider.CreateSessionForRink(_trackService.SelectedRink);
+            await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
+        });
 
         public async Task LoadTracksAsync()
         {

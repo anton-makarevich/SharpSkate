@@ -24,6 +24,7 @@ namespace Sanet.SmartSkating.ViewModels
         private string _totalTime = string.Empty;
         private string _bestLapTime = string.Empty;
         private string _bestSectorTime = string.Empty;
+        private bool _isRunning;
 
         public LiveSessionViewModel( ISessionManager sessionManager)
         {
@@ -44,8 +45,6 @@ namespace Sanet.SmartSkating.ViewModels
             {
                 await Task.Delay(1000);
                 if (_sessionManager.CurrentSession == null) continue;
-                var time = DateTime.UtcNow.Subtract(_sessionManager.CurrentSession.StartTime);
-                TotalTime = time.ToString(TotalTimeFormat);
                 UpdateUi();
             } while (IsActive);
         }
@@ -58,7 +57,19 @@ namespace Sanet.SmartSkating.ViewModels
 
         public void UpdateUi()
         {
+            IsRunning = _sessionManager.IsRunning;
             if (_sessionManager.CurrentSession == null) return;
+
+            if (IsRunning)
+            {
+                var time = DateTime.UtcNow.Subtract(_sessionManager.CurrentSession.StartTime);
+                TotalTime = time.ToString(TotalTimeFormat);
+            }
+            else
+            {
+                TotalTime = new TimeSpan().ToString(TotalTimeFormat);
+            }
+
             InfoLabel = _sessionManager.CurrentSession.LastCoordinate.ToString();
 
             if (_sessionManager.CurrentSession.LapsCount > 0)
@@ -146,6 +157,12 @@ namespace Sanet.SmartSkating.ViewModels
         {
             get => _bestSectorTime;
             private set => SetProperty(ref _bestSectorTime, value);
+        }
+
+        public bool IsRunning
+        {
+            get => _isRunning;
+            private set => SetProperty(ref _isRunning, value);
         }
 
         public override void AttachHandlers()

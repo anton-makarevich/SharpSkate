@@ -28,7 +28,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut.AttachHandlers();
 
-            _sut.IsActive.Should().Be(true);
+            _sut.IsActive.Should().BeTrue();
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut.AttachHandlers();
             _sut.DetachHandlers();
-            _sut.IsActive.Should().Be(false);
+            _sut.IsActive.Should().BeFalse();
         }
 
         [Fact]
@@ -223,6 +223,44 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.CanStart.Should().BeFalse();
         }
 
+        [Fact]
+        public void IsRunning_Is_True_When_Session_Has_Started()
+        {
+            _sessionManager.IsRunning.Returns(true);
+
+            _sut.UpdateUi();
+
+            _sut.IsRunning.Should().BeTrue();
+        }
+
+        [Fact]
+        public void TotalTime_Is_Zero_When_Session_Is_Not_Running()
+        {
+            _sessionManager.IsRunning.Returns(false);
+
+            _sut.UpdateUi();
+
+            _sut.TotalTime.Should().Be("0:00:00");
+        }
+
+        [Fact]
+        public void TotalTime_Is_Zero_Initially()
+        {
+            _sut.TotalTime.Should().Be("0:00:00");
+        }
+
+        [Fact]
+        public void TotalTime_Is_Positive_When_Session_Is_Running()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            var session = CreateSessionMock();
+            session.StartTime.Returns(DateTime.UtcNow.AddMinutes(-1));
+
+            _sut.UpdateUi();
+
+            _sut.TotalTime.Should().Be("0:01:00");
+        }
+
         private void CreateSessionMockWithOneSector()
         {
             var session = CreateSessionMock();
@@ -240,7 +278,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                     endTime,
                     WayPointTypes.Finish)
             );
-            session.Sectors.Returns(new List<Section>() {section});
+            session.Sectors.Returns(new List<Section> {section});
             session.BestSector.Returns(section);
         }
 
