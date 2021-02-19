@@ -20,24 +20,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private const string RinkId = "rinkId";
 
         private readonly StartViewModel _sut;
-        private readonly ILocationService _locationService;
+        private readonly ILocationService _locationService = Substitute.For<ILocationService>();
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
-        private readonly ITrackService _tracksService;
-        private readonly INavigationService _navigationService;
-        private readonly IDataSyncService _dataSyncService;
-        private readonly IBluetoothService _bluetoothService;
-        private readonly ISettingsService _settingsService;
+        private readonly ITrackService _tracksService = Substitute.For<ITrackService>();
+        private readonly INavigationService _navigationService = Substitute.For<INavigationService>();
+        private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
+        private readonly IBluetoothService _bluetoothService = Substitute.For<IBluetoothService>();
+        private readonly ISettingsService _settingsService = Substitute.For<ISettingsService>();
+        private readonly ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
 
         public StartViewModelTest()
         {
-            _navigationService = Substitute.For<INavigationService>();
-            _tracksService = Substitute.For<ITrackService>();
-            _locationService = Substitute.For<ILocationService>();
-            _dataSyncService = Substitute.For<IDataSyncService>();
-            _bluetoothService = Substitute.For<IBluetoothService>();
-            _settingsService = Substitute.For<ISettingsService>();
             _sut = new StartViewModel(_locationService,_tracksService, _dataSyncService,
-                _bluetoothService, _settingsService);
+                _bluetoothService, _settingsService, _sessionProvider);
             _sut.SetNavigationService(_navigationService);
         }
 
@@ -357,6 +352,21 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.SelectRinkCommand.Execute(null);
 
             await _bluetoothService.Received().EnableBluetoothAsync();
+        }
+
+        [Fact]
+        public async Task StartCommand_Creates_NewSession_With_Selected_Rink()
+        {
+            _bluetoothService.IsBluetoothAvailable().Returns(true);
+            var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, RinkId);
+            _tracksService.SelectedRink.Returns(rink);
+            _sut.AttachHandlers();
+            //to stop geo services init
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            _sut.StartCommand.Execute(null);
+
+            _sessionProvider.Received(1).CreateSessionForRink(rink);
         }
     }
 }

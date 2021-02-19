@@ -14,41 +14,37 @@ namespace Sanet.SmartSkating.Services.Tracking
     {
         private readonly ILocationService _locationService;
         private readonly IDataService _storageService;
-        private readonly ITrackService _trackService;
         private readonly IAccountService _accountService;
         private readonly IDataSyncService _dataSyncService;
         private readonly IBleLocationService _bleLocationService;
         private readonly ISettingsService _settingsService;
+        private readonly ISessionProvider _sessionProvider;
 
         public SessionManager(ILocationService locationService,
             IDataService storageService,
-            ITrackService trackService,
             IAccountService accountService,
             IDataSyncService dataSyncService,
             IBleLocationService bleLocationService,
-            ISettingsService settingsService)
+            ISettingsService settingsService, ISessionProvider sessionProvider)
         {
             _locationService = locationService;
             _storageService = storageService;
-            _trackService = trackService;
             _accountService = accountService;
             _dataSyncService = dataSyncService;
             _bleLocationService = bleLocationService;
             _settingsService = settingsService;
+            _sessionProvider = sessionProvider;
         }
 
-        public ISession? CurrentSession { get; private set; }
+        public ISession? CurrentSession => _sessionProvider.CurrentSession;
         public bool IsRunning { get; private set; }
+        public bool IsReady => _sessionProvider.CurrentSession != null;
 
         public async Task StartSession()
         {
-            var rink = _trackService.SelectedRink;
-            if (rink==null)
+            if (!IsReady)
                 return;
-            // TODO
-            // rename this server to SessionManager
-            // and one more dependency SessionsProvider that will give either new or running session from the BE
-            CurrentSession = new Session(rink,_settingsService);
+            IsRunning = true;
             if (_settingsService.UseBle)
                 await _bleLocationService.LoadDevicesDataAsync();
 
@@ -68,6 +64,10 @@ namespace Sanet.SmartSkating.Services.Tracking
         public void StopSession()
         {
             StopLocationService();
+            IsRunning = false;
+#pragma warning disable 4014
+            SaveSessionAndSyncData(true);
+#pragma warning restore 4014
         }
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
@@ -113,8 +113,8 @@ namespace Sanet.SmartSkating.Services.Tracking
             {
                 Id = CurrentSession.SessionId,
                 AccountId = _accountService.UserId,
-                DeviceId = _accountService.GetDeviceInfo().Id,
-                RinkId = _trackService.SelectedRink?.Id??""
+                DeviceId = _accountService.DeviceId,
+                RinkId = CurrentSession.Rink.Id
             };
             return s;
         }

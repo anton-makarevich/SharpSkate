@@ -2,11 +2,13 @@ using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
+using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
@@ -26,79 +28,105 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         private readonly SessionManager _sut;
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
         private readonly IDataService _dataService = Substitute.For<IDataService>();
-        private readonly ITrackService _trackService = Substitute.For<ITrackService>();
         private readonly IAccountService _accountService = Substitute.For<IAccountService>();
         private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
         private readonly IBleLocationService _bleLocationService = Substitute.For<IBleLocationService>();
+        private readonly ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
 
         public SessionManagerTests()
         {
             _sut = new SessionManager(_locationService,
                 _dataService,
-                _trackService,
                 _accountService,
                 _dataSyncService,
                 _bleLocationService,
-                _settingsService);
+                _settingsService,
+                _sessionProvider
+                );
         }
 
         [Fact]
-        public async Task StartSession_Creates_New_Session_For_Rink()
+        public void SessionManager_Is_Not_Ready_When_SessionProvider_DoesNot_Have_Current_Session()
         {
-            _trackService.SelectedRink.Returns(_rink);
+            _sessionProvider.CurrentSession.ReturnsNull();
 
-            await _sut.StartSession();
-
-            _sut.CurrentSession?.Rink.Should().Be(_rink);
+            _sut.IsReady.Should().BeFalse();
         }
 
         [Fact]
-        public async Task CreateSession_Assigns_Value_To_CurrentSession_When_Rink_Is_Selected()
+        public void SessionManager_Is_Ready_When_SessionProvider_Has_Current_Session()
         {
-            _trackService.SelectedRink.Returns(_rink);
+            _sessionProvider.CurrentSession.Returns(Substitute.For<ISession>());
 
-            await _sut.StartSession();
-
-            _sut.CurrentSession.Should().NotBeNull();
+            _sut.IsReady.Should().BeTrue();
         }
 
         [Fact]
-        public async Task  CreateSession_DoesNot_Assign_Value_To_CurrentSession_When_Rink_Is_Not_Selected()
+        public async Task  StartSession_Starts_LocationService_When_IsReady()
         {
-            await _sut.StartSession();
+            _sessionProvider.CurrentSession.Returns(Substitute.For<ISession>());
 
-            _sut.CurrentSession.Should().BeNull();
-        }
-
-        [Fact]
-        public async Task  StartsLocationServiceWhenStartButtonPressed()
-        {
             await _sut.StartSession();
 
             _locationService.Received().StartFetchLocation();
         }
 
         [Fact]
+        public async Task  StartSession_Starts_LocationService_When_IsNotReady()
+        {
+            _sessionProvider.CurrentSession.ReturnsNull();
+
+            await _sut.StartSession();
+
+            _locationService.DidNotReceive().StartFetchLocation();
+        }
+
+        [Fact]
+        public async Task  StartSession_Turns_IsRunning_When_IsReady()
+        {
+            _sessionProvider.CurrentSession.Returns(Substitute.For<ISession>());
+
+            await _sut.StartSession();
+
+            _sut.IsRunning.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task  StartSession_DoesNot_Turn_IsRunning_When_IsNotReady()
+        {
+            _sessionProvider.CurrentSession.ReturnsNull();
+
+            await _sut.StartSession();
+
+            _sut.IsRunning.Should().BeFalse();
+        }
+
+        [Fact]
+        public async Task  StopSession_Turns_Off_IsRunning()
+        {
+            _sessionProvider.CurrentSession.Returns(Substitute.For<ISession>());
+
+            await _sut.StartSession();
+            _sut.IsRunning.Should().BeTrue();
+            _sut.StopSession();
+            _sut.IsRunning.Should().BeFalse();
+        }
+
+        [Fact]
         public async Task Start_Saves_Session_To_Local_Storage()
         {
-            const string rinkId ="rinkId";
             const string sessionId = "sessionId";
             const string userId = "123";
             const string deviceId = "deviceId";
-            var deviceInfo = new DeviceDto
-            {
-                Id = deviceId
-            };
 
-            _accountService.UserId.Returns(userId);
-            _accountService.GetDeviceInfo().Returns(deviceInfo);
+            PrepareSessionMock(sessionId, userId, deviceId);
 
             await _sut.StartSession();
 
             await _dataService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
                 s.Id == sessionId
                 && s.AccountId == userId
-                && s.RinkId == rinkId
+                && s.RinkId == _rink.Id
                 && s.DeviceId == deviceId
             ));
         }
@@ -106,24 +134,18 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         [Fact]
         public async Task Stop_Saves_CompletedSessionToLocalStorage()
         {
-            const string rinkId ="rinkId";
             const string sessionId = "someSessionId";
             const string userId = "123";
-            _accountService.UserId.Returns(userId);
             const string deviceId = "deviceId";
-            var deviceInfo = new DeviceDto
-            {
-                Id = deviceId
-            };
-            _accountService.GetDeviceInfo().Returns(deviceInfo);
+            PrepareSessionMock(sessionId, userId, deviceId);
 
             _sut.StopSession();
 
-            await _dataService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
+            await _dataService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s =>
                 s.Id == sessionId
                 && s.AccountId == userId
                 && s.IsCompleted
-                && s.RinkId == rinkId
+                && s.RinkId == _rink.Id
                 && s.DeviceId == deviceId
             ));
         }
@@ -149,16 +171,13 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task StartSession_Starts_LocationService()
-        {
-            await _sut.StartSession();
-
-            _locationService.Received().StartFetchLocation();
-        }
-
-        [Fact]
         public async Task StopSession_SyncsData_For_Sessions_And_WayPoints()
         {
+            const string sessionId = "someSessionId";
+            const string userId = "123";
+            const string deviceId = "deviceId";
+            PrepareSessionMock(sessionId, userId, deviceId);
+
             _sut.StopSession();
 
             await _dataSyncService.Received().SyncSessionsAsync();
@@ -220,11 +239,12 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public void AddsSectionSeparator_WhenCheckPointIsPassed()
+        public async Task AddsSectionSeparator_WhenCheckPointIsPassed()
         {
             _settingsService.UseBle.Returns(true);
-            // var session = CreateSessionMock();
-            // _sut.StartCommand.Execute(null);
+            var session = Substitute.For<ISession>();
+            _sessionProvider.CurrentSession.Returns(session);
+            await _sut.StartSession();
             const WayPointTypes checkPointType = WayPointTypes.Start;
             var date = DateTime.Now;
 
@@ -232,7 +252,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
                 null,
                 new CheckPointEventArgs(checkPointType, date));
 
-            //session.Received().AddSeparatingPoint(checkPointType,date);
+            session.Received().AddSeparatingPoint(checkPointType,date);
         }
 
         [Fact]
@@ -251,6 +271,16 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             _sut.StopSession();
 
             Assert.False(_sut.IsRunning);
+        }
+
+        private void PrepareSessionMock(string sessionId, string userId, string deviceId)
+        {
+            var session = Substitute.For<ISession>();
+            session.Rink.Returns(_rink);
+            session.SessionId.Returns(sessionId);
+            _sessionProvider.CurrentSession.Returns(session);
+            _accountService.UserId.Returns(userId);
+            _accountService.DeviceId.Returns(deviceId);
         }
      }
 }
