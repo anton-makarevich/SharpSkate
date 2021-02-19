@@ -141,7 +141,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             await _sut.LoadTracksAsync();
             var track = _sut.Tracks.First();
-
+            SelectRink();
             _sut.SelectTrack(track);
 
             _sut.ConfirmSelectionCommand.Execute(null);
@@ -179,6 +179,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             const string name = "Eindhoven";
             _trackServiceMock.Tracks.Returns(_tracks.Where(t=>t.Name=="Eindhoven").ToList());
+            SelectRink();
 
             await _sut.LoadTracksAsync();
 
@@ -191,14 +192,20 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             await _sut.LoadTracksAsync();
             var track = _sut.Tracks.First();
-            var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "RinkId");
-            _trackServiceMock.SelectedRink.Returns(rink);
+            var rink = SelectRink();
 
             _sut.SelectTrack(track);
 
             _sut.ConfirmSelectionCommand.Execute(null);
 
             _sessionProvider.Received(1).CreateSessionForRink(rink);
+        }
+
+        private Rink SelectRink()
+        {
+            var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "RinkId");
+            _trackServiceMock.SelectedRink.Returns(rink);
+            return rink;
         }
     }
 }
