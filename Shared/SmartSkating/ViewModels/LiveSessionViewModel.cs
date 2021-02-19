@@ -38,7 +38,6 @@ namespace Sanet.SmartSkating.ViewModels
             _sessionManager.CurrentSession?.SetStartTime(DateTime.UtcNow);
         });
 
-
         private async Task TrackTime()
         {
             do
