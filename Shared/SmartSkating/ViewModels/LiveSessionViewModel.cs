@@ -15,15 +15,15 @@ namespace Sanet.SmartSkating.ViewModels
         public const string TotalTimeFormat = "h\\:mm\\:ss";
 
         private readonly ISessionManager _sessionManager;
-        private string _infoLabel = string.Empty;
+        private string _infoLabel = "";
         private string _currentSector = NoValue;
-        private string _lastLapTime = string.Empty;
-        private string _laps = string.Empty;
-        private string _lastSectorTime = string.Empty;
-        private string _distance = string.Empty;
-        private string _totalTime = string.Empty;
-        private string _bestLapTime = string.Empty;
-        private string _bestSectorTime = string.Empty;
+        private string _lastLapTime = NoValue;
+        private string _laps = "0";
+        private string _lastSectorTime = NoValue;
+        private string _distance = "";
+        private string _totalTime = "";
+        private string _bestLapTime = NoValue;
+        private string _bestSectorTime = NoValue;
         private bool _isRunning;
 
         public LiveSessionViewModel( ISessionManager sessionManager)
@@ -58,17 +58,15 @@ namespace Sanet.SmartSkating.ViewModels
         public void UpdateUi()
         {
             IsRunning = _sessionManager.IsRunning;
+            if (!IsRunning)
+                return;
             if (_sessionManager.CurrentSession == null) return;
 
-            if (IsRunning)
-            {
-                var time = DateTime.UtcNow.Subtract(_sessionManager.CurrentSession.StartTime);
-                TotalTime = time.ToString(TotalTimeFormat);
-            }
-            else
-            {
-                TotalTime = new TimeSpan().ToString(TotalTimeFormat);
-            }
+
+
+            var time = DateTime.UtcNow.Subtract(_sessionManager.CurrentSession.StartTime);
+            TotalTime = time.ToString(TotalTimeFormat);
+
 
             InfoLabel = _sessionManager.CurrentSession.LastCoordinate.ToString();
 
@@ -84,11 +82,11 @@ namespace Sanet.SmartSkating.ViewModels
             }
 
             Laps = _sessionManager.CurrentSession.LapsCount.ToString();
-            if (_sessionManager.CurrentSession.Sectors.Count>0)
+            if (_sessionManager.CurrentSession.Sectors.Count > 0)
             {
                 var lastSector = _sessionManager.CurrentSession.Sectors.Last();
                 LastSectorTime = lastSector.Time.ToString("mm\\:ss");
-                Distance = $"{Math.Round(_sessionManager.CurrentSession.Sectors.Count * 0.1f,1)}Km";
+                Distance = $"{Math.Round(_sessionManager.CurrentSession.Sectors.Count * 0.1f, 1)}Km";
                 if (_sessionManager.CurrentSession.BestSector != null)
                     BestSectorTime = _sessionManager.CurrentSession.BestSector.Value.Time.ToString("mm\\:ss");
             }
@@ -97,8 +95,10 @@ namespace Sanet.SmartSkating.ViewModels
                 LastSectorTime = NoValue;
                 BestSectorTime = NoValue;
             }
-            if (_sessionManager.CurrentSession.WayPoints.Count>0)
-                CurrentSector = $"Currently in {_sessionManager.CurrentSession.WayPoints.Last().Type.GetSectorName()} sector";
+
+            if (_sessionManager.CurrentSession.WayPoints.Count > 0)
+                CurrentSector =
+                    $"Currently in {_sessionManager.CurrentSession.WayPoints.Last().Type.GetSectorName()} sector";
         }
 
         public ICommand StopCommand => new SimpleCommand(() =>

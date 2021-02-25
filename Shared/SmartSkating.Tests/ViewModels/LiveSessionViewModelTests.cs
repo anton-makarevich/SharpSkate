@@ -61,8 +61,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void LastCoordinateChange_Updates_InfoLabel()
+        public void InfoLabel_Gets_Updated_When_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LastCoordinate.Returns(_locationStub);
 
@@ -72,8 +73,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ShowsLastLapTime()
+        public void Shows_LastLap_Time_When_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LastLapTime.Returns(new TimeSpan(0, 0, 40));
             session.LapsCount.Returns(1);
@@ -84,8 +86,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ShowsPlaceholderForLastLapTimeIfNoLapsDone()
+        public void Shows_Placeholder_For_LastLap_Time_If_No_Laps_Done_And_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LapsCount.Returns(0);
 
@@ -93,10 +96,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastLapTime);
         }
+        
+        [Fact]
+        public void Shows_Placeholder_For_LastLap_When_Session_HasNot_Started()
+        {
+            _sut.AttachHandlers();
+
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastLapTime);
+        }
 
         [Fact]
-        public void ShowsBestLapTime()
+        public void Shows_Best_Lap_Time_When_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.BestLapTime.Returns(new TimeSpan(0, 0, 40));
             session.LapsCount.Returns(1);
@@ -107,8 +119,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ShowsPlaceholderForBestLapTimeIfNoLapsDone()
+        public void ShowsPlaceholderForBestLapTime_If_Session_Is_Running_And_NoLapsDone()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LapsCount.Returns(0);
 
@@ -118,8 +131,17 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ShowsAmountOfLaps()
+        public void ShowsPlaceholderForBestLapTime_If_Session_HasNot_Started()
         {
+            _sut.AttachHandlers();
+
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestLapTime);
+        }
+
+        [Fact]
+        public void ShowsAmountOfLaps_When_Session_Is_Running()
+        {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LapsCount.Returns(1);
 
@@ -129,8 +151,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ShowsZeroForAmountOfLapsIfNoLapsDone()
+        public void ShowsZeroForAmountOfLaps_If_Session_Is_Running_And_NoLapsDone()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LapsCount.Returns(0);
 
@@ -140,8 +163,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ShowsLastSectorTime()
+        public void ShowsLastSectorTime_If_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             CreateSessionMockWithOneSector();
 
             _sut.UpdateUi();
@@ -150,8 +174,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ShowsPlaceholderForLastSectorTimeIfNoSectorsDone()
+        public void ShowsPlaceholderForLastSectorTimeIfNoSectorsDone_And_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.Sectors.Returns(new List<Section>());
 
@@ -159,10 +184,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastSectorTime);
         }
+        
+        [Fact]
+        public void ShowsPlaceholderForLastSectorTimeIf_Session_Has_Not_Started()
+        {
+            _sut.AttachHandlers();
+
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastSectorTime);
+        }
 
         [Fact]
-        public void ShowsBestSectorTime()
+        public void ShowsBestSectorTime_If_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             CreateSessionMockWithOneSector();
 
             _sut.UpdateUi();
@@ -171,8 +205,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void ShowsPlaceholderForBestSectorTimeIfNoSectorsDone()
+        public void ShowsPlaceholderForBestSectorTimeIfNoSectorsDone_And_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.Sectors.Returns(new List<Section>());
 
@@ -180,10 +215,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestSectorTime);
         }
+        
+        [Fact]
+        public void ShowsPlaceholderForBestSectorTime_When_Session_HasNot_Started()
+        {
+            _sut.AttachHandlers();
+
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestSectorTime);
+        }
 
         [Fact]
-        public void DisplaysTotalDistance()
+        public void DisplaysTotalDistance_If_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             CreateSessionMockWithOneSector();
 
             _sut.UpdateUi();
@@ -260,6 +304,25 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.TotalTime.Should().Be("0:01:00");
         }
+        
+        [Fact]
+        public void TotalTime_Is_Not_Being_Updated_When_Session_Is_Stopped()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            var session = CreateSessionMock();
+            session.StartTime.Returns(DateTime.UtcNow.AddMinutes(-1));
+
+            _sut.UpdateUi();
+            
+            _sessionManager.IsRunning.Returns(false);
+            session.StartTime.Returns(DateTime.UtcNow.AddMinutes(-4));
+
+            _sut.UpdateUi();
+
+            _sut.TotalTime.Should().Be("0:01:00");
+        }
+        
+        
 
         private void CreateSessionMockWithOneSector()
         {
