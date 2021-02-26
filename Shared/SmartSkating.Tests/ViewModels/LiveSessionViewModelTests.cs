@@ -331,8 +331,6 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.TotalTime.Should().Be("0:01:00");
         }
         
-        
-
         private void CreateSessionMockWithOneSector()
         {
             var session = CreateSessionMock();

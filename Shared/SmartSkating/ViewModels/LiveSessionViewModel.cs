@@ -64,13 +64,10 @@ namespace Sanet.SmartSkating.ViewModels
             if (!IsRunning)
                 return;
             if (_sessionManager.CurrentSession == null) return;
-
-
-
+            
             var time = DateTime.UtcNow.Subtract(_sessionManager.CurrentSession.StartTime);
             TotalTime = time.ToString(TotalTimeFormat);
-
-
+            
             InfoLabel = _sessionManager.CurrentSession.LastCoordinate.ToString();
 
             if (_sessionManager.CurrentSession.LapsCount > 0)
