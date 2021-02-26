@@ -59,6 +59,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sessionManager.Received().StartSession();
         }
+        
+        [Fact]
+        public void Starts_Session_Checks_Session_State()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            _sut.StartCommand.Execute(null);
+
+            var unused = _sessionManager.Received().IsRunning;
+        }
 
         [Fact]
         public void InfoLabel_Gets_Updated_When_Session_Is_Running()

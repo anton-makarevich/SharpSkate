@@ -37,16 +37,19 @@ namespace Sanet.SmartSkating.ViewModels
         {
             await _sessionManager.StartSession();
             _sessionManager.CurrentSession?.SetStartTime(DateTime.UtcNow);
+#pragma warning disable 4014
+            TrackTime();
+#pragma warning restore 4014
         });
 
         private async Task TrackTime()
         {
-            do
+            while (_sessionManager.IsRunning)
             {
                 await Task.Delay(1000);
                 if (_sessionManager.CurrentSession == null) continue;
                 UpdateUi();
-            } while (IsActive);
+            } 
         }
 
         public string TotalTime
@@ -169,9 +172,6 @@ namespace Sanet.SmartSkating.ViewModels
         {
             base.AttachHandlers();
             IsActive = true;
-#pragma warning disable 4014
-            TrackTime();
-#pragma warning restore 4014
         }
 
         public override void DetachHandlers()
