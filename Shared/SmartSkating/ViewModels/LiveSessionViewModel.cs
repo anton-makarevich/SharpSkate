@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Tracking;
@@ -15,6 +16,7 @@ namespace Sanet.SmartSkating.ViewModels
         public const string TotalTimeFormat = "h\\:mm\\:ss";
 
         private readonly ISessionManager _sessionManager;
+        private readonly IDateProvider _dateProvider;
         private string _infoLabel = "";
         private string _currentSector = NoValue;
         private string _lastLapTime = NoValue;
@@ -26,9 +28,10 @@ namespace Sanet.SmartSkating.ViewModels
         private string _bestSectorTime = NoValue;
         private bool _isRunning;
 
-        public LiveSessionViewModel( ISessionManager sessionManager)
+        public LiveSessionViewModel(ISessionManager sessionManager, IDateProvider dateProvider)
         {
             _sessionManager = sessionManager;
+            _dateProvider = dateProvider;
 
             TotalTime = new TimeSpan().ToString(TotalTimeFormat);
         }
@@ -36,7 +39,7 @@ namespace Sanet.SmartSkating.ViewModels
         public ICommand StartCommand => new SimpleCommand(async() =>
         {
             await _sessionManager.StartSession();
-            _sessionManager.CurrentSession?.SetStartTime(DateTime.UtcNow);
+            _sessionManager.CurrentSession?.SetStartTime(_dateProvider.Now());
 #pragma warning disable 4014
             TrackTime();
 #pragma warning restore 4014
@@ -65,7 +68,7 @@ namespace Sanet.SmartSkating.ViewModels
                 return;
             if (_sessionManager.CurrentSession == null) return;
             
-            var time = DateTime.UtcNow.Subtract(_sessionManager.CurrentSession.StartTime);
+            var time = _dateProvider.Now().Subtract(_sessionManager.CurrentSession.StartTime);
             TotalTime = time.ToString(TotalTimeFormat);
             
             InfoLabel = _sessionManager.CurrentSession.LastCoordinate.ToString();

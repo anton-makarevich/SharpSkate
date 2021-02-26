@@ -4,6 +4,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Tracking;
@@ -16,11 +17,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels
     {
         private readonly LiveSessionViewModel _sut;
         private readonly ISessionManager _sessionManager = Substitute.For<ISessionManager>();
+        private readonly IDateProvider _dateProvider = Substitute.For<IDateProvider>();
+        
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
+        private readonly DateTime _testTime = new DateTime(2020, 02, 20, 20, 20, 20);
 
         public LiveSessionViewModelTests()
         {
-            _sut = new LiveSessionViewModel(_sessionManager);
+            _dateProvider.Now().Returns(_testTime);
+            _sut = new LiveSessionViewModel(_sessionManager, _dateProvider);
         }
 
         [Fact]
@@ -67,6 +72,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
 
             var unused = _sessionManager.Received().IsRunning;
+        }
+        
+        [Fact]
+        public void Starts_Session_Starts_Updating_Session_Time()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            _sut.StartCommand.Execute(null);
+
+            _dateProvider.Received().Now();
         }
 
         [Fact]
@@ -248,7 +262,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public void StartingSessionUpdatesItsStartTime()
         {
             var session = CreateSessionMock();
-            var startTime = DateTime.Now;
+            var startTime = _testTime;
             var endTime = startTime.AddSeconds(10);
             var section = new Section(
                 new WayPoint(_locationStub,_locationStub,startTime, WayPointTypes.Start),
@@ -307,7 +321,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
-            session.StartTime.Returns(DateTime.UtcNow.AddMinutes(-1));
+            session.StartTime.Returns(_testTime.AddMinutes(-1));
 
             _sut.UpdateUi();
 
@@ -319,12 +333,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
-            session.StartTime.Returns(DateTime.UtcNow.AddMinutes(-1));
+            session.StartTime.Returns(_testTime.AddMinutes(-1));
 
             _sut.UpdateUi();
             
             _sessionManager.IsRunning.Returns(false);
-            session.StartTime.Returns(DateTime.UtcNow.AddMinutes(-4));
+            session.StartTime.Returns(_testTime.AddMinutes(-4));
 
             _sut.UpdateUi();
 
@@ -334,7 +348,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private void CreateSessionMockWithOneSector()
         {
             var session = CreateSessionMock();
-            var startTime = DateTime.Now;
+            var startTime = _testTime;
             var endTime = startTime.AddSeconds(10);
             var section = new Section(
                 new WayPoint(
