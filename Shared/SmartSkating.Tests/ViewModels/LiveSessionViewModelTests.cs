@@ -52,7 +52,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void InitialCurrentSessionIsEqualToEmptyValue()
+        public void InitialCurrentSectorIsEqualToEmptyValue()
         {
             _sut.CurrentSector.Should().Be(LiveSessionViewModel.NoValue);
         }
@@ -81,6 +81,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.StartCommand.Execute(null);
 
             _dateProvider.Received().Now();
+        }
+        
+        [Fact]
+        public void Stops_Session_When_Stop_Button_Pressed()
+        {
+            _sut.StopCommand.Execute(null);
+
+            _sessionManager.Received().StopSession();
         }
 
         [Fact]
@@ -343,6 +351,24 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.UpdateUi();
 
             _sut.TotalTime.Should().Be("0:01:00");
+        }
+        
+        [Fact]
+        public void Shows_CurrentSector_When_Session_Is_Running()
+        {
+            var startWaypoint = new WayPoint(
+                _locationStub,
+                _locationStub,
+                _testTime,
+                WayPointTypes.FirstSector);
+            
+            _sessionManager.IsRunning.Returns(true);
+            var session = CreateSessionMock();
+            session.WayPoints.Returns(new List<WayPoint> {startWaypoint});
+
+            _sut.UpdateUi();
+
+            _sut.CurrentSector.Should().Be("Currently in 1st sector");
         }
         
         private void CreateSessionMockWithOneSector()
