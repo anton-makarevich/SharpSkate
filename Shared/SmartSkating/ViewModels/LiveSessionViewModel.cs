@@ -43,6 +43,7 @@ namespace Sanet.SmartSkating.ViewModels
 #pragma warning disable 4014
             TrackTime();
 #pragma warning restore 4014
+            IsRunning = _sessionManager.IsRunning;
         });
 
         private async Task TrackTime()
@@ -108,6 +109,7 @@ namespace Sanet.SmartSkating.ViewModels
         {
             _sessionManager.StopSession();
             InfoLabel = "";
+            IsRunning = _sessionManager.IsRunning;
         });
 
         public bool IsActive { get; private set; }
