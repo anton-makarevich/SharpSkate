@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Tracking;
+using Sanet.SmartSkating.Tests.Models.Geometry;
 using Sanet.SmartSkating.Tests.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.ViewModels.Wrappers;
@@ -19,10 +21,11 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly INavigationService _navigationServiceMock = Substitute.For<INavigationService>();
         private readonly TracksViewModel _sut;
         private readonly List<TrackDto> _tracks;
+        private readonly ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
 
         public TracksViewModelTests()
         {
-            _sut = new TracksViewModel(_trackServiceMock);
+            _sut = new TracksViewModel(_trackServiceMock, _sessionProvider);
             _sut.SetNavigationService(_navigationServiceMock);
             _tracks = JsonConvert.DeserializeObject<List<TrackDto>>(TrackServiceTests.TracksData);
             _trackServiceMock.Tracks.Returns(_tracks);
@@ -36,12 +39,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             await _trackServiceMock.Received().LoadTracksAsync();
             Assert.NotEmpty(_sut.Tracks);
         }
-        
+
         [Fact]
         public async Task LoadsTracksFromServiceOnPageAppear()
         {
             _sut.AttachHandlers();
-            
+
             await _trackServiceMock.Received().LoadTracksAsync();
             Assert.NotEmpty(_sut.Tracks);
         }
@@ -50,7 +53,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public async Task HasSelectedTrackIsFalseIfNoneOfTracksIsSelected()
         {
             await _sut.LoadTracksAsync();
-            
+
             Assert.False(_sut.HasSelectedTrack);
         }
 
@@ -61,10 +64,10 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             var track = _sut.Tracks.First();
 
             _sut.SelectTrack(track);
-            
+
             Assert.True(track.IsSelected);
         }
-        
+
         [Fact]
         public async Task SelectTrackRemovesIsSelectedFromOtherTracks()
         {
@@ -74,7 +77,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             var secondTrack = _sut.Tracks.Last();
 
             _sut.SelectTrack(secondTrack);
-            
+
             Assert.False(track.IsSelected);
         }
 
@@ -88,9 +91,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 Start = new CoordinateDto{Latitude = 11,Longitude = 45},
                 Finish = new CoordinateDto{Latitude = 16,Longitude = 25},
             });
-            
+
             _sut.SelectTrack(trackVm);
-            
+
             Assert.False(trackVm.IsSelected);
         }
 
@@ -101,7 +104,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             var track = _sut.Tracks.First();
 
             _sut.SelectTrack(track);
-            
+
             Assert.True(_sut.HasSelectedTrack);
         }
 
@@ -118,7 +121,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             };
 
             _sut.SelectTrack(track);
-            
+
             Assert.Equal(1,hasSelectedUpdatedTimes);
         }
 
@@ -129,7 +132,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             var track = _sut.Tracks.First();
 
             _sut.SelectTrack(track);
-            
+
             _trackServiceMock.Received().SelectRinkByName(track.Name);
         }
 
@@ -138,36 +141,36 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             await _sut.LoadTracksAsync();
             var track = _sut.Tracks.First();
-
+            SelectRink();
             _sut.SelectTrack(track);
 
             _sut.ConfirmSelectionCommand.Execute(null);
 
             await _navigationServiceMock.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
         }
-        
+
         [Fact]
         public async Task ConfirmingSelectionDoesNotCallNavigationIfTrackIsNotSelected()
         {
             await _sut.LoadTracksAsync();
-            
+
             _sut.ConfirmSelectionCommand.Execute(null);
 
             await _navigationServiceMock.DidNotReceive().NavigateToViewModelAsync<LiveSessionViewModel>();
         }
-        
+
         [Fact]
         public void DoesNotCrashWhenAccessingVmBeforeLoad()
         {
             Assert.False(_sut.HasSelectedTrack);
         }
-        
+
         [Fact]
         public async Task DoesNotAddDuplicatedTracks()
         {
             await _sut.LoadTracksAsync();
             await _sut.LoadTracksAsync();
-            
+
             Assert.Equal(_trackServiceMock.Tracks.Count, _sut.Tracks.Count);
         }
 
@@ -176,11 +179,33 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             const string name = "Eindhoven";
             _trackServiceMock.Tracks.Returns(_tracks.Where(t=>t.Name=="Eindhoven").ToList());
-            
+            SelectRink();
+
             await _sut.LoadTracksAsync();
 
             _trackServiceMock.Received().SelectRinkByName(name);
             await _navigationServiceMock.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
+        }
+
+        [Fact]
+        public async Task Confirming_Selection_Creates_New_Session_IfTrackIsSelected()
+        {
+            await _sut.LoadTracksAsync();
+            var track = _sut.Tracks.First();
+            var rink = SelectRink();
+
+            _sut.SelectTrack(track);
+
+            _sut.ConfirmSelectionCommand.Execute(null);
+
+            _sessionProvider.Received(1).CreateSessionForRink(rink);
+        }
+
+        private Rink SelectRink()
+        {
+            var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "RinkId");
+            _trackServiceMock.SelectedRink.Returns(rink);
+            return rink;
         }
     }
 }

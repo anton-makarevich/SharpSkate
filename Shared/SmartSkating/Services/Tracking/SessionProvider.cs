@@ -3,17 +3,20 @@ using Sanet.SmartSkating.Models.Training;
 
 namespace Sanet.SmartSkating.Services.Tracking
 {
-    public class SessionService:ISessionService
+    public class SessionProvider:ISessionProvider
     {
         private readonly ISettingsService _settingsService;
 
-        public SessionService(ISettingsService settingsService)
+        public SessionProvider(ISettingsService settingsService)
         {
             _settingsService = settingsService;
         }
         public ISession CreateSessionForRink(Rink rink)
         {
-            return new Session(rink,_settingsService);
+            CurrentSession = new Session(rink,_settingsService);
+            return CurrentSession;
         }
+
+        public ISession? CurrentSession { get; private set; }
     }
 }

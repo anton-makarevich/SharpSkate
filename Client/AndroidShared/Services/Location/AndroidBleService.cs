@@ -6,6 +6,7 @@ using Android.Bluetooth.LE;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Location;
 using ScanMode = Android.Bluetooth.LE.ScanMode;
 
@@ -22,16 +23,18 @@ namespace Sanet.SmartSkating.Droid.Services.Location
         private DateTime _startTime;
 
         public AndroidBleService(
-            IDataService dataService, 
-            IBleDevicesProvider bleDevicesProvider):base(bleDevicesProvider,dataService)
+            IDataService dataService,
+            IBleDevicesProvider bleDevicesProvider,
+            IAccountService accountService,
+            IDateProvider dateProvider):base(bleDevicesProvider,dataService,accountService)
         {
-            _callBack = new BleScanCallBack(dataService);
+            _callBack = new BleScanCallBack(dataService,dateProvider);
             if (BluetoothAdapter.DefaultAdapter != null)
             {
                 _bleScanner = BluetoothAdapter.DefaultAdapter.BluetoothLeScanner;
             }
         }
-        
+
         public override void StartBleScan(string sessionId)
         {
             if (KnownDevices == null || KnownDevices.Count == 0)

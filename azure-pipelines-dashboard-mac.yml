@@ -36,6 +36,14 @@ steps:
       echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
       echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
 
+- task: Bash@3
+  displayName: 'Fix xamarin mac version (should be removed when agent is updated)'
+  inputs:
+    targetType: 'inline'
+    script: |
+      curl -o xamarinmac.pkg 'https://bosstoragemirror.blob.core.windows.net/wrench/xcode12.4/a4c70e7d04e3904d17aa60f6d640eb048081c757/4477741/package/notarized/xamarin.mac-7.4.0.10.pkg'
+      sudo installer -pkg xamarinmac.pkg -target /
+
 - task: XamariniOS@2
   displayName: 'Build Mac App'
   inputs:

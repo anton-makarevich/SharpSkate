@@ -21,6 +21,7 @@ namespace Sanet.SmartSkating.Xf
             container.Register<LiveSessionViewModel>();
 
             // Register services
+            container.RegisterSingleton<IDateProvider,DateProvider>();
             container.RegisterSingleton<IResourceReader,EmbeddedResourceReader>();
             container.RegisterSingleton<ISettingsService, SettingsService>();
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
@@ -37,7 +38,8 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<ITrackProvider,LocalTrackProvider>();
             container.RegisterSingleton<IBleDevicesProvider,LocalBleDevicesProvider>();
             container.RegisterSingleton<ITrackService, TrackService>();
-            container.RegisterSingleton<ISessionService,SessionService>();
+            container.RegisterSingleton<ISessionProvider,SessionProvider>();
+            container.RegisterSingleton<ISessionManager,SessionManager>();
         }
     }
 }

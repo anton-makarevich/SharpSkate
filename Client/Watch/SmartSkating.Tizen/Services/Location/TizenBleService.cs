@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Location;
 using Tizen.Network.Bluetooth;
 
@@ -15,7 +16,8 @@ namespace Sanet.SmartSkating.Tizen.Services.Location
 
         public TizenBleService(
             IDataService dataService,
-            IBleDevicesProvider bleDevicesProvider):base(bleDevicesProvider,dataService)
+            IBleDevicesProvider bleDevicesProvider, 
+            IAccountService accountService):base(bleDevicesProvider,dataService,accountService)
         {
         }
         

@@ -1,5 +1,6 @@
 using CoreBluetooth;
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Location;
 
 namespace Sanet.SmartSkating.Xf.Ios.Services.Location
@@ -7,8 +8,8 @@ namespace Sanet.SmartSkating.Xf.Ios.Services.Location
     public class IosBleService:BaseBleLocationService
     {
         private readonly CBCentralManager _centralManager = new CBCentralManager();
-        public IosBleService(IBleDevicesProvider devicesProvider, IDataService dataService) 
-            : base(devicesProvider,dataService)
+        public IosBleService(IBleDevicesProvider devicesProvider, IDataService dataService, IAccountService accountService) 
+            : base(devicesProvider,dataService,accountService)
         {
         }
 

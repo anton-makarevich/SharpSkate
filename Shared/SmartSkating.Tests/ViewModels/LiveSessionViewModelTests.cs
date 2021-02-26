@@ -1,20 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Models.EventArgs;
-using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
-using Sanet.SmartSkating.Services;
-using Sanet.SmartSkating.Services.Account;
-using Sanet.SmartSkating.Services.Api;
-using Sanet.SmartSkating.Services.Location;
 using Sanet.SmartSkating.Services.Tracking;
-using Sanet.SmartSkating.Tests.Models.Geometry;
 using Sanet.SmartSkating.ViewModels;
 using Xunit;
 
@@ -22,30 +15,33 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 {
     public class LiveSessionViewModelTests
     {
-        private const string RinkId = "rinkId";
-
         private readonly LiveSessionViewModel _sut;
-        private readonly IAccountService _accountService = Substitute.For<IAccountService>();
-        private readonly ILocationService _locationService = Substitute.For<ILocationService>();
-        private readonly IDataService _storageService = Substitute.For<IDataService>();
-        private readonly ITrackService _trackService = Substitute.For<ITrackService>();
-        private readonly ISessionService _sessionService = Substitute.For<ISessionService>();
+        private readonly ISessionManager _sessionManager = Substitute.For<ISessionManager>();
+        private readonly IDateProvider _dateProvider = Substitute.For<IDateProvider>();
+        
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
-        private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
-        private readonly IBleLocationService _bleLocationService = Substitute.For<IBleLocationService>();
-        private readonly ISettingsService _settingsService = Substitute.For<ISettingsService>();
+        private readonly DateTime _testTime = new DateTime(2020, 02, 20, 20, 20, 20);
 
         public LiveSessionViewModelTests()
         {
-            _sut = new LiveSessionViewModel(
-                _locationService,
-                _storageService,
-                _trackService,
-                _sessionService,
-                _accountService,
-                _dataSyncService,
-                _bleLocationService,
-                _settingsService);
+            _dateProvider.Now().Returns(_testTime);
+            _sut = new LiveSessionViewModel(_sessionManager, _dateProvider);
+        }
+
+        [Fact]
+        public void Changes_State_To_IsActive_On_View_Appear()
+        {
+            _sut.AttachHandlers();
+
+            _sut.IsActive.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Changes_State_To_Inactive_On_View_Disappear()
+        {
+            _sut.AttachHandlers();
+            _sut.DetachHandlers();
+            _sut.IsActive.Should().BeFalse();
         }
 
         [Fact]
@@ -56,402 +52,329 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void InitialCurrentSessionIsEqualToEmptyValue()
+        public void InitialCurrentSectorIsEqualToEmptyValue()
         {
             _sut.CurrentSector.Should().Be(LiveSessionViewModel.NoValue);
         }
 
         [Fact]
-        public void StartsLocationServiceWhenStartButtonPressed()
+        public void Starts_Session_WhenStartButtonPressed()
         {
             _sut.StartCommand.Execute(null);
 
-            _locationService.Received().StartFetchLocation();
+            _sessionManager.Received().StartSession();
         }
-
+        
         [Fact]
-        public void StartSavesSessionToLocalStorage()
+        public void Starts_Session_Checks_Session_State()
         {
-            const string rinkId ="rinkId";
-            const string sessionId = "sessionId";
-            CreateSessionMock(sessionId, rinkId);
-            const string userId = "123";
-            const string deviceId = "deviceId";
-            var deviceInfo = new DeviceDto
-            {
-                Id = deviceId
-            };
-
-            _accountService.UserId.Returns(userId);
-            _accountService.GetDeviceInfo().Returns(deviceInfo);
-
+            _sessionManager.IsRunning.Returns(true);
             _sut.StartCommand.Execute(null);
 
-            _storageService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
-                s.Id == sessionId
-                && s.AccountId == userId
-                && s.RinkId == rinkId
-                && s.DeviceId == deviceId
-                ));
+            var unused = _sessionManager.Received().IsRunning;
         }
-
+        
         [Fact]
-        public async Task FetchesKnownBleDevices_WhenPageIsLoaded_AndBleIsOnInSettings()
+        public void Starts_Session_Starts_Updating_Session_Time()
         {
-            _settingsService.UseBle.Returns(true);
-            _sut.AttachHandlers();
+            _sessionManager.IsRunning.Returns(true);
+            _sut.StartCommand.Execute(null);
 
-            await _bleLocationService.Received().LoadDevicesDataAsync();
+            _dateProvider.Received().Now();
         }
-
+        
         [Fact]
-        public async Task DoesNotFetchKnownBleDevices_WhenPageIsLoaded_AndBleIsOffInSettings()
-        {
-            _settingsService.UseBle.Returns(false);
-            _sut.AttachHandlers();
-
-            await _bleLocationService.DidNotReceive().LoadDevicesDataAsync();
-        }
-
-        [Fact]
-        public void StartsLocationServiceWhenPageIsLoaded()
-        {
-           _sut.AttachHandlers();
-
-            _locationService.Received().StartFetchLocation();
-        }
-
-        [Fact]
-        public void StopSavesCompletedSessionToLocalStorage()
-        {
-            const string rinkId ="rinkId";
-            const string sessionId = "someSessionId";
-            CreateSessionMock(sessionId, rinkId);
-            const string userId = "123";
-            _accountService.UserId.Returns(userId);
-            const string deviceId = "deviceId";
-            var deviceInfo = new DeviceDto
-            {
-                Id = deviceId
-            };
-            _accountService.GetDeviceInfo().Returns(deviceInfo);
-
-            _sut.StopCommand.Execute(null);
-
-            _storageService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
-                s.Id == sessionId
-                && s.AccountId == userId
-                && s.IsCompleted
-                && s.RinkId == rinkId
-                && s.DeviceId == deviceId
-                ));
-        }
-
-        [Fact]
-        public async Task StopSyncsDataForSessionsAndWayPoints()
+        public void Stops_Session_When_Stop_Button_Pressed()
         {
             _sut.StopCommand.Execute(null);
 
-            await _dataSyncService.Received().SyncSessionsAsync();
-            await _dataSyncService.Received().SyncWayPointsAsync();
+            _sessionManager.Received().StopSession();
         }
 
         [Fact]
-        public void StopsLocationService_WhenStopButtonPressed()
+        public void InfoLabel_Gets_Updated_When_Session_Is_Running()
         {
-            _sut.StopCommand.Execute(null);
-
-            _locationService.Received().StopFetchLocation();
-        }
-
-        [Fact]
-        public void ChangesStateToIsRunning_WhenStartButtonPressed()
-        {
-            var isRunningChanged = false;
-            _sut.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(_sut.IsRunning)) isRunningChanged = true;
-            };
-
-            _sut.StartCommand.Execute(null);
-
-            Assert.True(_sut.IsRunning);
-            Assert.True(isRunningChanged);
-        }
-
-        [Fact]
-        public void ChangesStateToNotIsRunning_WhenStartButtonPressed()
-        {
-            _sut.StartCommand.Execute(null);
-
-            var isRunningChanged = false;
-            _sut.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(_sut.IsRunning)) isRunningChanged = true;
-            };
-
-            _sut.StopCommand.Execute(null);
-
-            Assert.False(_sut.IsRunning);
-            Assert.True(isRunningChanged);
-        }
-
-        [Fact]
-        public void StopsLocationService_WhenLeavingThePage()
-        {
-            _sut.StartCommand.Execute(null);
-
-            _sut.DetachHandlers();
-
-            _locationService.Received().StopFetchLocation();
-            Assert.False(_sut.IsRunning);
-        }
-
-        [Fact]
-        public void UpdatesLastLocationWithNewValueFromService_IfServiceIsStarted()
-        {
-            InitViewModelWithRink();
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
-
-            Assert.Equal(_locationStub, _sut.LastCoordinate);
-        }
-
-        [Fact]
-        public void LastCoordinateChangeUpdatesInfoLabel()
-        {
-            InitViewModelWithRink();
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
-
-            Assert.Contains(_sut.InfoLabel, _locationStub.ToString());
-        }
-
-        [Fact]
-        public void StopClearsInfoLabel()
-        {
-            InitViewModelWithRink();
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
-
-            _sut.StopCommand.Execute(true);
-
-            Assert.Empty(_sut.InfoLabel);
-        }
-
-        [Fact]
-        public async Task LastCoordinateChangeSavesCoordinateToDisk()
-        {
-            InitViewModelWithRink();
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
-
-            await _storageService.Received().SaveWayPointAsync(Arg.Any<WayPointDto>());
-        }
-
-        [Fact]
-        public void CreatesSessionOnPageStart()
-        {
-            var rink = InitViewModelWithRink();
-
-            _sessionService.Received().CreateSessionForRink(rink);
-        }
-
-        private Rink InitViewModelWithRink()
-        {
-            var rink = new Rink(RinkTests.EindhovenStart,
-                RinkTests.EindhovenFinish,RinkId);
-            _trackService.SelectedRink.Returns(rink);
-
-            _sut.AttachHandlers();
-            return rink;
-        }
-
-        [Fact]
-        public void CannotStartIfSessionIsNull()
-        {
-            _sut.AttachHandlers();
-
-            Assert.False(_sut.CanStart);
-        }
-
-        [Fact]
-        public void CanStartIfSessionIsCreated()
-        {
-            _trackService.SelectedRink.Returns(
-                new Rink(RinkTests.EindhovenStart,
-                    RinkTests.EindhovenFinish,RinkId));
-            _sut.AttachHandlers();
-
-            Assert.True(_sut.CanStart);
-        }
-
-        [Fact]
-        public void ChangesCanStartWhenSessionIsCreated()
-        {
-            _trackService.SelectedRink.Returns(
-                new Rink(RinkTests.EindhovenStart,
-                    RinkTests.EindhovenFinish,RinkId));
-
-            var canStartChanged = false;
-            _sut.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(_sut.CanStart)) canStartChanged = true;
-            };
-
-            _sut.AttachHandlers();
-
-            Assert.True(canStartChanged);
-        }
-
-        [Fact]
-        public void SessionIsUpdatedWhenLocationIsReceived()
-        {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
+            session.LastCoordinate.Returns(_locationStub);
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
 
-            session.Received().AddPoint(_locationStub, Arg.Any<DateTime>());
-        }
-
-        private ISession CreateSessionMock(string sessionId = "sessionId", string rinkId = "RinkId")
-        {
-            var rink = new Rink(RinkTests.EindhovenStart,
-                RinkTests.EindhovenFinish, rinkId, "Eindhoven");
-            _trackService.SelectedRink.Returns(rink);
-            var session = Substitute.For<ISession>();
-            session.SessionId.Returns(sessionId);
-            session.Rink.Returns(rink);
-            _sessionService.CreateSessionForRink(rink).Returns(session);
-            _sut.AttachHandlers();
-            return session;
+            _sut.InfoLabel.Should().Be(_locationStub.ToString());
         }
 
         [Fact]
-        public void ShowsLastLapTime()
+        public void Shows_LastLap_Time_When_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LastLapTime.Returns(new TimeSpan(0, 0, 40));
             session.LapsCount.Returns(1);
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
 
             Assert.Equal("0:00:40",_sut.LastLapTime);
         }
 
         [Fact]
-        public void ShowsPlaceholderForLastLapTimeIfNoLapsDone()
+        public void Shows_Placeholder_For_LastLap_Time_If_No_Laps_Done_And_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LapsCount.Returns(0);
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
+
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastLapTime);
+        }
+        
+        [Fact]
+        public void Shows_Placeholder_For_LastLap_When_Session_HasNot_Started()
+        {
+            _sut.AttachHandlers();
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastLapTime);
         }
 
         [Fact]
-        public void ShowsBestLapTime()
+        public void Shows_Best_Lap_Time_When_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.BestLapTime.Returns(new TimeSpan(0, 0, 40));
             session.LapsCount.Returns(1);
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
 
             Assert.Equal("0:00:40",_sut.BestLapTime);
         }
 
         [Fact]
-        public void ShowsPlaceholderForBestLapTimeIfNoLapsDone()
+        public void ShowsPlaceholderForBestLapTime_If_Session_Is_Running_And_NoLapsDone()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LapsCount.Returns(0);
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestLapTime);
         }
 
         [Fact]
-        public void ShowsAmountOfLaps()
+        public void ShowsPlaceholderForBestLapTime_If_Session_HasNot_Started()
         {
+            _sut.AttachHandlers();
+
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestLapTime);
+        }
+
+        [Fact]
+        public void ShowsAmountOfLaps_When_Session_Is_Running()
+        {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LapsCount.Returns(1);
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
 
             Assert.Equal("1",_sut.Laps);
         }
 
         [Fact]
-        public void ShowsZeroForAmountOfLapsIfNoLapsDone()
+        public void ShowsZeroForAmountOfLaps_If_Session_Is_Running_And_NoLapsDone()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.LapsCount.Returns(0);
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
 
             Assert.Equal("0",_sut.Laps);
         }
 
         [Fact]
-        public void ShowsLastSectorTime()
+        public void ShowsLastSectorTime_If_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             CreateSessionMockWithOneSector();
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
 
             Assert.Equal("00:10",_sut.LastSectorTime);
         }
 
         [Fact]
-        public void ShowsPlaceholderForLastSectorTimeIfNoSectorsDone()
+        public void ShowsPlaceholderForLastSectorTimeIfNoSectorsDone_And_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.Sectors.Returns(new List<Section>());
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
+
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastSectorTime);
+        }
+        
+        [Fact]
+        public void ShowsPlaceholderForLastSectorTimeIf_Session_Has_Not_Started()
+        {
+            _sut.AttachHandlers();
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.LastSectorTime);
         }
 
         [Fact]
-        public void ShowsBestSectorTime()
+        public void ShowsBestSectorTime_If_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             CreateSessionMockWithOneSector();
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
 
             Assert.Equal("00:10",_sut.BestSectorTime);
         }
 
         [Fact]
-        public void ShowsPlaceholderForBestSectorTimeIfNoSectorsDone()
+        public void ShowsPlaceholderForBestSectorTimeIfNoSectorsDone_And_Session_Is_Running()
         {
+            _sessionManager.IsRunning.Returns(true);
             var session = CreateSessionMock();
             session.Sectors.Returns(new List<Section>());
 
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+            _sut.UpdateUi();
+
+            Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestSectorTime);
+        }
+        
+        [Fact]
+        public void ShowsPlaceholderForBestSectorTime_When_Session_HasNot_Started()
+        {
+            _sut.AttachHandlers();
 
             Assert.Equal(LiveSessionViewModel.NoValue,_sut.BestSectorTime);
         }
 
+        [Fact]
+        public void DisplaysTotalDistance_If_Session_Is_Running()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            CreateSessionMockWithOneSector();
+
+            _sut.UpdateUi();
+
+            Assert.Equal("0.1Km",_sut.Distance);
+        }
+
+        [Fact]
+        public void StartingSessionUpdatesItsStartTime()
+        {
+            var session = CreateSessionMock();
+            var startTime = _testTime;
+            var endTime = startTime.AddSeconds(10);
+            var section = new Section(
+                new WayPoint(_locationStub,_locationStub,startTime, WayPointTypes.Start),
+                new WayPoint(_locationStub,_locationStub,endTime, WayPointTypes.Finish)
+            );
+            session.Sectors.Returns(new List<Section>(){section});
+
+            _sut.StartCommand.Execute(null);
+
+            session.Received().SetStartTime(Arg.Any<DateTime>());
+        }
+
+        [Fact]
+        public void CanStart_When_Session_Exists()
+        {
+            CreateSessionMock();
+
+            _sut.CanStart.Should().BeTrue();
+        }
+
+        [Fact]
+        public void CanNotStart_When_Session_DoesNot_Exist()
+        {
+            _sessionManager.CurrentSession.ReturnsNull();
+            _sut.CanStart.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsRunning_Is_True_When_Session_Has_Started()
+        {
+            _sessionManager.IsRunning.Returns(true);
+
+            _sut.UpdateUi();
+
+            _sut.IsRunning.Should().BeTrue();
+        }
+
+        [Fact]
+        public void TotalTime_Is_Zero_When_Session_Is_Not_Running()
+        {
+            _sessionManager.IsRunning.Returns(false);
+
+            _sut.UpdateUi();
+
+            _sut.TotalTime.Should().Be("0:00:00");
+        }
+
+        [Fact]
+        public void TotalTime_Is_Zero_Initially()
+        {
+            _sut.TotalTime.Should().Be("0:00:00");
+        }
+
+        [Fact]
+        public void TotalTime_Is_Positive_When_Session_Is_Running()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            var session = CreateSessionMock();
+            session.StartTime.Returns(_testTime.AddMinutes(-1));
+
+            _sut.UpdateUi();
+
+            _sut.TotalTime.Should().Be("0:01:00");
+        }
+        
+        [Fact]
+        public void TotalTime_Is_Not_Being_Updated_When_Session_Is_Stopped()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            var session = CreateSessionMock();
+            session.StartTime.Returns(_testTime.AddMinutes(-1));
+
+            _sut.UpdateUi();
+            
+            _sessionManager.IsRunning.Returns(false);
+            session.StartTime.Returns(_testTime.AddMinutes(-4));
+
+            _sut.UpdateUi();
+
+            _sut.TotalTime.Should().Be("0:01:00");
+        }
+        
+        [Fact]
+        public void Shows_CurrentSector_When_Session_Is_Running()
+        {
+            var startWaypoint = new WayPoint(
+                _locationStub,
+                _locationStub,
+                _testTime,
+                WayPointTypes.FirstSector);
+            
+            _sessionManager.IsRunning.Returns(true);
+            var session = CreateSessionMock();
+            session.WayPoints.Returns(new List<WayPoint> {startWaypoint});
+
+            _sut.UpdateUi();
+
+            _sut.CurrentSector.Should().Be("Currently in 1st sector");
+        }
+        
         private void CreateSessionMockWithOneSector()
         {
             var session = CreateSessionMock();
-            var startTime = DateTime.Now;
+            var startTime = _testTime;
             var endTime = startTime.AddSeconds(10);
             var section = new Section(
                 new WayPoint(
@@ -465,80 +388,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                     endTime,
                     WayPointTypes.Finish)
             );
-            session.Sectors.Returns(new List<Section>() {section});
+            session.Sectors.Returns(new List<Section> {section});
             session.BestSector.Returns(section);
         }
 
-        [Fact]
-        public void DisplaysTotalDistance()
+        private ISession CreateSessionMock()
         {
-            CreateSessionMockWithOneSector();
-
-            _sut.StartCommand.Execute(null);
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
-
-            Assert.Equal("0.1Km",_sut.Distance);
+            var session = Substitute.For<ISession>();
+            _sessionManager.CurrentSession.Returns(session);
+            return session;
         }
-
-        [Fact]
-        public void StartingSessionUpdatesItsStartTime()
-        {
-            var session = CreateSessionMock();
-            var startTime = DateTime.Now;
-            var endTime = startTime.AddSeconds(10);
-            var section = new Section(
-                new WayPoint(_locationStub,_locationStub,startTime, WayPointTypes.Start),
-                new WayPoint(_locationStub,_locationStub,endTime, WayPointTypes.Finish)
-            );
-            session.Sectors.Returns(new List<Section>(){section});
-
-            _sut.StartCommand.Execute(null);
-
-            session.Received().SetStartTime(Arg.Any<DateTime>());
-        }
-
-        #region Ble
-        [Fact]
-        public void StartsBleScan_WhenStartButtonPressed_AndBleAllowedInSettings()
-        {
-            _settingsService.UseBle.Returns(true);
-            _sut.StartCommand.Execute(null);
-
-            _bleLocationService.Received().StartBleScan(Arg.Any<string>());
-        }
-
-        [Fact]
-        public void DoesNotStartBleScan_WhenStartButtonPressed_ButBleIsNotAllowedInSettings()
-        {
-            _settingsService.UseBle.Returns(false);
-            _sut.StartCommand.Execute(null);
-
-            _bleLocationService.DidNotReceive().StartBleScan(Arg.Any<string>());
-        }
-
-        [Fact]
-        public void StopsBleScan_WhenStopButtonPressed()
-        {
-            _sut.StopCommand.Execute(null);
-
-            _bleLocationService.Received().StopBleScan();
-        }
-
-        [Fact]
-        public void AddsSectionSeparator_WhenCheckPointIsPassed()
-        {
-            _settingsService.UseBle.Returns(true);
-            var session = CreateSessionMock();
-            _sut.StartCommand.Execute(null);
-            const WayPointTypes checkPointType = WayPointTypes.Start;
-            var date = DateTime.Now;
-
-            _bleLocationService.CheckPointPassed += Raise.EventWith(
-                null,
-                new CheckPointEventArgs(checkPointType, date));
-
-            session.Received().AddSeparatingPoint(checkPointType,date);
-        }
-        #endregion
     }
 }
