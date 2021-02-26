@@ -25,9 +25,10 @@ namespace Sanet.SmartSkating.Droid.Services.Location
         public AndroidBleService(
             IDataService dataService,
             IBleDevicesProvider bleDevicesProvider,
-            IAccountService accountService):base(bleDevicesProvider,dataService,accountService)
+            IAccountService accountService,
+            IDateProvider dateProvider):base(bleDevicesProvider,dataService,accountService)
         {
-            _callBack = new BleScanCallBack(dataService);
+            _callBack = new BleScanCallBack(dataService,dateProvider);
             if (BluetoothAdapter.DefaultAdapter != null)
             {
                 _bleScanner = BluetoothAdapter.DefaultAdapter.BluetoothLeScanner;
