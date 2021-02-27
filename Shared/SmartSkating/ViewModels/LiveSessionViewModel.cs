@@ -58,6 +58,7 @@ namespace Sanet.SmartSkating.ViewModels
             _sessionManager.StopSession();
             InfoLabel = "";
             IsRunning = _sessionManager.IsRunning;
+            NotifyPropertyChanged(nameof(CanStart));
         });
 
         private async Task TrackTime()

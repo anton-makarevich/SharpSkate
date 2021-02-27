@@ -113,6 +113,22 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             
             _sessionManager.DidNotReceive().StopSession();
         }
+        
+        [Fact]
+        public void Stops_Session_Updates_CanStart_Property()
+        {
+            _userDialogs.ConfirmAsync("Do you want to stop session").Returns(Task.FromResult(true));
+            
+            var canStartUpdated = false;
+            _sut.PropertyChanged += (sender, args) =>
+            {
+                canStartUpdated = args.PropertyName == nameof(_sut.CanStart);
+            }; 
+            
+            _sut.StopCommand.Execute(null);
+
+            canStartUpdated.Should().BeTrue();
+        }
 
         [Fact]
         public void InfoLabel_Gets_Updated_When_Session_Is_Running()
