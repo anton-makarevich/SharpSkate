@@ -38,6 +38,7 @@ namespace Sanet.SmartSkating.Services.Tracking
 
         public ISession? CurrentSession => _sessionProvider.CurrentSession;
         public bool IsRunning { get; private set; }
+        public bool IsCompleted { get; private set; }
         public bool IsReady => _sessionProvider.CurrentSession != null;
 
         public async Task StartSession()
@@ -91,6 +92,7 @@ namespace Sanet.SmartSkating.Services.Tracking
 
         private async Task SaveSessionAndSyncData(bool isCompleted = false)
         {
+            IsCompleted = isCompleted;
             var sessionDto = GetSessionDto();
             if (sessionDto != null)
             {

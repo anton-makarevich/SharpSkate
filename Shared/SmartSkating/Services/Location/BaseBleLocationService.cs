@@ -91,6 +91,8 @@ namespace Sanet.SmartSkating.Services.Location
                 return;
 
             var closestWayPointType = (WayPointTypes)GetWayPointForDeviceId(closestStack.DeviceId);
+            if (closestWayPointType == WayPointTypes.Unknown)
+                return;
             if (ScanStacks.Count < 3)
             {
                 if (closestStack.AverageRssi > RssiNearThreshold)

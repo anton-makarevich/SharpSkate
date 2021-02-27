@@ -12,5 +12,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         void StopSession();
 
         bool IsRunning { get; }
+        
+        bool IsCompleted { get; }
     }
 }
