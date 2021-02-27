@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Acr.UserDialogs;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.Training;
@@ -17,6 +18,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         private readonly ISessionManager _sessionManager;
         private readonly IDateProvider _dateProvider;
+        private readonly IUserDialogs _userDialogs;
         private string _infoLabel = "";
         private string _currentSector = NoValue;
         private string _lastLapTime = NoValue;
@@ -28,10 +30,13 @@ namespace Sanet.SmartSkating.ViewModels
         private string _bestSectorTime = NoValue;
         private bool _isRunning;
 
-        public LiveSessionViewModel(ISessionManager sessionManager, IDateProvider dateProvider)
+        public LiveSessionViewModel(ISessionManager sessionManager,
+            IDateProvider dateProvider,
+            IUserDialogs userDialogs)
         {
             _sessionManager = sessionManager;
             _dateProvider = dateProvider;
+            _userDialogs = userDialogs;
 
             TotalTime = new TimeSpan().ToString(TotalTimeFormat);
         }
@@ -43,6 +48,15 @@ namespace Sanet.SmartSkating.ViewModels
 #pragma warning disable 4014
             TrackTime();
 #pragma warning restore 4014
+            IsRunning = _sessionManager.IsRunning;
+        });
+
+        public ICommand StopCommand => new SimpleCommand(async () =>
+        {
+            var isConfirmed = await _userDialogs.ConfirmAsync("Do you want to stop session");
+            if (!isConfirmed) return;
+            _sessionManager.StopSession();
+            InfoLabel = "";
             IsRunning = _sessionManager.IsRunning;
         });
 
@@ -104,13 +118,6 @@ namespace Sanet.SmartSkating.ViewModels
                 CurrentSector =
                     $"Currently in {_sessionManager.CurrentSession.WayPoints.Last().Type.GetSectorName()} sector";
         }
-
-        public ICommand StopCommand => new SimpleCommand(() =>
-        {
-            _sessionManager.StopSession();
-            InfoLabel = "";
-            IsRunning = _sessionManager.IsRunning;
-        });
 
         public bool IsActive { get; private set; }
 

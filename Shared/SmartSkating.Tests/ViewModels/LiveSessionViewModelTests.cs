@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
@@ -19,14 +20,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly LiveSessionViewModel _sut;
         private readonly ISessionManager _sessionManager = Substitute.For<ISessionManager>();
         private readonly IDateProvider _dateProvider = Substitute.For<IDateProvider>();
-        
+        private readonly IUserDialogs _userDialogs = Substitute.For<IUserDialogs>();
+
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
         private readonly DateTime _testTime = new DateTime(2020, 02, 20, 20, 20, 20);
 
         public LiveSessionViewModelTests()
         {
             _dateProvider.Now().Returns(_testTime);
-            _sut = new LiveSessionViewModel(_sessionManager, _dateProvider);
+            _sut = new LiveSessionViewModel(_sessionManager, _dateProvider, _userDialogs);
         }
 
         [Fact]
@@ -85,11 +87,31 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
-        public void Stops_Session_When_Stop_Button_Pressed()
+        public async Task Stops_Session_Button_Ask_Confirmation()
         {
             _sut.StopCommand.Execute(null);
-
-            _sessionManager.Received().StopSession();
+            
+            await _userDialogs.Received(1).ConfirmAsync("Do you want to stop session");
+        }
+        
+        [Fact]
+        public void Stops_Session_Button_Calls_StopSession_If_Confirmed()
+        {
+            _userDialogs.ConfirmAsync("Do you want to stop session").Returns(Task.FromResult(true));
+            
+            _sut.StopCommand.Execute(null);
+            
+            _sessionManager.Received(1).StopSession();
+        }
+        
+        [Fact]
+        public void Stops_Session_Button_DoesNot_Call_StopSession_If_Not_Confirmed()
+        {
+            _userDialogs.ConfirmAsync("Do you want to stop session").Returns(Task.FromResult(false));
+            
+            _sut.StopCommand.Execute(null);
+            
+            _sessionManager.DidNotReceive().StopSession();
         }
 
         [Fact]
