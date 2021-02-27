@@ -307,11 +307,31 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void CanStart_When_Session_Exists()
+        public void CanStart_When_Session_Exists_And_Not_Running()
         {
+            _sessionManager.IsRunning.Returns(false);
             CreateSessionMock();
 
             _sut.CanStart.Should().BeTrue();
+        }
+        
+        [Fact]
+        public void CanNotStart_When_Session_Exists_And_Running()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            CreateSessionMock();
+
+            _sut.CanStart.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void CanNotStart_When_Session_Exists_Not_Running_But_Stopped()
+        {
+            _sessionManager.IsRunning.Returns(false);
+            _sessionManager.IsCompleted.Returns(true);
+            CreateSessionMock();
+            
+            _sut.CanStart.Should().BeFalse();
         }
 
         [Fact]

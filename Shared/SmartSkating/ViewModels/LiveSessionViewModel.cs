@@ -133,7 +133,9 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _currentSector, value);
         }
 
-        public bool CanStart => _sessionManager.CurrentSession != null;
+        public bool CanStart => _sessionManager.CurrentSession != null 
+                                && !_sessionManager.IsRunning
+                                && !_sessionManager.IsCompleted;
 
         public string LastLapTime
         {
