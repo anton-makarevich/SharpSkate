@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
@@ -370,7 +371,18 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.CurrentSector.Should().Be("Currently in 1st sector");
         }
-        
+
+        [Fact]
+        public void Start_Updating_OnPageLoad_If_Session_IsRunning()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            CreateSessionMock();
+            
+            _sut.AttachHandlers();
+
+            var unused = _sessionManager.Received().IsRunning;
+        }
+
         private void CreateSessionMockWithOneSector()
         {
             var session = CreateSessionMock();

@@ -48,7 +48,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         private async Task TrackTime()
         {
-            while (_sessionManager.IsRunning)
+            while (_sessionManager.IsRunning && IsActive)
             {
                 await Task.Delay(1000);
                 if (_sessionManager.CurrentSession == null) continue;
@@ -174,6 +174,12 @@ namespace Sanet.SmartSkating.ViewModels
         {
             base.AttachHandlers();
             IsActive = true;
+            if (_sessionManager.IsRunning)
+            {
+#pragma warning disable 4014
+                TrackTime();
+#pragma warning restore 4014
+            }
         }
 
         public override void DetachHandlers()
