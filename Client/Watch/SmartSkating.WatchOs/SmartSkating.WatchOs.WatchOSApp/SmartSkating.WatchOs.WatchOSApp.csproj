@@ -135,6 +135,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs">
+      <Version>7.1.0.475</Version>
+    </PackageReference>
     <PackageReference Include="SimpleInjector">
       <Version>5.2.1</Version>
     </PackageReference>

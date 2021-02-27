@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -31,7 +32,7 @@ namespace Sanet.SmartSkating.WearOs
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+            UserDialogs.Init(this);
             _container.RegisterModules(this);
             _navigationService = new AndroidNavigationService(this,_container);
             

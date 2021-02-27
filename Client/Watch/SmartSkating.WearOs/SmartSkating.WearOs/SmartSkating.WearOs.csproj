@@ -102,6 +102,9 @@
     <AndroidResource Include="Resources\values-round\strings.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs">
+      <Version>7.1.0.475</Version>
+    </PackageReference>
     <PackageReference Include="Refit">
       <Version>5.2.4</Version>
     </PackageReference>
