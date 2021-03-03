@@ -9,7 +9,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Sanet.SmartSkating.Backend.Azure;
-using Sanet.SmartSkating.Backend.Azure.Services;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
@@ -19,13 +18,13 @@ namespace Sanet.SmartSkating.Backend.Functions
 {
     public class SessionSaverFunction : IAzureFunction
     {
-        private IDataService? _dataService;
+        private readonly IDataService _dataService;
 
-        public void SetService(IDataService dataService)
+        public SessionSaverFunction(IDataService dataService)
         {
             _dataService = dataService;
         }
-        
+
         [FunctionName("SessionSaverFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, 
@@ -33,12 +32,9 @@ namespace Sanet.SmartSkating.Backend.Functions
                 Route = ApiNames.SessionsResource.Route)] HttpRequest request,
             ILogger logger)
         {
-            if (_dataService == null)
-                SetService(new AzureTablesDataService(logger));
-
             var responseObject = new SaveEntitiesResponse {SyncedIds = new List<string>()};
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
-            var requestObject = JsonConvert.DeserializeObject<List<SessionDto>>(requestData);
+            var requestObject = JsonConvert.DeserializeObject<List<SessionDto>?>(requestData);
             
             if (requestObject == null)
             {

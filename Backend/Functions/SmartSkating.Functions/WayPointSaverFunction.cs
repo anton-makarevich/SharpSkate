@@ -10,7 +10,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Sanet.SmartSkating.Backend.Azure;
-using Sanet.SmartSkating.Backend.Azure.Services;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
@@ -20,15 +19,15 @@ namespace Sanet.SmartSkating.Backend.Functions
 {
     public class WayPointSaverFunction: IAzureFunction
     {
-        private IDataService? _dataService;
+        private readonly IDataService _dataService;
 
-        public void SetService(IDataService dataService)
+        private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
+
+        public WayPointSaverFunction(IDataService dataService)
         {
             _dataService = dataService;
         }
-        
-        private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
-        
+
         [FunctionName("WayPointSaverFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function,
@@ -36,12 +35,9 @@ namespace Sanet.SmartSkating.Backend.Functions
                 Route = ApiNames.WayPointsResource.Route)] HttpRequest request,
             ILogger logger)
         {
-            if (_dataService == null)
-                SetService(new AzureTablesDataService(logger));
-
             var responseObject = new SaveEntitiesResponse {SyncedIds = new List<string>()};
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
-            var requestObject = JsonConvert.DeserializeObject<List<WayPointDto>>(requestData);
+            var requestObject = JsonConvert.DeserializeObject<List<WayPointDto>?>(requestData);
             
             if (requestObject == null)
             {

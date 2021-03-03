@@ -29,8 +29,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         public DeviceSaverFunctionTests()
         {
             _dataService = Substitute.For<IDataService>();
-            _sut = new DeviceSaverFunction();
-            _sut.SetService(_dataService);
+            _sut = new DeviceSaverFunction(_dataService);
         }
 
         [Fact]

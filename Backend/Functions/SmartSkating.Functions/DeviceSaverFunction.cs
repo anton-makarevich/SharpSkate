@@ -9,7 +9,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Sanet.SmartSkating.Backend.Azure;
-using Sanet.SmartSkating.Backend.Azure.Services;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
@@ -19,14 +18,14 @@ namespace Sanet.SmartSkating.Backend.Functions
 {
     public class DeviceSaverFunction: IAzureFunction
     {
-        private IDataService? _dataService;
+        private readonly IDataService _dataService;
 
-        public void SetService(IDataService dataService)
+        private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
+
+        public DeviceSaverFunction(IDataService dataService)
         {
             _dataService = dataService;
         }
-
-        private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
 
         [FunctionName("DeviceSaverFunction")]
         public async Task<IActionResult> Run(
@@ -35,16 +34,13 @@ namespace Sanet.SmartSkating.Backend.Functions
                 Route = ApiNames.DevicesResource.Route)] HttpRequest request,
             ILogger logger)
         {
-            if (_dataService == null)
-                SetService(new AzureTablesDataService(logger));
-
             var responseObject = new BooleanResponse();
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
 
             var requestObject = JsonConvert.DeserializeObject<DeviceDto?>(requestData);
 
             if (string.IsNullOrEmpty(requestObject?.AccountId)
-                || string.IsNullOrEmpty(requestObject?.Id))
+                || string.IsNullOrEmpty(requestObject.Id))
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.BadRequest;
                 _errorMessageBuilder.AppendLine(Constants.BadRequestErrorMessage);
@@ -53,10 +49,9 @@ namespace Sanet.SmartSkating.Backend.Functions
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
 
-                if (_dataService != null)
-                    responseObject.Result = await _dataService.SaveDeviceAsync(requestObject);
+                responseObject.Result = await _dataService.SaveDeviceAsync(requestObject);
 
-                if (!string.IsNullOrEmpty(_dataService?.ErrorMessage))
+                if (!string.IsNullOrEmpty(_dataService.ErrorMessage))
                     _errorMessageBuilder.AppendLine(_dataService.ErrorMessage);
             }
 

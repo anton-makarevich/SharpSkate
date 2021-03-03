@@ -30,8 +30,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         {
             _log = Substitute.For<ILogger>();
             _loginService = Substitute.For<ILoginService>();
-            _sut = new LoginFunction();
-            _sut.SetService(_loginService);
+            _sut = new LoginFunction(_loginService);
         }
 
         [Fact]

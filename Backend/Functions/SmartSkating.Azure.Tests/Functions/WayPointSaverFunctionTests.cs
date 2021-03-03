@@ -40,8 +40,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 _wayPointsStub.Add(GetWayPointStub(i));
             }
             _dataService = Substitute.For<IDataService>();
-            _sut = new WayPointSaverFunction();
-            _sut.SetService(_dataService);
+            _sut = new WayPointSaverFunction(_dataService);
         }
 
         [Fact]

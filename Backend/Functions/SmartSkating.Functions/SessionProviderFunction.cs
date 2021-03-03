@@ -13,29 +13,30 @@ using Sanet.SmartSkating.Backend.Azure;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models.Requests;
 using Sanet.SmartSkating.Dto.Models.Responses;
-using Sanet.SmartSkating.Dto.Services.Account;
+using Sanet.SmartSkating.Dto.Services;
 
 namespace Sanet.SmartSkating.Backend.Functions
 {
-    public class LoginFunction:IAzureFunction
+    public class SessionProviderFunction:IAzureFunction
     {
-        private readonly ILoginService _loginService;
+        private readonly IDataService _dataService;
         
         private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
 
-        public LoginFunction(ILoginService loginService)
+        public SessionProviderFunction(IDataService dataService)
         {
-            _loginService = loginService;
+            _dataService = dataService;
         }
 
-        [FunctionName("LoginFunction")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, 
-            "post",
-            Route = ApiNames.AccountsResource.Route)]HttpRequest request, ILogger logger)
+        [FunctionName("SessionProviderFunction")]
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function,
+                "post",
+                Route = ApiNames.AccountsResource.Route)]
+            HttpRequest request, ILogger logger)
         {
             var responseObject = new LoginResponse();
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
-            
+
             LoginRequest requestObject;
             try
             {
@@ -49,21 +50,19 @@ namespace Sanet.SmartSkating.Backend.Functions
 
             if (requestObject.Equals(default(LoginRequest)))
             {
-                responseObject.ErrorCode = (int)HttpStatusCode.BadRequest;
+                responseObject.ErrorCode = (int) HttpStatusCode.BadRequest;
                 _errorMessageBuilder.AppendLine(Constants.BadRequestErrorMessage);
             }
             else
             {
-                responseObject.Account = await _loginService.LoginUserAsync(
-                        requestObject.Username,
-                        requestObject.Password);
+                await _dataService.GetAllSessionsForAccountAsync("");
                 responseObject.ErrorCode = responseObject.Account == null
                     ? (int) HttpStatusCode.NotFound
                     : (int) HttpStatusCode.OK;
             }
 
             responseObject.Message = _errorMessageBuilder.ToString();
-            if (responseObject.ErrorCode!=200)
+            if (responseObject.ErrorCode != 200)
                 logger.LogInformation(responseObject.Message);
             return new JsonResult(responseObject);
         }

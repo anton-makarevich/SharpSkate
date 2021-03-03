@@ -41,8 +41,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 _scansStub.Add(GetBleScanStub(i));
             }
             _dataService = Substitute.For<IDataService>();
-            _sut = new BleScanSaverFunction();
-            _sut.SetService(_dataService);
+            _sut = new BleScanSaverFunction(_dataService);
         }
 
         [Fact]
