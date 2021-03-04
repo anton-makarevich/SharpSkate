@@ -10,7 +10,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Sanet.SmartSkating.Backend.Azure;
-using Sanet.SmartSkating.Backend.Azure.Services;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models.Requests;
 using Sanet.SmartSkating.Dto.Models.Responses;
@@ -20,11 +19,11 @@ namespace Sanet.SmartSkating.Backend.Functions
 {
     public class LoginFunction:IAzureFunction
     {
-        private ILoginService? _loginService;
+        private readonly ILoginService _loginService;
         
         private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
 
-        public void SetService(ILoginService loginService)
+        public LoginFunction(ILoginService loginService)
         {
             _loginService = loginService;
         }
@@ -34,9 +33,6 @@ namespace Sanet.SmartSkating.Backend.Functions
             "post",
             Route = ApiNames.AccountsResource.Route)]HttpRequest request, ILogger logger)
         {
-            if (_loginService == null)
-                SetService(new AzureLoginService(new AzureTablesDataService(logger)));
-
             var responseObject = new LoginResponse();
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
             
@@ -58,8 +54,7 @@ namespace Sanet.SmartSkating.Backend.Functions
             }
             else
             {
-                if (_loginService != null)
-                    responseObject.Account = await _loginService.LoginUserAsync(
+                responseObject.Account = await _loginService.LoginUserAsync(
                         requestObject.Username,
                         requestObject.Password);
                 responseObject.ErrorCode = responseObject.Account == null

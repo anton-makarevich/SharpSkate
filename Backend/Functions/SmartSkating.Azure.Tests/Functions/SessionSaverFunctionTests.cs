@@ -38,8 +38,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         public SessionSaverFunctionTests()
         {
             _dataService = Substitute.For<IDataService>();
-            _sut = new SessionSaverFunction();
-            _sut.SetService(_dataService);
+            _sut = new SessionSaverFunction(_dataService);
         }
 
         [Fact]
