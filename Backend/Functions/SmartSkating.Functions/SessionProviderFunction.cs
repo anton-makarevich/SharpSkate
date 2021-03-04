@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,7 @@ namespace Sanet.SmartSkating.Backend.Functions
             HttpRequest request, ILogger logger)
         {
             var accountId = request.Query["accountId"].ToString();
+            bool.TryParse(request.Query["activeOnly"].ToString(), out var activeOnly); 
 
             var responseObject = new GetSessionsResponse();
             
@@ -40,7 +42,13 @@ namespace Sanet.SmartSkating.Backend.Functions
             }
             else
             {
-                responseObject.Sessions = await _dataService.GetAllSessionsForAccountAsync(accountId);
+                var sessions = await _dataService.GetAllSessionsForAccountAsync(accountId);
+                if (activeOnly)
+                {
+                    sessions = sessions.Where(f => !f.IsCompleted).ToList();
+                }
+
+                responseObject.Sessions = sessions;
                 responseObject.ErrorCode = StatusCodes.Status200OK;
             }
 

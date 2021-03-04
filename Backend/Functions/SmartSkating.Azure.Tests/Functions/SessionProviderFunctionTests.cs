@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -39,7 +40,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         }
 
         [Fact]
-        public async Task Returns_Sessions_When_call_To_Service_Succeeded()
+        public async Task Returns_Sessions_When_Call_To_Service_Succeeded()
         {
             var sessions = new List<SessionDto>
             {
@@ -61,8 +62,8 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             actionResult.Should().NotBeNull();
             var response = actionResult?.Value as GetSessionsResponse;
             response.Should().NotBeNull();
-            response.Sessions.Should().Equal(sessions);
-            response.ErrorCode.Should().Be(200);
+            (response?.Sessions).Should().Equal(sessions);
+            (response?.ErrorCode).Should().Be(200);
         }
 
         [Fact]
@@ -74,6 +75,40 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             actionResult.Should().NotBeNull();
             var response = actionResult?.Value as LoginResponse;
             response?.ErrorCode.Should().Be(expected: (int)HttpStatusCode.BadRequest);
+        }
+        
+        [Fact]
+        public async Task Returns_Only_Active_Sessions_When_Corresponding_Flag_Is_On()
+        {
+            var request = Utils.CreateMockRequest(queryString: $"?accountId={AccountId}&activeOnly=true");
+            var activeSession = new SessionDto
+            {
+                Id = "sessionId",
+                AccountId = AccountId,
+                IsCompleted = false,
+                IsSaved = true,
+                RinkId = "rinkId",
+                DeviceId = "deviceId"
+            };
+            var inActiveSession = new SessionDto
+            {
+                Id = "sessionId1",
+                AccountId = AccountId,
+                IsCompleted = true,
+                IsSaved = true,
+                RinkId = "rinkId",
+                DeviceId = "deviceId"
+            };
+            _dataService.GetAllSessionsForAccountAsync(AccountId)
+                .Returns(Task.FromResult(new List<SessionDto>{activeSession,inActiveSession}));
+            
+            var actionResult = await _sut.Run(request,_log) as JsonResult;
+
+            actionResult.Should().NotBeNull();
+            var response = actionResult?.Value as GetSessionsResponse;
+            response.Should().NotBeNull();
+            response.Sessions.Should().HaveCount(1);
+            response.Sessions.First().Should().Be(activeSession);
         }
     }
 }
