@@ -41,24 +41,28 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         [Fact]
         public async Task Returns_Sessions_When_call_To_Service_Succeeded()
         {
-            var sessionDto = new SessionDto
+            var sessions = new List<SessionDto>
             {
-                Id = "sessionId",
-                AccountId = AccountId,
-                IsCompleted = false,
-                IsSaved = true,
-                RinkId = "rinkId",
-                DeviceId = "deviceId"
+                new SessionDto
+                {
+                    Id = "sessionId",
+                    AccountId = AccountId,
+                    IsCompleted = false,
+                    IsSaved = true,
+                    RinkId = "rinkId",
+                    DeviceId = "deviceId"
+                }
             };
             _dataService.GetAllSessionsForAccountAsync(AccountId)
-                .Returns(Task.FromResult(new List<SessionDto> {sessionDto}));
+                .Returns(Task.FromResult(sessions));
             
             var actionResult = await _sut.Run(_request,_log) as JsonResult;
 
             actionResult.Should().NotBeNull();
-            var response = actionResult?.Value as LoginResponse;
-            response?.Account.Should().Be(sessionDto);
-            response?.ErrorCode.Should().Be(200);
+            var response = actionResult?.Value as GetSessionsResponse;
+            response.Should().NotBeNull();
+            response.Sessions.Should().Equal(sessions);
+            response.ErrorCode.Should().Be(200);
         }
 
         [Fact]

@@ -18,11 +18,11 @@ namespace Sanet.SmartSkating.Backend.Functions
         public async Task<IActionResult> Negotiate(
             [HttpTrigger(AuthorizationLevel.Function, "get",
                 Route = ApiNames.SyncHubResource.Route)]
-            HttpRequest req,
+            HttpRequest request,
             IBinder binder,
             ILogger log)
         {
-            var sessionId = req.Query["sessionId"].ToString();
+            var sessionId = request.Query["sessionId"].ToString();
             var response = new SyncHubInfoResponse();
 
             try
