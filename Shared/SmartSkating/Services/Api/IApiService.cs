@@ -36,5 +36,10 @@ namespace Sanet.SmartSkating.Services.Api
         Task<LoginResponse> LoginAsync(
             [Body] LoginRequest request, 
             [Header("Ocp-Apim-Subscription-Key")] string subscriptionKey);
+
+        [Get("/sessions")]
+        Task<GetSessionsResponse> GetSessionsAsync(
+            [Query] string accountId,
+            [Header("Ocp-Apim-Subscription-Key")] string subscriptionKey);
     }
 }
