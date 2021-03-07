@@ -42,12 +42,12 @@ namespace Sanet.SmartSkating.ViewModels
         public IAsyncValueCommand StartCommand => new AsyncValueCommand(StartSession);
         public bool CanStart => SessionSelected && _trackService.SelectedRink != null;
 
-        private ValueTask StartSession()
+        private async ValueTask StartSession()
         {
             if (SelectedSession == null || _trackService.SelectedRink == null)
-                return new ValueTask();
+                return;
             _sessionProvider.SetActiveSession(SelectedSession,_trackService.SelectedRink);
-            return new ValueTask();
+            await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
         }
 
         public override void AttachHandlers()

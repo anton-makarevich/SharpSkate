@@ -15,9 +15,7 @@ namespace Sanet.SmartSkating.Models.Training
         private readonly ISettingsService _settingsService;
 
         public Session(Rink rink, ISettingsService settingsService): this(Guid.NewGuid().ToString("N"),rink,settingsService)
-        {
-            
-        }
+        { }
 
         public Session(string sessionId, Rink rink, ISettingsService settingsService)
         {

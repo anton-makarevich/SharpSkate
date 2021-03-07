@@ -8,6 +8,7 @@ using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
 using Sanet.SmartSkating.Models.Geometry;
+using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Tracking;
@@ -27,11 +28,13 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly IAccountService _accountService = Substitute.For<IAccountService>();
         private readonly  ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
         private readonly  ITrackService _trackService= Substitute.For<ITrackService>();
+        private readonly INavigationService _navigationService = Substitute.For<INavigationService>();
 
         public SessionsViewModelTests()
         {
             _accountService.UserId.Returns(AccountId);
             _sut = new SessionsViewModel(_apiClient, _accountService, _sessionProvider, _trackService);
+            _sut.SetNavigationService(_navigationService);
         }
 
         [Fact]
@@ -197,6 +200,16 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             return sessions;
         }
         
-        //todo: next should pass selected to session manager and go to live session
+        [Fact]
+        public async Task Goes_To_Session_When_Start_Pressed_And_CanStart()
+        {
+            _trackService.SelectedRink
+                .Returns(new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId"));
+            _sut.SelectSession(CreatSessions().First());
+
+            await _sut.StartCommand.ExecuteAsync();
+
+            await _navigationService.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
+        }
     }
 }
