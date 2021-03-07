@@ -1,5 +1,7 @@
+using System;
 using FluentAssertions;
 using NSubstitute;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Tracking;
@@ -37,6 +39,17 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             var session = _sut.CreateSessionForRink(rink);
 
             _sut.CurrentSession.Should().Be(session);
+        }
+        
+        [Fact]
+        public void CurrentSession_Id_Equal_To_Given_SessionDto_Id()
+        {
+            var sessionDto = new SessionDto() {Id = "sessionDtoId"};
+            var rink = new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId");
+
+            _sut.SetActiveSession(sessionDto,rink);
+
+            (_sut.CurrentSession?.SessionId).Should().Be(sessionDto.Id);
         }
     }
 }

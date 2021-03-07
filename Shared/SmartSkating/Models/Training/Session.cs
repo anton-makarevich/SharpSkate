@@ -14,13 +14,18 @@ namespace Sanet.SmartSkating.Models.Training
         private readonly Rink _rink;
         private readonly ISettingsService _settingsService;
 
-        public Session(Rink rink, ISettingsService settingsService)
+        public Session(Rink rink, ISettingsService settingsService): this(Guid.NewGuid().ToString("N"),rink,settingsService)
+        {
+            
+        }
+
+        public Session(string sessionId, Rink rink, ISettingsService settingsService)
         {
             _rink = rink;
             _settingsService = settingsService;
             WayPoints = new List<WayPoint>();
             Sectors = new List<Section>();
-            SessionId = Guid.NewGuid().ToString("N");
+            SessionId = sessionId;
         }
 
         public string SessionId { get; }
