@@ -26,5 +26,11 @@
     <Folder Include="Views\" />
     <Folder Include="Views\Fragments\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\SessionsView.xaml.cs">
+      <DependentUpon>SessionsView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
   <Import Project="..\..\XfShared\XfShared.projitems" Label="Shared" />
 </Project>
