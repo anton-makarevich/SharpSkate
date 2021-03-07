@@ -72,6 +72,11 @@ namespace Sanet.SmartSkating.ViewModels
                         Sessions.Add(s);
                     }
                 });
+            if (Sessions.Count == 0 && _trackService.SelectedRink!=null)
+            {
+                _sessionProvider.CreateSessionForRink(_trackService.SelectedRink);
+                await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
+            }
         }
 
         public void SelectSession(SessionDto sessionToSelect)

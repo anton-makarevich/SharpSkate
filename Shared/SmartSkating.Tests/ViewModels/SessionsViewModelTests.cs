@@ -75,6 +75,36 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
+        public void Starts_New_Session_If_No_Active_Session_For_Rink_Is_Found()
+        {
+            var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "rinkId");
+            _trackService.SelectedRink.Returns(rink);
+            var sessions = CreatSessions();
+
+            _apiClient.GetSessionsAsync(AccountId, true, ApiNames.AzureApiSubscriptionKey)
+                .Returns(Task.FromResult(new GetSessionsResponse{Sessions = sessions}));
+            
+            _sut.AttachHandlers();
+
+            _sessionProvider.Received(1).CreateSessionForRink(rink);
+        }
+        
+        [Fact]
+        public async Task NavigatesTo_LiveSession_Right_Away_If_No_Active_Session_For_Rink_Is_Found()
+        {
+            var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "rinkId");
+            _trackService.SelectedRink.Returns(rink);
+            var sessions = CreatSessions();
+
+            _apiClient.GetSessionsAsync(AccountId, true, ApiNames.AzureApiSubscriptionKey)
+                .Returns(Task.FromResult(new GetSessionsResponse{Sessions = sessions}));
+            
+            _sut.AttachHandlers();
+
+            await _navigationService.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
+        }
+        
+        [Fact]
         public void SelectSession_Selects_Session()
         {
             var sessions = CreatSessions();
