@@ -1,3 +1,4 @@
+using Acr.UserDialogs;
 using Android.App;
 using Refit;
 using Sanet.SmartSkating.Droid.Services.Location;
@@ -33,6 +34,7 @@ namespace Sanet.SmartSkating.WearOs
         {
             var dataService = new JsonStorageService();
             container.Register<TracksViewModel>();
+            container.Register<SessionsViewModel>();
             container.Register<LiveSessionViewModel>();
             container.Register<StartViewModel>();
 
@@ -58,6 +60,7 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterSingleton<IResourceReader,EmbeddedResourceReader>();
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
             container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
+            container.RegisterInstance(UserDialogs.Instance);
             container.RegisterSingleton<IDeviceInfo,EssentialsDeviceInfo>();
             container.RegisterSingleton<IPreferences,EssentialsPreferences>();
             container.RegisterSingleton<IAccountService,AccountService>();
@@ -68,6 +71,7 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterSingleton<ISessionProvider, SessionProvider>();
             container.RegisterSingleton<ISessionManager, SessionManager>();
             container.RegisterSingleton<ISettingsService, SettingsService>();
+            container.RegisterSingleton<IDateProvider, DateProvider>();
         }
     }
 }
