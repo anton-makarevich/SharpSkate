@@ -63,7 +63,6 @@ namespace Sanet.SmartSkating.WearOs.Services
         {
             return Task.Run(() =>
             {
-                
                 Intent intent = new Intent(_activity, _viewModelViewDictionary[typeof(T)]);
                 
                 _activity.StartActivity(intent);

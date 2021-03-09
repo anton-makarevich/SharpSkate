@@ -35,6 +35,13 @@
     <ProjectReference Include="..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj" />
     <ProjectReference Include="..\..\..\Tools\Gpx\GpxTools\GpxTools.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\SessionsView.xaml.cs">
+      <DependentUpon>SessionsView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
   <Import Project="..\..\XfShared\XfShared.projitems" Label="Shared" Condition="Exists('..\..\XfShared\XfShared.projitems')" />
   <Import Project="..\..\DummyServices\DummyServices.projitems" Label="Shared" />
 </Project>
