@@ -20,7 +20,7 @@ namespace Sanet.SmartSkating.Services.Tracking
 
         public void SetActiveSession(SessionDto session, Rink rink)
         {
-            CurrentSession = new Session(session.Id, rink, _settingsService);
+            CurrentSession = new Session(session.Id, rink, _settingsService, true);
         }
 
         public ISession? CurrentSession { get; private set; }

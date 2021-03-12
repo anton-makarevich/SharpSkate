@@ -72,9 +72,20 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task  StartSession_Starts_LocationService_When_IsNotReady()
+        public async Task  StartSession_DoesNot_Start_LocationService_When_IsNotReady()
         {
             _sessionProvider.CurrentSession.ReturnsNull();
+
+            await _sut.StartSession();
+
+            _locationService.DidNotReceive().StartFetchLocation();
+        }
+        
+        [Fact]
+        public async Task  StartSession_DoesNot_Start_LocationService_When_Session_IsRemote()
+        {
+            var session = PrepareSessionMock("", "", "");
+            session.IsRemote.Returns(true);
 
             await _sut.StartSession();
 
@@ -273,7 +284,17 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             Assert.False(_sut.IsRunning);
         }
 
-        private void PrepareSessionMock(string sessionId, string userId, string deviceId)
+        [Fact]
+        public void CheckSession_Checks_If_ActiveSession_Is_Remote()
+        {
+            var session = PrepareSessionMock("SessionId", "userId", "deviceId");
+
+            _sut.CheckSession();
+
+            var _ = session.Received().IsRemote;
+        }
+
+        private ISession PrepareSessionMock(string sessionId, string userId, string deviceId)
         {
             var session = Substitute.For<ISession>();
             session.Rink.Returns(_rink);
@@ -281,6 +302,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             _sessionProvider.CurrentSession.Returns(session);
             _accountService.UserId.Returns(userId);
             _accountService.DeviceId.Returns(deviceId);
+            return session;
         }
      }
 }

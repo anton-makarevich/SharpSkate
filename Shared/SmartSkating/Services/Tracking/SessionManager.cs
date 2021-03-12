@@ -41,9 +41,9 @@ namespace Sanet.SmartSkating.Services.Tracking
         public bool IsCompleted { get; private set; }
         public bool IsReady => _sessionProvider.CurrentSession != null;
 
-        public async Task StartSession()
+        public async ValueTask StartSession()
         {
-            if (!IsReady)
+            if (!IsReady || CurrentSession?.IsRemote == true)
                 return;
             IsRunning = true;
             if (_settingsService.UseBle)
@@ -73,16 +73,14 @@ namespace Sanet.SmartSkating.Services.Tracking
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
-            if (CurrentSession != null)
-            {
-                var pointDto = WayPointDto.FromSessionCoordinate(
-                    CurrentSession.SessionId,
-                    _accountService.DeviceId,
-                    e.Coordinate.ToDto(),
-                    e.Date);
-                _storageService.SaveWayPointAsync(pointDto);
-                CurrentSession?.AddPoint(e.Coordinate,pointDto.Time);
-            }
+            if (CurrentSession == null) return;
+            var pointDto = WayPointDto.FromSessionCoordinate(
+                CurrentSession.SessionId,
+                _accountService.DeviceId,
+                e.Coordinate.ToDto(),
+                e.Date);
+            _storageService.SaveWayPointAsync(pointDto);
+            CurrentSession?.AddPoint(e.Coordinate,pointDto.Time);
         }
 
         private void BleLocationServiceOnCheckPointPassed(object sender, CheckPointEventArgs e)
@@ -132,6 +130,11 @@ namespace Sanet.SmartSkating.Services.Tracking
 #pragma warning disable 4014
             SaveSessionAndSyncData(true);
 #pragma warning restore 4014
+        }
+
+        public void CheckSession()
+        {
+            var _ = CurrentSession?.IsRemote;
         }
     }
 }
