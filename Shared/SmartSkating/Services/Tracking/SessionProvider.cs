@@ -21,6 +21,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         public void SetActiveSession(SessionDto session, Rink rink)
         {
             CurrentSession = new Session(session.Id, rink, _settingsService, true);
+            CurrentSession.SetStartTime(session.StartTime);
         }
 
         public ISession? CurrentSession { get; private set; }

@@ -114,7 +114,8 @@ namespace Sanet.SmartSkating.Services.Tracking
                 Id = CurrentSession.SessionId,
                 AccountId = _accountService.UserId,
                 DeviceId = _accountService.DeviceId,
-                RinkId = CurrentSession.Rink.Id
+                RinkId = CurrentSession.Rink.Id,
+                StartTime = CurrentSession.StartTime
             };
             return s;
         }
