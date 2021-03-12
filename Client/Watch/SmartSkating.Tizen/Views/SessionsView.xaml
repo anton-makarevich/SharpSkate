@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<base:BaseView 
+    x:TypeArguments="vm:SessionsViewModel" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base"
+    xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
+    xmlns:w="clr-namespace:Tizen.Wearable.CircularUI.Forms;assembly=Tizen.Wearable.CircularUI.Forms"
+    xmlns:cells="clr-namespace:Sanet.SmartSkating.Xf.Views.Cells"
+    x:Class="Sanet.SmartSkating.Tizen.Views.SessionsView" 
+    >
+    <w:CirclePage.Content>
+        <w:CircleListView
+            ItemsSource="{Binding Sessions}"
+            RowHeight="50">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <cells:TrackCell />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </w:CircleListView>
+    </w:CirclePage.Content>
+    <w:CirclePage.ActionButton>
+        <w:ActionButtonItem x:Name="ConfirmButton"
+            Clicked="ConfirmButtonOnClicked"
+            Text="Confirm" />
+    </w:CirclePage.ActionButton>
+</base:BaseView>

@@ -14,8 +14,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\XamarinFormsNavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Base\BaseView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Cells\TrackCell.xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Cells\SessionCell.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Cells\TrackCell.xaml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Cells\SessionCell.xaml" />
   </ItemGroup>
 </Project>

@@ -1,9 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.ViewModels;
 using Sanet.SmartSkating.ViewModels.Base;
+using Sanet.SmartSkating.ViewModels.Wrappers;
 using Sanet.SmartSkating.WearOs.Views;
 using SimpleInjector;
 
@@ -14,6 +17,8 @@ namespace Sanet.SmartSkating.WearOs.Services
         private readonly Activity _activity;
 
         public static AndroidNavigationService? SharedInstance { get; private set; }
+        
+        private readonly Dictionary<Type, Type> _viewModelViewDictionary = new Dictionary<Type, Type>();
 
         public AndroidNavigationService(Activity activity, Container container)
         {
@@ -21,6 +26,15 @@ namespace Sanet.SmartSkating.WearOs.Services
             Container = container;
 
             SharedInstance = this;
+            RegisterViewModels();
+        }
+        
+        private void RegisterViewModels()
+        {
+            //For now jist manual registration
+            _viewModelViewDictionary.Add(typeof(TracksViewModel), typeof(TracksActivity));
+            _viewModelViewDictionary.Add(typeof(SessionsViewModel), typeof(SessionsActivity));
+            _viewModelViewDictionary.Add(typeof(LiveSessionViewModel), typeof(LiveSessionActivity));
         }
 
         public Container Container { get; } 
@@ -49,9 +63,7 @@ namespace Sanet.SmartSkating.WearOs.Services
         {
             return Task.Run(() =>
             {
-                var intent = typeof(T) == typeof(TracksViewModel)
-                    ? new Intent(_activity, typeof(TracksActivity))
-                    : new Intent(_activity, typeof(LiveSessionActivity));
+                Intent intent = new Intent(_activity, _viewModelViewDictionary[typeof(T)]);
                 
                 _activity.StartActivity(intent);
             }); 

@@ -1,3 +1,4 @@
+using Acr.UserDialogs;
 using Refit;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Services;
@@ -18,6 +19,7 @@ namespace Sanet.SmartSkating.Xf
             // Register app start viewmodel
             container.Register<StartViewModel>();
             container.Register<TracksViewModel>();
+            container.Register<SessionsViewModel>();
             container.Register<LiveSessionViewModel>();
 
             // Register services
@@ -29,6 +31,7 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<IDeviceInfo,EssentialsDeviceInfo>();
             container.RegisterSingleton<IPreferences,EssentialsPreferences>();
             container.RegisterSingleton<IAccountService,AccountService>();
+            container.RegisterInstance(UserDialogs.Instance);
             #if TEST
             container.RegisterSingleton<IDataSyncService,DebugSyncService>();
             #else

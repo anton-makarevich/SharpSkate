@@ -21,11 +21,10 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly INavigationService _navigationServiceMock = Substitute.For<INavigationService>();
         private readonly TracksViewModel _sut;
         private readonly List<TrackDto> _tracks;
-        private readonly ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
 
         public TracksViewModelTests()
         {
-            _sut = new TracksViewModel(_trackServiceMock, _sessionProvider);
+            _sut = new TracksViewModel(_trackServiceMock);
             _sut.SetNavigationService(_navigationServiceMock);
             _tracks = JsonConvert.DeserializeObject<List<TrackDto>>(TrackServiceTests.TracksData);
             _trackServiceMock.Tracks.Returns(_tracks);
@@ -146,7 +145,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.ConfirmSelectionCommand.Execute(null);
 
-            await _navigationServiceMock.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
+            await _navigationServiceMock.Received().NavigateToViewModelAsync<SessionsViewModel>();
         }
 
         [Fact]
@@ -156,7 +155,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.ConfirmSelectionCommand.Execute(null);
 
-            await _navigationServiceMock.DidNotReceive().NavigateToViewModelAsync<LiveSessionViewModel>();
+            await _navigationServiceMock.DidNotReceive().NavigateToViewModelAsync<SessionsViewModel>();
         }
 
         [Fact]
@@ -184,28 +183,13 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             await _sut.LoadTracksAsync();
 
             _trackServiceMock.Received().SelectRinkByName(name);
-            await _navigationServiceMock.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
+            await _navigationServiceMock.Received().NavigateToViewModelAsync<SessionsViewModel>();
         }
 
-        [Fact]
-        public async Task Confirming_Selection_Creates_New_Session_IfTrackIsSelected()
-        {
-            await _sut.LoadTracksAsync();
-            var track = _sut.Tracks.First();
-            var rink = SelectRink();
-
-            _sut.SelectTrack(track);
-
-            _sut.ConfirmSelectionCommand.Execute(null);
-
-            _sessionProvider.Received(1).CreateSessionForRink(rink);
-        }
-
-        private Rink SelectRink()
+        private void SelectRink()
         {
             var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "RinkId");
             _trackServiceMock.SelectedRink.Returns(rink);
-            return rink;
         }
     }
 }
