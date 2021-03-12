@@ -47,6 +47,12 @@ namespace Sanet.SmartSkating.Services.Storage
             return GetAllAsync<WayPointDto>(WayPointsFolder);
         }
 
+        public async Task<List<WayPointDto>> GetWayPointForSessionAsync(string sessionId)
+        {
+            return (await GetAllAsync<WayPointDto>(WayPointsFolder))
+                .Where(w => w.SessionId == sessionId).ToList();
+        }
+
         private static Task<List<T>> GetAllAsync<T>(string folder)
         {
             return Task.Run(() =>

@@ -73,8 +73,8 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             var actionResult = await _sut.Run(request,_log) as JsonResult;
 
             actionResult.Should().NotBeNull();
-            var response = actionResult?.Value as LoginResponse;
-            response?.ErrorCode.Should().Be(expected: (int)HttpStatusCode.BadRequest);
+            var response = actionResult?.Value as GetSessionsResponse;
+            (response?.ErrorCode).Should().Be(expected: (int)HttpStatusCode.BadRequest);
         }
         
         [Fact]

@@ -3,8 +3,8 @@ using Sanet.SmartSkating.Dto.Models.Responses.Base;
 
 namespace Sanet.SmartSkating.Dto.Models.Responses
 {
-    public class GetSessionsResponse:ResponseBase
+    public class GetWaypointsResponse:ResponseBase
     {
-        public List<SessionDto>? Sessions { get; set; }
+        public List<WayPointDto>? Waypoints { get; set; }
     }
 }

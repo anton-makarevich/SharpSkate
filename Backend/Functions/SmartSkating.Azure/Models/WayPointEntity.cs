@@ -6,6 +6,10 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
 {
     public class WayPointEntity:TableEntity
     {
+        public WayPointEntity()
+        {
+        }
+
         public WayPointEntity(WayPointDto wayPoint)
         {
             PartitionKey = wayPoint.SessionId;
@@ -23,6 +27,22 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
 
         public DateTime Time { get; set; }
 
-        public string DeviceId { get; set; }
+        public string DeviceId { get; set; } = "";
+        
+        public WayPointDto ToDto()
+        {
+            return new WayPointDto
+            {
+                Id = RowKey,
+                SessionId = PartitionKey,
+                DeviceId = DeviceId,
+                Time = Time,
+                Coordinate = new CoordinateDto()
+                {
+                    Latitude = Latitude,
+                    Longitude = Longitude
+                }
+            };
+        }
     }
 }

@@ -52,7 +52,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GpxTools.Tests", "Tools\Gpx
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{29471952-12F0-4EB5-9E3B-029A0E9A613C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Functions", "Backend\Functions\SmartSkating.Functions\SmartSkating.Functions.csproj", "{2D0F04C4-240F-4F59-A600-340FF8C82500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Azure.Functions", "Backend\Functions\SmartSkating.Azure.Functions\SmartSkating.Azure.Functions.csproj", "{2D0F04C4-240F-4F59-A600-340FF8C82500}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSkating.Azure", "Backend\Functions\SmartSkating.Azure\SmartSkating.Azure.csproj", "{9C4CE921-2E87-4A71-B12F-7606F6AACA44}"
 EndProject
