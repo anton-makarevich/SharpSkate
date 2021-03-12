@@ -32,5 +32,29 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Models
             sut.Time.Should().Be(dto.Time);
             sut.DeviceId.Should().Be(dto.DeviceId);
         }
+        
+        [Fact]
+        public void CanBeExportedToDto()
+        {
+            var sut = new WayPointEntity()
+            {
+                ETag = "tag",
+                PartitionKey = "sessionId",
+                RowKey = "id",
+                Time = DateTime.Now,
+                DeviceId = "deviceId",
+                Latitude = 456,
+                Longitude = 123
+            };
+
+            var dto = sut.ToDto();
+
+            dto.Coordinate.Latitude.Should().Be(sut.Latitude);
+            dto.Coordinate.Longitude.Should().Be(sut.Longitude);
+            dto.Time.Should().Be(sut.Time);
+            dto.SessionId.Should().Be(sut.PartitionKey);
+            dto.DeviceId.Should().Be(sut.DeviceId);
+            dto.Id.Should().Be(sut.RowKey);
+        }
     }
 }

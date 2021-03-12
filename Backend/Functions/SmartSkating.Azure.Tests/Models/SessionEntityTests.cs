@@ -32,6 +32,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Models
         [Fact]
         public void CanBeExportedToDto()
         {
+            var startTime = DateTime.Now;
             var sut = new SessionEntity
             {
                 ETag = "tag",
@@ -40,7 +41,8 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Models
                 Timestamp = DateTimeOffset.Now,
                 IsCompleted = true,
                 DeviceId = "deviceId",
-                RinkId = "rinkId"
+                RinkId = "rinkId",
+                StartTime = startTime
             };
 
             var dto = sut.ToDto();
@@ -49,6 +51,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Models
             dto.IsSaved.Should().BeTrue();
             dto.AccountId.Should().Be(sut.PartitionKey);
             dto.Id.Should().Be(sut.RowKey);
+            dto.StartTime.Should().Be(startTime);
         }
     }
 }
