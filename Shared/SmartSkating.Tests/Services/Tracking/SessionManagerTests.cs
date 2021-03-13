@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Dto.Models.Responses;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
@@ -32,6 +35,8 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
         private readonly IBleLocationService _bleLocationService = Substitute.For<IBleLocationService>();
         private readonly ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
+        private readonly IApiService _apiClient = Substitute.For<IApiService>();
+        private readonly ISyncService _syncService = Substitute.For<ISyncService>();
 
         public SessionManagerTests()
         {
@@ -41,7 +46,9 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
                 _dataSyncService,
                 _bleLocationService,
                 _settingsService,
-                _sessionProvider
+                _sessionProvider,
+                _apiClient,
+                _syncService
                 );
         }
 
@@ -317,6 +324,88 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             _sut.IsRunning.Should().BeTrue();
             _bleLocationService.DidNotReceive().StopBleScan();
             _locationService.DidNotReceive().StopFetchLocation();
+        }
+
+        [Fact]
+        public void CheckSession_Gets_SyncServer_Connection_For_Remote_Session()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            
+            _sut.CheckSession();
+
+            _apiClient.Received(1).GetSyncHubLoginAsync(sessionId, ApiNames.AzureApiSubscriptionKey);
+        }
+        
+        [Fact]
+        public void CheckSession_Gets_Waypoints_For_Remote_Session()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            
+            _sut.CheckSession();
+
+            _apiClient.Received(1)
+                .GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey);
+        }
+
+        [Fact]
+        public void CheckSession_Updates_Session_WithWaypoints_From_Api()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            var time = DateTime.Now;
+            var coordinateDto = new CoordinateDto
+            {
+                Latitude = 123,
+                Longitude = 456
+            };
+            var coordinate = new Coordinate(coordinateDto);
+            _apiClient.GetSyncHubLoginAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
+                .Returns(new SyncHubInfoResponse());
+            _apiClient.GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
+                .Returns(new GetWaypointsResponse
+                {
+                    Waypoints = new List<WayPointDto>
+                    {
+                        new WayPointDto
+                        {
+                            SessionId = sessionId,
+                            Coordinate = coordinateDto,
+                            Time = time
+                        }
+                    }
+                });
+            
+            _sut.CheckSession();
+            
+            session.Received().AddPoint(coordinate, time);
+        }
+
+        [Fact]
+        public async Task CheckSession_Starts_Sync_Service_When_Gets_Connection_From_Api()
+        {
+            const string sessionId = "sessionId";
+            const string accessToken = "accessToken";
+            const string url = "url";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            _apiClient.GetSyncHubLoginAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
+                .Returns(new SyncHubInfoResponse
+                {
+                    SyncHubInfo = new SyncHubInfoDto
+                    {
+                        AccessToken = accessToken,
+                        Url = url
+                    }
+                });
+            
+            _sut.CheckSession();
+
+            await _syncService.Received().ConnectToHub(accessToken, url);
         }
 
         private ISession PrepareSessionMock(string sessionId, string userId, string deviceId)

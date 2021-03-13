@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
+using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
@@ -19,13 +22,18 @@ namespace Sanet.SmartSkating.Services.Tracking
         private readonly IBleLocationService _bleLocationService;
         private readonly ISettingsService _settingsService;
         private readonly ISessionProvider _sessionProvider;
+        private readonly IApiService _apiService;
+        private readonly ISyncService _syncService;
 
         public SessionManager(ILocationService locationService,
             IDataService storageService,
             IAccountService accountService,
             IDataSyncService dataSyncService,
             IBleLocationService bleLocationService,
-            ISettingsService settingsService, ISessionProvider sessionProvider)
+            ISettingsService settingsService,
+            ISessionProvider sessionProvider,
+            IApiService apiService,
+            ISyncService syncService)
         {
             _locationService = locationService;
             _storageService = storageService;
@@ -34,6 +42,8 @@ namespace Sanet.SmartSkating.Services.Tracking
             _bleLocationService = bleLocationService;
             _settingsService = settingsService;
             _sessionProvider = sessionProvider;
+            _apiService = apiService;
+            _syncService = syncService;
         }
 
         public ISession? CurrentSession => _sessionProvider.CurrentSession;
@@ -83,6 +93,50 @@ namespace Sanet.SmartSkating.Services.Tracking
             }
 
             IsRunning = true;
+#pragma warning disable 4014
+            HandleRemoteSession();
+#pragma warning restore 4014
+        }
+
+        private async Task HandleRemoteSession()
+        {
+            if (CurrentSession != null)
+            {
+                var syncHubTask = _apiService.GetSyncHubLoginAsync(
+                    CurrentSession.SessionId,
+                    ApiNames.AzureApiSubscriptionKey);
+                var waypointsTask = _apiService.GetWaypointsForSessionAsync(
+                    CurrentSession.SessionId,
+                    ApiNames.AzureApiSubscriptionKey);
+                var apiTasksForSession = new Task[]
+                {
+                    syncHubTask,
+                    waypointsTask
+                };
+
+                 await Task.WhenAll(apiTasksForSession);
+                 var syncHubConnection = (await syncHubTask).SyncHubInfo;
+#pragma warning disable 4014
+                 StartSyncService(syncHubConnection);
+#pragma warning restore 4014
+                 var waypoints = (await waypointsTask).Waypoints;
+                 AddWaypointsToSession(waypoints);
+            }
+        }
+
+        private async ValueTask StartSyncService(SyncHubInfoDto? syncHubInfo)
+        {
+            if (syncHubInfo == null) return;
+            await _syncService.ConnectToHub(syncHubInfo.AccessToken, syncHubInfo.Url);
+        }
+
+        private void AddWaypointsToSession(IReadOnlyCollection<WayPointDto>? waypoints)
+        {
+            if (waypoints == null) return;
+            foreach (var waypoint in waypoints)
+            {
+                CurrentSession?.AddPoint(new Coordinate(waypoint.Coordinate), waypoint.Time);
+            }
         }
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)

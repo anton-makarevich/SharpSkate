@@ -26,7 +26,7 @@ namespace Sanet.SmartSkating.Backend.Functions
         [FunctionName("WaypointsProviderFunction")]
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function,
                 "get",
-                Route = ApiNames.SessionsResource.Route)]
+                Route = ApiNames.WayPointsResource.Route)]
             HttpRequest request, ILogger logger)
         {
             var sessionId = request.Query["sessionId"].ToString();

@@ -42,5 +42,15 @@ namespace Sanet.SmartSkating.Services.Api
             [Query] string accountId,
             [Query] bool activeOnly,
             [Header("Ocp-Apim-Subscription-Key")] string subscriptionKey);
+
+        [Get("/synchubs")]
+        Task<SyncHubInfoResponse> GetSyncHubLoginAsync(
+            [Query] string sessionId,
+            [Header("Ocp-Apim-Subscription-Key")] string subscriptionKey);
+
+        [Get("/waypoints")]
+        Task<GetWaypointsResponse> GetWaypointsForSessionAsync(
+            [Query] string sessionId,
+            [Header("Ocp-Apim-Subscription-Key")] string subscriptionKey);
     }
 }
