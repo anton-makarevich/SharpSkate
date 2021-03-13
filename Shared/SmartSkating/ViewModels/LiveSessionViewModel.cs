@@ -184,12 +184,12 @@ namespace Sanet.SmartSkating.ViewModels
         {
             base.AttachHandlers();
             IsActive = true;
-            if (_sessionManager.IsRunning)
-            {
+            _sessionManager.CheckSession();
+            if (!_sessionManager.IsRunning) return;
+            
 #pragma warning disable 4014
-                TrackTime();
+            TrackTime();
 #pragma warning restore 4014
-            }
         }
 
         public override void DetachHandlers()

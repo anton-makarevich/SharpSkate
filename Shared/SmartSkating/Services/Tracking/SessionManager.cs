@@ -64,11 +64,25 @@ namespace Sanet.SmartSkating.Services.Tracking
 
         public void StopSession()
         {
+            if (CurrentSession?.IsRemote == true)
+            {
+                return;
+            }
             StopLocationService();
             IsRunning = false;
 #pragma warning disable 4014
             SaveSessionAndSyncData(true);
 #pragma warning restore 4014
+        }
+
+        public void CheckSession()
+        {
+            if (CurrentSession?.IsRemote != true)
+            {
+                return;
+            }
+
+            IsRunning = true;
         }
 
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
@@ -131,11 +145,6 @@ namespace Sanet.SmartSkating.Services.Tracking
 #pragma warning disable 4014
             SaveSessionAndSyncData(true);
 #pragma warning restore 4014
-        }
-
-        public void CheckSession()
-        {
-            var _ = CurrentSession?.IsRemote;
         }
     }
 }

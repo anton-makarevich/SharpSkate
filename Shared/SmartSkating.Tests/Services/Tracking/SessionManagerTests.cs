@@ -294,6 +294,31 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             var _ = session.Received().IsRemote;
         }
 
+        [Fact]
+        public void IsRunning_Is_True_When_Session_Is_Remote()
+        {
+            var session = PrepareSessionMock("SessionId", "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            
+            _sut.CheckSession();
+
+            _sut.IsRunning.Should().BeTrue();
+        }
+
+        [Fact]
+        public void StopSession_Does_Nothing_When_Session_Is_Remote()
+        {
+            var session = PrepareSessionMock("SessionId", "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            _sut.CheckSession();
+            
+            _sut.StopSession();
+
+            _sut.IsRunning.Should().BeTrue();
+            _bleLocationService.DidNotReceive().StopBleScan();
+            _locationService.DidNotReceive().StopFetchLocation();
+        }
+
         private ISession PrepareSessionMock(string sessionId, string userId, string deviceId)
         {
             var session = Substitute.For<ISession>();

@@ -441,6 +441,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             var unused = _sessionManager.Received().IsRunning;
         }
 
+        [Fact]
+        public void Checks_Session_Type_On_Page_Load()
+        {
+            _sut.AttachHandlers();
+            
+            _sessionManager.Received(1).CheckSession();
+        }
+
         private void CreateSessionMockWithOneSector()
         {
             var session = CreateSessionMock();
