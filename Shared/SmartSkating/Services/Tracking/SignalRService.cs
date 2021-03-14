@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Sanet.SmartSkating.Dto;
+using Sanet.SmartSkating.Dto.Models;
 
 namespace Sanet.SmartSkating.Services.Tracking
 {
@@ -16,12 +17,21 @@ namespace Sanet.SmartSkating.Services.Tracking
                     opts.Headers.Add("Ocp-Apim-Subscription-Key", ApiNames.AzureApiSubscriptionKey);
                 })
                 .Build();
-            _connection.On<string, string>("ReceiveMessage", (user, message) =>
+            
+            _connection.On("newWaypoint", (WayPointDto wayPointDto) =>
             {
-               Console.WriteLine($"SIGNALR MSG: {message}");
+                Console.WriteLine($"SIGNALR MSG: {wayPointDto}");
             });
 
-            await _connection.StartAsync();
+            try
+            {
+                await _connection.StartAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"SIGNALR ERR: {e.Message}");
+            }
+            Console.WriteLine($"SIGNALR STT: {_connection.State}");
         }
 
         public async Task CloseConnection()
