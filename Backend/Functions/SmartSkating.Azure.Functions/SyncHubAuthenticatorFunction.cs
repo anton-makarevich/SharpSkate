@@ -6,8 +6,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Microsoft.Extensions.Logging;
-using Sanet.SmartSkating.Dto.Models;
-using Sanet.SmartSkating.Dto.Models.Responses;
 
 namespace Sanet.SmartSkating.Backend.Functions
 {
@@ -22,8 +20,6 @@ namespace Sanet.SmartSkating.Backend.Functions
             IBinder binder,
             ILogger log)
         {
-            var response = new SyncHubInfoResponse();
-
             try
             {
                 var connectionInfo = await binder
@@ -31,19 +27,15 @@ namespace Sanet.SmartSkating.Backend.Functions
                     {HubName = sessionId });
                 log.LogInformation($"negotiated {connectionInfo}");
                 // connectionInfo contains an access key token with a name identifier claim set to the authenticated user
-                response.SyncHubInfo = new SyncHubInfoDto
-                {
-                    Url = connectionInfo.Url,
-                    AccessToken = connectionInfo.AccessToken
-                };
+                return new JsonResult(connectionInfo);
             }
             catch (Exception e)
             {
-                response.Message = e.Message;
-                response.ErrorCode = StatusCodes.Status404NotFound;
+                log.LogError(e.Message);
+                return new NotFoundResult();
             }
 
-            return new JsonResult(response);
+            
         }
     }
 }

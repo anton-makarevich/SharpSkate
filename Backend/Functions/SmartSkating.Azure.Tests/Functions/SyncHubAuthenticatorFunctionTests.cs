@@ -1,5 +1,4 @@
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +10,6 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Sanet.SmartSkating.Backend.Functions;
 using Sanet.SmartSkating.Backend.Functions.TestUtils;
-using Sanet.SmartSkating.Dto.Models.Responses;
 using Xunit;
 
 namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
@@ -51,8 +49,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             var actionResult =  await _sut.Negotiate(_request,SessionId, _binder, _log) as JsonResult;
 
             actionResult.Should().NotBeNull();
-            var response = actionResult?.Value as SyncHubInfoResponse;
-            var hubInfo = response?.SyncHubInfo;
+            var hubInfo = actionResult?.Value as SignalRConnectionInfo;
             hubInfo.Should().NotBeNull();
             (hubInfo?.Url).Should().Be(url);
             (hubInfo?.AccessToken).Should().Be(token);
@@ -65,12 +62,9 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             _binder.BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute())
                 .ThrowsForAnyArgs(new Exception(errorMessage));
 
-            var actionResult = await _sut.Negotiate(_request,SessionId, _binder, _log) as JsonResult;
+            var response = await _sut.Negotiate(_request,SessionId, _binder, _log) as NotFoundResult;
 
-            actionResult.Should().NotBeNull();
-            var response = actionResult?.Value as SyncHubInfoResponse;
-            (response?.ErrorCode).Should().Be((int)HttpStatusCode.NotFound);
-            (response?.Message).Should().Be(errorMessage);
+            response.Should().NotBeNull();
         }
     }
 }
