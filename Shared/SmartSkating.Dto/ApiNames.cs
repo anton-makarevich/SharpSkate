@@ -22,6 +22,12 @@ namespace Sanet.SmartSkating.Dto
             public const string Route = "scans";
         }
 
+        public static class SyncHubResource
+        {
+            public const string Path= "/synchubs";
+            public const string Route = "synchubs";
+        }
+
         public const string BaseUrl = "https://smartskating.azure-api.net/smartskating";
         public const string AzureApiSubscriptionKey = "<AzureApiKey>";
 

@@ -327,7 +327,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public void CheckSession_Starts_SyncServer_Connection_For_Remote_Session()
+        public void CheckSession_Gets_SyncServer_Connection_For_Remote_Session()
         {
             const string sessionId = "sessionId";
             var session = PrepareSessionMock(sessionId, "userId", "deviceId");
@@ -335,7 +335,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             
             _sut.CheckSession();
 
-            _syncService.Received(1).ConnectToHub(sessionId);
+            _apiClient.Received(1).GetSyncHubLoginAsync(sessionId, ApiNames.AzureApiSubscriptionKey);
         }
         
         [Fact]
@@ -364,6 +364,8 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
                 Longitude = 456
             };
             var coordinate = new Coordinate(coordinateDto);
+            _apiClient.GetSyncHubLoginAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
+                .Returns(new SyncHubInfoResponse());
             _apiClient.GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
                 .Returns(new GetWaypointsResponse
                 {
@@ -381,6 +383,29 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             _sut.CheckSession();
             
             session.Received().AddPoint(coordinate, time);
+        }
+
+        [Fact]
+        public async Task CheckSession_Starts_Sync_Service_When_Gets_Connection_From_Api()
+        {
+            const string sessionId = "sessionId";
+            const string accessToken = "accessToken";
+            const string url = "url";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            _apiClient.GetSyncHubLoginAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
+                .Returns(new SyncHubInfoResponse
+                {
+                    SyncHubInfo = new SyncHubInfoDto
+                    {
+                        AccessToken = accessToken,
+                        Url = url
+                    }
+                });
+            
+            _sut.CheckSession();
+
+            await _syncService.Received().ConnectToHub(accessToken, url);
         }
 
         private ISession PrepareSessionMock(string sessionId, string userId, string deviceId)

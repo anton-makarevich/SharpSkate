@@ -102,22 +102,34 @@ namespace Sanet.SmartSkating.Services.Tracking
         {
             if (CurrentSession != null)
             {
-                var syncHubTask = _syncService.ConnectToHub(CurrentSession.SessionId);
+                var syncHubTask = _apiService.GetSyncHubLoginAsync(
+                    CurrentSession.SessionId,
+                    ApiNames.AzureApiSubscriptionKey);
                 var waypointsTask = _apiService.GetWaypointsForSessionAsync(
                     CurrentSession.SessionId,
                     ApiNames.AzureApiSubscriptionKey);
-                var apiTasksForSession = new[]
+                var apiTasksForSession = new Task[]
                 {
                     syncHubTask,
                     waypointsTask
                 };
 
                  await Task.WhenAll(apiTasksForSession);
+                 var syncHubConnection = (await syncHubTask).SyncHubInfo;
+#pragma warning disable 4014
+                 StartSyncService(syncHubConnection);
+#pragma warning restore 4014
                  var waypoints = (await waypointsTask).Waypoints;
                  AddWaypointsToSession(waypoints);
             }
         }
-        
+
+        private async ValueTask StartSyncService(SyncHubInfoDto? syncHubInfo)
+        {
+            if (syncHubInfo == null) return;
+            await _syncService.ConnectToHub(syncHubInfo.AccessToken, syncHubInfo.Url);
+        }
+
         private void AddWaypointsToSession(IReadOnlyCollection<WayPointDto>? waypoints)
         {
             if (waypoints == null) return;

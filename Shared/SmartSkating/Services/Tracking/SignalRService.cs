@@ -8,10 +8,8 @@ namespace Sanet.SmartSkating.Services.Tracking
     public class SignalRService:ISyncService
     {
         private HubConnection? _connection;
-        public async Task ConnectToHub(string sessionId)
+        public async Task ConnectToHub(string accessToken, string url)
         {
-            var url = "https://smart-skating-sync.service.signalr.net/client/?hub={sessionId}";
-            var token = "eyJhbGciOiJIUzI1NiIsImtpZCI6IjE0NjQ5MTYwMjkiLCJ0eXAiOiJKV1QifQ.eyJuYmYiOjE2MTU3NjMwMTksImV4cCI6MTYxNTc2NjYxOSwiaWF0IjoxNjE1NzYzMDE5LCJhdWQiOiJodHRwczovL3NtYXJ0LXNrYXRpbmctc3luYy5zZXJ2aWNlLnNpZ25hbHIubmV0L2NsaWVudC8_aHViPWNpbGx1bSBlbGl0IG5vbiJ9.a0lBqgXFIHH8H28rOHfWPOIF5mWSQM451-Vclumg0Ug";
             // _connection = new HubConnectionBuilder()
             //     .WithUrl($"{ApiNames.BaseUrl}/{sessionId}", (opts) =>
             //     {
@@ -19,9 +17,9 @@ namespace Sanet.SmartSkating.Services.Tracking
             //     })
             //     .Build();
             _connection = new HubConnectionBuilder()
-                .WithUrl($"https://smart-skating-sync.service.signalr.net/client/?hub={sessionId}", (opts) =>
+                .WithUrl(url, (opts) =>
                 {
-                    opts.AccessTokenProvider = () => Task.FromResult(token);
+                    opts.AccessTokenProvider = () => Task.FromResult(accessToken);
                 })
                 .Build();
             _connection.On<string, string>("newWaypoint", (user, message) =>
