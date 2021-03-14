@@ -34,8 +34,6 @@ namespace Sanet.SmartSkating.Backend.Functions
                 log.LogError(e.Message);
                 return new NotFoundResult();
             }
-
-            
         }
     }
 }

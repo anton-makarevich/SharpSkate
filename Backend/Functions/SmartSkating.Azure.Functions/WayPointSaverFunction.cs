@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Sanet.SmartSkating.Backend.Azure;
@@ -17,7 +18,7 @@ using Sanet.SmartSkating.Dto.Services;
 
 namespace Sanet.SmartSkating.Backend.Functions
 {
-    public class WayPointSaverFunction: IAzureFunction
+    public class WayPointSaverFunction
     {
         private readonly IDataService _dataService;
 
@@ -33,13 +34,14 @@ namespace Sanet.SmartSkating.Backend.Functions
             [HttpTrigger(AuthorizationLevel.Function,
                 "post", 
                 Route = ApiNames.WayPointsResource.Route)] HttpRequest request,
+            IBinder binder,
             ILogger logger)
         {
             var responseObject = new SaveEntitiesResponse {SyncedIds = new List<string>()};
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
             var requestObject = JsonConvert.DeserializeObject<List<WayPointDto>?>(requestData);
             
-            if (requestObject == null)
+            if (requestObject == null || requestObject.Count == 0)
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.BadRequest;
                 _errorMessageBuilder.AppendLine(Constants.BadRequestErrorMessage);
@@ -47,6 +49,9 @@ namespace Sanet.SmartSkating.Backend.Functions
             else
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
+                var signalR = await binder
+                    .BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
+                        {HubName = requestObject[0].SessionId });
                 foreach (var wayPoint in requestObject)
                 {
                     if (wayPoint.Time.Year < 1601)
@@ -54,8 +59,16 @@ namespace Sanet.SmartSkating.Backend.Functions
                         _errorMessageBuilder.AppendLine(Constants.DateTimeValidationErrorMessage);
                         continue;
                     }
-                    if (_dataService != null && await _dataService.SaveWayPointAsync(wayPoint))
-                        responseObject.SyncedIds.Add(wayPoint.Id);
+
+                    if (_dataService == null || !await _dataService.SaveWayPointAsync(wayPoint)) continue;
+                    
+                    await signalR.AddAsync(
+                        new SignalRMessage
+                        {
+                            Target = "newWaypoint",
+                            Arguments = new object[]{wayPoint}
+                        });
+                    responseObject.SyncedIds.Add(wayPoint.Id);
                 }
 
                 if (!string.IsNullOrEmpty(_dataService?.ErrorMessage)) 
