@@ -4,33 +4,68 @@ info:
   description: Import from "smartskating" Function App
   version: '1.0'
 servers:
-  - url: https://your_apim_service_name.azure-api.net/smartskating
+  - url: https://smartskating.azure-api.net/smartskating
 paths:
+  /waypoints:
+    get:
+      summary: WaypointsProviderFunction
+      operationId: get-waypointsproviderfunction
+      responses:
+        '200':
+          description: 
+    post:
+      summary: WayPointSaverFunction
+      operationId: post-waypointsaverfunction
+      responses:
+        '200':
+          description: 
+  '/{sessionId}/negotiate':
+    post:
+      summary: SyncHubAuthenticatorFunction
+      operationId: post-synchubauthenticatorfunction
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: ''
+      responses:
+        '200':
+          description: 
   /sessions:
     post:
       summary: SessionSaverFunction
       operationId: post-sessionsaverfunction
-      responses: { }
+      responses:
+        '200':
+          description: 
+    get:
+      summary: SessionProviderFunction
+      operationId: get-sessionproviderfunction
+      responses:
+        '200':
+          description: 
   /accounts:
     post:
       summary: LoginFunction
       operationId: post-loginfunction
-      responses: { }
-  /devices:
-    post:
-      summary: DeviceSaverFunction
-      operationId: post-devicesaverfunction
-      responses: { }
-  /waypoints:
-    post:
-      summary: WayPointSaverFunction
-      operationId: post-waypointsaverfunction
-      responses: { }
+      responses:
+        '200':
+          description: 
   /scans:
     post:
       summary: BleScanSaverFunction
       operationId: post-blescansaverfunction
-      responses: { }
+      responses:
+        '200':
+          description: 
+  /devices:
+    post:
+      summary: DeviceSaverFunction
+      operationId: post-devicesaverfunction
+      responses:
+        '200':
+          description: 
 components:
   securitySchemes:
     apiKeyHeader:
