@@ -2,6 +2,7 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sanet.SmartSkating.Backend.Functions;
@@ -19,6 +20,8 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         private readonly LoginFunction _sut;
         private readonly ILoginService _loginService;
         private readonly ILogger _log;
+        private readonly IBinder _binder = Substitute.For<IBinder>();
+
         
         private readonly LoginRequest _loginStub = new LoginRequest
         {
@@ -37,7 +40,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         public async Task RunningFunctionCallsSaveDevice()
         {
             await _sut.Run(Utils.CreateMockRequest(
-                    _loginStub),_log
+                    _loginStub),_binder,_log
                 );
 
             await _loginService.Received().LoginUserAsync(_loginStub.Username,_loginStub.Password);
@@ -54,7 +57,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 .Returns(Task.FromResult(account));
             
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _loginStub),_log) as JsonResult;
+                    _loginStub),_binder,_log) as JsonResult;
 
             actionResult.Should().NotBeNull();
             var response = actionResult?.Value as LoginResponse;
@@ -66,7 +69,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         public async Task ReturnsBadRequestStatus_WhenRequestIsInvalid()
         {
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    null),_log) as JsonResult;
+                    null),_binder,_log) as JsonResult;
 
             actionResult.Should().NotBeNull();
             var response = actionResult?.Value as LoginResponse;
@@ -79,7 +82,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             _loginService.LoginUserAsync(_loginStub.Username, _loginStub.Password)
                 .Returns(Task.FromResult<AccountDto>(null));
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _loginStub),_log) as JsonResult;
+                    _loginStub),_binder,_log) as JsonResult;
             
             actionResult.Should().NotBeNull();
             var response = actionResult?.Value as LoginResponse;

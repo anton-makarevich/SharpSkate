@@ -32,7 +32,7 @@ namespace Sanet.SmartSkating.Backend.Functions
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, 
                 "post",
-                Route = ApiNames.BleScansResource.Route)] HttpRequest request,
+                Route = ApiNames.BleScansResource.Route)] HttpRequest request, IBinder _,
             ILogger logger)
         {
             var responseObject = new SaveEntitiesResponse {SyncedIds = new List<string>()};

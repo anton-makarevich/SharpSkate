@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sanet.SmartSkating.Backend.Functions;
@@ -16,6 +17,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
     {
         private readonly DeviceSaverFunction _sut;
         private readonly IDataService _dataService;
+        private readonly IBinder _binder = Substitute.For<IBinder>();
         private readonly DeviceDto _deviceStub = new DeviceDto
         {
             AccountId = "accountId",
@@ -36,7 +38,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         public async Task RunningFunctionCallsSaveDevice()
         {
             await _sut.Run(Utils.CreateMockRequest(
-                    _deviceStub),
+                    _deviceStub),_binder,
                 Substitute.For<ILogger>());
 
             await _dataService.Received().SaveDeviceAsync(Arg.Any<DeviceDto>());
@@ -49,7 +51,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 .ReturnsForAnyArgs(Task.FromResult(true));
 
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _deviceStub),
+                    _deviceStub),_binder,
                 Substitute.For<ILogger>()) as JsonResult;
 
             Assert.NotNull(actionResult);
@@ -68,7 +70,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 .ReturnsForAnyArgs(Task.FromResult(false));
 
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _deviceStub),
+                    _deviceStub),_binder,
                 Substitute.For<ILogger>()) as JsonResult;
 
             Assert.NotNull(actionResult);

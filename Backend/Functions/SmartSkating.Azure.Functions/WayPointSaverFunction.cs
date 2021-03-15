@@ -18,7 +18,7 @@ using Sanet.SmartSkating.Dto.Services;
 
 namespace Sanet.SmartSkating.Backend.Functions
 {
-    public class WayPointSaverFunction
+    public class WayPointSaverFunction:IAzureFunction
     {
         private readonly IDataService _dataService;
 
@@ -65,7 +65,7 @@ namespace Sanet.SmartSkating.Backend.Functions
                     await signalR.AddAsync(
                         new SignalRMessage
                         {
-                            Target = "newWaypoint",
+                            Target = SyncHubMethodNames.AddWaypoint,
                             Arguments = new object[]{wayPoint}
                         });
                     responseObject.SyncedIds.Add(wayPoint.Id);

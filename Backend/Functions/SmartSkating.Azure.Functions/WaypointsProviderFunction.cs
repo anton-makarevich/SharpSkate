@@ -27,7 +27,7 @@ namespace Sanet.SmartSkating.Backend.Functions
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function,
                 "get",
                 Route = ApiNames.WayPointsResource.Route)]
-            HttpRequest request, ILogger logger)
+            HttpRequest request, IBinder _, ILogger logger)
         {
             var sessionId = request.Query["sessionId"].ToString();
             

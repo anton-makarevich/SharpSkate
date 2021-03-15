@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sanet.SmartSkating.Backend.Functions;
@@ -23,6 +23,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         private readonly WaypointsProviderFunction _sut;
         private readonly IDataService _dataService;
         private readonly ILogger _log;
+        private readonly IBinder _binder = Substitute.For<IBinder>();
         private readonly HttpRequest _request = Utils.CreateMockRequest(queryString: $"?sessionId={SessionId}");
 
         public WaypointsProviderFunctionTests()
@@ -35,7 +36,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         [Fact]
         public async Task RunningFunction_Gets_Waypoints_For_Session_From_Service()
         {
-            await _sut.Run(_request,_log);
+            await _sut.Run(_request,_binder,_log);
 
             await _dataService.Received().GetWayPointForSessionAsync(SessionId);
         }
@@ -61,7 +62,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             _dataService.GetWayPointForSessionAsync(SessionId)
                 .Returns(Task.FromResult(waypoints));
             
-            var actionResult = await _sut.Run(_request,_log) as JsonResult;
+            var actionResult = await _sut.Run(_request,_binder,_log) as JsonResult;
         
             actionResult.Should().NotBeNull();
             var response = actionResult?.Value as GetWaypointsResponse;
@@ -74,7 +75,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         public async Task ReturnsBadRequestStatus_WhenRequestIsInvalid()
         {
             var request = Utils.CreateMockRequest(queryString: $"?someId={SessionId}");
-            var actionResult = await _sut.Run(request,_log) as JsonResult;
+            var actionResult = await _sut.Run(request,_binder,_log) as JsonResult;
         
             actionResult.Should().NotBeNull();
             var response = actionResult?.Value as GetWaypointsResponse;

@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sanet.SmartSkating.Backend.Functions;
@@ -20,6 +21,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
     {
         private readonly BleScanSaverFunction _sut;
         private readonly IDataService _dataService;
+        private readonly IBinder _binder = Substitute.For<IBinder>();
         private readonly List<BleScanResultDto> _scansStub = new List<BleScanResultDto>();
 
         private BleScanResultDto GetBleScanStub(int id)
@@ -48,7 +50,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         public async Task RunningFunctionCallsSaveBleScanForEveryItem()
         {
             await _sut.Run(Utils.CreateMockRequest(
-                    _scansStub),
+                    _scansStub),_binder,
                 Substitute.For<ILogger>());
 
             await _dataService.Received(2).SaveBleScanAsync(Arg.Any<BleScanResultDto>());
@@ -61,7 +63,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 .ReturnsForAnyArgs(Task.FromResult(true));
         
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _scansStub),
+                    _scansStub),_binder,
                 Substitute.For<ILogger>()) as JsonResult;
         
             Assert.NotNull(actionResult);
@@ -83,7 +85,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 .ReturnsForAnyArgs(Task.FromResult(false));
         
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _scansStub),
+                    _scansStub),_binder,
                 Substitute.For<ILogger>()) as JsonResult;
         
             Assert.NotNull(actionResult);
@@ -108,7 +110,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             _dataService.SaveBleScanAsync(Arg.Any<BleScanResultDto>())
                 .ReturnsForAnyArgs(Task.FromResult(true));
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _scansStub),
+                    _scansStub),_binder,
                 Substitute.For<ILogger>()) as JsonResult;
             
             Assert.NotNull(actionResult);
@@ -128,7 +130,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 .ReturnsForAnyArgs(Task.FromResult(true));
             
             var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    _scansStub),
+                    _scansStub),_binder,
                 Substitute.For<ILogger>()) as JsonResult;
             
             Assert.NotNull(actionResult);

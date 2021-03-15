@@ -114,17 +114,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         [Fact]
         public async Task RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode()
         {
-            var actionResult = await _sut.Run(Utils.CreateMockRequest(
-                    null),
-                _binder,
-                Substitute.For<ILogger>()) as JsonResult;
-        
-            Assert.NotNull(actionResult);
-            var response = actionResult.Value as ResponseBase;
-        
-            Assert.NotNull(response);
-            const int badRequestStatus = (int) HttpStatusCode.BadRequest;
-            Assert.Equal(badRequestStatus, response.ErrorCode);
+            await CommonFunctionsTests.RunningFunctionWithoutProperRequestReturnsBadRequestErrorCode(_sut);
         }
         
         [Fact]

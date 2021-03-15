@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Sanet.SmartSkating.Backend.Azure;
@@ -30,24 +31,39 @@ namespace Sanet.SmartSkating.Backend.Functions
             [HttpTrigger(AuthorizationLevel.Function, 
                 "post",
                 Route = ApiNames.SessionsResource.Route)] HttpRequest request,
+            IBinder binder,
             ILogger logger)
         {
             var responseObject = new SaveEntitiesResponse {SyncedIds = new List<string>()};
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
             var requestObject = JsonConvert.DeserializeObject<List<SessionDto>?>(requestData);
             
-            if (requestObject == null)
+            if (requestObject == null || requestObject.Count==0)
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.BadRequest;
                 responseObject.Message = "Invalid request data";
             }
             else
             {
+                
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
-                foreach (var wayPoint in requestObject)
+                foreach (var session in requestObject)
                 {
-                    if (_dataService != null && await _dataService.SaveSessionAsync(wayPoint))
-                        responseObject.SyncedIds.Add(wayPoint.Id);
+                    if (_dataService == null || !await _dataService.SaveSessionAsync(session)) continue;
+                    if (session.IsCompleted)
+                    {
+                        var signalR = await binder
+                                            .BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
+                                                {HubName = session.Id });
+                        await signalR.AddAsync(
+                            new SignalRMessage
+                            {
+                                Target = SyncHubMethodNames.EndSession,
+                                Arguments = new object[] {session}
+                            });
+                    }
+
+                    responseObject.SyncedIds.Add(session.Id);
                 }
 
                 if (_dataService != null) responseObject.Message = _dataService.ErrorMessage;
