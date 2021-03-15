@@ -45,7 +45,6 @@ namespace Sanet.SmartSkating.Backend.Functions
             }
             else
             {
-                
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
                 foreach (var session in requestObject)
                 {

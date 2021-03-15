@@ -21,7 +21,6 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         private readonly ILoginService _loginService;
         private readonly ILogger _log;
         private readonly IBinder _binder = Substitute.For<IBinder>();
-
         
         private readonly LoginRequest _loginStub = new LoginRequest
         {

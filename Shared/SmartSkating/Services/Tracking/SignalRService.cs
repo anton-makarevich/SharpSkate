@@ -18,7 +18,7 @@ namespace Sanet.SmartSkating.Services.Tracking
                 })
                 .Build();
             
-            _connection.On("newWaypoint", (WayPointDto wayPointDto) =>
+            _connection.On(SyncHubMethodNames.AddWaypoint, (WayPointDto wayPointDto) =>
             {
                 Console.WriteLine($"SIGNALR MSG: {wayPointDto}");
             });
