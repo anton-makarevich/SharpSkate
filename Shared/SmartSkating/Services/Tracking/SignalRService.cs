@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Models.EventArgs;
 
 namespace Sanet.SmartSkating.Services.Tracking
 {
@@ -20,7 +21,7 @@ namespace Sanet.SmartSkating.Services.Tracking
             
             _connection.On(SyncHubMethodNames.AddWaypoint, (WayPointDto wayPointDto) =>
             {
-                Console.WriteLine($"SIGNALR MSG: {wayPointDto}");
+                WayPointReceived?.Invoke(null, new WayPointEventArgs(wayPointDto));
             });
 
             try
@@ -33,6 +34,8 @@ namespace Sanet.SmartSkating.Services.Tracking
             }
             Console.WriteLine($"SIGNALR STT: {_connection.State}");
         }
+
+        public event EventHandler<WayPointEventArgs>? WayPointReceived;
 
         public async Task CloseConnection()
         {

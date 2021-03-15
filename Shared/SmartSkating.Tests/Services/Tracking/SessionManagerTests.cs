@@ -382,6 +382,32 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             
             session.Received().AddPoint(coordinate, time);
         }
+        
+        [Fact]
+        public void Updates_Session_WithWaypoint_From_SyncHub()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            var time = DateTime.Now;
+            var coordinateDto = new CoordinateDto
+            {
+                Latitude = 123,
+                Longitude = 456
+            };
+            var coordinate = new Coordinate(coordinateDto);
+            var waypoint = new WayPointDto
+            {
+                SessionId = sessionId,
+                Coordinate = coordinateDto,
+                Time = time
+            };
+
+            _sut.CheckSession();
+            _syncService.WayPointReceived += Raise.EventWith(null, new WayPointEventArgs(waypoint));
+            
+            session.Received().AddPoint(coordinate, time);
+        }
 
         private ISession PrepareSessionMock(string sessionId, string userId, string deviceId)
         {
