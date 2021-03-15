@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Sanet.SmartSkating.Dto;
+using Sanet.SmartSkating.Dto.Models;
 
 namespace Sanet.SmartSkating.Services.Tracking
 {
@@ -22,9 +23,9 @@ namespace Sanet.SmartSkating.Services.Tracking
                     opts.AccessTokenProvider = () => Task.FromResult(accessToken);
                 })
                 .Build();
-            _connection.On<string, string>("newWaypoint", (user, message) =>
+            _connection.On<WayPointDto>("newWaypoint", (WayPointDto wayPointDto) =>
             {
-               Console.WriteLine($"SIGNALR MSG: {message}");
+               Console.WriteLine($"SIGNALR MSG: {wayPointDto}");
             });
 
             try
