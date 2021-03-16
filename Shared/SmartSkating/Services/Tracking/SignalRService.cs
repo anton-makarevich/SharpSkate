@@ -23,6 +23,14 @@ namespace Sanet.SmartSkating.Services.Tracking
             {
                 WayPointReceived?.Invoke(null, new WayPointEventArgs(wayPointDto));
             });
+            
+            _connection.On(SyncHubMethodNames.AddWaypoint, (SessionDto session) =>
+            {
+                if (session.IsCompleted)
+                {
+                    SessionClosedReceived?.Invoke(null, new SessionEventArgs(session));
+                }
+            });
 
             try
             {
@@ -36,7 +44,8 @@ namespace Sanet.SmartSkating.Services.Tracking
         }
 
         public event EventHandler<WayPointEventArgs>? WayPointReceived;
-
+        public event EventHandler<SessionEventArgs>? SessionClosedReceived;
+   
         public async Task CloseConnection()
         {
             if (_connection != null) await _connection.StopAsync();

@@ -103,6 +103,7 @@ namespace Sanet.SmartSkating.Services.Tracking
             if (CurrentSession != null)
             {
                 _syncService.WayPointReceived+= SyncServiceOnWayPointReceived;
+                _syncService.SessionClosedReceived+= SyncServiceOnSessionClosedReceived;
                 var syncHubTask = _syncService.ConnectToHub(CurrentSession.SessionId);
                 var waypointsTask = _apiService.GetWaypointsForSessionAsync(
                     CurrentSession.SessionId,
@@ -118,7 +119,27 @@ namespace Sanet.SmartSkating.Services.Tracking
                  AddWaypointsToSession(waypoints);
             }
         }
-        
+
+        private void SyncServiceOnSessionClosedReceived(object sender, SessionEventArgs e)
+        {
+            CloseRemoteSession();
+        }
+
+        private void CloseRemoteSession()
+        {
+            IsRunning = false;
+            _syncService.WayPointReceived-= SyncServiceOnWayPointReceived; 
+            _syncService.SessionClosedReceived-= SyncServiceOnSessionClosedReceived;
+            _syncService.CloseConnection();
+        }
+
+        private void SyncServiceOnWayPointReceived(object sender, WayPointEventArgs waypointArgs)
+        {
+            CurrentSession?.AddPoint(
+                new Coordinate(waypointArgs.WayPoint.Coordinate),
+                waypointArgs.WayPoint.Time);
+        }
+
         private void AddWaypointsToSession(IReadOnlyCollection<WayPointDto>? waypoints)
         {
             if (waypoints == null) return;
@@ -181,7 +202,6 @@ namespace Sanet.SmartSkating.Services.Tracking
         {
             _locationService.LocationReceived -= LocationServiceOnLocationReceived;
             _bleLocationService.CheckPointPassed-= BleLocationServiceOnCheckPointPassed;
-            _syncService.WayPointReceived-= SyncServiceOnWayPointReceived; //TODO move to a separate method
 
             _locationService.StopFetchLocation();
             _bleLocationService.StopBleScan();
@@ -189,13 +209,6 @@ namespace Sanet.SmartSkating.Services.Tracking
 #pragma warning disable 4014
             SaveSessionAndSyncData(true);
 #pragma warning restore 4014
-        }
-
-        private void SyncServiceOnWayPointReceived(object sender, WayPointEventArgs waypointArgs)
-        {
-            CurrentSession?.AddPoint(
-                new Coordinate(waypointArgs.WayPoint.Coordinate),
-                waypointArgs.WayPoint.Time);
         }
     }
 }

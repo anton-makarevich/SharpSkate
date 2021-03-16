@@ -8,5 +8,7 @@ namespace Sanet.SmartSkating.Services.Tracking
     {
         Task ConnectToHub(string sessionId);
         event EventHandler<WayPointEventArgs>? WayPointReceived;
+        event EventHandler<SessionEventArgs>? SessionClosedReceived;
+        Task CloseConnection();
     }
 }

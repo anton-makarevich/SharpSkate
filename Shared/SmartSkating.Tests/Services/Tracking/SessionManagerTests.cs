@@ -408,6 +408,42 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             
             session.Received().AddPoint(coordinate, time);
         }
+        
+        [Fact]
+        public void Stops_RemoteSession_On_SessionClosed_Event_From_SyncHub()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+
+            var sessionClosed = new SessionDto()
+            {
+                IsCompleted = true
+            };
+
+            _sut.CheckSession();
+            _syncService.SessionClosedReceived += Raise.EventWith(null, new SessionEventArgs(sessionClosed));
+
+            _sut.IsRunning.Should().BeFalse();
+        }
+        
+        [Fact]
+        public async Task Disconnects_SignalR_On_SessionClosed_Event_From_SyncHub()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+
+            var sessionClosed = new SessionDto()
+            {
+                IsCompleted = true
+            };
+
+            _sut.CheckSession();
+            _syncService.SessionClosedReceived += Raise.EventWith(null, new SessionEventArgs(sessionClosed));
+
+            await _syncService.Received().CloseConnection();
+        }
 
         private ISession PrepareSessionMock(string sessionId, string userId, string deviceId)
         {
