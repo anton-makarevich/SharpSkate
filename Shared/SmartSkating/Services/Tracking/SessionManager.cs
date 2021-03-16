@@ -16,7 +16,6 @@ namespace Sanet.SmartSkating.Services.Tracking
     public class SessionManager:ISessionManager
     {
         private readonly ILocationService _locationService;
-        private readonly IDataService _storageService;
         private readonly IAccountService _accountService;
         private readonly IDataSyncService _dataSyncService;
         private readonly IBleLocationService _bleLocationService;
@@ -26,7 +25,6 @@ namespace Sanet.SmartSkating.Services.Tracking
         private readonly ISyncService _syncService;
 
         public SessionManager(ILocationService locationService,
-            IDataService storageService,
             IAccountService accountService,
             IDataSyncService dataSyncService,
             IBleLocationService bleLocationService,
@@ -36,7 +34,6 @@ namespace Sanet.SmartSkating.Services.Tracking
             ISyncService syncService)
         {
             _locationService = locationService;
-            _storageService = storageService;
             _accountService = accountService;
             _dataSyncService = dataSyncService;
             _bleLocationService = bleLocationService;
@@ -157,7 +154,7 @@ namespace Sanet.SmartSkating.Services.Tracking
                 _accountService.DeviceId,
                 e.Coordinate.ToDto(),
                 e.Date);
-            _storageService.SaveWayPointAsync(pointDto);
+            _dataSyncService.SaveAndSyncWayPointAsync(pointDto);
             CurrentSession?.AddPoint(e.Coordinate,pointDto.Time);
         }
 
@@ -173,14 +170,10 @@ namespace Sanet.SmartSkating.Services.Tracking
             if (sessionDto != null)
             {
                 sessionDto.IsCompleted = isCompleted;
-                await _storageService.SaveSessionAsync(sessionDto);
+                await _dataSyncService.SaveAndSyncSessionAsync(sessionDto);
             }
-
-            if (isCompleted)
-            {
-                await _dataSyncService.SyncSessionsAsync();
-                await _dataSyncService.SyncWayPointsAsync();
-            }
+            
+            await _dataSyncService.SyncWayPointsAsync();
         }
 
         private SessionDto? GetSessionDto()

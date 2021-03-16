@@ -7,7 +7,6 @@ using NSubstitute.ReturnsExtensions;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
-using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
@@ -30,7 +29,6 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         private readonly ISettingsService _settingsService = Substitute.For<ISettingsService>();
         private readonly SessionManager _sut;
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
-        private readonly IDataService _dataService = Substitute.For<IDataService>();
         private readonly IAccountService _accountService = Substitute.For<IAccountService>();
         private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
         private readonly IBleLocationService _bleLocationService = Substitute.For<IBleLocationService>();
@@ -40,8 +38,8 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
         public SessionManagerTests()
         {
-            _sut = new SessionManager(_locationService,
-                _dataService,
+            _sut = new SessionManager(
+                _locationService,
                 _accountService,
                 _dataSyncService,
                 _bleLocationService,
@@ -131,7 +129,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task Start_Saves_Session_To_Local_Storage()
+        public async Task Start_Saves_Session_To_Local_Storage_And_Syncs_It()
         {
             const string sessionId = "sessionId";
             const string userId = "123";
@@ -141,7 +139,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             await _sut.StartSession();
 
-            await _dataService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
+            await _dataSyncService.Received().SaveAndSyncSessionAsync(Arg.Is<SessionDto>(s=>
                 s.Id == sessionId
                 && s.AccountId == userId
                 && s.RinkId == _rink.Id
@@ -150,7 +148,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task Stop_Saves_CompletedSessionToLocalStorage()
+        public async Task Stop_Saves_CompletedSessionToLocalStorage_And_Syncs_It()
         {
             const string sessionId = "someSessionId";
             const string userId = "123";
@@ -159,7 +157,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             _sut.StopSession();
 
-            await _dataService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s =>
+            await _dataSyncService.Received().SaveAndSyncSessionAsync(Arg.Is<SessionDto>(s =>
                 s.Id == sessionId
                 && s.AccountId == userId
                 && s.IsCompleted
@@ -189,7 +187,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task StopSession_SyncsData_For_Sessions_And_WayPoints()
+        public async Task StopSession_SyncsData_For_Waypoints()
         {
             const string sessionId = "someSessionId";
             const string userId = "123";
@@ -198,7 +196,6 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             _sut.StopSession();
 
-            await _dataSyncService.Received().SyncSessionsAsync();
             await _dataSyncService.Received().SyncWayPointsAsync();
         }
 
@@ -211,12 +208,12 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task LastCoordinateChangeSavesCoordinateToDisk()
+        public async Task LastCoordinateChangeSavesCoordinateToDisk_And_Sync_It()
         {
             await _sut.StartSession();
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            await _dataService.Received().SaveWayPointAsync(Arg.Any<WayPointDto>());
+            await _dataSyncService.Received().SaveAndSyncWayPointAsync(Arg.Any<WayPointDto>());
         }
 
         [Fact]

@@ -306,7 +306,7 @@ namespace Sanet.SmartSkating.Tests.Services.Location
         {
             foreach (var unused in new[] {1, 2})
             {
-                var rssi = -1 * new Random().Next(aboutRssi - 5, aboutRssi + 5);
+                var rssi = -1 * new Random().Next(aboutRssi - 1, aboutRssi + 1);
                 var scan = BleScansStackTests.GetScanDto(rssi, DateTime.Now, deviceId);
 
                 ProceedNewScan(scan);

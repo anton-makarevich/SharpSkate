@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto;
+using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Account;
 
@@ -117,6 +118,16 @@ namespace Sanet.SmartSkating.Services.Api
             {
                 await _dataService.DeleteBleScanAsync(syncedScan);
             }
+        }
+
+        public Task SaveAndSyncSessionAsync(SessionDto sessionDto)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task SaveAndSyncWayPointAsync(WayPointDto pointDto)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
