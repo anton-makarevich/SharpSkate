@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto;
@@ -120,14 +121,38 @@ namespace Sanet.SmartSkating.Services.Api
             }
         }
 
-        public Task SaveAndSyncSessionAsync(SessionDto sessionDto)
+        public async Task SaveAndSyncSessionAsync(SessionDto sessionDto)
         {
-            throw new System.NotImplementedException();
+            if (!await _connectivityService.IsConnected())
+            {
+                await _dataService.SaveSessionAsync(sessionDto);
+                return;
+            }
+            var response = await _apiService.PostSessionsAsync(
+                new List<SessionDto>{sessionDto},
+                ApiNames.AzureApiSubscriptionKey);
+
+            if (response.SyncedIds?.Count == null || response.SyncedIds?.Count == 0)
+            {
+                await _dataService.SaveSessionAsync(sessionDto);
+            }
         }
 
-        public Task SaveAndSyncWayPointAsync(WayPointDto pointDto)
+        public async Task SaveAndSyncWayPointAsync(WayPointDto pointDto)
         {
-            throw new System.NotImplementedException();
+            if (!await _connectivityService.IsConnected())
+            {
+                await _dataService.SaveWayPointAsync(pointDto);
+                return;
+            }
+            var response = await _apiService.PostWaypointsAsync(
+                new List<WayPointDto>{pointDto},
+                ApiNames.AzureApiSubscriptionKey);
+
+            if (response.SyncedIds?.Count == null || response.SyncedIds?.Count == 0)
+            {
+                await _dataService.SaveWayPointAsync(pointDto);
+            }
         }
     }
 }

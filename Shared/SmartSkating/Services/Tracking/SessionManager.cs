@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
-using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
