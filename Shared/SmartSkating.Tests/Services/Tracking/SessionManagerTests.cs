@@ -7,6 +7,7 @@ using NSubstitute.ReturnsExtensions;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
@@ -35,6 +36,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         private readonly ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
         private readonly IApiService _apiClient = Substitute.For<IApiService>();
         private readonly ISyncService _syncService = Substitute.For<ISyncService>();
+        private readonly IDateProvider _dateProvider = Substitute.For<IDateProvider>();
 
         public SessionManagerTests()
         {
@@ -46,7 +48,8 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
                 _settingsService,
                 _sessionProvider,
                 _apiClient,
-                _syncService
+                _syncService,
+                _dateProvider
                 );
         }
 
@@ -440,6 +443,18 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             _syncService.SessionClosedReceived += Raise.EventWith(null, new SessionEventArgs(sessionClosed));
 
             await _syncService.Received().CloseConnection();
+        }
+        
+        [Fact]
+        public void StartingSessionUpdatesItsStartTime()
+        {
+            var session = PrepareSessionMock("sessionId","userId", "deviceId");
+            var startTime = DateTime.Now;
+            _dateProvider.Now().Returns(startTime);
+
+            _sut.StartSession();
+
+            session.Received().SetStartTime(startTime);
         }
 
         private ISession PrepareSessionMock(string sessionId, string userId, string deviceId)

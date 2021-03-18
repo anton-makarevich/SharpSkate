@@ -76,16 +76,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             var unused = _sessionManager.Received().IsRunning;
         }
-        
+
         [Fact]
         public void Starts_Session_Starts_Updating_Session_Time()
         {
+            CreateSessionMock();
             _sessionManager.IsRunning.Returns(true);
+            _sut.AttachHandlers();
+
             _sut.StartCommand.Execute(null);
 
             _dateProvider.Received().Now();
         }
-        
+
         [Fact]
         public async Task Stops_Session_Button_Ask_Confirmation()
         {
@@ -303,23 +306,6 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.UpdateUi();
 
             Assert.Equal("0.1Km",_sut.Distance);
-        }
-
-        [Fact]
-        public void StartingSessionUpdatesItsStartTime()
-        {
-            var session = CreateSessionMock();
-            var startTime = _testTime;
-            var endTime = startTime.AddSeconds(10);
-            var section = new Section(
-                new WayPoint(_locationStub,_locationStub,startTime, WayPointTypes.Start),
-                new WayPoint(_locationStub,_locationStub,endTime, WayPointTypes.Finish)
-            );
-            session.Sectors.Returns(new List<Section>(){section});
-
-            _sut.StartCommand.Execute(null);
-
-            session.Received().SetStartTime(Arg.Any<DateTime>());
         }
 
         [Fact]

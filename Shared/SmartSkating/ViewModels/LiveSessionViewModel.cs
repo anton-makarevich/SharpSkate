@@ -44,7 +44,7 @@ namespace Sanet.SmartSkating.ViewModels
         public ICommand StartCommand => new SimpleCommand(async() =>
         {
             await _sessionManager.StartSession();
-            _sessionManager.CurrentSession?.SetStartTime(_dateProvider.Now());
+            
 #pragma warning disable 4014
             TrackTime();
 #pragma warning restore 4014
@@ -65,9 +65,9 @@ namespace Sanet.SmartSkating.ViewModels
         {
             while (_sessionManager.IsRunning && IsActive)
             {
-                await Task.Delay(1000);
-                if (_sessionManager.CurrentSession == null) continue;
+                if (_sessionManager.CurrentSession is null) continue;
                 UpdateUi();
+                await Task.Delay(1000);
             } 
         }
 

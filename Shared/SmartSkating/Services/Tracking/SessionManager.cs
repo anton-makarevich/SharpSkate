@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
@@ -22,6 +24,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         private readonly ISessionProvider _sessionProvider;
         private readonly IApiService _apiService;
         private readonly ISyncService _syncService;
+        private readonly IDateProvider _dateProvider;
 
         public SessionManager(ILocationService locationService,
             IAccountService accountService,
@@ -30,7 +33,8 @@ namespace Sanet.SmartSkating.Services.Tracking
             ISettingsService settingsService,
             ISessionProvider sessionProvider,
             IApiService apiService,
-            ISyncService syncService)
+            ISyncService syncService, 
+            IDateProvider dateProvider)
         {
             _locationService = locationService;
             _accountService = accountService;
@@ -40,6 +44,7 @@ namespace Sanet.SmartSkating.Services.Tracking
             _sessionProvider = sessionProvider;
             _apiService = apiService;
             _syncService = syncService;
+            _dateProvider = dateProvider;
         }
 
         public ISession? CurrentSession => _sessionProvider.CurrentSession;
@@ -52,6 +57,7 @@ namespace Sanet.SmartSkating.Services.Tracking
             if (!IsReady || CurrentSession?.IsRemote == true)
                 return;
             IsRunning = true;
+            CurrentSession?.SetStartTime(_dateProvider.Now());
             if (_settingsService.UseBle)
                 await _bleLocationService.LoadDevicesDataAsync();
 
@@ -139,7 +145,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         private void AddWaypointsToSession(IReadOnlyCollection<WayPointDto>? waypoints)
         {
             if (waypoints == null) return;
-            foreach (var waypoint in waypoints)
+            foreach (var waypoint in waypoints.OrderBy(w=>w.Time))
             {
                 CurrentSession?.AddPoint(new Coordinate(waypoint.Coordinate), waypoint.Time);
             }
