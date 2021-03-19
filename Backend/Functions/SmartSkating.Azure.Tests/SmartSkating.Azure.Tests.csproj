@@ -29,7 +29,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FunctionTestUtils\FunctionTestUtils.csproj" />
-      <ProjectReference Include="..\SmartSkating.Functions\SmartSkating.Functions.csproj" />
+      <ProjectReference Include="..\SmartSkating.Azure.Functions\SmartSkating.Azure.Functions.csproj" />
     </ItemGroup>
 
 </Project>

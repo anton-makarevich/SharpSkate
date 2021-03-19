@@ -1,3 +1,5 @@
+using System;
+
 namespace Sanet.SmartSkating.Dto.Models
 {
     public class SessionDto:EntityBase
@@ -7,5 +9,6 @@ namespace Sanet.SmartSkating.Dto.Models
         public bool IsSaved { get; set; }
         public string RinkId { get; set; } = "";
         public string DeviceId { get; set; } = "";
+        public DateTime StartTime { get; set; }
     }
 }

@@ -17,27 +17,27 @@ using Sanet.SmartSkating.Dto.Services;
 
 namespace Sanet.SmartSkating.Backend.Functions
 {
-    public class WayPointSaverFunction: IAzureFunction
+    public class BleScanSaverFunction: IAzureFunction
     {
         private readonly IDataService _dataService;
 
         private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
 
-        public WayPointSaverFunction(IDataService dataService)
+        public BleScanSaverFunction(IDataService dataService)
         {
             _dataService = dataService;
         }
 
-        [FunctionName("WayPointSaverFunction")]
+        [FunctionName("BleScanSaverFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function,
-                "post", 
-                Route = ApiNames.WayPointsResource.Route)] HttpRequest request,
+            [HttpTrigger(AuthorizationLevel.Function, 
+                "post",
+                Route = ApiNames.BleScansResource.Route)] HttpRequest request, IBinder _,
             ILogger logger)
         {
             var responseObject = new SaveEntitiesResponse {SyncedIds = new List<string>()};
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();
-            var requestObject = JsonConvert.DeserializeObject<List<WayPointDto>?>(requestData);
+            var requestObject = JsonConvert.DeserializeObject<List<BleScanResultDto>?>(requestData);
             
             if (requestObject == null)
             {
@@ -47,21 +47,21 @@ namespace Sanet.SmartSkating.Backend.Functions
             else
             {
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
-                foreach (var wayPoint in requestObject)
+                foreach (var scanResultDto in requestObject)
                 {
-                    if (wayPoint.Time.Year < 1601)
+                    if (scanResultDto.Time.Year < 1601)
                     {
                         _errorMessageBuilder.AppendLine(Constants.DateTimeValidationErrorMessage);
                         continue;
                     }
-                    if (_dataService != null && await _dataService.SaveWayPointAsync(wayPoint))
-                        responseObject.SyncedIds.Add(wayPoint.Id);
+                    if (_dataService != null && await _dataService.SaveBleScanAsync(scanResultDto))
+                        responseObject.SyncedIds.Add(scanResultDto.Id);
                 }
-
+                
                 if (!string.IsNullOrEmpty(_dataService?.ErrorMessage)) 
                     _errorMessageBuilder.AppendLine(_dataService.ErrorMessage);
             }
-            
+
             responseObject.Message = _errorMessageBuilder.ToString();
             if (responseObject.Message.Contains(Constants.DateTimeValidationErrorMessage)
                 && responseObject.SyncedIds.Count == 0)

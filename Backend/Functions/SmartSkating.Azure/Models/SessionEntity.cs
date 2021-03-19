@@ -1,3 +1,4 @@
+using System;
 using Microsoft.WindowsAzure.Storage.Table;
 using Sanet.SmartSkating.Dto.Models;
 
@@ -15,6 +16,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
             IsCompleted = sessionDto.IsCompleted;
             DeviceId = sessionDto.DeviceId;
             RinkId= sessionDto.RinkId;
+            StartTime = sessionDto.StartTime;
         }
 
         public string RinkId { get; set; }
@@ -22,6 +24,8 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
         public string DeviceId { get; set; }
 
         public bool IsCompleted { get; set; }
+
+        public DateTime StartTime { get; set; }
 
         public SessionDto ToDto()
         {
@@ -32,7 +36,8 @@ namespace Sanet.SmartSkating.Backend.Azure.Models
                 IsCompleted = IsCompleted,
                 IsSaved = true,
                 DeviceId = DeviceId,
-                RinkId = RinkId
+                RinkId = RinkId,
+                StartTime = StartTime
             };
         }
     }

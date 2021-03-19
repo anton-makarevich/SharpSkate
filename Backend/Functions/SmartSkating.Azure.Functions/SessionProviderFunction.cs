@@ -28,7 +28,7 @@ namespace Sanet.SmartSkating.Backend.Functions
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function,
                 "get",
                 Route = ApiNames.SessionsResource.Route)]
-            HttpRequest request, ILogger logger)
+            HttpRequest request, IBinder binder, ILogger logger)
         {
             var accountId = request.Query["accountId"].ToString();
             bool.TryParse(request.Query["activeOnly"].ToString(), out var activeOnly); 

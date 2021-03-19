@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.1.0.475" />
     <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Refit" Version="5.2.4" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />

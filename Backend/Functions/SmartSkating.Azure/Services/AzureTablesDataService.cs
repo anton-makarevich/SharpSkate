@@ -79,6 +79,19 @@ namespace Sanet.SmartSkating.Backend.Azure.Services
         }
 
         public string ErrorMessage { get; private set; } = string.Empty;
+
+        public async Task<List<WayPointDto>> GetWayPointForSessionAsync(string sessionId)
+        {
+            if (_wayPointsTable == null || !await _wayPointsTable.ExistsAsync()) return new List<WayPointDto>();
+            var filterPk = TableQuery.GenerateFilterCondition(
+                nameof(WayPointEntity.PartitionKey),
+                QueryComparisons.Equal, sessionId);
+
+            var query = new TableQuery<WayPointEntity>().Where(filterPk);
+            var result = await _wayPointsTable.ExecuteQuerySegmentedAsync(query,null);
+            return result.Results.Select(f=>f.ToDto()).ToList();
+        }
+
         public Task<List<WayPointDto>> GetAllWayPointsAsync()
         {
             throw new NotImplementedException();

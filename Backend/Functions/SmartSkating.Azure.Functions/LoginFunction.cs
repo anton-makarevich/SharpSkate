@@ -31,7 +31,7 @@ namespace Sanet.SmartSkating.Backend.Functions
         [FunctionName("LoginFunction")]
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, 
             "post",
-            Route = ApiNames.AccountsResource.Route)]HttpRequest request, ILogger logger)
+            Route = ApiNames.AccountsResource.Route)]HttpRequest request, IBinder _, ILogger logger)
         {
             var responseObject = new LoginResponse();
             var requestData = await new StreamReader(request.Body).ReadToEndAsync();

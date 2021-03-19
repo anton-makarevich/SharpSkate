@@ -28,7 +28,6 @@ namespace Sanet.SmartSkating.ViewModels
         private string _totalTime = "";
         private string _bestLapTime = NoValue;
         private string _bestSectorTime = NoValue;
-        private bool _isRunning;
 
         public LiveSessionViewModel(ISessionManager sessionManager,
             IDateProvider dateProvider,
@@ -44,11 +43,11 @@ namespace Sanet.SmartSkating.ViewModels
         public ICommand StartCommand => new SimpleCommand(async() =>
         {
             await _sessionManager.StartSession();
-            _sessionManager.CurrentSession?.SetStartTime(_dateProvider.Now());
+            
 #pragma warning disable 4014
             TrackTime();
 #pragma warning restore 4014
-            IsRunning = _sessionManager.IsRunning;
+            UpdateButtonsState();
         });
 
         public ICommand StopCommand => new SimpleCommand(async () =>
@@ -57,7 +56,7 @@ namespace Sanet.SmartSkating.ViewModels
             if (!isConfirmed) return;
             _sessionManager.StopSession();
             InfoLabel = "";
-            IsRunning = _sessionManager.IsRunning;
+            UpdateButtonsState();
             NotifyPropertyChanged(nameof(CanStart));
         });
 
@@ -65,9 +64,9 @@ namespace Sanet.SmartSkating.ViewModels
         {
             while (_sessionManager.IsRunning && IsActive)
             {
-                await Task.Delay(1000);
-                if (_sessionManager.CurrentSession == null) continue;
+                if (_sessionManager.CurrentSession is null) continue;
                 UpdateUi();
+                await Task.Delay(1000);
             } 
         }
 
@@ -79,7 +78,6 @@ namespace Sanet.SmartSkating.ViewModels
 
         public void UpdateUi()
         {
-            IsRunning = _sessionManager.IsRunning;
             if (!IsRunning)
                 return;
             if (_sessionManager.CurrentSession == null) return;
@@ -134,9 +132,7 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _currentSector, value);
         }
 
-        public bool CanStart => _sessionManager.CurrentSession != null 
-                                && !_sessionManager.IsRunning
-                                && !_sessionManager.IsCompleted;
+        public bool CanStart => _sessionManager.CanStart;
 
         public string LastLapTime
         {
@@ -174,22 +170,27 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _bestSectorTime, value);
         }
 
-        public bool IsRunning
+        public bool IsRunning => _sessionManager.IsRunning;
+        
+        private void UpdateButtonsState()
         {
-            get => _isRunning;
-            private set => SetProperty(ref _isRunning, value);
+            NotifyPropertyChanged(nameof(IsStartVisible));
+            NotifyPropertyChanged(nameof(IsStopVisible));
         }
+        
+        public bool IsStartVisible => _sessionManager.CanStart && !_sessionManager.IsRemote;
+        public bool IsStopVisible => IsRunning && !_sessionManager.IsRemote;
 
         public override void AttachHandlers()
         {
             base.AttachHandlers();
             IsActive = true;
-            if (_sessionManager.IsRunning)
-            {
+            _sessionManager.CheckSession();
+            if (!_sessionManager.IsRunning) return;
+            
 #pragma warning disable 4014
-                TrackTime();
+            TrackTime();
 #pragma warning restore 4014
-            }
         }
 
         public override void DetachHandlers()

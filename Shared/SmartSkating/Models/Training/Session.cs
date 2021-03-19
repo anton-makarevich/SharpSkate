@@ -14,16 +14,18 @@ namespace Sanet.SmartSkating.Models.Training
         private readonly Rink _rink;
         private readonly ISettingsService _settingsService;
 
-        public Session(Rink rink, ISettingsService settingsService): this(Guid.NewGuid().ToString("N"),rink,settingsService)
+        public Session(Rink rink, ISettingsService settingsService):
+            this(Guid.NewGuid().ToString("N"),rink,settingsService, false)
         { }
 
-        public Session(string sessionId, Rink rink, ISettingsService settingsService)
+        public Session(string sessionId, Rink rink, ISettingsService settingsService, bool isRemote)
         {
             _rink = rink;
             _settingsService = settingsService;
             WayPoints = new List<WayPoint>();
             Sectors = new List<Section>();
             SessionId = sessionId;
+            IsRemote = isRemote;
         }
 
         public string SessionId { get; }
@@ -166,6 +168,7 @@ namespace Sanet.SmartSkating.Models.Training
         }
 
         public Coordinate? LastCoordinate { get; private set; }
+        public bool IsRemote { get; }
 
         private void AddSection(WayPoint separatingWayPoint)
         {

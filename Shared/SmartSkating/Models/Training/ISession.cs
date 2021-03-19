@@ -22,5 +22,6 @@ namespace Sanet.SmartSkating.Models.Training
         DateTime StartTime { get; }
         void SetStartTime(DateTime startTime);
         public Coordinate? LastCoordinate { get; }
+        bool IsRemote { get; }
     }
 }

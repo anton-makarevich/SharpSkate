@@ -31,7 +31,7 @@ namespace Sanet.SmartSkating.Backend.Functions
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function,
                 "post",
-                Route = ApiNames.DevicesResource.Route)] HttpRequest request,
+                Route = ApiNames.DevicesResource.Route)] HttpRequest request, IBinder _,
             ILogger logger)
         {
             var responseObject = new BooleanResponse();

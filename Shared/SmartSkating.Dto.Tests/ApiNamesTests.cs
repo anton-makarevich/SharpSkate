@@ -47,12 +47,5 @@ namespace SmartSkating.Dto.Tests
             ApiNames.AccountsResource.Path.Should().Be($"/{AccountsApiName}");
             ApiNames.AccountsResource.Route.Should().Be(AccountsApiName);
         }
-
-        [Fact]
-        public void SyncHubApiResourceHasCorrectName()
-        {
-            ApiNames.SyncHubResource.Path.Should().Be($"/{SyncHubApiName}");
-            ApiNames.SyncHubResource.Route.Should().Be(SyncHubApiName);
-        }
     }
 }

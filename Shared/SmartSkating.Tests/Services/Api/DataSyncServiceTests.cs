@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NSubstitute;
+using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
 using Sanet.SmartSkating.Dto.Services;
@@ -270,6 +271,104 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             _sut.StartSyncing();
 
             await _apiService.DidNotReceive().PostDeviceAsync(_deviceStub, Arg.Any<string>());
+        }
+
+        [Fact]
+        public async Task SaveAndSyncSession_Saves_Session_If_No_Connection()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(false));
+            var session = GetSessionsStub(false, true).First();
+            
+            await _sut.SaveAndSyncSessionAsync(session);
+
+            await _dataService.Received(1).SaveSessionAsync(session);
+        }
+        
+        [Fact]
+        public async Task SaveAndSyncSession_Sends_Session_To_Api_If_HasConnection()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            var session = GetSessionsStub(false, true).First();
+            _apiService.PostSessionsAsync(
+                    Arg.Any<List<SessionDto>>(),
+                    ApiNames.AzureApiSubscriptionKey)
+                .Returns(Task.FromResult(new SaveEntitiesResponse
+                {
+                    SyncedIds = null
+                }));
+            
+            await _sut.SaveAndSyncSessionAsync(session);
+
+            await _apiService.Received(1).PostSessionsAsync(
+                Arg.Any<List<SessionDto>>(),
+                ApiNames.AzureApiSubscriptionKey);
+        }
+        
+        [Fact]
+        public async Task SaveAndSyncSession_Saves_Session_If_Failed_To_Send_OnServer()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            var session = GetSessionsStub(false, false).First();
+            _apiService.PostSessionsAsync(
+                            Arg.Any<List<SessionDto>>(),
+                            ApiNames.AzureApiSubscriptionKey)
+                .Returns(Task.FromResult(new SaveEntitiesResponse
+            {
+                SyncedIds = null
+            }));
+            
+            await _sut.SaveAndSyncSessionAsync(session);
+            
+            await _dataService.Received(1).SaveSessionAsync(session);
+        }
+        
+        [Fact]
+        public async Task SaveAndSyncWaypoint_Saves_Waypoint_If_No_Connection()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(false));
+            var wayPointDto = _wayPoints.First();
+            
+            await _sut.SaveAndSyncWayPointAsync(wayPointDto);
+
+            await _dataService.Received(1).SaveWayPointAsync(wayPointDto);
+        }
+        
+        [Fact]
+        public async Task SaveAndSyncWaypoint_Sends_Waypoint_To_Api_If_HasConnection()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            var wayPointDto = _wayPoints.First();
+            _apiService.PostWaypointsAsync(
+                    Arg.Any<List<WayPointDto>>(),
+                    ApiNames.AzureApiSubscriptionKey)
+                .Returns(Task.FromResult(new SaveEntitiesResponse
+                {
+                    SyncedIds = null
+                }));
+            
+            await _sut.SaveAndSyncWayPointAsync(wayPointDto);
+
+            await _apiService.Received(1).PostWaypointsAsync(
+                Arg.Any<List<WayPointDto>>(),
+                ApiNames.AzureApiSubscriptionKey);
+        }
+        
+        [Fact]
+        public async Task SaveAndSyncWaypoint_Saves_Waypoint_If_Failed_To_Send_OnServer()
+        {
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            var wayPointDto = _wayPoints.First();
+            _apiService.PostWaypointsAsync(
+                    Arg.Any<List<WayPointDto>>(),
+                    ApiNames.AzureApiSubscriptionKey)
+                .Returns(Task.FromResult(new SaveEntitiesResponse
+                {
+                    SyncedIds = null
+                }));
+            
+            await _sut.SaveAndSyncWayPointAsync(wayPointDto);
+            
+            await _dataService.Received(1).SaveWayPointAsync(wayPointDto);
         }
     }
 }

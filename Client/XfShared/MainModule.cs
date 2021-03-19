@@ -43,6 +43,7 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<ITrackService, TrackService>();
             container.RegisterSingleton<ISessionProvider,SessionProvider>();
             container.RegisterSingleton<ISessionManager,SessionManager>();
+            container.RegisterSingleton<ISyncService, SignalRService>();
         }
     }
 }

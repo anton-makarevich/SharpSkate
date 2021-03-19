@@ -44,12 +44,24 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         [Fact]
         public void CurrentSession_Id_Equal_To_Given_SessionDto_Id()
         {
-            var sessionDto = new SessionDto() {Id = "sessionDtoId"};
+            var sessionDto = new SessionDto {Id = "sessionDtoId"};
             var rink = new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId");
 
             _sut.SetActiveSession(sessionDto,rink);
 
             (_sut.CurrentSession?.SessionId).Should().Be(sessionDto.Id);
+        }
+        
+        [Fact]
+        public void CurrentSession_StartTime_Equal_To_StartTime_Of_SessionDto()
+        {
+            var startTime = DateTime.Now;
+            var sessionDto = new SessionDto {StartTime = startTime};
+            var rink = new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId");
+
+            _sut.SetActiveSession(sessionDto,rink);
+
+            (_sut.CurrentSession?.StartTime).Should().Be(startTime);
         }
     }
 }

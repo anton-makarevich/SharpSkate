@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Sanet.SmartSkating.Dto.Models;
 
 namespace Sanet.SmartSkating.Services.Api
 {
@@ -8,5 +9,7 @@ namespace Sanet.SmartSkating.Services.Api
         Task SyncWayPointsAsync();
         Task SyncSessionsAsync();
         Task SyncBleScansAsync();
+        Task SaveAndSyncSessionAsync(SessionDto sessionDto);
+        Task SaveAndSyncWayPointAsync(WayPointDto pointDto);
     }
-}
+}   

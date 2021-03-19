@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Dto.Models.Responses;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
@@ -27,21 +30,26 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         private readonly ISettingsService _settingsService = Substitute.For<ISettingsService>();
         private readonly SessionManager _sut;
         private readonly ILocationService _locationService = Substitute.For<ILocationService>();
-        private readonly IDataService _dataService = Substitute.For<IDataService>();
         private readonly IAccountService _accountService = Substitute.For<IAccountService>();
         private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
         private readonly IBleLocationService _bleLocationService = Substitute.For<IBleLocationService>();
         private readonly ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
+        private readonly IApiService _apiClient = Substitute.For<IApiService>();
+        private readonly ISyncService _syncService = Substitute.For<ISyncService>();
+        private readonly IDateProvider _dateProvider = Substitute.For<IDateProvider>();
 
         public SessionManagerTests()
         {
-            _sut = new SessionManager(_locationService,
-                _dataService,
+            _sut = new SessionManager(
+                _locationService,
                 _accountService,
                 _dataSyncService,
                 _bleLocationService,
                 _settingsService,
-                _sessionProvider
+                _sessionProvider,
+                _apiClient,
+                _syncService,
+                _dateProvider
                 );
         }
 
@@ -72,9 +80,20 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task  StartSession_Starts_LocationService_When_IsNotReady()
+        public async Task  StartSession_DoesNot_Start_LocationService_When_IsNotReady()
         {
             _sessionProvider.CurrentSession.ReturnsNull();
+
+            await _sut.StartSession();
+
+            _locationService.DidNotReceive().StartFetchLocation();
+        }
+        
+        [Fact]
+        public async Task  StartSession_DoesNot_Start_LocationService_When_Session_IsRemote()
+        {
+            var session = PrepareSessionMock("", "", "");
+            session.IsRemote.Returns(true);
 
             await _sut.StartSession();
 
@@ -113,7 +132,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task Start_Saves_Session_To_Local_Storage()
+        public async Task Start_Saves_Session_To_Local_Storage_And_Syncs_It()
         {
             const string sessionId = "sessionId";
             const string userId = "123";
@@ -123,7 +142,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             await _sut.StartSession();
 
-            await _dataService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s=>
+            await _dataSyncService.Received().SaveAndSyncSessionAsync(Arg.Is<SessionDto>(s=>
                 s.Id == sessionId
                 && s.AccountId == userId
                 && s.RinkId == _rink.Id
@@ -132,7 +151,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task Stop_Saves_CompletedSessionToLocalStorage()
+        public async Task Stop_Saves_CompletedSessionToLocalStorage_And_Syncs_It()
         {
             const string sessionId = "someSessionId";
             const string userId = "123";
@@ -141,7 +160,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             _sut.StopSession();
 
-            await _dataService.Received().SaveSessionAsync(Arg.Is<SessionDto>(s =>
+            await _dataSyncService.Received().SaveAndSyncSessionAsync(Arg.Is<SessionDto>(s =>
                 s.Id == sessionId
                 && s.AccountId == userId
                 && s.IsCompleted
@@ -171,7 +190,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task StopSession_SyncsData_For_Sessions_And_WayPoints()
+        public async Task StopSession_SyncsData_For_Waypoints()
         {
             const string sessionId = "someSessionId";
             const string userId = "123";
@@ -180,7 +199,6 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             _sut.StopSession();
 
-            await _dataSyncService.Received().SyncSessionsAsync();
             await _dataSyncService.Received().SyncWayPointsAsync();
         }
 
@@ -193,12 +211,12 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
 
         [Fact]
-        public async Task LastCoordinateChangeSavesCoordinateToDisk()
+        public async Task LastCoordinateChangeSavesCoordinateToDisk_And_Sync_It()
         {
             await _sut.StartSession();
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 
-            await _dataService.Received().SaveWayPointAsync(Arg.Any<WayPointDto>());
+            await _dataSyncService.Received().SaveAndSyncWayPointAsync(Arg.Any<WayPointDto>());
         }
 
         [Fact]
@@ -262,6 +280,16 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             Assert.True(_sut.IsRunning);
         }
+        
+        [Fact]
+        public async Task StartSession_DoesNot_Change_State_To_IsRunning_When_Session_Is_Stopped()
+        {
+            await _sut.StartSession();
+            _sut.StopSession();
+            await _sut.StartSession();
+
+            _sut.IsRunning.Should().BeFalse();
+        }
 
         [Fact]
         public async Task StopSession_ChangesStateToNotIsRunning()
@@ -273,7 +301,223 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             Assert.False(_sut.IsRunning);
         }
 
-        private void PrepareSessionMock(string sessionId, string userId, string deviceId)
+        [Fact]
+        public void CheckSession_Checks_If_ActiveSession_Is_Remote()
+        {
+            var session = PrepareSessionMock("SessionId", "userId", "deviceId");
+
+            _sut.CheckSession();
+
+            var _ = session.Received().IsRemote;
+        }
+
+        [Fact]
+        public void IsRunning_Is_True_When_Session_Is_Remote()
+        {
+            var session = PrepareSessionMock("SessionId", "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            
+            _sut.CheckSession();
+
+            _sut.IsRunning.Should().BeTrue();
+        }
+
+        [Fact]
+        public void StopSession_Does_Nothing_When_Session_Is_Remote()
+        {
+            var session = PrepareSessionMock("SessionId", "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            _sut.CheckSession();
+            
+            _sut.StopSession();
+
+            _sut.IsRunning.Should().BeTrue();
+            _bleLocationService.DidNotReceive().StopBleScan();
+            _locationService.DidNotReceive().StopFetchLocation();
+        }
+
+        [Fact]
+        public void CheckSession_Starts_SyncServer_Connection_For_Remote_Session()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            
+            _sut.CheckSession();
+
+            _syncService.Received(1).ConnectToHub(sessionId);
+        }
+        
+        [Fact]
+        public void CheckSession_Gets_Waypoints_For_Remote_Session()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            
+            _sut.CheckSession();
+
+            _apiClient.Received(1)
+                .GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey);
+        }
+
+        [Fact]
+        public void CheckSession_Updates_Session_WithWaypoints_From_Api()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            var time = DateTime.Now;
+            var coordinateDto = new CoordinateDto
+            {
+                Latitude = 123,
+                Longitude = 456
+            };
+            var coordinate = new Coordinate(coordinateDto);
+            _apiClient.GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
+                .Returns(new GetWaypointsResponse
+                {
+                    Waypoints = new List<WayPointDto>
+                    {
+                        new WayPointDto
+                        {
+                            SessionId = sessionId,
+                            Coordinate = coordinateDto,
+                            Time = time
+                        }
+                    }
+                });
+            
+            _sut.CheckSession();
+            
+            session.Received().AddPoint(coordinate, time);
+        }
+        
+        [Fact]
+        public void Updates_Session_WithWaypoint_From_SyncHub()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+            var time = DateTime.Now;
+            var coordinateDto = new CoordinateDto
+            {
+                Latitude = 123,
+                Longitude = 456
+            };
+            var coordinate = new Coordinate(coordinateDto);
+            var waypoint = new WayPointDto
+            {
+                SessionId = sessionId,
+                Coordinate = coordinateDto,
+                Time = time
+            };
+
+            _sut.CheckSession();
+            _syncService.WayPointReceived += Raise.EventWith(null, new WayPointEventArgs(waypoint));
+            
+            session.Received().AddPoint(coordinate, time);
+        }
+        
+        [Fact]
+        public void Stops_RemoteSession_On_SessionClosed_Event_From_SyncHub()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+
+            var sessionClosed = new SessionDto()
+            {
+                IsCompleted = true
+            };
+
+            _sut.CheckSession();
+            _syncService.SessionClosedReceived += Raise.EventWith(null, new SessionEventArgs(sessionClosed));
+
+            _sut.IsRunning.Should().BeFalse();
+        }
+        
+        [Fact]
+        public async Task Disconnects_SignalR_On_SessionClosed_Event_From_SyncHub()
+        {
+            const string sessionId = "sessionId";
+            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            session.IsRemote.Returns(true);
+
+            var sessionClosed = new SessionDto()
+            {
+                IsCompleted = true
+            };
+
+            _sut.CheckSession();
+            _syncService.SessionClosedReceived += Raise.EventWith(null, new SessionEventArgs(sessionClosed));
+
+            await _syncService.Received().CloseConnection();
+        }
+        
+        [Fact]
+        public void StartingSessionUpdatesItsStartTime()
+        {
+            var session = PrepareSessionMock("sessionId","userId", "deviceId");
+            var startTime = DateTime.Now;
+            _dateProvider.Now().Returns(startTime);
+
+            _sut.StartSession();
+
+            session.Received().SetStartTime(startTime);
+        }
+        
+        [Fact]
+        public void CanStart_When_Session_Exists_And_Not_Running()
+        {
+            PrepareSessionMock();
+
+            _sut.CanStart.Should().BeTrue();
+        }
+        
+        [Fact]
+        public void CanNotStart_When_Session_Exists_And_Running()
+        {
+            PrepareSessionMock();
+
+            _sut.StartSession();
+        
+            _sut.CanStart.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void CanNotStart_When_Session_Exists_Not_Running_But_Completed()
+        {
+            PrepareSessionMock();
+
+            _sut.StartSession();
+            _sut.StopSession();
+            
+            _sut.CanStart.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void CanNotStart_When_Session_DoesNot_Exist()
+        {
+            _sessionProvider.CurrentSession.ReturnsNull();
+            _sut.CanStart.Should().BeFalse();
+        }
+        
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void IsRemote_Returns_SessionIsRemote_Value(bool isRemote)
+        {
+            var session = PrepareSessionMock();
+            session.IsRemote.Returns(isRemote);
+
+            _sut.IsRemote.Should().Be(isRemote);
+        }
+
+        private ISession PrepareSessionMock(
+            string sessionId = "sessionId", 
+            string userId = "userId", 
+            string deviceId = "deviceId")
         {
             var session = Substitute.For<ISession>();
             session.Rink.Returns(_rink);
@@ -281,6 +525,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             _sessionProvider.CurrentSession.Returns(session);
             _accountService.UserId.Returns(userId);
             _accountService.DeviceId.Returns(deviceId);
+            return session;
         }
      }
 }

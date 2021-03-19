@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sanet.SmartSkating.Backend.Functions;
@@ -22,6 +23,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         private readonly SessionProviderFunction _sut;
         private readonly IDataService _dataService;
         private readonly ILogger _log;
+        private readonly IBinder _binder = Substitute.For<IBinder>();
         private readonly HttpRequest _request = Utils.CreateMockRequest(queryString: $"?accountId={AccountId}");
         
         public SessionProviderFunctionTests()
@@ -34,7 +36,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         [Fact]
         public async Task RunningFunction_Gets_Sessions_From_Service()
         {
-            await _sut.Run(_request,_log);
+            await _sut.Run(_request,_binder,_log);
 
             await _dataService.Received().GetAllSessionsForAccountAsync(AccountId);
         }
@@ -57,7 +59,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             _dataService.GetAllSessionsForAccountAsync(AccountId)
                 .Returns(Task.FromResult(sessions));
             
-            var actionResult = await _sut.Run(_request,_log) as JsonResult;
+            var actionResult = await _sut.Run(_request,_binder,_log) as JsonResult;
 
             actionResult.Should().NotBeNull();
             var response = actionResult?.Value as GetSessionsResponse;
@@ -70,11 +72,11 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         public async Task ReturnsBadRequestStatus_WhenRequestIsInvalid()
         {
             var request = Utils.CreateMockRequest(queryString: $"?someId={AccountId}");
-            var actionResult = await _sut.Run(request,_log) as JsonResult;
+            var actionResult = await _sut.Run(request,_binder,_log) as JsonResult;
 
             actionResult.Should().NotBeNull();
-            var response = actionResult?.Value as LoginResponse;
-            response?.ErrorCode.Should().Be(expected: (int)HttpStatusCode.BadRequest);
+            var response = actionResult?.Value as GetSessionsResponse;
+            (response?.ErrorCode).Should().Be(expected: (int)HttpStatusCode.BadRequest);
         }
         
         [Fact]
@@ -102,13 +104,13 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             _dataService.GetAllSessionsForAccountAsync(AccountId)
                 .Returns(Task.FromResult(new List<SessionDto>{activeSession,inActiveSession}));
             
-            var actionResult = await _sut.Run(request,_log) as JsonResult;
+            var actionResult = await _sut.Run(request,_binder,_log) as JsonResult;
 
             actionResult.Should().NotBeNull();
             var response = actionResult?.Value as GetSessionsResponse;
             response.Should().NotBeNull();
-            response.Sessions.Should().HaveCount(1);
-            response.Sessions.First().Should().Be(activeSession);
+            (response?.Sessions).Should().HaveCount(1);
+            (response?.Sessions?.First()).Should().Be(activeSession);
         }
     }
 }
