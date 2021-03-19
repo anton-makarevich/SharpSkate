@@ -5,6 +5,6 @@ namespace Sanet.SmartSkating.Services
         public bool UseGps { get; set; } = true;
         public bool UseBle { get; set; }
 
-        public bool CanInterpolateSectors { get; set; } = true;
+        public bool CanInterpolateSectors { get; set; }
     }
 }
