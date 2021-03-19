@@ -154,7 +154,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.UpdateUi();
 
-            Assert.Equal("0:00:40",_sut.LastLapTime);
+            Assert.Equal("00:40",_sut.LastLapTime);
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.UpdateUi();
 
-            Assert.Equal("0:00:40",_sut.BestLapTime);
+            Assert.Equal("00:40",_sut.BestLapTime);
         }
 
         [Fact]

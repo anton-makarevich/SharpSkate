@@ -15,6 +15,7 @@ namespace Sanet.SmartSkating.ViewModels
     {
         public const string NoValue = "- - -";
         public const string TotalTimeFormat = "h\\:mm\\:ss";
+        public const string LapTimeFormat = "mm\\:ss";
 
         private readonly ISessionManager _sessionManager;
         private readonly IDateProvider _dateProvider;
@@ -89,8 +90,8 @@ namespace Sanet.SmartSkating.ViewModels
 
             if (_sessionManager.CurrentSession.LapsCount > 0)
             {
-                LastLapTime = _sessionManager.CurrentSession.LastLapTime.ToString(TotalTimeFormat);
-                BestLapTime = _sessionManager.CurrentSession.BestLapTime.ToString(TotalTimeFormat);
+                LastLapTime = _sessionManager.CurrentSession.LastLapTime.ToString(LapTimeFormat);
+                BestLapTime = _sessionManager.CurrentSession.BestLapTime.ToString(LapTimeFormat);
             }
             else
             {
@@ -102,10 +103,10 @@ namespace Sanet.SmartSkating.ViewModels
             if (_sessionManager.CurrentSession.Sectors.Count > 0)
             {
                 var lastSector = _sessionManager.CurrentSession.Sectors.Last();
-                LastSectorTime = lastSector.Time.ToString("mm\\:ss");
+                LastSectorTime = lastSector.Time.ToString(LapTimeFormat);
                 Distance = $"{Math.Round(_sessionManager.CurrentSession.Sectors.Count * 0.1f, 1)}Km";
                 if (_sessionManager.CurrentSession.BestSector != null)
-                    BestSectorTime = _sessionManager.CurrentSession.BestSector.Value.Time.ToString("mm\\:ss");
+                    BestSectorTime = _sessionManager.CurrentSession.BestSector.Value.Time.ToString(LapTimeFormat);
             }
             else
             {
