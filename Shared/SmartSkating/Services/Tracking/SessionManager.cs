@@ -50,11 +50,17 @@ namespace Sanet.SmartSkating.Services.Tracking
         public ISession? CurrentSession => _sessionProvider.CurrentSession;
         public bool IsRunning { get; private set; }
         public bool IsCompleted { get; private set; }
+        public bool CanStart =>IsReady
+                               && !IsRunning
+                               && !IsCompleted
+                               && !IsRemote;
+
+        public bool IsRemote => CurrentSession?.IsRemote == true;
         public bool IsReady => _sessionProvider.CurrentSession != null;
 
         public async ValueTask StartSession()
         {
-            if (!IsReady || CurrentSession?.IsRemote == true)
+            if (!CanStart)
                 return;
             IsRunning = true;
             CurrentSession?.SetStartTime(_dateProvider.Now());

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Acr.UserDialogs;
 using FluentAssertions;
 using NSubstitute;
-using NSubstitute.ReturnsExtensions;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.Location;
@@ -307,42 +306,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             Assert.Equal("0.1Km",_sut.Distance);
         }
-
-        [Fact]
-        public void CanStart_When_Session_Exists_And_Not_Running()
-        {
-            _sessionManager.IsRunning.Returns(false);
-            CreateSessionMock();
-
-            _sut.CanStart.Should().BeTrue();
-        }
         
-        [Fact]
-        public void CanNotStart_When_Session_Exists_And_Running()
-        {
-            _sessionManager.IsRunning.Returns(true);
-            CreateSessionMock();
-
-            _sut.CanStart.Should().BeFalse();
-        }
-        
-        [Fact]
-        public void CanNotStart_When_Session_Exists_Not_Running_But_Stopped()
-        {
-            _sessionManager.IsRunning.Returns(false);
-            _sessionManager.IsCompleted.Returns(true);
-            CreateSessionMock();
-            
-            _sut.CanStart.Should().BeFalse();
-        }
-
-        [Fact]
-        public void CanNotStart_When_Session_DoesNot_Exist()
-        {
-            _sessionManager.CurrentSession.ReturnsNull();
-            _sut.CanStart.Should().BeFalse();
-        }
-
         [Fact]
         public void IsRunning_Is_True_When_Session_Has_Started()
         {
@@ -433,6 +397,70 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.AttachHandlers();
             
             _sessionManager.Received(1).CheckSession();
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void CanStart_Returns_Manager_Value(bool canStart)
+        {
+            _sessionManager.CanStart.Returns(canStart);
+
+            _sut.CanStart.Should().Be(canStart);
+        }
+
+        [Fact]
+        public void StartButton_IsVisible_When_Session_CanStart_And_Local()
+        {
+            _sessionManager.CanStart.Returns(true);
+            _sessionManager.IsRemote.Returns(false);
+
+            _sut.IsStartVisible.Should().BeTrue();
+        }
+        
+        [Fact]
+        public void StartButton_IsInvisible_When_Session_CanStart_But_Remote()
+        {
+            _sessionManager.CanStart.Returns(true);
+            _sessionManager.IsRemote.Returns(true);
+
+            _sut.IsStartVisible.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void StartButton_IsInvisible_When_Session_CannotStart_And_Local()
+        {
+            _sessionManager.CanStart.Returns(false);
+            _sessionManager.IsRemote.Returns(false);
+
+            _sut.IsStartVisible.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void StartButton_IsVisible_When_Session_IsRunning_And_Local()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            _sessionManager.IsRemote.Returns(false);
+
+            _sut.IsStopVisible.Should().BeTrue();
+        }
+        
+        [Fact]
+        public void StartButton_IsInvisible_When_Session_IsNotRunning()
+        {
+            _sessionManager.IsRunning.Returns(false);
+            _sessionManager.IsRemote.Returns(false);
+
+            _sut.IsStopVisible.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void StartButton_IsInvisible_When_Session_IsRemote()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            _sessionManager.IsRemote.Returns(true);
+
+            _sut.IsStopVisible.Should().BeFalse();
         }
 
         private void CreateSessionMockWithOneSector()

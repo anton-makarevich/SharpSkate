@@ -14,6 +14,8 @@ namespace Sanet.SmartSkating.Services.Tracking
 
         bool IsRunning { get; }
         
-        bool IsCompleted { get; }
+        bool CanStart { get; }
+
+        bool IsRemote { get; }
     }
 }

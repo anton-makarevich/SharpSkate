@@ -280,6 +280,16 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             Assert.True(_sut.IsRunning);
         }
+        
+        [Fact]
+        public async Task StartSession_DoesNot_Change_State_To_IsRunning_When_Session_Is_Stopped()
+        {
+            await _sut.StartSession();
+            _sut.StopSession();
+            await _sut.StartSession();
+
+            _sut.IsRunning.Should().BeFalse();
+        }
 
         [Fact]
         public async Task StopSession_ChangesStateToNotIsRunning()
@@ -456,8 +466,58 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             session.Received().SetStartTime(startTime);
         }
+        
+        [Fact]
+        public void CanStart_When_Session_Exists_And_Not_Running()
+        {
+            PrepareSessionMock();
 
-        private ISession PrepareSessionMock(string sessionId, string userId, string deviceId)
+            _sut.CanStart.Should().BeTrue();
+        }
+        
+        [Fact]
+        public void CanNotStart_When_Session_Exists_And_Running()
+        {
+            PrepareSessionMock();
+
+            _sut.StartSession();
+        
+            _sut.CanStart.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void CanNotStart_When_Session_Exists_Not_Running_But_Completed()
+        {
+            PrepareSessionMock();
+
+            _sut.StartSession();
+            _sut.StopSession();
+            
+            _sut.CanStart.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void CanNotStart_When_Session_DoesNot_Exist()
+        {
+            _sessionProvider.CurrentSession.ReturnsNull();
+            _sut.CanStart.Should().BeFalse();
+        }
+        
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void IsRemote_Returns_SessionIsRemote_Value(bool isRemote)
+        {
+            var session = PrepareSessionMock();
+            session.IsRemote.Returns(isRemote);
+
+            _sut.IsRemote.Should().Be(isRemote);
+        }
+
+        private ISession PrepareSessionMock(
+            string sessionId = "sessionId", 
+            string userId = "userId", 
+            string deviceId = "deviceId")
         {
             var session = Substitute.For<ISession>();
             session.Rink.Returns(_rink);

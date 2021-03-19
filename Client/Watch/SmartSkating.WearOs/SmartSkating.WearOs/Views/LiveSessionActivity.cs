@@ -135,13 +135,14 @@ namespace Sanet.SmartSkating.WearOs.Views
         {
             if (_startButton != null)
                 _startButton.Visibility = 
-                    (ViewModel != null && ViewModel.IsRunning)
+                    (ViewModel != null && ViewModel.IsStartVisible)
                         ? ViewStates.Gone 
                         : ViewStates.Visible;
             if (_stopButton != null)
-                _stopButton.Visibility = (ViewModel != null && ViewModel.IsRunning) 
-                    ? ViewStates.Visible 
-                    : ViewStates.Gone;
+                _stopButton.Visibility =
+                    (ViewModel != null && ViewModel.IsStopVisible)
+                        ? ViewStates.Visible
+                        : ViewStates.Gone;
         }
 
         private void UpdateTime()
