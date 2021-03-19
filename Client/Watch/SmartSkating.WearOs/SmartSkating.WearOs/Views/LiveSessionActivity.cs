@@ -85,49 +85,33 @@ namespace Sanet.SmartSkating.WearOs.Views
 
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModel.TotalTime))
+            switch (e.PropertyName)
             {
-                UpdateTime();
-                return;
-            }
-            
-            if (e.PropertyName == nameof(ViewModel.Distance))
-            {
-                UpdateDistance();
-                return;
-            }
-            
-            if (e.PropertyName == nameof(ViewModel.Laps))
-            {
-                UpdateLaps();
-                return;
-            }
-            
-            if (e.PropertyName == nameof(ViewModel.LastLapTime))
-            {
-                UpdateLastLapTime();
-                return;
-            }
-            if (e.PropertyName == nameof(ViewModel.BestLapTime))
-            {
-                UpdateBestLapTime();
-                return;
-            }
-            
-            if (e.PropertyName == nameof(ViewModel.LastSectorTime))
-            {
-                UpdateLastSector();
-                return;
-            }
-            if (e.PropertyName == nameof(ViewModel.BestSectorTime))
-            {
-                UpdateBestSector();
-                return;
-            }
-
-            if (e.PropertyName == nameof(ViewModel.IsRunning))
-            {
-                UpdateButtonsState();
+                case nameof(ViewModel.TotalTime):
+                    UpdateTime();
+                    UpdateButtonsState();
+                    return;
+                case nameof(ViewModel.Distance):
+                    UpdateDistance();
+                    return;
+                case nameof(ViewModel.Laps):
+                    UpdateLaps();
+                    return;
+                case nameof(ViewModel.LastLapTime):
+                    UpdateLastLapTime();
+                    return;
+                case nameof(ViewModel.BestLapTime):
+                    UpdateBestLapTime();
+                    return;
+                case nameof(ViewModel.LastSectorTime):
+                    UpdateLastSector();
+                    return;
+                case nameof(ViewModel.BestSectorTime):
+                    UpdateBestSector();
+                    return;
+                case nameof(ViewModel.IsRunning):
+                    UpdateButtonsState();
+                    break;
             }
         }
 
@@ -136,8 +120,8 @@ namespace Sanet.SmartSkating.WearOs.Views
             if (_startButton != null)
                 _startButton.Visibility = 
                     (ViewModel != null && ViewModel.IsStartVisible)
-                        ? ViewStates.Gone 
-                        : ViewStates.Visible;
+                        ? ViewStates.Visible 
+                        : ViewStates.Gone;
             if (_stopButton != null)
                 _stopButton.Visibility =
                     (ViewModel != null && ViewModel.IsStopVisible)
