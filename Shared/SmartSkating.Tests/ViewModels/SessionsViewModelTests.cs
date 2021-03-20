@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
@@ -44,6 +45,16 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             await _apiClient.Received(1).GetSessionsAsync(AccountId,false, ApiNames.AzureApiSubscriptionKey);
         }
+        
+        [Fact]
+        public async Task DoesNot_Call_Api_If_UserId_Is_Empty()
+        {
+            _accountService.UserId.ReturnsNull();
+            _sut.AttachHandlers();
+
+            await _apiClient.DidNotReceiveWithAnyArgs()
+                .GetSessionsAsync(AccountId,false, ApiNames.AzureApiSubscriptionKey);
+        }
 
         [Fact]
         public void Gets_Sessions_From_Api()
@@ -72,6 +83,20 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.AttachHandlers();
 
             _sut.Sessions.ToList().Should().Equal(sessions.Take(1).ToList());
+        }
+        
+        [Fact]
+        public void Gets_All_Sessions_For_User_When_Rink_Is_NotSelected()
+        {
+            _trackService.SelectedRink.ReturnsNull();
+            var sessions = CreatSessions();
+            
+            _apiClient.GetSessionsAsync(AccountId, false, ApiNames.AzureApiSubscriptionKey)
+                .Returns(Task.FromResult(new GetSessionsResponse{Sessions = sessions}));
+            
+            _sut.AttachHandlers();
+
+            _sut.Sessions.ToList().Should().Equal(sessions);
         }
 
         [Fact]

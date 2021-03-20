@@ -35,7 +35,12 @@ namespace Sanet.SmartSkating.ViewModels
         public SessionDto? SelectedSession
         {
             get => _selectedSession;
-            private set => SetProperty(ref _selectedSession, value);
+            set
+            {
+                SetProperty(ref _selectedSession, value);
+                NotifyPropertyChanged(nameof(SessionSelected));
+                NotifyPropertyChanged(nameof(CanStart));
+            }
         }
 
         public bool SessionSelected => SelectedSession != null;
@@ -60,12 +65,14 @@ namespace Sanet.SmartSkating.ViewModels
 
         private async Task GetSessions()
         {
+            if (string.IsNullOrEmpty(_accountService.UserId))
+                return;
             Sessions.Clear();
             (await _apiClient.GetSessionsAsync(
                     _accountService.UserId,
-                    _trackService.SelectedRink!=null,
+                    _trackService.SelectedRink is not null,
                     ApiNames.AzureApiSubscriptionKey))
-                .Sessions.ForEach(s=>
+                .Sessions?.ForEach(s=>
                 {
                     if (_trackService.SelectedRink == null || _trackService.SelectedRink.Id == s.RinkId)
                     {
@@ -77,13 +84,6 @@ namespace Sanet.SmartSkating.ViewModels
                 _sessionProvider.CreateSessionForRink(_trackService.SelectedRink);
                 await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
             }
-        }
-
-        public void SelectSession(SessionDto sessionToSelect)
-        {
-            SelectedSession = sessionToSelect;
-            NotifyPropertyChanged(nameof(SessionSelected));
-            NotifyPropertyChanged(nameof(CanStart));
         }
     }
 }

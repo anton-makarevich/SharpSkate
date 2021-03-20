@@ -15,6 +15,8 @@ using Refit;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Dashboard.Services;
 using Sanet.SmartSkating.Dashboard.Views;
+using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Services.Tracking;
 
 namespace Sanet.SmartSkating.Dashboard
 {
@@ -48,13 +50,22 @@ namespace Sanet.SmartSkating.Dashboard
 
         private void ConfigureServices(IServiceCollection services)
         {
-			// Services
+	        // Services
 			_services.AddSingleton(RestService.For<IApiService>(ApiNames.BaseUrl));
 			_services.AddSingleton<ILoginService, LoginService>();
+			_services.AddSingleton<IAccountService, AccountService>();
+			_services.AddSingleton<IDeviceInfo,EssentialsDeviceInfo>();
+			_services.AddSingleton<IPreferences,EssentialsPreferences>();
+			_services.AddSingleton<ISessionProvider,SessionProvider>();
+			_services.AddSingleton<ISettingsService, SettingsService>();
+			_services.AddSingleton<ITrackService, TrackService>();
+			_services.AddSingleton<ITrackProvider,LocalTrackProvider>();
+			_services.AddSingleton<IResourceReader,EmbeddedResourceReader>();
 
 			// ViewModels
 			_services.AddSingleton<LoginViewModel, LoginViewModel>();
-        }
+			_services.AddSingleton<SessionsViewModel, SessionsViewModel>();
+		}
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points

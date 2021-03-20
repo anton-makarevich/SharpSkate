@@ -20,7 +20,10 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Services\UwpNavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\LoginView.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\SessionsView.xaml.cs">
+      <DependentUpon>SessionsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +34,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\SessionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

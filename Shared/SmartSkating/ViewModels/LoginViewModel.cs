@@ -52,8 +52,7 @@ namespace Sanet.SmartSkating.ViewModels
                 var account = await _loginService.LoginUserAsync(Username, Password);
                 if (account != null)
                 {
-                    if (NavigationService != null)
-                        await NavigationService.NavigateToViewModelAsync<SessionsViewModel>();
+                    await NavigationService.NavigateToViewModelAsync<SessionsViewModel>();
                 }
                 else
                 {
