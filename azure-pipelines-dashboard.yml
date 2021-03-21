@@ -23,11 +23,9 @@ steps:
   inputs:
     targetType: 'inline'
     script: '((Get-Content -path $(tokensFile) -Raw) -replace ''$(azureKeyName)'',''$(azureKeyValue)'') | Set-Content -Path $(tokensFile)'
+  displayName: 'Replace token'
 
-- task: MSBuild@1
-  inputs:
-    solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
-    configuration: 'Release'
+- script: dotnet publish Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj -c Release
   displayName: 'Build dashboard wasm'
 
 - task: AzureCLI@2
@@ -41,7 +39,7 @@ steps:
 
 - task: AzureFileCopy@3
   inputs:
-    SourcePath: 'Client\Dashboard\Dashboard.Wasm\bin\Release\netstandard2.0\dist'
+    SourcePath: 'Client/Dashboard/Dashboard.Wasm/bin/Release/netstandard2.0/publish'
     azureSubscription: 'AzureDevSubscription'
     Destination: 'AzureBlob'
     storage: $(storage-name)
