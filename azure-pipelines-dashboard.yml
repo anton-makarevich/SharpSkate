@@ -5,8 +5,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  - name: solution
-    value: 'SmartSkating.sln'
+  solution: 'SmartSkating.sln'
+  tokensFile: 'Shared/SmartSkating.Dto/ApiNames.cs'
 
 steps:
 
@@ -18,6 +18,12 @@ steps:
 
 - script: dotnet restore $(solution)
   displayName: 'Restore nuget packages'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: '((Get-Content -path $(tokensFile) -Raw) -replace ''$(azureKeyName)'',''$(azureKeyValue)'') | Set-Content -Path $(tokensFile)'
+
 - task: MSBuild@1
   inputs:
     solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
