@@ -70,7 +70,7 @@ namespace Sanet.SmartSkating.ViewModels
             Sessions.Clear();
             (await _apiClient.GetSessionsAsync(
                     _accountService.UserId,
-                    _trackService.SelectedRink is not null,
+                    _trackService.SelectedRink != null,
                     ApiNames.AzureApiSubscriptionKey))
                 .Sessions?.ForEach(s=>
                 {
