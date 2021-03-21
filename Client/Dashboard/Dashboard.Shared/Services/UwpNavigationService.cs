@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Sanet.SmartSkating.Dashboard.Views;
+using Windows.UI.Core;
 
 namespace Sanet.SmartSkating.Dashboard.Services
 {
@@ -28,26 +29,34 @@ namespace Sanet.SmartSkating.Dashboard.Services
 
         private void RegisterViewModels()
         {
-            //For now jist manual registration
+            //For now just manual registration
             _viewModelViewDictionary.Add(typeof(LoginViewModel), typeof(LoginView));
+            _viewModelViewDictionary.Add(typeof(SessionsViewModel), typeof(SessionsView));
         }
 
         private T CreateViewModel<T>() where T : BaseViewModel
         {
             var vm = _container.GetService(typeof(T)) as T;
             vm?.SetNavigationService(this);
+            _viewModels.Add(vm);
             return vm;
         }
 
         private Task OpenViewModelAsync<T>(T viewModel, bool modalPresentation = false)
             where T : BaseViewModel
         {
-            return  Task.Run(() => {
+            return _rootFrame.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
                 var viewType = CreateView(viewModel);
                 {
                     _rootFrame.Navigate(viewType);
                 }
-            });
+            }).AsTask();
+            //return  Task.Run(() => {
+            //    var viewType = CreateView(viewModel);
+            //    {
+            //        _rootFrame.Navigate(viewType);
+            //    }
+            //});
         }
 
         private Type CreateView(BaseViewModel viewModel)
@@ -79,7 +88,6 @@ namespace Sanet.SmartSkating.Dashboard.Services
         public T GetViewModel<T>() where T : BaseViewModel
         {
             var vm = (T)_viewModels.FirstOrDefault(f => f is T);
-            _viewModels.Add(vm);
             return vm;
         }
 
@@ -110,6 +118,8 @@ namespace Sanet.SmartSkating.Dashboard.Services
         public Task NavigateToViewModelAsync<T>() where T : BaseViewModel
         {
             var vm = GetViewModel<T>();
+            if (vm == null)
+                vm = CreateViewModel<T>();
             return OpenViewModelAsync(vm);
         }
 

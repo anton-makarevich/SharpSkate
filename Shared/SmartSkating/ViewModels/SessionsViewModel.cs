@@ -1,12 +1,13 @@
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
 using Sanet.SmartSkating.Dto;
-using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
+using Sanet.SmartSkating.ViewModels.Wrappers;
 
 namespace Sanet.SmartSkating.ViewModels
 {
@@ -16,7 +17,7 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly IAccountService _accountService;
         private readonly ISessionProvider _sessionProvider;
         private readonly ITrackService _trackService;
-        private SessionDto? _selectedSession;
+        private SessionViewModel? _selectedSession;
 
         public SessionsViewModel(IApiService apiClient,
             IAccountService accountService,
@@ -29,13 +30,18 @@ namespace Sanet.SmartSkating.ViewModels
             _trackService = trackService;
         }
 
-        public ObservableCollection<SessionDto> Sessions { get; } =
-            new ObservableCollection<SessionDto>();
+        public ObservableCollection<SessionViewModel> Sessions { get; } =
+            new ObservableCollection<SessionViewModel>();
 
-        public SessionDto? SelectedSession
+        public SessionViewModel? SelectedSession
         {
             get => _selectedSession;
-            private set => SetProperty(ref _selectedSession, value);
+            set
+            {
+                SetProperty(ref _selectedSession, value);
+                NotifyPropertyChanged(nameof(SessionSelected));
+                NotifyPropertyChanged(nameof(CanStart));
+            }
         }
 
         public bool SessionSelected => SelectedSession != null;
@@ -46,7 +52,7 @@ namespace Sanet.SmartSkating.ViewModels
         {
             if (SelectedSession == null || _trackService.SelectedRink == null)
                 return;
-            _sessionProvider.SetActiveSession(SelectedSession,_trackService.SelectedRink);
+            _sessionProvider.SetActiveSession(SelectedSession.Session,_trackService.SelectedRink);
             await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
         }
 
@@ -60,16 +66,23 @@ namespace Sanet.SmartSkating.ViewModels
 
         private async Task GetSessions()
         {
+            if (string.IsNullOrEmpty(_accountService.UserId))
+                return;
             Sessions.Clear();
+            if (_trackService.SelectedRink == null)
+            {
+                await _trackService.LoadTracksAsync();
+            }
+
             (await _apiClient.GetSessionsAsync(
                     _accountService.UserId,
-                    _trackService.SelectedRink!=null,
+                    _trackService.SelectedRink != null,
                     ApiNames.AzureApiSubscriptionKey))
-                .Sessions.ForEach(s=>
+                .Sessions?.OrderBy(f=>f.StartTime).ToList().ForEach(s=>
                 {
                     if (_trackService.SelectedRink == null || _trackService.SelectedRink.Id == s.RinkId)
                     {
-                        Sessions.Add(s);
+                        Sessions.Add(new SessionViewModel(s,_trackService.Tracks));
                     }
                 });
             if (Sessions.Count == 0 && _trackService.SelectedRink!=null)
@@ -77,13 +90,6 @@ namespace Sanet.SmartSkating.ViewModels
                 _sessionProvider.CreateSessionForRink(_trackService.SelectedRink);
                 await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
             }
-        }
-
-        public void SelectSession(SessionDto sessionToSelect)
-        {
-            SelectedSession = sessionToSelect;
-            NotifyPropertyChanged(nameof(SessionSelected));
-            NotifyPropertyChanged(nameof(CanStart));
         }
     }
 }

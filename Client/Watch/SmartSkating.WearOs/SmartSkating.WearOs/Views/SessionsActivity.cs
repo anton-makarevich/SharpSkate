@@ -6,8 +6,8 @@ using Android.App;
 using Android.OS;
 using Android.Widget;
 using AndroidX.Wear.Widget;
-using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.ViewModels;
+using Sanet.SmartSkating.ViewModels.Wrappers;
 using Sanet.SmartSkating.WearOs.Models;
 using Sanet.SmartSkating.WearOs.Services;
 
@@ -54,17 +54,17 @@ namespace Sanet.SmartSkating.WearOs.Views
 
         private void TracksOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (_recyclerView?.GetAdapter() is ListAdapter<SessionDto,SessionsViewHolder> tracksAdapter)
+            if (_recyclerView?.GetAdapter() is ListAdapter<SessionViewModel,SessionsViewHolder> tracksAdapter)
                 tracksAdapter.ItemClick-= AdapterOnItemClick;
             if (ViewModel == null) return;
-            var adapter = new ListAdapter<SessionDto,SessionsViewHolder>(ViewModel.Sessions.ToList());
+            var adapter = new ListAdapter<SessionViewModel,SessionsViewHolder>(ViewModel.Sessions.ToList());
             adapter.ItemClick+= AdapterOnItemClick;
             _recyclerView?.SetAdapter(adapter);
         }
 
         private void AdapterOnItemClick(object sender, int e)
         {
-            ViewModel?.SelectSession(ViewModel.Sessions[e]);
+            if (ViewModel != null) ViewModel.SelectedSession = ViewModel.Sessions[e];
         }
 
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -1,10 +1,11 @@
 using Android.Views;
 using Android.Widget;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.ViewModels.Wrappers;
 
 namespace Sanet.SmartSkating.WearOs.Models
 {
-    public class SessionsViewHolder: ListViewHolder<SessionDto>
+    public class SessionsViewHolder: ListViewHolder<SessionViewModel>
     {
         private TextView? Name { get; set; }
 
@@ -14,9 +15,9 @@ namespace Sanet.SmartSkating.WearOs.Models
             Name = ItemView.FindViewById<TextView> (Resource.Id.textView);
         }
 
-        public override void BindViewModel(SessionDto viewModel)
+        public override void BindViewModel(SessionViewModel viewModel)
         {
-            Name.Text = viewModel.Id;
+            if (Name != null) Name.Text = $"{viewModel.RinkName} {viewModel.StartTime}";
         }
     }
 }
