@@ -2,7 +2,7 @@ trigger:
 - develop
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   - name: solution
@@ -18,25 +18,24 @@ steps:
 
 - script: dotnet restore $(solution)
   displayName: 'Restore nuget packages'
-
-- task: DotNetCoreCLI@2
+- task: MSBuild@1
   inputs:
-    command: 'build'
-    projects: 'Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj'
-    arguments: '-c Release'
+    solution: 'Client\Dashboard\Dashboard.Wasm\Dashboard.Wasm.csproj'
+    configuration: 'Release'
+  displayName: 'Build dashboard wasm'
 
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'AzureDevSubscription'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob delete-batch --account-name $(storage-name) --source $web --pattern managed-*'
+    inlineScript: 'az storage blob delete-batch --account-name $(storage-name) --source $web --pattern package*'
     arguments: ''
-  displayName: 'Delete old managed folders if exist'
+  displayName: 'Delete old package folders if exist'
 
 - task: AzureFileCopy@3
   inputs:
-    SourcePath: 'Client/Dashboard/Dashboard.Wasm/bin/Release/netstandard2.0/dist'
+    SourcePath: 'Client\Dashboard\Dashboard.Wasm\bin\Release\netstandard2.0\dist'
     azureSubscription: 'AzureDevSubscription'
     Destination: 'AzureBlob'
     storage: $(storage-name)
