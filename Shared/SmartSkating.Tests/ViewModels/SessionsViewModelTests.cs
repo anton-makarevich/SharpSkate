@@ -136,7 +136,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.AttachHandlers();
             var sessionToSelect = sessions.First();
 
-            _sut.SelectSession(sessionToSelect);
+            _sut.SelectedSession=sessionToSelect;
 
             _sut.SelectedSession.Should().Be(sessionToSelect);
         }
@@ -148,7 +148,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.AttachHandlers();
             var sessionToSelect = sessions.First();
 
-            _sut.SelectSession(sessionToSelect);
+            _sut.SelectedSession=sessionToSelect;
 
             _sut.SessionSelected.Should().BeTrue();
         }
@@ -165,7 +165,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public void CanStart_IsFalse_When_SelectedRink_Is_Null()
         {
             _sut.AttachHandlers();
-            _sut.SelectSession(CreatSessions().First());
+            _sut.SelectedSession=CreatSessions().First();
             
             _sut.CanStart.Should().BeFalse();
         }
@@ -174,7 +174,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public void CanStart_IsTrue_When_SelectedRink_Is_Not_Null_And_Session_Is_Selected()
         {
             _sut.AttachHandlers();
-            _sut.SelectSession(CreatSessions().First());
+            _sut.SelectedSession=CreatSessions().First();
             _trackService.SelectedRink
                 .Returns( new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId"));
             
@@ -190,7 +190,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             {
                 canStartUpdated = args.PropertyName == nameof(_sut.CanStart);
             };
-            _sut.SelectSession(CreatSessions().First());
+            _sut.SelectedSession=CreatSessions().First();
 
             canStartUpdated.Should().BeTrue();
         }
@@ -205,7 +205,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 if (args.PropertyName == nameof(_sut.SessionSelected))
                     sessionSelectedUpdated = true;
             };
-            _sut.SelectSession(CreatSessions().First());
+            _sut.SelectedSession=CreatSessions().First();
 
             sessionSelectedUpdated.Should().BeTrue();
         }
@@ -232,7 +232,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             var rink = new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId");
             _trackService.SelectedRink.Returns(rink);
             var session = CreatSessions().First();
-            _sut.SelectSession(session);
+            _sut.SelectedSession=session;
             
             await _sut.StartCommand.ExecuteAsync();
 
@@ -260,7 +260,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _trackService.SelectedRink
                 .Returns(new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId"));
-            _sut.SelectSession(CreatSessions().First());
+            _sut.SelectedSession=CreatSessions().First();
 
             await _sut.StartCommand.ExecuteAsync();
 
