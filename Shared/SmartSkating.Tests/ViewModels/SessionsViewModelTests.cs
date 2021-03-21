@@ -15,6 +15,7 @@ using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.Tests.Models.Geometry;
 using Sanet.SmartSkating.ViewModels;
+using Sanet.SmartSkating.ViewModels.Wrappers;
 using Xunit;
 
 namespace Sanet.SmartSkating.Tests.ViewModels
@@ -66,7 +67,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             
             _sut.AttachHandlers();
 
-            _sut.Sessions.ToList().Should().Equal(sessions);
+            _sut.Sessions.Select(s=>s.Session).ToList()
+                .Should().Equal(sessions);
         }
         
         [Fact]
@@ -82,7 +84,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             
             _sut.AttachHandlers();
 
-            _sut.Sessions.ToList().Should().Equal(sessions.Take(1).ToList());
+            _sut.Sessions.Count.Should().Be(1);
+            _sut.Sessions.First().Session.Should().Be(sessions[0]);
         }
         
         [Fact]
@@ -96,7 +99,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             
             _sut.AttachHandlers();
 
-            _sut.Sessions.ToList().Should().Equal(sessions);
+            _sut.Sessions.Count.Should().Be(sessions.Count);
         }
 
         [Fact]
@@ -134,7 +137,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             var sessions = CreatSessions();
             _sut.AttachHandlers();
-            var sessionToSelect = sessions.First();
+            var sessionToSelect = new SessionViewModel(sessions.First(),new List<TrackDto>());
 
             _sut.SelectedSession=sessionToSelect;
 
@@ -146,7 +149,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             var sessions = CreatSessions();
             _sut.AttachHandlers();
-            var sessionToSelect = sessions.First();
+            var sessionToSelect = new SessionViewModel(sessions.First(),new List<TrackDto>());
 
             _sut.SelectedSession=sessionToSelect;
 
@@ -165,7 +168,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public void CanStart_IsFalse_When_SelectedRink_Is_Null()
         {
             _sut.AttachHandlers();
-            _sut.SelectedSession=CreatSessions().First();
+            _sut.SelectedSession=new SessionViewModel(CreatSessions().First(),new List<TrackDto>());
             
             _sut.CanStart.Should().BeFalse();
         }
@@ -174,7 +177,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public void CanStart_IsTrue_When_SelectedRink_Is_Not_Null_And_Session_Is_Selected()
         {
             _sut.AttachHandlers();
-            _sut.SelectedSession=CreatSessions().First();
+            _sut.SelectedSession=new SessionViewModel(CreatSessions().First(),new List<TrackDto>());
             _trackService.SelectedRink
                 .Returns( new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId"));
             
@@ -190,7 +193,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             {
                 canStartUpdated = args.PropertyName == nameof(_sut.CanStart);
             };
-            _sut.SelectedSession=CreatSessions().First();
+            _sut.SelectedSession= new SessionViewModel(CreatSessions().First(),new List<TrackDto>());
 
             canStartUpdated.Should().BeTrue();
         }
@@ -205,7 +208,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 if (args.PropertyName == nameof(_sut.SessionSelected))
                     sessionSelectedUpdated = true;
             };
-            _sut.SelectedSession=CreatSessions().First();
+            _sut.SelectedSession= new SessionViewModel(CreatSessions().First(),new List<TrackDto>());
 
             sessionSelectedUpdated.Should().BeTrue();
         }
@@ -231,12 +234,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             var rink = new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId");
             _trackService.SelectedRink.Returns(rink);
-            var session = CreatSessions().First();
+            var session = new SessionViewModel(CreatSessions().First(),new List<TrackDto>());
             _sut.SelectedSession=session;
             
             await _sut.StartCommand.ExecuteAsync();
 
-            _sessionProvider.Received(1).SetActiveSession(session, rink);
+            _sessionProvider.Received(1).SetActiveSession(session.Session, rink);
         }
 
         private static List<SessionDto> CreatSessions()
@@ -260,7 +263,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _trackService.SelectedRink
                 .Returns(new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId"));
-            _sut.SelectedSession=CreatSessions().First();
+            _sut.SelectedSession= new SessionViewModel(CreatSessions().First(),new List<TrackDto>());
 
             await _sut.StartCommand.ExecuteAsync();
 

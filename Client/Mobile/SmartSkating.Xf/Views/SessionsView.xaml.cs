@@ -1,4 +1,4 @@
-using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.ViewModels.Wrappers;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,8 +14,8 @@ namespace Sanet.SmartSkating.Xf.Views
 
         private void OnSessionSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (e.SelectedItem is SessionDto sessionDto)
-                ViewModel?.SelectSession(sessionDto);
+            if (!(e.SelectedItem is SessionViewModel sessionDto) || ViewModel == null) return;
+            ViewModel.SelectedSession = sessionDto;
         }
     }
 }

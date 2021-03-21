@@ -40,7 +40,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels.Wrappers
         {
             const string expectedDate = "20-01-02 8:15";
 
-            _sut.StartDate.Should().Be(expectedDate);
+            _sut.StartTime.Should().Be(expectedDate);
         }
         
         [Fact]

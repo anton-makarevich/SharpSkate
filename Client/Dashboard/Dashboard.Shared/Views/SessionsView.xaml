@@ -12,6 +12,11 @@
             ItemsSource="{Binding Sessions}"
             SelectedItem="{Binding SelectedSession, Mode=TwoWay}"
         >
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment"  Value="Stretch"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -19,7 +24,7 @@
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Id}"/>
+                        <TextBlock Text="{Binding RinkName}"/>
                         <TextBlock 
                             Grid.Column="1"
                             Text="{Binding StartTime}"/>

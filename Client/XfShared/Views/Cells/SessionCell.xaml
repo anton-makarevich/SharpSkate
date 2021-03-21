@@ -3,8 +3,14 @@
 <ViewCell
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Sanet.SmartSkating.Xf.Views.Cells.SessionCell">
+    xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels.Wrappers;assembly=SmartSkating"
+    x:Class="Sanet.SmartSkating.Xf.Views.Cells.SessionCell" x:DataType="vm:SessionViewModel">
     <Grid>
-        <Label Text="{Binding Id}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Text="{Binding RinkName}"/>
+        <Label Grid.Column="1" Text="{Binding StartTime}"/>
     </Grid>
 </ViewCell>
