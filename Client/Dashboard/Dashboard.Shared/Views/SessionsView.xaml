@@ -5,7 +5,7 @@
     xmlns:vm="using:Sanet.SmartSkating.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DataContext="{vm:SessionsViewModel }">
+    >
 
     <Grid>
         <ListView
@@ -21,13 +21,17 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding RinkName}"/>
                         <TextBlock 
                             Grid.Column="1"
                             Text="{Binding StartTime}"/>
+                        <TextBlock 
+                            Grid.Column="2"
+                            Text="{Binding Status}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -44,6 +44,16 @@ namespace Sanet.SmartSkating.Tests.ViewModels.Wrappers
         }
         
         [Fact]
+        public void Returns_Session_StartTime_In_Readable_Pm_Format()
+        {
+            _sessionDto.StartTime = new DateTime(2020, 01, 02, 21, 15, 00);
+            var sut = new SessionViewModel(_sessionDto, new List<TrackDto>());
+            const string expectedDate = "20-01-02 21:15";
+
+            sut.StartTime.Should().Be(expectedDate);
+        }
+        
+        [Fact]
         public void Returns_RinkName()
         {
             _sut.RinkName.Should().Be(_trackDto.Name);

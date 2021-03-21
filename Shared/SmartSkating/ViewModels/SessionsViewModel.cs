@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
 using Sanet.SmartSkating.Dto;
@@ -68,11 +69,16 @@ namespace Sanet.SmartSkating.ViewModels
             if (string.IsNullOrEmpty(_accountService.UserId))
                 return;
             Sessions.Clear();
+            if (_trackService.SelectedRink == null)
+            {
+                await _trackService.LoadTracksAsync();
+            }
+
             (await _apiClient.GetSessionsAsync(
                     _accountService.UserId,
                     _trackService.SelectedRink != null,
                     ApiNames.AzureApiSubscriptionKey))
-                .Sessions?.ForEach(s=>
+                .Sessions?.OrderBy(f=>f.StartTime).ToList().ForEach(s=>
                 {
                     if (_trackService.SelectedRink == null || _trackService.SelectedRink.Id == s.RinkId)
                     {

@@ -48,6 +48,26 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
         
         [Fact]
+        public async Task Loads_All_tracks_If_No_Selected_Track()
+        {
+            _trackService.SelectedRink.ReturnsNull();
+            _sut.AttachHandlers();
+
+            await _trackService.Received(1).LoadTracksAsync();
+        }
+        
+        [Fact]
+        public async Task DoesNot_Load_All_tracks_If_Track_Is_Selected()
+        {
+            var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "rinkId");
+            _trackService.SelectedRink.Returns(rink);
+            
+            _sut.AttachHandlers();
+
+            await _trackService.DidNotReceive().LoadTracksAsync();
+        }
+        
+        [Fact]
         public async Task DoesNot_Call_Api_If_UserId_Is_Empty()
         {
             _accountService.UserId.ReturnsNull();

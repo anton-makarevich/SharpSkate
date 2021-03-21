@@ -13,7 +13,7 @@ namespace Sanet.SmartSkating.ViewModels.Wrappers
             Status = Session.IsCompleted ? "Completed" : "In progress";
         }
 
-        public string StartTime => Session.StartTime.ToString("yy-MM-dd h:mm");
+        public string StartTime => Session.StartTime.ToString("yy-MM-dd H:mm");
         public string RinkName { get; }
         public string Status { get; }
         public SessionDto Session { get; }
