@@ -37,11 +37,19 @@ steps:
     arguments: ''
   displayName: 'Delete old package folders if exist'
 
-- task: AzureFileCopy@3
+- task: AzureCLI@2
   inputs:
-    SourcePath: 'Client/Dashboard/Dashboard.Wasm/bin/Release/netstandard2.0/publish'
     azureSubscription: 'AzureDevSubscription'
-    Destination: 'AzureBlob'
-    storage: $(storage-name)
-    ContainerName: '$web'
+    scriptType: 'batch'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az storage blob delete-batch -d $web --account-name $(storage-name) --source Client/Dashboard/Dashboard.Wasm/bin/Release/netstandard2.0/publish'
+    arguments: ''
+#   displayName: 'Delete old package folders if exist'
+# - task: AzureFileCopy@3
+#   inputs:
+#     SourcePath: 'Client/Dashboard/Dashboard.Wasm/bin/Release/netstandard2.0/publish'
+#     azureSubscription: 'AzureDevSubscription'
+#     Destination: 'AzureBlob'
+#     storage: $(storage-name)
+#     ContainerName: '$web'
   displayName: 'Deploy dashboard wasm to azure storage'
