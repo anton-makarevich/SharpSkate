@@ -355,7 +355,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public async Task StartCommand_Creates_NewSession_With_Selected_Rink()
+        public void StartCommand_Creates_NewSession_With_Selected_Rink()
         {
             _bluetoothService.IsBluetoothAvailable().Returns(true);
             var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, RinkId);

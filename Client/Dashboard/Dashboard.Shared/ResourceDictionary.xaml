@@ -1,0 +1,16 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="PageBgColor">#FFFFFF</Color>
+    <Color x:Key="MainFontColor">#00FF00</Color>
+
+    <Style TargetType="Page">
+        <Setter Property="Background" Value="{StaticResource PageBgColor}"/>
+    </Style>
+
+    <!--<Style TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
+    </Style>-->
+    
+</ResourceDictionary>

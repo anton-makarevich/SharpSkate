@@ -19,9 +19,9 @@ namespace Sanet.SmartSkating.Tizen.Views
 
         private void OnTrackSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (e.SelectedItem is SessionDto sessionDto)
+            if (e.SelectedItem is SessionViewModel session && ViewModel!=null)
             {
-                ViewModel?.SelectSession(sessionDto);
+                ViewModel.SelectedSession =session;
             }
         }
 

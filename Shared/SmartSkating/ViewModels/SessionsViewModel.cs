@@ -64,7 +64,7 @@ namespace Sanet.SmartSkating.ViewModels
 #pragma warning restore 4014
         }
 
-        private async Task GetSessions()
+        private async ValueTask GetSessions()
         {
             if (string.IsNullOrEmpty(_accountService.UserId))
                 return;
@@ -73,7 +73,6 @@ namespace Sanet.SmartSkating.ViewModels
             {
                 await _trackService.LoadTracksAsync();
             }
-
             (await _apiClient.GetSessionsAsync(
                     _accountService.UserId,
                     _trackService.SelectedRink != null,

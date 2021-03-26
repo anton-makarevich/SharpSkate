@@ -1,8 +1,13 @@
 <linker>
-  <assembly fullname="SmartSkating.Dashboard.Wasm" />
-  <assembly fullname="Uno.UI" />
-    <assembly fullname="SmartSkating" />
-    <assembly fullname="SmartSkating.Dto" />
+  <assembly fullname="SmartSkating.Dashboard.Wasm" preserve="all" />
+	<assembly fullname="Uno.UI"  preserve="all"/>
+	<assembly fullname="Refit"  preserve="all"/>
+    <assembly fullname="SmartSkating"  preserve="all"/>
+    <assembly fullname="SmartSkating.Dto"  preserve="all"/>
+	<assembly fullname="AsyncAwaitBestPractices.MVVM"  preserve="all"/>
+	<assembly fullname="System.Collections"  preserve="all"/>
+	<assembly fullname="WebAssembly.Bindings"  preserve="all"/>
+	<assembly fullname="System.Text.Json"  preserve="all"/>
 
   <assembly fullname="System.Core">
 	<!-- This is required by JSon.NET and any expression.Compile caller -->
