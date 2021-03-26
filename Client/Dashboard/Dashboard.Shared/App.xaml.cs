@@ -54,10 +54,8 @@ namespace Sanet.SmartSkating.Dashboard
 
         private void ConfigureServices(IServiceCollection services)
         {
-
 #if __WASM__
 			var httpHandler = new WasmHttpHandler();
-			Console.WriteLine("Using WASM handler");
 #else
 			var httpHandler = new HttpClientHandler();
 #endif
