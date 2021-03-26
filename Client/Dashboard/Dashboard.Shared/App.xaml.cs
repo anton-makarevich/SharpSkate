@@ -17,6 +17,10 @@ using Sanet.SmartSkating.Dashboard.Services;
 using Sanet.SmartSkating.Dashboard.Views;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Tracking;
+using System.Net.Http;
+#if __WASM__
+using Uno.UI.Wasm;
+#endif
 
 namespace Sanet.SmartSkating.Dashboard
 {
@@ -50,8 +54,19 @@ namespace Sanet.SmartSkating.Dashboard
 
         private void ConfigureServices(IServiceCollection services)
         {
-	        // Services
-			_services.AddSingleton(RestService.For<IApiService>(ApiNames.BaseUrl));
+
+#if __WASM__
+			var httpHandler = new WasmHttpHandler();
+			Console.WriteLine("Using WASM handler");
+#else
+			var httpHandler = new HttpClientHandler();
+#endif
+			var httpClient = new HttpClient(httpHandler,false)
+			{
+				BaseAddress = new Uri(ApiNames.BaseUrl)
+			};
+			// Services
+			_services.AddSingleton(RestService.For<IApiService>(httpClient));
 			_services.AddSingleton<ILoginService, LoginService>();
 			_services.AddSingleton<IAccountService, AccountService>();
 			_services.AddSingleton<IDeviceInfo,EssentialsDeviceInfo>();

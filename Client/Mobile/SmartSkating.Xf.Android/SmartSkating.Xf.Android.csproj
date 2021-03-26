@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.1.0.475" />
-    <PackageReference Include="Refit" Version="5.2.4" />
+    <PackageReference Include="Refit" Version="6.0.38" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.1931" />
     <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.Utils" Version="1.0.0.6" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />

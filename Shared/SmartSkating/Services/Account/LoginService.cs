@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
@@ -27,8 +28,9 @@ namespace Sanet.SmartSkating.Services.Account
             {
                 return (await _apiService.LoginAsync(request, ApiNames.AzureApiSubscriptionKey))?.Account;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
             }
         }
