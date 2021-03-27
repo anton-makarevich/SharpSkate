@@ -46,7 +46,25 @@ namespace Sanet.SmartSkating.ViewModels
 
         public bool SessionSelected => SelectedSession != null;
         public IAsyncValueCommand StartCommand => new AsyncValueCommand(StartSession);
+        public IAsyncValueCommand OpenDetailsCommand => new AsyncValueCommand(OpenSessionDetails);
+
         public bool CanStart => SessionSelected && _trackService.SelectedRink != null;
+        public bool CanOpenSessionDetails => SessionSelected && SelectedSession?.RinkName != "Unknown";
+
+        private async ValueTask OpenSessionDetails()
+        {
+            if (SelectedSession == null || string.IsNullOrEmpty(SelectedSession.RinkName))
+                return;
+            _trackService.SelectRinkByName(SelectedSession.RinkName);
+
+            if (_trackService.SelectedRink == null)
+            {
+                return;
+            }
+            
+            _sessionProvider.SetActiveSession(SelectedSession.Session, _trackService.SelectedRink);
+            await NavigationService.NavigateToViewModelAsync<SessionDetailsViewModel>();
+        }
 
         private async ValueTask StartSession()
         {
