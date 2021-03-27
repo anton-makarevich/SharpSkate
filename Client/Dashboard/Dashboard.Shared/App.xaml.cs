@@ -18,6 +18,9 @@ using Sanet.SmartSkating.Dashboard.Views;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Tracking;
 using System.Net.Http;
+using Sanet.SmartSkating.Dashboard.Services.Dummy;
+using Sanet.SmartSkating.Services.Location;
+
 #if __WASM__
 using Uno.UI.Wasm;
 #endif
@@ -46,10 +49,10 @@ namespace Sanet.SmartSkating.Dashboard
 			_services = new ServiceCollection();
 			ConfigureServices(_services);
 
-			ConfigureFilters(global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory);
+			ConfigureFilters(Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory);
 
-			this.InitializeComponent();
-			this.Suspending += OnSuspending;
+			InitializeComponent();
+			Suspending += OnSuspending;
 		}
 
         private void ConfigureServices(IServiceCollection services)
@@ -74,11 +77,19 @@ namespace Sanet.SmartSkating.Dashboard
 			_services.AddSingleton<ITrackService, TrackService>();
 			_services.AddSingleton<ITrackProvider,LocalTrackProvider>();
 			_services.AddSingleton<IResourceReader,EmbeddedResourceReader>();
+			_services.AddSingleton<ISessionManager, SessionManager>();
+			_services.AddSingleton<ISyncService, SignalRService>();
+			_services.AddSingleton<IDateProvider, DateProvider>();
+			
+			_services.AddSingleton<ILocationService , DummyLocationService>();
+			_services.AddSingleton<IDataSyncService , DummyDataSyncService>();
+			_services.AddSingleton<IBleLocationService, DummyBleService>();
 
 			// ViewModels
 			_services.AddSingleton<LoginViewModel, LoginViewModel>();
 			_services.AddSingleton<SessionsViewModel, SessionsViewModel>();
-		}
+			_services.AddSingleton<SessionDetailsViewModel, SessionDetailsViewModel>();
+        }
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -99,7 +110,7 @@ namespace Sanet.SmartSkating.Dashboard
 			var window = new Window();
 			window.Activate();
 #else
-			var window = Windows.UI.Xaml.Window.Current;
+			var window = Window.Current;
 #endif
 
 			Frame rootFrame = window.Content as Frame;
