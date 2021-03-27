@@ -52,12 +52,6 @@ namespace Sanet.SmartSkating.Dashboard.Services
                     _rootFrame.Navigate(viewType);
                 }
             }).AsTask();
-            //return  Task.Run(() => {
-            //    var viewType = CreateView(viewModel);
-            //    {
-            //        _rootFrame.Navigate(viewType);
-            //    }
-            //});
         }
 
         private Type CreateView(BaseViewModel viewModel)
