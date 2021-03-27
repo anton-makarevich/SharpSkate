@@ -41,6 +41,7 @@ namespace Sanet.SmartSkating.ViewModels
                 SetProperty(ref _selectedSession, value);
                 NotifyPropertyChanged(nameof(SessionSelected));
                 NotifyPropertyChanged(nameof(CanStart));
+                NotifyPropertyChanged(nameof(CanOpenSessionDetails));
             }
         }
 

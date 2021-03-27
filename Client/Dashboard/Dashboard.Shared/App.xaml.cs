@@ -84,6 +84,7 @@ namespace Sanet.SmartSkating.Dashboard
 			_services.AddSingleton<ILocationService , DummyLocationService>();
 			_services.AddSingleton<IDataSyncService , DummyDataSyncService>();
 			_services.AddSingleton<IBleLocationService, DummyBleService>();
+			_services.AddSingleton<Acr.UserDialogs.IUserDialogs, DummyUserDialogs>();
 
 			// ViewModels
 			_services.AddSingleton<LoginViewModel, LoginViewModel>();

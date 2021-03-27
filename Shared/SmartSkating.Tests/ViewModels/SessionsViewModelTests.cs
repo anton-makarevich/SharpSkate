@@ -424,5 +424,19 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut.CanOpenSessionDetails.Should().BeFalse();
         }
+
+        [Fact]
+        public void Updates_CanOpenDetails_When_Session_Is_Selected()
+        {
+            var canOpenDetailsUpdated = false;
+            _sut.AttachHandlers();
+            _sut.PropertyChanged += (sender, args) =>
+            {
+                canOpenDetailsUpdated = args.PropertyName == nameof(_sut.CanOpenSessionDetails);
+            };
+            _sut.SelectedSession = new SessionViewModel(CreatSessions().First(), new List<TrackDto>());
+
+            canOpenDetailsUpdated.Should().BeTrue();
+        }
     }
 }

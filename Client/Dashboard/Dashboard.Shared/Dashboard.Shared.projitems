@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Dummy\DummyBleService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Dummy\DummyDataSyncService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Dummy\DummyLocationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Dummy\DummyUserDialogs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\UwpNavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
