@@ -211,7 +211,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.AttachHandlers();
             _sut.PropertyChanged += (sender, args) =>
             {
-                canStartUpdated = args.PropertyName == nameof(_sut.CanStart);
+                if (args.PropertyName == nameof(_sut.CanStart))
+                    canStartUpdated = true;
             };
             _sut.SelectedSession= new SessionViewModel(CreatSessions().First(),new List<TrackDto>());
 
@@ -315,7 +316,6 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             await _sut.OpenDetailsCommand.ExecuteAsync();
 
             await _navigationService.Received(1).NavigateToViewModelAsync<SessionDetailsViewModel>();
-            var t = 6;
         }
         
         [Fact]
@@ -432,7 +432,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.AttachHandlers();
             _sut.PropertyChanged += (sender, args) =>
             {
-                canOpenDetailsUpdated = args.PropertyName == nameof(_sut.CanOpenSessionDetails);
+                if (args.PropertyName == nameof(_sut.CanOpenSessionDetails))
+                    canOpenDetailsUpdated = true;
             };
             _sut.SelectedSession = new SessionViewModel(CreatSessions().First(), new List<TrackDto>());
 
