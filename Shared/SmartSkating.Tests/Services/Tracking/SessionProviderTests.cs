@@ -63,5 +63,17 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
 
             (_sut.CurrentSession?.StartTime).Should().Be(startTime);
         }
+        
+        [Fact]
+        public void CurrentSession_IsCompleted_Equal_To_IsCompleted_Of_SessionDto()
+        {
+            var startTime = DateTime.Now;
+            var sessionDto = new SessionDto {IsCompleted = true};
+            var rink = new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId");
+
+            _sut.SetActiveSession(sessionDto,rink);
+
+            (_sut.CurrentSession?.IsCompleted).Should().BeTrue();
+        }
     }
 }

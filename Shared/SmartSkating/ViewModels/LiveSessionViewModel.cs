@@ -17,9 +17,10 @@ namespace Sanet.SmartSkating.ViewModels
         public const string TotalTimeFormat = "h\\:mm\\:ss";
         public const string LapTimeFormat = "mm\\:ss";
 
-        private readonly ISessionManager _sessionManager;
+        protected readonly ISessionManager SessionManager;
         private readonly IDateProvider _dateProvider;
         private readonly IUserDialogs _userDialogs;
+        
         private string _infoLabel = "";
         private string _currentSector = NoValue;
         private string _lastLapTime = NoValue;
@@ -34,7 +35,7 @@ namespace Sanet.SmartSkating.ViewModels
             IDateProvider dateProvider,
             IUserDialogs userDialogs)
         {
-            _sessionManager = sessionManager;
+            SessionManager = sessionManager;
             _dateProvider = dateProvider;
             _userDialogs = userDialogs;
 
@@ -43,7 +44,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         public ICommand StartCommand => new SimpleCommand(async() =>
         {
-            await _sessionManager.StartSession();
+            await SessionManager.StartSession();
             
 #pragma warning disable 4014
             TrackTime();
@@ -55,21 +56,26 @@ namespace Sanet.SmartSkating.ViewModels
         {
             var isConfirmed = await _userDialogs.ConfirmAsync("Do you want to stop session");
             if (!isConfirmed) return;
-            _sessionManager.StopSession();
+            SessionManager.StopSession();
             InfoLabel = "";
             UpdateButtonsState();
             NotifyPropertyChanged(nameof(CanStart));
         });
 
-        private async Task TrackTime()
+        public async Task TrackTime()
         {
-            while (_sessionManager.IsRunning && IsActive)
+            if (IsTracking)
+                return;
+            while (SessionManager.IsRunning && IsActive)
             {
-                if (_sessionManager.CurrentSession is null) continue;
+                IsTracking = SessionManager.IsRunning;
+                if (SessionManager.CurrentSession is null) continue;
                 UpdateUi();
                 await Task.Delay(1000);
             } 
         }
+
+        public bool IsTracking { get; private set; }
 
         public string TotalTime
         {
@@ -77,21 +83,21 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _totalTime, value);
         }
 
-        public void UpdateUi()
+        public virtual void UpdateUi()
         {
-            if (!IsRunning)
+            if (!IsRunning && !ForceUiUpdate)
                 return;
-            if (_sessionManager.CurrentSession == null) return;
+            if (SessionManager.CurrentSession == null) return;
             
-            var time = _dateProvider.Now().Subtract(_sessionManager.CurrentSession.StartTime);
+            var time = _dateProvider.Now().Subtract(SessionManager.CurrentSession.StartTime);
             TotalTime = time.ToString(TotalTimeFormat);
             
-            InfoLabel = _sessionManager.CurrentSession.LastCoordinate.ToString();
+            InfoLabel = SessionManager.CurrentSession.LastCoordinate.ToString();
 
-            if (_sessionManager.CurrentSession.LapsCount > 0)
+            if (SessionManager.CurrentSession.LapsCount > 0)
             {
-                LastLapTime = _sessionManager.CurrentSession.LastLapTime.ToString(LapTimeFormat);
-                BestLapTime = _sessionManager.CurrentSession.BestLapTime.ToString(LapTimeFormat);
+                LastLapTime = SessionManager.CurrentSession.LastLapTime.ToString(LapTimeFormat);
+                BestLapTime = SessionManager.CurrentSession.BestLapTime.ToString(LapTimeFormat);
             }
             else
             {
@@ -99,14 +105,14 @@ namespace Sanet.SmartSkating.ViewModels
                 BestLapTime = NoValue;
             }
 
-            Laps = _sessionManager.CurrentSession.LapsCount.ToString();
-            if (_sessionManager.CurrentSession.Sectors.Count > 0)
+            Laps = SessionManager.CurrentSession.LapsCount.ToString();
+            if (SessionManager.CurrentSession.Sectors.Count > 0)
             {
-                var lastSector = _sessionManager.CurrentSession.Sectors.Last();
+                var lastSector = SessionManager.CurrentSession.Sectors.Last();
                 LastSectorTime = lastSector.Time.ToString(LapTimeFormat);
-                Distance = $"{Math.Round(_sessionManager.CurrentSession.Sectors.Count * 0.1f, 1)}Km";
-                if (_sessionManager.CurrentSession.BestSector != null)
-                    BestSectorTime = _sessionManager.CurrentSession.BestSector.Value.Time.ToString(LapTimeFormat);
+                Distance = $"{Math.Round(SessionManager.CurrentSession.Sectors.Count * 0.1f, 1)}Km";
+                if (SessionManager.CurrentSession.BestSector != null)
+                    BestSectorTime = SessionManager.CurrentSession.BestSector.Value.Time.ToString(LapTimeFormat);
             }
             else
             {
@@ -114,9 +120,9 @@ namespace Sanet.SmartSkating.ViewModels
                 BestSectorTime = NoValue;
             }
 
-            if (_sessionManager.CurrentSession.WayPoints.Count > 0)
+            if (SessionManager.CurrentSession.WayPoints.Count > 0)
                 CurrentSector =
-                    $"Currently in {_sessionManager.CurrentSession.WayPoints.Last().Type.GetSectorName()} sector";
+                    $"Currently in {SessionManager.CurrentSession.WayPoints.Last().Type.GetSectorName()} sector";
         }
 
         public bool IsActive { get; private set; }
@@ -133,7 +139,7 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _currentSector, value);
         }
 
-        public bool CanStart => _sessionManager.CanStart;
+        public bool CanStart => SessionManager.CanStart;
 
         public string LastLapTime
         {
@@ -171,7 +177,7 @@ namespace Sanet.SmartSkating.ViewModels
             private set => SetProperty(ref _bestSectorTime, value);
         }
 
-        public bool IsRunning => _sessionManager.IsRunning;
+        public bool IsRunning => SessionManager.IsRunning;
         
         private void UpdateButtonsState()
         {
@@ -179,15 +185,16 @@ namespace Sanet.SmartSkating.ViewModels
             NotifyPropertyChanged(nameof(IsStopVisible));
         }
         
-        public bool IsStartVisible => _sessionManager.CanStart && !_sessionManager.IsRemote;
-        public bool IsStopVisible => IsRunning && !_sessionManager.IsRemote;
+        public bool IsStartVisible => SessionManager.CanStart && !SessionManager.IsRemote;
+        public bool IsStopVisible => IsRunning && !SessionManager.IsRemote;
+        public virtual bool ForceUiUpdate { get; } = false;
 
         public override void AttachHandlers()
         {
             base.AttachHandlers();
             IsActive = true;
-            _sessionManager.CheckSession();
-            if (!_sessionManager.IsRunning) return;
+            SessionManager.CheckSession();
+            if (!SessionManager.IsRunning) return;
             
 #pragma warning disable 4014
             TrackTime();

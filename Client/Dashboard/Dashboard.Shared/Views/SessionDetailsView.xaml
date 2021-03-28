@@ -29,7 +29,7 @@
         Text="Elapsed Time:"
         />
             <TextBlock
-        Text="{Binding TotalTime}"
+        Text="{Binding FinalSessionTime}"
         Grid.Column="1" />
 
             <TextBlock

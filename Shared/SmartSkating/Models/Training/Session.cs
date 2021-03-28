@@ -15,10 +15,10 @@ namespace Sanet.SmartSkating.Models.Training
         private readonly ISettingsService _settingsService;
 
         public Session(Rink rink, ISettingsService settingsService):
-            this(Guid.NewGuid().ToString("N"),rink,settingsService, false)
+            this(Guid.NewGuid().ToString("N"),rink,settingsService, false,false)
         { }
 
-        public Session(string sessionId, Rink rink, ISettingsService settingsService, bool isRemote)
+        public Session(string sessionId, Rink rink, ISettingsService settingsService, bool isRemote, bool isCompleted)
         {
             _rink = rink;
             _settingsService = settingsService;
@@ -26,6 +26,7 @@ namespace Sanet.SmartSkating.Models.Training
             Sectors = new List<Section>();
             SessionId = sessionId;
             IsRemote = isRemote;
+            IsCompleted = isCompleted;
         }
 
         public string SessionId { get; }
@@ -115,6 +116,15 @@ namespace Sanet.SmartSkating.Models.Training
                 type));
         }
 
+        public void AddPoints(IEnumerable<WayPointDto> waypoints)
+        {
+            WayPoints.Clear();
+            foreach (var waypoint in waypoints.OrderBy(w => w.Time))
+            {
+                AddPoint(new Coordinate(waypoint.Coordinate), waypoint.Time);
+            }
+        }
+
         private void AddMissingSector(DateTime date,
             IReadOnlyList<WayPointTypes> expectedSectorTypes,
             WayPointTypes type,
@@ -169,6 +179,7 @@ namespace Sanet.SmartSkating.Models.Training
 
         public Coordinate? LastCoordinate { get; private set; }
         public bool IsRemote { get; }
+        public bool IsCompleted { get; }
 
         private void AddSection(WayPoint separatingWayPoint)
         {
