@@ -24,9 +24,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
     {
         private const string AccountId = "accountId";
 
-        private readonly IApiService _apiClient = Substitute.For<IApiService>();
-        
         private readonly SessionsViewModel _sut;
+        
+        private readonly IApiService _apiClient = Substitute.For<IApiService>();
         private readonly IAccountService _accountService = Substitute.For<IAccountService>();
         private readonly  ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
         private readonly  ITrackService _trackService= Substitute.For<ITrackService>();
@@ -211,7 +211,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.AttachHandlers();
             _sut.PropertyChanged += (sender, args) =>
             {
-                canStartUpdated = args.PropertyName == nameof(_sut.CanStart);
+                if (args.PropertyName == nameof(_sut.CanStart))
+                    canStartUpdated = true;
             };
             _sut.SelectedSession= new SessionViewModel(CreatSessions().First(),new List<TrackDto>());
 
@@ -288,6 +289,155 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             await _sut.StartCommand.ExecuteAsync();
 
             await _navigationService.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
+        }
+        
+        [Fact]
+        public async Task OpenSessionDetails_Navigates_To_SessionDetailsView()
+        {
+            const string rinkId = "TrackId";
+            _sut.SelectedSession = new SessionViewModel(new SessionDto
+            {
+                AccountId = AccountId,
+                Id = Guid.NewGuid().ToString("N"),
+                IsCompleted = false,
+                RinkId = rinkId
+            }, new[] {new TrackDto
+                {
+                    Id = rinkId,
+                    Name = "TrackName",
+                    Start = default,
+                    Finish = default
+                }
+            });
+            
+            _trackService.SelectedRink
+                .Returns(new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,rinkId));
+            
+            await _sut.OpenDetailsCommand.ExecuteAsync();
+
+            await _navigationService.Received(1).NavigateToViewModelAsync<SessionDetailsViewModel>();
+        }
+        
+        [Fact]
+        public async Task OpenSessionDetails_DoesNot_Navigate_To_SessionDetailsView_When_Rink_IsNot_Selected()
+        {
+            const string rinkId = "TrackId";
+            _sut.SelectedSession = new SessionViewModel(new SessionDto
+            {
+                AccountId = AccountId,
+                Id = Guid.NewGuid().ToString("N"),
+                IsCompleted = false,
+                RinkId = rinkId
+            }, new[] {new TrackDto
+                {
+                    Id = rinkId,
+                    Name = "TrackName",
+                    Start = default,
+                    Finish = default
+                }
+            });
+
+            await _sut.OpenDetailsCommand.ExecuteAsync();
+
+            await _navigationService.DidNotReceive().NavigateToViewModelAsync<SessionDetailsViewModel>();
+        }
+        
+        [Fact]
+        public async Task OpenSessionDetails_DoesNot_Navigate_To_SessionDetailsView_When_Session_IsNot_Selected()
+        {
+            await _sut.OpenDetailsCommand.ExecuteAsync();
+
+            await _navigationService.DidNotReceive().NavigateToViewModelAsync<SessionDetailsViewModel>();
+        }
+        
+        [Fact]
+        public async Task OpenSessionDetails_SelectsRink_By_SelectedSession_RinkName()
+        {
+            const string rinkId = "TrackId";
+            const string rinkName = "TrackName";
+            _sut.SelectedSession = new SessionViewModel(new SessionDto
+            {
+                AccountId = AccountId,
+                Id = Guid.NewGuid().ToString("N"),
+                IsCompleted = false,
+                RinkId = rinkId
+            }, new[] {new TrackDto
+                {
+                    Id = rinkId,
+                    Name = rinkName,
+                    Start = default,
+                    Finish = default
+                }
+            });
+
+            await _sut.OpenDetailsCommand.ExecuteAsync();
+
+            _trackService.Received(1).SelectRinkByName(rinkName);
+        }
+        
+        [Fact]
+        public void CanOpenSessionDetails_When_Session_Is_Selected_And_Has_RinkName()
+        {
+            const string rinkId = "TrackId";
+            const string rinkName = "TrackName";
+            _sut.SelectedSession = new SessionViewModel(new SessionDto
+            {
+                AccountId = AccountId,
+                Id = Guid.NewGuid().ToString("N"),
+                IsCompleted = false,
+                RinkId = rinkId
+            }, new[] {new TrackDto
+                {
+                    Id = rinkId,
+                    Name = rinkName,
+                    Start = default,
+                    Finish = default
+                }
+            });
+
+            _sut.CanOpenSessionDetails.Should().BeTrue();
+        }
+        
+        [Fact]
+        public void CanNotOpenSessionDetails_When_Session_Is_Selected_But_RinkName_Is_Unknown()
+        {
+            _sut.SelectedSession = new SessionViewModel(new SessionDto
+            {
+                AccountId = AccountId,
+                Id = Guid.NewGuid().ToString("N"),
+                IsCompleted = false,
+                RinkId = "dd"
+            }, new[] {new TrackDto
+                {
+                    Id = "rinkId",
+                    Name = "rinkName",
+                    Start = default,
+                    Finish = default
+                }
+            });
+
+            _sut.CanOpenSessionDetails.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void CanNotOpenSessionDetails_When_Session_Is_NotSelected()
+        {
+            _sut.CanOpenSessionDetails.Should().BeFalse();
+        }
+
+        [Fact]
+        public void Updates_CanOpenDetails_When_Session_Is_Selected()
+        {
+            var canOpenDetailsUpdated = false;
+            _sut.AttachHandlers();
+            _sut.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(_sut.CanOpenSessionDetails))
+                    canOpenDetailsUpdated = true;
+            };
+            _sut.SelectedSession = new SessionViewModel(CreatSessions().First(), new List<TrackDto>());
+
+            canOpenDetailsUpdated.Should().BeTrue();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Models.Training;
 
@@ -17,5 +18,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         bool CanStart { get; }
 
         bool IsRemote { get; }
+        
+        event EventHandler? SessionUpdated;
     }
 }

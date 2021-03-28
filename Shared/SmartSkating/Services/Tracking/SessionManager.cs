@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
@@ -56,6 +55,7 @@ namespace Sanet.SmartSkating.Services.Tracking
                                && !IsRemote;
 
         public bool IsRemote => CurrentSession?.IsRemote == true;
+        public event EventHandler? SessionUpdated;
         public bool IsReady => _sessionProvider.CurrentSession != null;
 
         public async ValueTask StartSession()
@@ -100,7 +100,7 @@ namespace Sanet.SmartSkating.Services.Tracking
                 return;
             }
 
-            IsRunning = true;
+            IsRunning = !CurrentSession.IsCompleted;
 #pragma warning disable 4014
             HandleRemoteSession();
 #pragma warning restore 4014
@@ -108,23 +108,28 @@ namespace Sanet.SmartSkating.Services.Tracking
 
         private async Task HandleRemoteSession()
         {
-            if (CurrentSession != null)
+            if (CurrentSession == null)
+                return;
+            var waypointsTask = _apiService.GetWaypointsForSessionAsync(
+                            CurrentSession.SessionId,
+                            ApiNames.AzureApiSubscriptionKey);
+            var apiTasksForSession = new List<Task>
             {
-                _syncService.WayPointReceived+= SyncServiceOnWayPointReceived;
-                _syncService.SessionClosedReceived+= SyncServiceOnSessionClosedReceived;
-                var syncHubTask = _syncService.ConnectToHub(CurrentSession.SessionId);
-                var waypointsTask = _apiService.GetWaypointsForSessionAsync(
-                    CurrentSession.SessionId,
-                    ApiNames.AzureApiSubscriptionKey);
-                var apiTasksForSession = new[]
-                {
-                    syncHubTask,
-                    waypointsTask
-                };
+                waypointsTask
+            };
+            if (IsRunning)
+            {
+                _syncService.WayPointReceived += SyncServiceOnWayPointReceived;
+                _syncService.SessionClosedReceived += SyncServiceOnSessionClosedReceived;
+                apiTasksForSession.Add(_syncService.ConnectToHub(CurrentSession.SessionId));
+            }
 
-                 await Task.WhenAll(apiTasksForSession);
-                 var waypoints = (await waypointsTask).Waypoints;
-                 AddWaypointsToSession(waypoints);
+            await Task.WhenAll(apiTasksForSession);
+            var waypoints = (await waypointsTask).Waypoints;
+            if (waypoints != null)
+            {
+                CurrentSession?.AddPoints(waypoints);
+                SessionUpdated?.Invoke(this, null);
             }
         }
 
@@ -147,16 +152,7 @@ namespace Sanet.SmartSkating.Services.Tracking
                 new Coordinate(waypointArgs.WayPoint.Coordinate),
                 waypointArgs.WayPoint.Time);
         }
-
-        private void AddWaypointsToSession(IReadOnlyCollection<WayPointDto>? waypoints)
-        {
-            if (waypoints == null) return;
-            foreach (var waypoint in waypoints.OrderBy(w=>w.Time))
-            {
-                CurrentSession?.AddPoint(new Coordinate(waypoint.Coordinate), waypoint.Time);
-            }
-        }
-
+        
         private void LocationServiceOnLocationReceived(object sender, CoordinateEventArgs e)
         {
             if (CurrentSession == null) return;

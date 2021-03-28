@@ -32,6 +32,7 @@ namespace Sanet.SmartSkating.Dashboard.Services
             //For now just manual registration
             _viewModelViewDictionary.Add(typeof(LoginViewModel), typeof(LoginView));
             _viewModelViewDictionary.Add(typeof(SessionsViewModel), typeof(SessionsView));
+            _viewModelViewDictionary.Add(typeof(SessionDetailsViewModel), typeof(SessionDetailsView));
         }
 
         private T CreateViewModel<T>() where T : BaseViewModel
@@ -51,12 +52,6 @@ namespace Sanet.SmartSkating.Dashboard.Services
                     _rootFrame.Navigate(viewType);
                 }
             }).AsTask();
-            //return  Task.Run(() => {
-            //    var viewType = CreateView(viewModel);
-            //    {
-            //        _rootFrame.Navigate(viewType);
-            //    }
-            //});
         }
 
         private Type CreateView(BaseViewModel viewModel)

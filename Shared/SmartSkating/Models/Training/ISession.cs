@@ -17,11 +17,13 @@ namespace Sanet.SmartSkating.Models.Training
         TimeSpan BestLapTime { get; }
         Rink Rink { get; }
         void AddPoint(Coordinate location, DateTime date);
+        void AddPoints(IEnumerable<WayPointDto> waypoints);
         void AddSeparatingPoint(WayPointTypes type, DateTime date);
 
         DateTime StartTime { get; }
         void SetStartTime(DateTime startTime);
         public Coordinate? LastCoordinate { get; }
         bool IsRemote { get; }
+        bool IsCompleted { get; }
     }
 }

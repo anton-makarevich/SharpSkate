@@ -97,6 +97,12 @@
         <None Include="Entitlements.plist" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="..\Dashboard.Shared\Services\Dummy\DummyDataSyncService.cs">
+          <Link>Dashboard.Shared\Services\Dummy\DummyDataSyncService.cs</Link>
+        </Compile>
+        <Compile Include="..\Dashboard.Shared\Services\Dummy\DummyLocationService.cs">
+          <Link>Dashboard.Shared\Services\Dummy\DummyLocationService.cs</Link>
+        </Compile>
         <Compile Include="Main.cs" />
     </ItemGroup>
     <ItemGroup>

@@ -136,7 +136,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         {
             const string sessionId = "sessionId";
             const string userId = "123";
-            const string deviceId = "deviceId";
+            const string deviceId = "DeviceId";
 
             PrepareSessionMock(sessionId, userId, deviceId);
 
@@ -155,7 +155,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         {
             const string sessionId = "someSessionId";
             const string userId = "123";
-            const string deviceId = "deviceId";
+            const string deviceId = "DeviceId";
             PrepareSessionMock(sessionId, userId, deviceId);
 
             _sut.StopSession();
@@ -194,7 +194,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         {
             const string sessionId = "someSessionId";
             const string userId = "123";
-            const string deviceId = "deviceId";
+            const string deviceId = "DeviceId";
             PrepareSessionMock(sessionId, userId, deviceId);
 
             _sut.StopSession();
@@ -304,28 +304,31 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         [Fact]
         public void CheckSession_Checks_If_ActiveSession_Is_Remote()
         {
-            var session = PrepareSessionMock("SessionId", "userId", "deviceId");
+            var session = PrepareSessionMock();
 
             _sut.CheckSession();
 
             var _ = session.Received().IsRemote;
         }
 
-        [Fact]
-        public void IsRunning_Is_True_When_Session_Is_Remote()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void IsRunning_Is_Opposite_To_Session_IsComplete_When_Session_Is_Remote(bool isCompleted)
         {
-            var session = PrepareSessionMock("SessionId", "userId", "deviceId");
+            var session = PrepareSessionMock();
             session.IsRemote.Returns(true);
+            session.IsCompleted.Returns(isCompleted);
             
             _sut.CheckSession();
 
-            _sut.IsRunning.Should().BeTrue();
+            _sut.IsRunning.Should().Be(!isCompleted);
         }
 
         [Fact]
         public void StopSession_Does_Nothing_When_Session_Is_Remote()
         {
-            var session = PrepareSessionMock("SessionId", "userId", "deviceId");
+            var session = PrepareSessionMock();
             session.IsRemote.Returns(true);
             _sut.CheckSession();
             
@@ -339,8 +342,8 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         [Fact]
         public void CheckSession_Starts_SyncServer_Connection_For_Remote_Session()
         {
-            const string sessionId = "sessionId";
-            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            const string sessionId = "SessionId";
+            var session = PrepareSessionMock(sessionId);
             session.IsRemote.Returns(true);
             
             _sut.CheckSession();
@@ -352,7 +355,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         public void CheckSession_Gets_Waypoints_For_Remote_Session()
         {
             const string sessionId = "sessionId";
-            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            var session = PrepareSessionMock();
             session.IsRemote.Returns(true);
             
             _sut.CheckSession();
@@ -364,8 +367,8 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         [Fact]
         public void CheckSession_Updates_Session_WithWaypoints_From_Api()
         {
-            const string sessionId = "sessionId";
-            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            const string sessionId = "SessionId";
+            var session = PrepareSessionMock(sessionId);
             session.IsRemote.Returns(true);
             var time = DateTime.Now;
             var coordinateDto = new CoordinateDto
@@ -373,31 +376,68 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
                 Latitude = 123,
                 Longitude = 456
             };
-            var coordinate = new Coordinate(coordinateDto);
+            var waypoints = new List<WayPointDto>
+            {
+                new WayPointDto
+                {
+                    SessionId = sessionId,
+                    Coordinate = coordinateDto,
+                    Time = time
+                }
+            };
             _apiClient.GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
                 .Returns(new GetWaypointsResponse
                 {
-                    Waypoints = new List<WayPointDto>
-                    {
-                        new WayPointDto
-                        {
-                            SessionId = sessionId,
-                            Coordinate = coordinateDto,
-                            Time = time
-                        }
-                    }
+                    Waypoints = waypoints
                 });
             
             _sut.CheckSession();
             
-            session.Received().AddPoint(coordinate, time);
+            session.Received().AddPoints(waypoints);
+        }
+        
+        [Fact]
+        public void CheckSession_Raises_Event_When_Session_IsUpdated()
+        {
+            const string sessionId = "SessionId";
+            var session = PrepareSessionMock(sessionId);
+            session.IsRemote.Returns(true);
+            var time = DateTime.Now;
+            var sessionUpdatedIsCalled = false;
+            var coordinateDto = new CoordinateDto
+            {
+                Latitude = 123,
+                Longitude = 456
+            };
+            var waypoints = new List<WayPointDto>
+            {
+                new WayPointDto
+                {
+                    SessionId = sessionId,
+                    Coordinate = coordinateDto,
+                    Time = time
+                }
+            };
+            _apiClient.GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
+                .Returns(new GetWaypointsResponse
+                {
+                    Waypoints = waypoints
+                });
+            _sut.SessionUpdated += (sender, args) =>
+            {
+                sessionUpdatedIsCalled = true;
+            };
+            
+            _sut.CheckSession();
+
+            sessionUpdatedIsCalled.Should().BeTrue();
         }
         
         [Fact]
         public void Updates_Session_WithWaypoint_From_SyncHub()
         {
-            const string sessionId = "sessionId";
-            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            const string sessionId = "SessionId";
+            var session = PrepareSessionMock(sessionId);
             session.IsRemote.Returns(true);
             var time = DateTime.Now;
             var coordinateDto = new CoordinateDto
@@ -422,8 +462,8 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         [Fact]
         public void Stops_RemoteSession_On_SessionClosed_Event_From_SyncHub()
         {
-            const string sessionId = "sessionId";
-            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            const string sessionId = "SessionId";
+            var session = PrepareSessionMock(sessionId);
             session.IsRemote.Returns(true);
 
             var sessionClosed = new SessionDto()
@@ -440,8 +480,8 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         [Fact]
         public async Task Disconnects_SignalR_On_SessionClosed_Event_From_SyncHub()
         {
-            const string sessionId = "sessionId";
-            var session = PrepareSessionMock(sessionId, "userId", "deviceId");
+            const string sessionId = "SessionId";
+            var session = PrepareSessionMock(sessionId);
             session.IsRemote.Returns(true);
 
             var sessionClosed = new SessionDto()
@@ -456,13 +496,13 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         }
         
         [Fact]
-        public void StartingSessionUpdatesItsStartTime()
+        public async Task StartingSessionUpdatesItsStartTime()
         {
-            var session = PrepareSessionMock("sessionId","userId", "deviceId");
+            var session = PrepareSessionMock();
             var startTime = DateTime.Now;
             _dateProvider.Now().Returns(startTime);
 
-            _sut.StartSession();
+            await _sut.StartSession();
 
             session.Received().SetStartTime(startTime);
         }
