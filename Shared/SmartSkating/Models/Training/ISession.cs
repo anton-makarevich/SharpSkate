@@ -25,7 +25,5 @@ namespace Sanet.SmartSkating.Models.Training
         public Coordinate? LastCoordinate { get; }
         bool IsRemote { get; }
         bool IsCompleted { get; }
-        
-
     }
 }
