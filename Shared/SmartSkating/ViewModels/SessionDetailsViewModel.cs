@@ -25,11 +25,11 @@ namespace Sanet.SmartSkating.ViewModels
 
         public override void UpdateUi()
         {
+            base.UpdateUi();
             if (ForceUiUpdate)
             {
                 UpdateFinalTime();
             }
-            base.UpdateUi();
         }
 
         public override bool ForceUiUpdate => !SessionManager.IsRunning 
@@ -58,6 +58,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         public void OnSessionUpdate(object? sender, EventArgs e)
         {
+            UpdateUi();
         }
     }
 }
