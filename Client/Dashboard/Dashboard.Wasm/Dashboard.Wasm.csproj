@@ -43,5 +43,10 @@
       <ProjectReference Include="..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj" />
       <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Reference Include="Syncfusion.SfChart.Uno, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\Libs\SfCharts.Uno\netstandard2.0\Syncfusion.SfChart.Uno.dll</HintPath>
+      </Reference>
+    </ItemGroup>
     <Import Project="..\Dashboard.Shared\Dashboard.Shared.projitems" Label="Shared" Condition="Exists('..\Dashboard.Shared\Dashboard.Shared.projitems')" />
 </Project>

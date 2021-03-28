@@ -1,5 +1,3 @@
-using System;
-
 namespace Sanet.SmartSkating.Dto
 {
     public static class ApiNames

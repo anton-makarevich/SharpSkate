@@ -11,6 +11,7 @@ namespace Sanet.SmartSkating.Models.Training
         string SessionId { get; }
         IList<WayPoint> WayPoints { get; }
         IList<Section> Sectors { get; }
+        IList<Lap> Laps { get; }
         Section? BestSector { get; }
         int LapsCount { get; }
         TimeSpan LastLapTime { get; }
