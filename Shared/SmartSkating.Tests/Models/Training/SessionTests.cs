@@ -282,6 +282,20 @@ namespace Sanet.SmartSkating.Tests.Models.Training
             // so we're crossing start in between ~35 seconds
             Assert.Equal(34,_sut.LastLapTime.Seconds);
         }
+        
+        [Fact]
+        public void AddsLaps_OnStartCrossing()
+        {
+            var firstLapTime = DateTime.Now;
+            AddLap(firstLapTime, 10);
+
+            // 30 is time for middle of fourth sector,
+            // 40 is time for middle of first
+            // so we're crossing start in between ~35 seconds
+            _sut.Laps.Count.Should().Be(1);
+            _sut.Laps.First().Number.Should().Be(1);
+            _sut.Laps.First().Time.Seconds.Should().Be(34);
+        }
 
         [Fact]
         public void UpdatesBestLastLapTimeOnStartCrossing()

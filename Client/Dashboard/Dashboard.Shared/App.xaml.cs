@@ -46,6 +46,7 @@ namespace Sanet.SmartSkating.Dashboard
 		/// </summary>
 		public App()
 		{
+			//Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR LICENSE KEY");
 			_services = new ServiceCollection();
 			ConfigureServices(_services);
 

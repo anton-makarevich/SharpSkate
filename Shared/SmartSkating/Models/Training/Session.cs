@@ -24,6 +24,7 @@ namespace Sanet.SmartSkating.Models.Training
             _settingsService = settingsService;
             WayPoints = new List<WayPoint>();
             Sectors = new List<Section>();
+            Laps = new List<Lap>();
             SessionId = sessionId;
             IsRemote = isRemote;
             IsCompleted = isCompleted;
@@ -32,7 +33,8 @@ namespace Sanet.SmartSkating.Models.Training
         public string SessionId { get; }
         public IList<WayPoint> WayPoints { get; }
         public IList<Section> Sectors { get; }
-        public int LapsCount { get; private set; }
+        public IList<Lap> Laps { get; }
+        public int LapsCount => Laps.Count;
         public TimeSpan LastLapTime { get; private set; }
         public TimeSpan BestLapTime { get; private set; }
         public Rink Rink => _rink;
@@ -223,8 +225,13 @@ namespace Sanet.SmartSkating.Models.Training
             if (lastSections.Count() == 4 && lastSections.First().Type == WayPointTypes.FirstSector &&
                 lastSections.Last().Type == WayPointTypes.FourthSector)
             {
-                LapsCount++;
                 LastLapTime = new TimeSpan(lastSections.Sum(s => s.Time.Ticks));
+                Laps.Add(new Lap
+                {
+                    Number = Laps.Count+1,
+                    Time = LastLapTime
+                });
+                
                 if (BestLapTime.Ticks == 0 || LastLapTime.Ticks < BestLapTime.Ticks)
                     BestLapTime = LastLapTime;
             }

@@ -13,6 +13,7 @@
                   -->
       <Version>6.2.12</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.SfChart.UWP" Version="18.4.0.49" />
     <PackageReference Include="Uno.Core" Version="2.3.0" />
     <PackageReference Include="Uno.UI" Version="3.5.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />

@@ -69,6 +69,48 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.ForceUiUpdate.Should().BeTrue();
         }
         
+        [Fact]
+        public void UpdateUi_Updates_Chart_When_Session_Is_Running()
+        {
+            _sessionManager.IsRunning.Returns(true);
+            var session = CreateSessionMock();
+            session.LapsCount.Returns(1);
+            session.Laps.Returns(new List<Lap>
+            {
+                new Lap
+                {
+                    Number = 1,
+                    Time = new TimeSpan(123456798)
+                }
+            });
+
+            _sut.UpdateUi();
+
+            _sut.LapsData.Should().BeSameAs(session.Laps);
+        }
+        
+        [Fact]
+        public void UpdateUi_Updates_Chart_When_ForceUpdate()
+        {
+            _sessionManager.IsRunning.Returns(false);
+            _sessionManager.IsRemote.Returns(true);
+            
+            var session = CreateSessionMock();
+            session.LapsCount.Returns(1);
+            session.Laps.Returns(new List<Lap>
+            {
+                new Lap
+                {
+                    Number = 1,
+                    Time = new TimeSpan(123456798)
+                }
+            });
+
+            _sut.UpdateUi();
+
+            _sut.LapsData.Should().BeSameAs(session.Laps);
+        }
+        
         private ISession CreateSessionMock()
         {
             var session = Substitute.For<ISession>();
