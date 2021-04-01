@@ -121,7 +121,7 @@ namespace Sanet.SmartSkating.Services.Tracking
             {
                 _syncService.WayPointReceived += SyncServiceOnWayPointReceived;
                 _syncService.SessionClosedReceived += SyncServiceOnSessionClosedReceived;
-                apiTasksForSession.Add(_syncService.ConnectToHub(CurrentSession.SessionId));
+                apiTasksForSession.Add(_syncService.ConnectToHub());
             }
 
             await Task.WhenAll(apiTasksForSession);

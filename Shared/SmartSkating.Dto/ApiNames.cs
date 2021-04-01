@@ -34,5 +34,7 @@ namespace Sanet.SmartSkating.Dto
             public const string Path= "/accounts";
             public const string Route = "accounts";
         }
+
+        public const string SyncHub = "sync-hub";
     }
 }

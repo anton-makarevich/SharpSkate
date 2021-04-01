@@ -6,7 +6,7 @@ namespace Sanet.SmartSkating.Services.Tracking
 {
     public interface ISyncService
     {
-        Task ConnectToHub(string sessionId);
+        Task ConnectToHub();
         event EventHandler<WayPointEventArgs>? WayPointReceived;
         event EventHandler<SessionEventArgs>? SessionClosedReceived;
         Task CloseConnection();

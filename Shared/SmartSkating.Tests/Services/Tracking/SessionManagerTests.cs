@@ -348,7 +348,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             
             _sut.CheckSession();
 
-            _syncService.Received(1).ConnectToHub(sessionId);
+            _syncService.Received(1).ConnectToHub();
         }
         
         [Fact]

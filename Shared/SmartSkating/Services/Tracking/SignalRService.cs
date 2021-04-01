@@ -10,10 +10,10 @@ namespace Sanet.SmartSkating.Services.Tracking
     public class SignalRService:ISyncService
     {
         private HubConnection? _connection;
-        public async Task ConnectToHub(string sessionId)
+        public async Task ConnectToHub()
         {
             _connection = new HubConnectionBuilder()
-                .WithUrl($"{ApiNames.BaseUrl}/{sessionId}", (opts) =>
+                .WithUrl($"{ApiNames.BaseUrl}/{ApiNames.SyncHub}", (opts) =>
                 {
                     opts.Headers.Add("Ocp-Apim-Subscription-Key", ApiNames.AzureApiSubscriptionKey);
                 })

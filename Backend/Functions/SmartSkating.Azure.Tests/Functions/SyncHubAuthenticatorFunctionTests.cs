@@ -10,6 +10,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Sanet.SmartSkating.Backend.Functions;
 using Sanet.SmartSkating.Backend.Functions.TestUtils;
+using Sanet.SmartSkating.Dto;
 using Xunit;
 
 namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
@@ -19,7 +20,6 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         private readonly SyncHubAuthenticatorFunction _sut = new SyncHubAuthenticatorFunction();
         private readonly ILogger _log = Substitute.For<ILogger>();
         private readonly IBinder _binder = Substitute.For<IBinder>();
-        private const string SessionId = "123";
         private readonly HttpRequest _request = Utils.CreateMockRequest();
 
         [Fact]
@@ -28,10 +28,10 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             _binder.BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute())
                 .ReturnsForAnyArgs(new SignalRConnectionInfo());
 
-            await _sut.Negotiate(_request,SessionId, _binder, _log);
+            await _sut.Negotiate(_request, _binder, _log);
 
             await _binder.Received(1).BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute
-                {HubName = SessionId});
+                {HubName = ApiNames.SyncHub});
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 AccessToken = token
             });
 
-            var actionResult =  await _sut.Negotiate(_request,SessionId, _binder, _log) as JsonResult;
+            var actionResult =  await _sut.Negotiate(_request, _binder, _log) as JsonResult;
 
             actionResult.Should().NotBeNull();
             var hubInfo = actionResult?.Value as SignalRConnectionInfo;
@@ -62,7 +62,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             _binder.BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute())
                 .ThrowsForAnyArgs(new Exception(errorMessage));
 
-            var response = await _sut.Negotiate(_request,SessionId, _binder, _log) as NotFoundResult;
+            var response = await _sut.Negotiate(_request, _binder, _log) as NotFoundResult;
 
             response.Should().NotBeNull();
         }
