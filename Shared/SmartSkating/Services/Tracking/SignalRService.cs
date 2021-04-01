@@ -13,7 +13,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         public async Task ConnectToHub()
         {
             _connection = new HubConnectionBuilder()
-                .WithUrl($"{ApiNames.BaseUrl}/{ApiNames.SyncHub}", (opts) =>
+                .WithUrl(ApiNames.BaseUrl, (opts) =>
                 {
                     opts.Headers.Add("Ocp-Apim-Subscription-Key", ApiNames.AzureApiSubscriptionKey);
                 })

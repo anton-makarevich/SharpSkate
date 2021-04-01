@@ -14,7 +14,6 @@ using Sanet.SmartSkating.Backend.Functions.TestUtils;
 using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
-using Sanet.SmartSkating.Dto.Models.Responses.Base;
 using Sanet.SmartSkating.Dto.Services;
 using Xunit;
 
@@ -74,10 +73,10 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             var response = actionResult.Value as SaveEntitiesResponse;
         
             Assert.NotNull(response?.SyncedIds);
-            Assert.Equal(200, response.ErrorCode);
-            Assert.Equal(2, response.SyncedIds.Count);
-            Assert.Equal(_wayPointsStub.First().Id,response.SyncedIds.First());
-            Assert.Equal(_wayPointsStub.Last().Id,response.SyncedIds.Last());
+            Assert.Equal(200, response?.ErrorCode);
+            Assert.Equal(2, response?.SyncedIds.Count);
+            Assert.Equal(_wayPointsStub.First().Id,response?.SyncedIds.First());
+            Assert.Equal(_wayPointsStub.Last().Id,response?.SyncedIds.Last());
         }
         
         [Fact]
