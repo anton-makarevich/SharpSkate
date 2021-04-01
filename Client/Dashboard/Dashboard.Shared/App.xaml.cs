@@ -74,7 +74,7 @@ namespace Sanet.SmartSkating.Dashboard
 			_services.AddSingleton<IDeviceInfo,EssentialsDeviceInfo>();
 			_services.AddSingleton<IPreferences,EssentialsPreferences>();
 			_services.AddSingleton<ISessionProvider,SessionProvider>();
-			_services.AddSingleton<ISettingsService, SettingsService>();
+			_services.AddSingleton<ISettingsService>(new SettingsService{CanInterpolateSectors = true});
 			_services.AddSingleton<ITrackService, TrackService>();
 			_services.AddSingleton<ITrackProvider,LocalTrackProvider>();
 			_services.AddSingleton<IResourceReader,EmbeddedResourceReader>();
