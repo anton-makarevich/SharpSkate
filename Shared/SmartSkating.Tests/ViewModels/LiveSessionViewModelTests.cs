@@ -392,18 +392,6 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         }
 
         [Fact]
-        public void StartTracking_Updates_IsTracking_Flag()
-        {
-            _sut.AttachHandlers();
-            _sut.IsTracking.Should().BeFalse();
-            _sessionManager.IsRunning.Returns(true);
-
-            _sut.TrackTime();
-
-            _sut.IsTracking.Should().BeTrue();
-        }
-
-        [Fact]
         public void Checks_Session_Type_On_Page_Load()
         {
             _sut.AttachHandlers();

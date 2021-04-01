@@ -29,11 +29,9 @@ namespace Sanet.SmartSkating.ViewModels
         public override void UpdateUi()
         {
             base.UpdateUi();
-            if (ForceUiUpdate || SessionManager.IsRunning)
-            {
-                UpdateFinalTime();
-                UpdateChart();
-            }
+            if (!ForceUiUpdate && !SessionManager.IsRunning) return;
+            UpdateFinalTime();
+            UpdateChart();
         }
 
         private void UpdateChart()
@@ -56,8 +54,11 @@ namespace Sanet.SmartSkating.ViewModels
 
         private void UpdateFinalTime()
         {
-            if (SessionManager.CurrentSession == null) return;
+            if (SessionManager.CurrentSession?.WayPoints == null 
+                || SessionManager.CurrentSession?.WayPoints.Count == 0) return;
+#pragma warning disable 8602
             var finalTime = SessionManager.CurrentSession.WayPoints.Last().Date;
+#pragma warning restore 8602
             var time = finalTime.Subtract(SessionManager.CurrentSession.StartTime);
             FinalSessionTime = time.ToString(TotalTimeFormat);
         }
@@ -77,7 +78,9 @@ namespace Sanet.SmartSkating.ViewModels
 
         public void OnSessionUpdate(object? sender, EventArgs e)
         {
+#pragma warning disable 4014
             TrackTime();
+#pragma warning restore 4014
         }
     }
 }
