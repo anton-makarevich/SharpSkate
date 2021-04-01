@@ -64,18 +64,13 @@ namespace Sanet.SmartSkating.ViewModels
 
         public async Task TrackTime()
         {
-            if (IsTracking)
-                return;
             while (SessionManager.IsRunning && IsActive)
             {
-                IsTracking = SessionManager.IsRunning;
                 if (SessionManager.CurrentSession is null) continue;
                 UpdateUi();
                 await Task.Delay(1000);
             } 
         }
-
-        public bool IsTracking { get; private set; }
 
         public string TotalTime
         {

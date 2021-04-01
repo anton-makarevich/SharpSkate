@@ -77,7 +77,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         public void OnSessionUpdate(object? sender, EventArgs e)
         {
-            UpdateUi();
+            TrackTime();
         }
     }
 }
