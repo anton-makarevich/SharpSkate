@@ -51,7 +51,7 @@ namespace Sanet.SmartSkating.Backend.Functions
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
                 var signalR = await binder
                     .BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
-                        {HubName = ApiNames.SyncHub });
+                        {HubName = requestObject[0].SessionId });
                 foreach (var wayPoint in requestObject)
                 {
                     if (wayPoint.Time.Year < 1601)

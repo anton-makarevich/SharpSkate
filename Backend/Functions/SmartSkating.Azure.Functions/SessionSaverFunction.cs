@@ -53,7 +53,7 @@ namespace Sanet.SmartSkating.Backend.Functions
                     {
                         var signalR = await binder
                                             .BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
-                                                {HubName = ApiNames.SyncHub });
+                                                {HubName = session.Id });
                         await signalR.AddAsync(
                             new SignalRMessage
                             {

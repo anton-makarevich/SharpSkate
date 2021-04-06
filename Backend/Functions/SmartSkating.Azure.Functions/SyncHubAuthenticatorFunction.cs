@@ -6,7 +6,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Microsoft.Extensions.Logging;
-using Sanet.SmartSkating.Dto;
 
 namespace Sanet.SmartSkating.Backend.Functions
 {
@@ -15,8 +14,9 @@ namespace Sanet.SmartSkating.Backend.Functions
         [FunctionName("SyncHubAuthenticatorFunction")]
         public async Task<IActionResult> Negotiate(
             [HttpTrigger(AuthorizationLevel.Function, "post",
-                Route = "negotiate")]
+                Route = "{sessionId}/negotiate")]
             HttpRequest request,
+            string sessionId,
             IBinder binder,
             ILogger log)
         {
@@ -24,7 +24,7 @@ namespace Sanet.SmartSkating.Backend.Functions
             {
                 var connectionInfo = await binder
                     .BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute
-                    {HubName = ApiNames.SyncHub });
+                    {HubName = sessionId });
                 log.LogInformation($"negotiated {connectionInfo}");
                 // connectionInfo contains an access key token with a name identifier claim set to the authenticated user
                 return new JsonResult(connectionInfo);

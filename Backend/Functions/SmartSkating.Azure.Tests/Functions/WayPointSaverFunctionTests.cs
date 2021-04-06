@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Sanet.SmartSkating.Backend.Functions;
 using Sanet.SmartSkating.Backend.Functions.TestUtils;
-using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
 using Sanet.SmartSkating.Dto.Services;
@@ -90,7 +89,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 Substitute.For<ILogger>());
 
             await _binder.Received(1).BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
-                {HubName = ApiNames.SyncHub});
+                {HubName = SessionId});
         }
         
         [Fact]
