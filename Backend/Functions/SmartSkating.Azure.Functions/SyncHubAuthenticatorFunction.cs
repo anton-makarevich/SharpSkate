@@ -18,8 +18,7 @@ namespace Sanet.SmartSkating.Backend.Functions
         {
             _sessionHelper = sessionHelper;
         }
-
-
+        
         [FunctionName("SyncHubAuthenticatorFunction")]
         public async Task<IActionResult> Negotiate(
             [HttpTrigger(AuthorizationLevel.Function, "post",
