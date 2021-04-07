@@ -31,6 +31,7 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<IDeviceInfo,EssentialsDeviceInfo>();
             container.RegisterSingleton<IPreferences,EssentialsPreferences>();
             container.RegisterSingleton<IAccountService,AccountService>();
+            container.RegisterSingleton<ISessionInfoHelper,SessionInfoHelper>();
             container.RegisterInstance(UserDialogs.Instance);
             #if TEST
             container.RegisterSingleton<IDataSyncService,DebugSyncService>();

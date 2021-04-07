@@ -73,6 +73,7 @@ namespace Sanet.SmartSkating.WearOs
             container.RegisterSingleton<ISettingsService, SettingsService>();
             container.RegisterSingleton<IDateProvider, DateProvider>();
             container.RegisterSingleton<ISyncService, SignalRService>();
+            container.RegisterSingleton<ISessionInfoHelper,SessionInfoHelper>();
         }
     }
 }

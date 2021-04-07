@@ -68,29 +68,30 @@ namespace Sanet.SmartSkating.Dashboard
 				BaseAddress = new Uri(ApiNames.BaseUrl)
 			};
 			// Services
-			_services.AddSingleton(RestService.For<IApiService>(httpClient));
-			_services.AddSingleton<ILoginService, LoginService>();
-			_services.AddSingleton<IAccountService, AccountService>();
-			_services.AddSingleton<IDeviceInfo,EssentialsDeviceInfo>();
-			_services.AddSingleton<IPreferences,EssentialsPreferences>();
-			_services.AddSingleton<ISessionProvider,SessionProvider>();
-			_services.AddSingleton<ISettingsService>(new SettingsService{CanInterpolateSectors = true});
-			_services.AddSingleton<ITrackService, TrackService>();
-			_services.AddSingleton<ITrackProvider,LocalTrackProvider>();
-			_services.AddSingleton<IResourceReader,EmbeddedResourceReader>();
-			_services.AddSingleton<ISessionManager, SessionManager>();
-			_services.AddSingleton<ISyncService, SignalRService>();
-			_services.AddSingleton<IDateProvider, DateProvider>();
-			
-			_services.AddSingleton<ILocationService , DummyLocationService>();
-			_services.AddSingleton<IDataSyncService , DummyDataSyncService>();
-			_services.AddSingleton<IBleLocationService, DummyBleService>();
-			_services.AddSingleton<Acr.UserDialogs.IUserDialogs, DummyUserDialogs>();
+			_services
+				.AddSingleton(RestService.For<IApiService>(httpClient))
+				.AddSingleton<ILoginService, LoginService>()
+				.AddSingleton<IAccountService, AccountService>()
+				.AddSingleton<IDeviceInfo, EssentialsDeviceInfo>()
+				.AddSingleton<IPreferences, EssentialsPreferences>()
+				.AddSingleton<ISessionProvider, SessionProvider>()
+				.AddSingleton<ISettingsService>(new SettingsService {CanInterpolateSectors = true})
+				.AddSingleton<ITrackService, TrackService>()
+				.AddSingleton<ITrackProvider, LocalTrackProvider>()
+				.AddSingleton<IResourceReader, EmbeddedResourceReader>()
+				.AddSingleton<ISessionManager, SessionManager>()
+				.AddSingleton<ISyncService, SignalRService>()
+				.AddSingleton<IDateProvider, DateProvider>()
+				.AddSingleton<ISessionInfoHelper, SessionInfoHelper>()
+				.AddSingleton<ILocationService, DummyLocationService>()
+				.AddSingleton<IDataSyncService, DummyDataSyncService>()
+				.AddSingleton<IBleLocationService, DummyBleService>()
+				.AddSingleton<Acr.UserDialogs.IUserDialogs, DummyUserDialogs>()
 
-			// ViewModels
-			_services.AddSingleton<LoginViewModel, LoginViewModel>();
-			_services.AddSingleton<SessionsViewModel, SessionsViewModel>();
-			_services.AddSingleton<SessionDetailsViewModel, SessionDetailsViewModel>();
+				// ViewModels
+				.AddSingleton<LoginViewModel, LoginViewModel>()
+				.AddSingleton<SessionsViewModel, SessionsViewModel>()
+				.AddSingleton<SessionDetailsViewModel, SessionDetailsViewModel>();
         }
 
         /// <summary>
