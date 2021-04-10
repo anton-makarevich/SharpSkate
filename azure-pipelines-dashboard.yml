@@ -22,7 +22,15 @@ steps:
     script: '((Get-Content -path $(tokensFile) -Raw) -replace ''$(azureKeyName)'',''$(azureKeyValue)'') | Set-Content -Path $(tokensFile)'
   displayName: 'Replace token'
 
-- script: dotnet publish Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj -c Release --no-cache
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: dotnet restore Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj
+    includeNuGetOrg: true
+    noCache: true
+  displayName: 'Restore packages'
+    
+- script: dotnet publish Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj -c Release 
   displayName: 'Build dashboard wasm'
 
 - task: AzureCLI@2
