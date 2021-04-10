@@ -25,11 +25,11 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: dotnet restore Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj
+    projects: Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj
     includeNuGetOrg: true
     noCache: true
   displayName: 'Restore packages'
-    
+
 - script: dotnet publish Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj -c Release 
   displayName: 'Build dashboard wasm'
 
@@ -49,12 +49,5 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: 'az storage blob upload-batch -d $web --account-name $(storage-name) --source Client/Dashboard/Dashboard.Wasm/bin/Release/netstandard2.0/publish'
     arguments: ''
-#   displayName: 'Delete old package folders if exist'
-# - task: AzureFileCopy@3
-#   inputs:
-#     SourcePath: 'Client/Dashboard/Dashboard.Wasm/bin/Release/netstandard2.0/publish'
-#     azureSubscription: 'AzureDevSubscription'
-#     Destination: 'AzureBlob'
-#     storage: $(storage-name)
-#     ContainerName: '$web'
+
   displayName: 'Deploy dashboard wasm to azure storage'
