@@ -30,7 +30,7 @@ steps:
     noCache: true
   displayName: 'Restore packages'
 
-- script: dotnet publish Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj -c Release 
+- script: dotnet publish Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj -c Release
   displayName: 'Build dashboard wasm'
 
 - task: AzureCLI@2
