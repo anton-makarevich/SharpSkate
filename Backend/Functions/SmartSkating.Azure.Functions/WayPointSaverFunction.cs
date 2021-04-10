@@ -23,10 +23,12 @@ namespace Sanet.SmartSkating.Backend.Functions
         private readonly IDataService _dataService;
 
         private readonly StringBuilder _errorMessageBuilder = new StringBuilder();
+        private readonly ISessionInfoHelper _sessionHelper;
 
-        public WayPointSaverFunction(IDataService dataService)
+        public WayPointSaverFunction(IDataService dataService, ISessionInfoHelper sessionHelper)
         {
             _dataService = dataService;
+            _sessionHelper = sessionHelper;
         }
 
         [FunctionName("WayPointSaverFunction")]
@@ -51,7 +53,7 @@ namespace Sanet.SmartSkating.Backend.Functions
                 responseObject.ErrorCode = (int)HttpStatusCode.OK;
                 var signalR = await binder
                     .BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
-                        {HubName = requestObject[0].SessionId });
+                        {HubName = _sessionHelper.GetHubNameForSession(requestObject[0].SessionId) });
                 foreach (var wayPoint in requestObject)
                 {
                     if (wayPoint.Time.Year < 1601)

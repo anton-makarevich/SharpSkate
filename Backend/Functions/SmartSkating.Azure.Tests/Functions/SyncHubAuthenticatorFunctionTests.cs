@@ -10,28 +10,37 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Sanet.SmartSkating.Backend.Functions;
 using Sanet.SmartSkating.Backend.Functions.TestUtils;
+using Sanet.SmartSkating.Dto.Services;
 using Xunit;
 
 namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
 {
     public class SyncHubAuthenticatorFunctionTests
     {
-        private readonly SyncHubAuthenticatorFunction _sut = new SyncHubAuthenticatorFunction();
+        private readonly SyncHubAuthenticatorFunction _sut;
         private readonly ILogger _log = Substitute.For<ILogger>();
         private readonly IBinder _binder = Substitute.For<IBinder>();
+        private readonly ISessionInfoHelper _sessionInfo = Substitute.For<ISessionInfoHelper>();
         private const string SessionId = "123";
         private readonly HttpRequest _request = Utils.CreateMockRequest();
+
+        public SyncHubAuthenticatorFunctionTests()
+        {
+            _sut = new SyncHubAuthenticatorFunction(_sessionInfo);
+        }
 
         [Fact]
         public async Task CallsBinderWithCorrectArguments()
         {
+            const string hubName = "hubName";
+            _sessionInfo.GetHubNameForSession(SessionId).Returns(hubName);
             _binder.BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute())
                 .ReturnsForAnyArgs(new SignalRConnectionInfo());
 
             await _sut.Negotiate(_request,SessionId, _binder, _log);
 
             await _binder.Received(1).BindAsync<SignalRConnectionInfo>(new SignalRConnectionInfoAttribute
-                {HubName = SessionId});
+                {HubName = hubName});
         }
 
         [Fact]

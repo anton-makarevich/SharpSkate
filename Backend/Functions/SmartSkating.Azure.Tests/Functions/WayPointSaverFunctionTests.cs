@@ -13,7 +13,6 @@ using Sanet.SmartSkating.Backend.Functions;
 using Sanet.SmartSkating.Backend.Functions.TestUtils;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
-using Sanet.SmartSkating.Dto.Models.Responses.Base;
 using Sanet.SmartSkating.Dto.Services;
 using Xunit;
 
@@ -25,6 +24,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         private readonly IDataService _dataService;
         private readonly List<WayPointDto> _wayPointsStub = new List<WayPointDto>();
         private readonly IBinder _binder = Substitute.For<IBinder>();
+        private readonly ISessionInfoHelper _sessionInfoHelper = Substitute.For<ISessionInfoHelper>();
         private const string SessionId = "SessionId";
 
         private WayPointDto GetWayPointStub(int id)
@@ -45,7 +45,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 _wayPointsStub.Add(GetWayPointStub(i));
             }
             _dataService = Substitute.For<IDataService>();
-            _sut = new WayPointSaverFunction(_dataService);
+            _sut = new WayPointSaverFunction(_dataService, _sessionInfoHelper);
         }
 
         [Fact]
@@ -73,16 +73,18 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             var response = actionResult.Value as SaveEntitiesResponse;
         
             Assert.NotNull(response?.SyncedIds);
-            Assert.Equal(200, response.ErrorCode);
-            Assert.Equal(2, response.SyncedIds.Count);
-            Assert.Equal(_wayPointsStub.First().Id,response.SyncedIds.First());
-            Assert.Equal(_wayPointsStub.Last().Id,response.SyncedIds.Last());
+            Assert.Equal(200, response?.ErrorCode);
+            Assert.Equal(2, response?.SyncedIds.Count);
+            Assert.Equal(_wayPointsStub.First().Id,response?.SyncedIds.First());
+            Assert.Equal(_wayPointsStub.Last().Id,response?.SyncedIds.Last());
         }
         
         [Fact]
         public async Task Function_Sends_Waypoint_To_SignalR()
         {
+            const string hubName = "hubName";
             _dataService.SaveWayPointAsync(Arg.Any<WayPointDto>()).ReturnsForAnyArgs(Task.FromResult(true));
+            _sessionInfoHelper.GetHubNameForSession(SessionId).Returns(hubName);
 
             await _sut.Run(Utils.CreateMockRequest(
                     _wayPointsStub),
@@ -90,7 +92,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 Substitute.For<ILogger>());
 
             await _binder.Received(1).BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
-                {HubName = SessionId});
+                {HubName = hubName});
         }
         
         [Fact]

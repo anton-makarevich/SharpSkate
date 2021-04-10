@@ -18,18 +18,20 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
     public class SessionSaverFunctionTests
     {
         private readonly SessionSaverFunction _sut;
-        private readonly IDataService _dataService;
+        private readonly IDataService _dataService = Substitute.For<IDataService>();
+        private readonly ISessionInfoHelper _sessionInfoHelper = Substitute.For<ISessionInfoHelper>();
         private readonly IBinder _binder = Substitute.For<IBinder>();
+
         private readonly List<SessionDto> _sessionsStub = new List<SessionDto>()
         {
-            new SessionDto()
+            new SessionDto
             {
                 Id = "0",
                 AccountId = "0",
                 IsSaved = false,
                 IsCompleted = false
             },
-            new SessionDto()
+            new SessionDto
             {
                 Id = "1",
                 AccountId = "0",
@@ -40,8 +42,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
 
         public SessionSaverFunctionTests()
         {
-            _dataService = Substitute.For<IDataService>();
-            _sut = new SessionSaverFunction(_dataService);
+            _sut = new SessionSaverFunction(_dataService, _sessionInfoHelper);
         }
 
         [Fact]
@@ -69,10 +70,10 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
             var response = actionResult.Value as SaveEntitiesResponse;
         
             Assert.NotNull(response?.SyncedIds);
-            Assert.Equal(200, response.ErrorCode);
-            Assert.Equal(2, response.SyncedIds.Count);
-            Assert.Equal(_sessionsStub.First().Id,response.SyncedIds.First());
-            Assert.Equal(_sessionsStub.Last().Id,response.SyncedIds.Last());
+            Assert.Equal(200, response?.ErrorCode);
+            Assert.Equal(2, response?.SyncedIds.Count);
+            Assert.Equal(_sessionsStub.First().Id,response?.SyncedIds.First());
+            Assert.Equal(_sessionsStub.Last().Id,response?.SyncedIds.Last());
         }
 
         [Fact]
@@ -102,8 +103,10 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
         [Fact]
         public async Task Function_Sends_Session_To_SignalR_When_Session_Is_Closed()
         {
+            const string hubName = "hubName";
             _dataService.SaveSessionAsync(Arg.Any<SessionDto>()).ReturnsForAnyArgs(Task.FromResult(true));
             _sessionsStub[0].IsCompleted = true;
+            _sessionInfoHelper.GetHubNameForSession(_sessionsStub[0].Id).Returns(hubName);
             
             await _sut.Run(Utils.CreateMockRequest(
                     _sessionsStub),
@@ -111,13 +114,15 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 Substitute.For<ILogger>());
 
             await _binder.Received(1).BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
-                {HubName = _sessionsStub[0].Id});
+                {HubName = hubName});
         }
         
         [Fact]
         public async Task Function_DoesNot_Send_Session_To_SignalR_When_Session_Is_NotClosed()
         {
+            const string hubName = "hubName";
             _dataService.SaveSessionAsync(Arg.Any<SessionDto>()).ReturnsForAnyArgs(Task.FromResult(true));
+            _sessionInfoHelper.GetHubNameForSession(_sessionsStub[0].Id).Returns(hubName);
             
             await _sut.Run(Utils.CreateMockRequest(
                     _sessionsStub),
@@ -125,7 +130,7 @@ namespace Sanet.SmartSkating.Backend.Azure.Tests.Functions
                 Substitute.For<ILogger>());
 
             await _binder.DidNotReceive().BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
-                {HubName = _sessionsStub[0].Id});
+                {HubName = hubName});
         }
     }
 }

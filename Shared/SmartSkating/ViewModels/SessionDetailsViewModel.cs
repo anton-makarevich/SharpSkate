@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Acr.UserDialogs;
 using Sanet.SmartSkating.Dto.Services;
@@ -11,7 +11,6 @@ namespace Sanet.SmartSkating.ViewModels
     public class SessionDetailsViewModel:LiveSessionViewModel
     {
         private string _finalSessionTime = NoValue;
-        private IList<Lap> _lapsData = new List<Lap>();
 
         public SessionDetailsViewModel(
             ISessionManager sessionManager,
@@ -36,17 +35,16 @@ namespace Sanet.SmartSkating.ViewModels
 
         private void UpdateChart()
         {
-            if (SessionManager.CurrentSession != null && SessionManager.CurrentSession.LapsCount != LapsData.Count)
+            if (SessionManager.CurrentSession == null ||
+                SessionManager.CurrentSession.LapsCount == LapsData.Count) return;
+            foreach(var lap in SessionManager.CurrentSession.Laps)
             {
-                LapsData = SessionManager.CurrentSession.Laps;
+                if (!LapsData.Contains(lap))
+                    LapsData.Add(lap);
             }
         }
         
-        public IList<Lap> LapsData 
-        {
-            get => _lapsData;
-            private set => SetProperty(ref _lapsData, value);
-        }
+        public ObservableCollection<Lap> LapsData { get; } = new ObservableCollection<Lap>();
 
         public override bool ForceUiUpdate => !SessionManager.IsRunning 
                                               && SessionManager.IsRemote  

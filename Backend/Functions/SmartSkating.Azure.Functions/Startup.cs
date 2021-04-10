@@ -14,7 +14,8 @@ namespace Sanet.SmartSkating.Backend.Functions
         {
             builder.Services
                 .AddSingleton<IDataService, AzureTablesDataService>()
-                .AddSingleton<ILoginService, AzureLoginService>();
+                .AddSingleton<ILoginService, AzureLoginService>()
+                .AddSingleton<ISessionInfoHelper, SessionInfoHelper>();
         }
     }
 }

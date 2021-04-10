@@ -86,7 +86,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.UpdateUi();
 
-            _sut.LapsData.Should().BeSameAs(session.Laps);
+            _sut.LapsData.Count.Should().Be(session.Laps.Count);
+            _sut.LapsData[0].Should().Be(session.Laps[0]);
         }
         
         [Fact]
@@ -108,7 +109,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.UpdateUi();
 
-            _sut.LapsData.Should().BeSameAs(session.Laps);
+            _sut.LapsData.Count.Should().Be(session.Laps.Count);
+            _sut.LapsData[0].Should().Be(session.Laps[0]);
         }
         
         private ISession CreateSessionMock()

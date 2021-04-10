@@ -20,10 +20,12 @@ namespace Sanet.SmartSkating.Backend.Functions
     public class SessionSaverFunction : IAzureFunction
     {
         private readonly IDataService _dataService;
+        private readonly ISessionInfoHelper _sessionHelper;
 
-        public SessionSaverFunction(IDataService dataService)
+        public SessionSaverFunction(IDataService dataService, ISessionInfoHelper sessionHelper)
         {
             _dataService = dataService;
+            _sessionHelper = sessionHelper;
         }
 
         [FunctionName("SessionSaverFunction")]
@@ -53,7 +55,7 @@ namespace Sanet.SmartSkating.Backend.Functions
                     {
                         var signalR = await binder
                                             .BindAsync<IAsyncCollector<SignalRMessage>>(new SignalRAttribute
-                                                {HubName = session.Id });
+                                                {HubName = _sessionHelper.GetHubNameForSession(session.Id) });
                         await signalR.AddAsync(
                             new SignalRMessage
                             {
