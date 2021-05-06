@@ -19,7 +19,6 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly IDataSyncService _dataSyncService;
         private readonly IBluetoothService _bluetoothService;
         private readonly ISettingsService _settingsService;
-        private readonly ISessionProvider _sessionProvider;
         private string _infoLabel = string.Empty;
         private bool _areGeoServicesInitialized;
         private bool _isInitializingGeoServices;
@@ -27,15 +26,13 @@ namespace Sanet.SmartSkating.ViewModels
         private const int GeoServicesInitTimeoutInSeconds = 30;
 
         public StartViewModel(ILocationService locationService, ITrackService tracksService,
-            IDataSyncService dataSyncService, IBluetoothService bluetoothService, ISettingsService settingsService,
-            ISessionProvider sessionProvider)
+            IDataSyncService dataSyncService, IBluetoothService bluetoothService, ISettingsService settingsService)
         {
             _locationService = locationService;
             _tracksService = tracksService;
             _dataSyncService = dataSyncService;
             _bluetoothService = bluetoothService;
             _settingsService = settingsService;
-            _sessionProvider = sessionProvider;
         }
 
         public string InfoLabel
@@ -65,7 +62,6 @@ namespace Sanet.SmartSkating.ViewModels
             if (!CanStart) return;
             if (_tracksService.SelectedRink == null)
                 return;
-            _sessionProvider.CreateSessionForRink(_tracksService.SelectedRink);
             await NavigationService.NavigateToViewModelAsync<SessionsViewModel>();
         });
 
