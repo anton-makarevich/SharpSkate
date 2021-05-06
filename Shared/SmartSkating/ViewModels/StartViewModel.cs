@@ -56,7 +56,6 @@ namespace Sanet.SmartSkating.ViewModels
 
         public ICommand StartCommand => new SimpleCommand(async () =>
         {
-            
             if (!await EnableBluetooth())
                 return;
             if (!CanStart) return;
