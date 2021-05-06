@@ -27,12 +27,11 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
         private readonly IBluetoothService _bluetoothService = Substitute.For<IBluetoothService>();
         private readonly ISettingsService _settingsService = Substitute.For<ISettingsService>();
-        private readonly ISessionProvider _sessionProvider = Substitute.For<ISessionProvider>();
 
         public StartViewModelTest()
         {
             _sut = new StartViewModel(_locationService,_tracksService, _dataSyncService,
-                _bluetoothService, _settingsService, _sessionProvider);
+                _bluetoothService, _settingsService);
             _sut.SetNavigationService(_navigationService);
         }
 
@@ -259,12 +258,13 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.StartCommand.Execute(null);
 
-            await _navigationService.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
+            await _navigationService.Received().NavigateToViewModelAsync<SessionsViewModel>();
         }
 
         [Fact]
-        public async Task StartCommandDoesNotNavigateToSessionPage_WhenCanStart_ButBtIsOff()
+        public async Task StartCommandDoesNotNavigateToSessionsPage_WhenCanStart_ButBtIsOff()
         {
+            _settingsService.UseBle.Returns(true);
             _bluetoothService.IsBluetoothAvailable().Returns(false);
             _tracksService.SelectedRink.Returns(new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish,RinkId));
             _sut.AttachHandlers();
@@ -272,12 +272,13 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.StartCommand.Execute(null);
 
-            await _navigationService.DidNotReceive().NavigateToViewModelAsync<LiveSessionViewModel>();
+            await _navigationService.DidNotReceive().NavigateToViewModelAsync<SessionsViewModel>();
         }
 
         [Fact]
-        public async Task StartCommandAsksToTurnBtOn_WhenBtIsOff()
+        public async Task StartCommandAsksToTurnBtOn_WhenBtIsOff_ButShouldBeUsed()
         {
+            _settingsService.UseBle.Returns(true);
             _bluetoothService.IsBluetoothAvailable().Returns(false);
 
             _sut.StartCommand.Execute(null);
@@ -300,7 +301,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut.StartCommand.Execute(null);
 
-            await _navigationService.DidNotReceive().NavigateToViewModelAsync<LiveSessionViewModel>();
+            await _navigationService.DidNotReceive().NavigateToViewModelAsync<SessionsViewModel>();
         }
 
         [Fact]
@@ -352,21 +353,6 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.SelectRinkCommand.Execute(null);
 
             await _bluetoothService.Received().EnableBluetoothAsync();
-        }
-
-        [Fact]
-        public void StartCommand_Creates_NewSession_With_Selected_Rink()
-        {
-            _bluetoothService.IsBluetoothAvailable().Returns(true);
-            var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, RinkId);
-            _tracksService.SelectedRink.Returns(rink);
-            _sut.AttachHandlers();
-            //to stop geo services init
-            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
-
-            _sut.StartCommand.Execute(null);
-
-            _sessionProvider.Received(1).CreateSessionForRink(rink);
         }
     }
 }
