@@ -56,19 +56,17 @@ namespace Sanet.SmartSkating.ViewModels
             :string.Empty;
 
         public bool CanStart => !IsInitializingGeoServices && IsRinkSelected;
+
         public ICommand StartCommand => new SimpleCommand(async () =>
         {
-            if (_bluetoothService.IsBluetoothAvailable())
-            {
-                if (CanStart)
-                {
-                    if (_tracksService.SelectedRink != null)
-                        _sessionProvider.CreateSessionForRink(_tracksService.SelectedRink);
-                    await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
-                }
-            }
-            else
-                await _bluetoothService.EnableBluetoothAsync();
+            
+            if (!await EnableBluetooth())
+                return;
+            if (!CanStart) return;
+            if (_tracksService.SelectedRink == null)
+                return;
+            _sessionProvider.CreateSessionForRink(_tracksService.SelectedRink);
+            await NavigationService.NavigateToViewModelAsync<SessionsViewModel>();
         });
 
         public bool IsInitializingGeoServices
@@ -79,17 +77,8 @@ namespace Sanet.SmartSkating.ViewModels
 
         public ICommand SelectRinkCommand => new SimpleCommand(async () =>
         {
-            if (_settingsService.UseBle)
-            {
-                if (_bluetoothService.IsBluetoothAvailable())
-                    await NavigationService.NavigateToViewModelAsync<TracksViewModel>();
-                else
-                    await _bluetoothService.EnableBluetoothAsync();
-            }
-            else
-            {
+            if (await EnableBluetooth())
                 await NavigationService.NavigateToViewModelAsync<TracksViewModel>();
-            }
         });
 
         public override void AttachHandlers()
@@ -136,6 +125,16 @@ namespace Sanet.SmartSkating.ViewModels
         {
             base.DetachHandlers();
             _locationService.LocationReceived-= LocationServiceOnLocationReceived;
+        }
+
+        private async ValueTask<bool> EnableBluetooth()
+        {
+            if (!_settingsService.UseBle)
+                return true;
+            
+            if (!_bluetoothService.IsBluetoothAvailable())
+                await _bluetoothService.EnableBluetoothAsync();
+            return _bluetoothService.IsBluetoothAvailable();
         }
     }
 }

@@ -259,7 +259,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.StartCommand.Execute(null);
 
-            await _navigationService.Received().NavigateToViewModelAsync<LiveSessionViewModel>();
+            await _navigationService.Received().NavigateToViewModelAsync<SessionsViewModel>();
         }
 
         [Fact]
@@ -272,12 +272,13 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.StartCommand.Execute(null);
 
-            await _navigationService.DidNotReceive().NavigateToViewModelAsync<LiveSessionViewModel>();
+            await _navigationService.DidNotReceive().NavigateToViewModelAsync<SessionsViewModel>();
         }
 
         [Fact]
-        public async Task StartCommandAsksToTurnBtOn_WhenBtIsOff()
+        public async Task StartCommandAsksToTurnBtOn_WhenBtIsOff_ButShouldBeUsed()
         {
+            _settingsService.UseBle.Returns(true);
             _bluetoothService.IsBluetoothAvailable().Returns(false);
 
             _sut.StartCommand.Execute(null);
@@ -300,7 +301,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut.StartCommand.Execute(null);
 
-            await _navigationService.DidNotReceive().NavigateToViewModelAsync<LiveSessionViewModel>();
+            await _navigationService.DidNotReceive().NavigateToViewModelAsync<SessionsViewModel>();
         }
 
         [Fact]
