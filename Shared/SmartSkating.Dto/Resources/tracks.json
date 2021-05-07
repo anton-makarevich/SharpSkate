@@ -54,5 +54,19 @@
             "Latitude":51.43236,
             "Longitude":5.45656
         }
+    },
+    {
+        "Id": "8EE69C2C7FCB4EE28BA6DD0FA10801CD",
+        "Name": "Venlo",
+        "Start":
+        {
+            "Latitude":51.37666082, 
+            "Longitude":6.2112146
+        },
+        "Finish":
+        {
+            "Latitude":51.375775494, 
+            "Longitude":6.2115068
+        }
     }
 ]
