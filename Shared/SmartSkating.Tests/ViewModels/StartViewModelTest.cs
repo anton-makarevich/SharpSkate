@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
@@ -267,6 +268,20 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _settingsService.UseBle.Returns(true);
             _bluetoothService.IsBluetoothAvailable().Returns(false);
             _tracksService.SelectedRink.Returns(new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish,RinkId));
+            _sut.AttachHandlers();
+            _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
+
+            _sut.StartCommand.Execute(null);
+
+            await _navigationService.DidNotReceive().NavigateToViewModelAsync<SessionsViewModel>();
+        }
+        
+        [Fact]
+        public async Task StartCommandDoesNotNavigateToSessionsPage_When_Track_Is_NotSelected()
+        {
+            _settingsService.UseBle.Returns(false);
+            _bluetoothService.IsBluetoothAvailable().Returns(false);
+            _tracksService.SelectedRink.ReturnsNull();
             _sut.AttachHandlers();
             _locationService.LocationReceived += Raise.EventWith(null, new CoordinateEventArgs(_locationStub));
 

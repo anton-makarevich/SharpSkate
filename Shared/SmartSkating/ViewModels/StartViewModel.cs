@@ -58,8 +58,7 @@ namespace Sanet.SmartSkating.ViewModels
         {
             if (!await EnableBluetooth())
                 return;
-            if (!CanStart) return;
-            if (_tracksService.SelectedRink == null)
+            if (!CanStart) 
                 return;
             await NavigationService.NavigateToViewModelAsync<SessionsViewModel>();
         });
