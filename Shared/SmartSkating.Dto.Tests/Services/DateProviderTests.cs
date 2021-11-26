@@ -12,7 +12,7 @@ namespace SmartSkating.Dto.Tests.Services
         {
             var sut = new DateProvider();
 
-            sut.Now().Should().BeCloseTo(DateTime.UtcNow, 100);
+            sut.Now().Should().BeCloseTo(DateTime.UtcNow, new TimeSpan(0,0,0,0,100));
         }
     }
 }

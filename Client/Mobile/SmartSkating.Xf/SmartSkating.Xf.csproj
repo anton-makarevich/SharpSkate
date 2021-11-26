@@ -13,7 +13,7 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.483" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.2.0.534" />
     <PackageReference Include="Refit" Version="5.2.4" />
     <PackageReference Include="SimpleInjector" Version="5.3.0" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
