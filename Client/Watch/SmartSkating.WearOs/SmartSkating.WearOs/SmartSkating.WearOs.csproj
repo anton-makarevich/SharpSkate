@@ -20,6 +20,7 @@
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <Nullable>enable</Nullable>
+    <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -33,7 +34,6 @@
     <ConsolePause>False</ConsolePause>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <LangVersion>8.0</LangVersion>
-    <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -46,7 +46,6 @@
     <ConsolePause>False</ConsolePause>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <LangVersion>8.0</LangVersion>
-    <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -111,7 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs">
-      <Version>7.1.0.483</Version>
+      <Version>7.2.0.534</Version>
     </PackageReference>
     <PackageReference Include="Refit">
       <Version>5.2.4</Version>
@@ -123,45 +122,45 @@
       <Version>2.2.0</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Browser">
-      <Version>1.3.0.5</Version>
+      <Version>1.3.0.8</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData">
-      <Version>2.3.0.1</Version>
+      <Version>2.3.1.3</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.AndroidX.PercentLayout" Version="1.0.0.8" />
-    <PackageReference Include="Xamarin.AndroidX.Wear" Version="1.1.0.2" />
-    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.Utils" Version="1.0.0.7" />
-    <PackageReference Include="Xamarin.AndroidX.Fragment" Version="1.3.1" />
-    <PackageReference Include="Xamarin.AndroidX.Media" Version="1.2.1.2" />
+    <PackageReference Include="Xamarin.AndroidX.PercentLayout" Version="1.0.0.11" />
+    <PackageReference Include="Xamarin.AndroidX.Wear" Version="1.2.0.2" />
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.Utils" Version="1.0.0.10" />
+    <PackageReference Include="Xamarin.AndroidX.Fragment" Version="1.3.6.3" />
+    <PackageReference Include="Xamarin.AndroidX.Media" Version="1.4.3" />
     <PackageReference Include="Xamarin.AndroidX.Annotation">
-      <Version>1.1.0.9</Version>
+      <Version>1.2.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Collection">
-      <Version>1.1.0.7</Version>
+      <Version>1.1.0.10</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.VersionedParcelable">
-      <Version>1.1.1.7</Version>
+      <Version>1.1.1.10</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Arch.Core.Common">
-      <Version>2.1.0.8</Version>
+      <Version>2.1.0.11</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Lifecycle.Common">
-      <Version>2.3.0.1</Version>
+      <Version>2.3.1.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Core">
-      <Version>1.3.2.3</Version>
+      <Version>1.6.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel">
-      <Version>2.3.0.1</Version>
+      <Version>2.3.1.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Loader">
-      <Version>1.1.0.7</Version>
+      <Version>1.1.0.10</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.UI">
-      <Version>1.0.0.8</Version>
+      <Version>1.0.0.11</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.6.1</Version>
+      <Version>1.7.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
@@ -171,7 +170,7 @@
     </PackageReference>
   <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.8" />
   <PackageReference Include="Xamarin.Google.Android.Material">
-    <Version>1.3.0.1</Version>
+    <Version>1.4.0.4</Version>
   </PackageReference></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Shared\SmartSkating.Dto\SmartSkating.Dto.csproj">

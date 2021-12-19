@@ -13,11 +13,11 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.483" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.2.0.534" />
     <PackageReference Include="Refit" Version="5.2.4" />
-    <PackageReference Include="SimpleInjector" Version="5.3.0" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+    <PackageReference Include="SimpleInjector" Version="5.0.0.2291" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\SmartSkating\SmartSkating.csproj" />
