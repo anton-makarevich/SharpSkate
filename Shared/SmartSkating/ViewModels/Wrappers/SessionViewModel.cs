@@ -17,7 +17,5 @@ namespace Sanet.SmartSkating.ViewModels.Wrappers
         public string RinkName { get; }
         public string Status { get; }
         public SessionDto Session { get; }
-
-
     }
 }
