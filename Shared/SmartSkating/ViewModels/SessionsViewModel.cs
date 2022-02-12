@@ -21,7 +21,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         public SessionsViewModel(IApiService apiClient,
             IAccountService accountService,
-            ISessionProvider sessionProvider, 
+            ISessionProvider sessionProvider,
             ITrackService trackService)
         {
             _apiClient = apiClient;
@@ -47,6 +47,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         public bool SessionSelected => SelectedSession != null;
         public IAsyncValueCommand StartCommand => new AsyncValueCommand(StartSession);
+        public IAsyncValueCommand StartNewCommand => new AsyncValueCommand(StartNewSession);
         public IAsyncValueCommand OpenDetailsCommand => new AsyncValueCommand(OpenSessionDetails);
 
         public bool CanStart => SessionSelected && _trackService.SelectedRink != null;
@@ -62,7 +63,7 @@ namespace Sanet.SmartSkating.ViewModels
             {
                 return;
             }
-            
+
             _sessionProvider.SetActiveSession(SelectedSession.Session, _trackService.SelectedRink);
             await NavigationService.NavigateToViewModelAsync<SessionDetailsViewModel>();
         }
@@ -104,6 +105,14 @@ namespace Sanet.SmartSkating.ViewModels
                     }
                 });
             if (Sessions.Count == 0 && _trackService.SelectedRink!=null)
+            {
+                await StartNewSession();
+            }
+        }
+
+        private async ValueTask StartNewSession()
+        {
+            if (Sessions.Count == 0 && _trackService.SelectedRink != null)
             {
                 _sessionProvider.CreateSessionForRink(_trackService.SelectedRink);
                 await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
