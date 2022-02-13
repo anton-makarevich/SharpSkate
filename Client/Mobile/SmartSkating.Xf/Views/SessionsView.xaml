@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<base:BaseView 
-    x:TypeArguments="vm:SessionsViewModel" 
+<base:BaseView
+    x:TypeArguments="vm:SessionsViewModel"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:Sanet.SmartSkating.Xf.Views.Base"
     xmlns:vm="clr-namespace:Sanet.SmartSkating.ViewModels;assembly=SmartSkating"
     xmlns:cells="clr-namespace:Sanet.SmartSkating.Xf.Views.Cells"
     x:Class="Sanet.SmartSkating.Xf.Views.SessionsView"
-    BackgroundColor="White" 
+    BackgroundColor="White"
     x:DataType="vm:SessionsViewModel">
     <Grid
         Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <ListView
@@ -32,5 +33,10 @@
             Text="Confirm"
             Command="{Binding StartCommand}"
             IsEnabled ="{Binding CanStart}" />
+        <Button
+            Grid.Row="2"
+            Text="Start New Session"
+            Command="{Binding StartNewCommand}"
+            />
     </Grid>
 </base:BaseView>

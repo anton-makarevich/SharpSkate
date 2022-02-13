@@ -17,17 +17,20 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly IAccountService _accountService;
         private readonly ISessionProvider _sessionProvider;
         private readonly ITrackService _trackService;
+        private readonly IDataSyncService _dataSyncService;
         private SessionViewModel? _selectedSession;
 
         public SessionsViewModel(IApiService apiClient,
             IAccountService accountService,
-            ISessionProvider sessionProvider, 
-            ITrackService trackService)
+            ISessionProvider sessionProvider,
+            ITrackService trackService,
+            IDataSyncService dataSyncService)
         {
             _apiClient = apiClient;
             _accountService = accountService;
             _sessionProvider = sessionProvider;
             _trackService = trackService;
+            _dataSyncService = dataSyncService;
         }
 
         public ObservableCollection<SessionViewModel> Sessions { get; } =
@@ -47,6 +50,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         public bool SessionSelected => SelectedSession != null;
         public IAsyncValueCommand StartCommand => new AsyncValueCommand(StartSession);
+        public IAsyncValueCommand StartNewCommand => new AsyncValueCommand(StartNewSession);
         public IAsyncValueCommand OpenDetailsCommand => new AsyncValueCommand(OpenSessionDetails);
 
         public bool CanStart => SessionSelected && _trackService.SelectedRink != null;
@@ -62,7 +66,7 @@ namespace Sanet.SmartSkating.ViewModels
             {
                 return;
             }
-            
+
             _sessionProvider.SetActiveSession(SelectedSession.Session, _trackService.SelectedRink);
             await NavigationService.NavigateToViewModelAsync<SessionDetailsViewModel>();
         }
@@ -87,6 +91,10 @@ namespace Sanet.SmartSkating.ViewModels
         {
             if (string.IsNullOrEmpty(_accountService.UserId))
                 return;
+            foreach (var session in Sessions)
+            {
+                session.SessionUpdated -= SessionOnSessionUpdated;
+            }
             Sessions.Clear();
             if (_trackService.SelectedRink == null)
             {
@@ -98,12 +106,27 @@ namespace Sanet.SmartSkating.ViewModels
                     ApiNames.AzureApiSubscriptionKey))
                 .Sessions?.OrderBy(f=>f.StartTime).ToList().ForEach(s=>
                 {
-                    if (_trackService.SelectedRink == null || _trackService.SelectedRink.Id == s.RinkId)
-                    {
-                        Sessions.Add(new SessionViewModel(s,_trackService.Tracks));
-                    }
+                    if (_trackService.SelectedRink != null && _trackService.SelectedRink.Id != s.RinkId) return;
+                    var session = new SessionViewModel(s, _trackService.Tracks, _dataSyncService);
+                    session.SessionUpdated+= SessionOnSessionUpdated;
+                    Sessions.Add(session);
                 });
             if (Sessions.Count == 0 && _trackService.SelectedRink!=null)
+            {
+                await StartNewSession();
+            }
+        }
+
+        private void SessionOnSessionUpdated()
+        {
+#pragma warning disable CS4014
+            GetSessions();
+#pragma warning restore CS4014
+        }
+
+        private async ValueTask StartNewSession()
+        {
+            if (Sessions.Count == 0 && _trackService.SelectedRink != null)
             {
                 _sessionProvider.CreateSessionForRink(_trackService.SelectedRink);
                 await NavigationService.NavigateToViewModelAsync<LiveSessionViewModel>();
