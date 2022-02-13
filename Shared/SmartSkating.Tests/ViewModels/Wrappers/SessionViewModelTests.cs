@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentAssertions;
+using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.ViewModels.Wrappers;
 using Xunit;
 
@@ -27,12 +30,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels.Wrappers
             Start = default,
             Finish = default
         };
-        
+
         private readonly SessionViewModel _sut;
+        private readonly IDataSyncService _dataSyncService;
 
         public SessionViewModelTests()
         {
-            _sut = new SessionViewModel(_sessionDto, new List<TrackDto>{_trackDto});
+            _dataSyncService = Substitute.For<IDataSyncService>();
+            _sut = new SessionViewModel(_sessionDto, new List<TrackDto>{_trackDto},_dataSyncService);
         }
 
         [Fact]
@@ -42,43 +47,43 @@ namespace Sanet.SmartSkating.Tests.ViewModels.Wrappers
 
             _sut.StartTime.Should().Be(expectedDate);
         }
-        
+
         [Fact]
         public void Returns_Session_StartTime_In_Readable_Pm_Format()
         {
             _sessionDto.StartTime = new DateTime(2020, 01, 02, 21, 15, 00);
-            var sut = new SessionViewModel(_sessionDto, new List<TrackDto>());
+            var sut = new SessionViewModel(_sessionDto, new List<TrackDto>(),_dataSyncService);
             const string expectedDate = "20-01-02 21:15";
 
             sut.StartTime.Should().Be(expectedDate);
         }
-        
+
         [Fact]
         public void Returns_RinkName()
         {
             _sut.RinkName.Should().Be(_trackDto.Name);
         }
-        
+
         [Fact]
         public void Returns_Unknown_For_RinkName_If_Track_NotFound()
         {
-            var sut = new SessionViewModel(_sessionDto, new List<TrackDto>());
-            
+            var sut = new SessionViewModel(_sessionDto, new List<TrackDto>(),_dataSyncService);
+
             sut.RinkName.Should().Be("Unknown");
         }
-        
+
         [Fact]
         public void Returns_Completed_For_Status_If_Session_Is_Completed()
         {
             _sut.Status.Should().Be("Completed");
         }
-        
+
         [Fact]
         public void Returns_InProgress_For_Status_If_Session_Is_NotCompleted()
         {
             _sessionDto.IsCompleted = false;
-            var sut = new SessionViewModel(_sessionDto, new List<TrackDto>());
-            
+            var sut = new SessionViewModel(_sessionDto, new List<TrackDto>(),_dataSyncService);
+
             sut.Status.Should().Be("In progress");
         }
 
@@ -86,6 +91,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels.Wrappers
         public void Returns_Raw_Session_Model()
         {
             _sut.Session.Should().Be(_sessionDto);
+        }
+
+        [Fact]
+        public async Task CompleteSessionCommand_Calls_SaveAndSyncSession_And_Session_IsCompleted()
+        {
+            await _sut.CompleteSessionCommand.ExecuteAsync();
+
+            await _dataSyncService.Received(1).SaveAndSyncSessionAsync(_sessionDto);
+            _sessionDto.IsCompleted.Should().BeTrue();
         }
     }
 }

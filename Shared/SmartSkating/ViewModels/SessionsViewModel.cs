@@ -17,17 +17,20 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly IAccountService _accountService;
         private readonly ISessionProvider _sessionProvider;
         private readonly ITrackService _trackService;
+        private readonly IDataSyncService _dataSyncService;
         private SessionViewModel? _selectedSession;
 
         public SessionsViewModel(IApiService apiClient,
             IAccountService accountService,
             ISessionProvider sessionProvider,
-            ITrackService trackService)
+            ITrackService trackService,
+            IDataSyncService dataSyncService)
         {
             _apiClient = apiClient;
             _accountService = accountService;
             _sessionProvider = sessionProvider;
             _trackService = trackService;
+            _dataSyncService = dataSyncService;
         }
 
         public ObservableCollection<SessionViewModel> Sessions { get; } =
@@ -101,7 +104,7 @@ namespace Sanet.SmartSkating.ViewModels
                 {
                     if (_trackService.SelectedRink == null || _trackService.SelectedRink.Id == s.RinkId)
                     {
-                        Sessions.Add(new SessionViewModel(s,_trackService.Tracks));
+                        Sessions.Add(new SessionViewModel(s,_trackService.Tracks, _dataSyncService));
                     }
                 });
             if (Sessions.Count == 0 && _trackService.SelectedRink!=null)
