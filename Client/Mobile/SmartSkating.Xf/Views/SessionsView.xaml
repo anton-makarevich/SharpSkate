@@ -36,7 +36,7 @@
         <Button
             Grid.Row="2"
             Text="Start New Session"
-            Command="{Binding StartCommand}"
+            Command="{Binding StartNewCommand}"
             />
     </Grid>
 </base:BaseView>
