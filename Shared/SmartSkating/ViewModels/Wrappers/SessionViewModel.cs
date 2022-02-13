@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
@@ -30,6 +31,9 @@ namespace Sanet.SmartSkating.ViewModels.Wrappers
         {
             Session.IsCompleted = true;
             await _dataSyncService.SaveAndSyncSessionAsync(Session);
+            SessionUpdated?.Invoke();
         }
+
+        public event Action? SessionUpdated;
     }
 }

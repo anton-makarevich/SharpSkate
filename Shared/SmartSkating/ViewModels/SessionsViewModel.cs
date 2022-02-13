@@ -91,6 +91,10 @@ namespace Sanet.SmartSkating.ViewModels
         {
             if (string.IsNullOrEmpty(_accountService.UserId))
                 return;
+            foreach (var session in Sessions)
+            {
+                session.SessionUpdated -= SessionOnSessionUpdated;
+            }
             Sessions.Clear();
             if (_trackService.SelectedRink == null)
             {
@@ -102,15 +106,22 @@ namespace Sanet.SmartSkating.ViewModels
                     ApiNames.AzureApiSubscriptionKey))
                 .Sessions?.OrderBy(f=>f.StartTime).ToList().ForEach(s=>
                 {
-                    if (_trackService.SelectedRink == null || _trackService.SelectedRink.Id == s.RinkId)
-                    {
-                        Sessions.Add(new SessionViewModel(s,_trackService.Tracks, _dataSyncService));
-                    }
+                    if (_trackService.SelectedRink != null && _trackService.SelectedRink.Id != s.RinkId) return;
+                    var session = new SessionViewModel(s, _trackService.Tracks, _dataSyncService);
+                    session.SessionUpdated+= SessionOnSessionUpdated;
+                    Sessions.Add(session);
                 });
             if (Sessions.Count == 0 && _trackService.SelectedRink!=null)
             {
                 await StartNewSession();
             }
+        }
+
+        private void SessionOnSessionUpdated()
+        {
+#pragma warning disable CS4014
+            GetSessions();
+#pragma warning restore CS4014
         }
 
         private async ValueTask StartNewSession()

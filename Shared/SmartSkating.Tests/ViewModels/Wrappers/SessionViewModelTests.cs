@@ -101,5 +101,20 @@ namespace Sanet.SmartSkating.Tests.ViewModels.Wrappers
             await _dataSyncService.Received(1).SaveAndSyncSessionAsync(_sessionDto);
             _sessionDto.IsCompleted.Should().BeTrue();
         }
+
+        [Fact]
+        public async Task CompleteSession_Raises_Event_When_Session_Status_Is_Updated()
+        {
+            var sessionUpdatedIsCalled = false;
+
+            _sut.SessionUpdated += () =>
+            {
+                sessionUpdatedIsCalled = true;
+            };
+
+            await _sut.CompleteSessionCommand.ExecuteAsync();
+
+            sessionUpdatedIsCalled.Should().BeTrue();
+        }
     }
 }
