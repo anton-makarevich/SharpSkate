@@ -8,7 +8,6 @@
         <Nullable>enable</Nullable>
         <AssemblyName>SmartSkating.Dashboard.Wasm</AssemblyName>
         <RootNamespace>Sanet.SmartSkating.Dashboard.Wasm</RootNamespace>
-        <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <MonoRuntimeDebuggerEnabled>true</MonoRuntimeDebuggerEnabled>
@@ -39,8 +38,7 @@
          <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
          <PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.0.1" />
         <PackageReference Include="Refit" Version="5.2.4" />
-        <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.0.13" />
-        <PackageReference Include="Uno.UI.WebAssembly" Version="4.0.13" />
+        <PackageReference Include="Uno.UI.WebAssembly" Version="3.11.9" />
         <PackageReference Include="Uno.UI.RemoteControl" Version="3.5.1" Condition="'$(Configuration)'=='Debug'" />
         <PackageReference Include="Uno.Wasm.Bootstrap" Version="3.2.0" />
         <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="3.2.0" />
