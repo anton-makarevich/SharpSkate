@@ -26,7 +26,7 @@ namespace Sanet.SmartSkating.Services.Account
             };
             try
             {
-                return (await _apiService.LoginAsync(request, ApiNames.AzureApiSubscriptionKey))?.Account;
+                return (await _apiService.LoginAsync(request, ApiNames.AzureApiSubscriptionKey)).Account;
             }
             catch (Exception ex)
             {
