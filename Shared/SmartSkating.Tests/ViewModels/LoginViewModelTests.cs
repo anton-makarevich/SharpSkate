@@ -4,6 +4,7 @@ using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services.Account;
 using Sanet.SmartSkating.Services;
+using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.ViewModels;
 using Xunit;
 
@@ -13,6 +14,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
     {
         private readonly LoginViewModel _sut;
         private readonly ILoginService _loginService;
+        private readonly IAccountService _accountService;
         private readonly INavigationService _navigationService;
 
         private const string Username = "someUser";
@@ -22,7 +24,8 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _navigationService = Substitute.For<INavigationService>();
             _loginService = Substitute.For<ILoginService>();
-            _sut = new LoginViewModel(_loginService);
+            _accountService = Substitute.For<IAccountService>();
+            _sut = new LoginViewModel(_loginService,_accountService);
             _sut.SetNavigationService(_navigationService);
         }
 
@@ -58,7 +61,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.Username = Username;
             canLoginUpdatedTimes.Should().Be(1);
         }
-        
+
         [Fact]
         public void CannotLogin_WhenUsernameIsNotEmptyButPasswordIsEmpty()
         {
@@ -94,12 +97,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut.Username = Username;
             _sut.Password = Password;
-            
+
             _sut.LoginCommand.Execute(null);
 
             await _loginService.Received().LoginUserAsync(Username,Password);
         }
-        
+
         [Fact]
         public async Task DoesNotCallLoginService_WhenLoginCommandIsExecuted_ButCannotLogin()
         {
@@ -118,12 +121,28 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 {
                     Id = "someId"
                 }));
-            
+
             _sut.LoginCommand.Execute(null);
 
             await _navigationService.Received().NavigateToViewModelAsync<SessionsViewModel>();
         }
-        
+
+        [Fact]
+        public void Set_UserId_OnAccountService_WhenLoginIsSuccessful()
+        {
+            _sut.Username = Username;
+            _sut.Password = Password;
+            _loginService.LoginUserAsync(Username,Password)
+                .Returns(Task.FromResult(new AccountDto
+                {
+                    Id = "someId"
+                }));
+
+            _sut.LoginCommand.Execute(null);
+
+            _accountService.Received(1).UserId = _sut.Username;
+        }
+
         [Fact]
         public void ShowsErrorMessage_WhenLoginIsNotSuccessful()
         {
@@ -131,12 +150,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.Password = Password;
             _loginService.LoginUserAsync(Username,Password)
                 .Returns(Task.FromResult<AccountDto>(null));
-            
+
             _sut.LoginCommand.Execute(null);
 
             _sut.ValidationMessage.Should().Be(LoginViewModel.CheckCredentialsMessage);
         }
-        
+
         [Fact]
         public void ShowsErrorMessage_WhenCannotLogin()
         {
@@ -145,7 +164,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 {
                     Id = "someId"
                 }));
-            
+
             _sut.LoginCommand.Execute(null);
 
             _sut.ValidationMessage.Should().Be(LoginViewModel.CheckCredentialsMessage);
@@ -159,14 +178,14 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 {
                     Id = "someId"
                 }));
-            
+
             _sut.LoginCommand.Execute(null);
 
             _sut.Username = Username;
 
             _sut.ValidationMessage.Should().BeEmpty();
         }
-        
+
         [Fact]
         public void ResetsValidationMessage_WhenPasswordIsChanged()
         {
@@ -175,7 +194,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
                 {
                     Id = "someId"
                 }));
-            
+
             _sut.LoginCommand.Execute(null);
 
             _sut.Password = Password;

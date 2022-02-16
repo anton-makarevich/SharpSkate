@@ -18,7 +18,7 @@ namespace Sanet.SmartSkating.Tests.Services.Account
         }
 
         [Fact]
-        public void UserId_Is_Always_AntonM_Until_Login_Is_Implemented()
+        public void Default_UserId_Is_AntonM_Until_Login_Is_Implemented()
         {
             var userId = _sut.UserId;
             userId.Should().Be("AntonM");
@@ -85,6 +85,16 @@ namespace Sanet.SmartSkating.Tests.Services.Account
 
             id1.Should().Be(id2);
             _preferences.Received(1).Get(Arg.Any<string>(),Arg.Any<string>());
+        }
+
+        [Fact]
+        public void UserId_CouldBe_Set()
+        {
+            const string userId = "userId";
+
+            _sut.UserId = userId;
+
+            _sut.UserId.Should().Be(userId);
         }
     }
 }
