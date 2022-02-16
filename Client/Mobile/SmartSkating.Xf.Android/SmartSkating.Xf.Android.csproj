@@ -69,7 +69,7 @@
     <PackageReference Include="Refit" Version="5.2.4" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.Utils" Version="1.0.0.10" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
     <PackageReference Include="Xamarin.AndroidX.Collection" Version="1.1.0.10" />
     <PackageReference Include="Xamarin.AndroidX.Annotation" Version="1.2.0.3" />
     <PackageReference Include="Xamarin.AndroidX.Arch.Core.Common" Version="2.1.0.11" />

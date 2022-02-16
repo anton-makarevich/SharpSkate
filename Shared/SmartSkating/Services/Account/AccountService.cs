@@ -7,8 +7,8 @@ namespace Sanet.SmartSkating.Services.Account
     {
         private readonly IPreferences _preferences;
         private readonly IDeviceInfo _deviceInfo;
-        private string _userId;
-        private string _deviceId;
+        private string _userId ="";
+        private string _deviceId="";
         private const string UserIdKey = "userId";
         private const string DeviceIdKey = "deviceId";
 
@@ -26,6 +26,7 @@ namespace Sanet.SmartSkating.Services.Account
                     _userId =GetUniqueInstallationValue(UserIdKey);
                 return _userId;
             }
+            set => _userId = value;
         }
 
         public string DeviceId

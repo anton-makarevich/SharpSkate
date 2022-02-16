@@ -47,7 +47,7 @@ steps:
     azureSubscription: 'AzureDevSubscription'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob upload-batch -d $web --account-name $(storage-name) --source Client/Dashboard/Dashboard.Wasm/bin/Release/netstandard2.0/publish'
+    inlineScript: 'az storage blob upload-batch -d $web --account-name $(storage-name) --source Client/Dashboard/Dashboard.Wasm/bin/Release/net5.0/publish'
     arguments: ''
 
   displayName: 'Deploy dashboard wasm to azure storage'
