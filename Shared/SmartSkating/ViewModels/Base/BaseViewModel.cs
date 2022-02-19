@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Sanet.SmartSkating.Models;
+using AsyncAwaitBestPractices.MVVM;
 using Sanet.SmartSkating.Services;
 
 namespace Sanet.SmartSkating.ViewModels.Base
 {
     public abstract class BaseViewModel : BindableBase
     {
-        public event EventHandler<object?>? OnResult; 
-        
+        public event EventHandler<object?>? OnResult;
+
         #region Fields
         private bool _isBusy;
         private INavigationService? _navigationService;
@@ -25,7 +25,7 @@ namespace Sanet.SmartSkating.ViewModels.Base
 
         // ReSharper disable once LocalizableElement
         public INavigationService NavigationService => _navigationService ?? throw new ArgumentNullException(
-                                                           nameof(NavigationService), 
+                                                           nameof(NavigationService),
                                                            "Navigation service should be initialized");
 
         public bool IsBusy
@@ -38,7 +38,7 @@ namespace Sanet.SmartSkating.ViewModels.Base
         #endregion
 
         #region Commands
-        public ICommand BackCommand => new SimpleCommand(async () => await GoBackAsync());
+        public ICommand BackCommand => new AsyncCommand(GoBackAsync);
         #endregion
 
         #region Methods
@@ -47,11 +47,11 @@ namespace Sanet.SmartSkating.ViewModels.Base
             _navigationService = navigationService;
         }
 
-        public async Task GoBackAsync()
+        private Task GoBackAsync()
         {
-            await NavigationService.NavigateBackAsync();
+            return NavigationService.NavigateBackAsync();
         }
-        
+
         internal async Task CloseAsync(object? result = null)
         {
             await NavigationService.CloseAsync();
