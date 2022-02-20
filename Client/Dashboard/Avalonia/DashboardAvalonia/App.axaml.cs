@@ -46,8 +46,7 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia
             {
                 _navigationService = new AvaloniaNavigationService(desktop, _serviceProvider);
                 var loginView = new LoginView();
-                loginView.ViewModel = _serviceProvider.GetService<LoginViewModel>();
-                loginView.ViewModel?.SetNavigationService(_navigationService);
+                loginView.ViewModel = _navigationService.GetViewModel<LoginViewModel>();
                 desktop.MainWindow = new MainWindow();
                 desktop.MainWindow.Content = loginView;
             }

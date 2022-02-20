@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Threading;
 using Sanet.SmartSkating.Dashboard.Avalonia.Views;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.ViewModels;
@@ -13,8 +14,8 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
 {
     class AvaloniaNavigationService : INavigationService
     {
-        private readonly List<BaseViewModel> _viewModels = new List<BaseViewModel>();
-        private readonly Dictionary<Type, Type> _viewModelViewDictionary = new Dictionary<Type, Type>();
+        private readonly List<BaseViewModel> _viewModels = new();
+        private readonly Dictionary<Type, Type> _viewModelViewDictionary = new();
 
         private readonly IClassicDesktopStyleApplicationLifetime _desktop;
         private readonly IServiceProvider _container;
@@ -33,7 +34,7 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
         {
             //For now just manual registration
             _viewModelViewDictionary.Add(typeof(LoginViewModel), typeof(LoginView));
-            // _viewModelViewDictionary.Add(typeof(SessionsViewModel), typeof(SessionsView));
+            _viewModelViewDictionary.Add(typeof(SessionsViewModel), typeof(SessionsView));
             // _viewModelViewDictionary.Add(typeof(SessionDetailsViewModel), typeof(SessionDetailsView));
         }
 
@@ -48,12 +49,11 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
         private Task OpenViewModelAsync<T>(T viewModel, bool modalPresentation = false)
             where T : BaseViewModel
         {
-            return Task.Run(() =>
-            {
+            return Dispatcher.UIThread.InvokeAsync(()=>{
                  var view = CreateView(viewModel);
-                 var rootView = _desktop.MainWindow.Content as IBaseView;
-                 _backViewStack.Enqueue(rootView);
-                 _desktop.MainWindow.Content = view;
+                                 var rootView = _desktop.MainWindow.Content as IBaseView;
+                                 _backViewStack.Enqueue(rootView);
+                                 _desktop.MainWindow.Content = view;
             });
         }
 
@@ -92,6 +92,11 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
         public T GetViewModel<T>() where T : BaseViewModel
         {
             var vm = (T)_viewModels.FirstOrDefault(f => f is T);
+            if (vm == null)
+            {
+                vm = CreateViewModel<T>();
+                _viewModels.Add(vm);
+            }
             return vm;
         }
 
