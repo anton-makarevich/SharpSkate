@@ -1,5 +1,6 @@
 ﻿using System;
 using Avalonia;
+using Sanet.SmartSkating.Dashboard.Avalonia;
 
 namespace DashboardAvalonia.NetCore
 {

@@ -8,7 +8,7 @@ public partial class App
     {
         base.OnParametersSet();
 
-        WebAppBuilder.Configure<DashboardAvalonia.App>()
+        WebAppBuilder.Configure<Sanet.SmartSkating.Dashboard.Avalonia.App>()
             // .UseReactiveUI()
             .SetupWithSingleViewLifetime();
     }

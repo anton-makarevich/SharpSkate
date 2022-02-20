@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace DashboardAvalonia.Views
+namespace Sanet.SmartSkating.Dashboard.Avalonia.Views
 {
     public partial class MainWindow : Window
     {
