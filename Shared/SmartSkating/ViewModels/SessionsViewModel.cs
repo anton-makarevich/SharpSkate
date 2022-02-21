@@ -20,6 +20,8 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly IDataSyncService _dataSyncService;
         private SessionViewModel? _selectedSession;
 
+        private bool? _onlyActiveSessions = null;
+
         public SessionsViewModel(IApiService apiClient,
             IAccountService accountService,
             ISessionProvider sessionProvider,
@@ -48,6 +50,18 @@ namespace Sanet.SmartSkating.ViewModels
             }
         }
 
+        public bool OnlyActiveSessions  {
+            get
+            {
+                if (_onlyActiveSessions.HasValue)
+                {
+                    return _onlyActiveSessions.Value;
+                }
+                return _trackService.SelectedRink != null;
+            }
+            set => SetProperty(ref _onlyActiveSessions, value);
+        }
+
         public bool SessionSelected => SelectedSession != null;
         public IAsyncValueCommand StartCommand => new AsyncValueCommand(StartSession);
         public IAsyncValueCommand StartNewCommand => new AsyncValueCommand(StartNewSession);
@@ -68,7 +82,8 @@ namespace Sanet.SmartSkating.ViewModels
             }
 
             _sessionProvider.SetActiveSession(SelectedSession.Session, _trackService.SelectedRink);
-            await NavigationService.NavigateToViewModelAsync<SessionDetailsViewModel>();
+            var newSessionsDetailsViewModel = NavigationService.GetNewViewModel<SessionDetailsViewModel>();
+            await NavigationService.NavigateToViewModelAsync(newSessionsDetailsViewModel);
         }
 
         private async ValueTask StartSession()
@@ -102,7 +117,7 @@ namespace Sanet.SmartSkating.ViewModels
             }
             (await _apiClient.GetSessionsAsync(
                     _accountService.UserId,
-                    _trackService.SelectedRink != null,
+                    OnlyActiveSessions,
                     ApiNames.AzureApiSubscriptionKey))
                 .Sessions?.OrderBy(f=>f.StartTime).ToList().ForEach(s=>
                 {

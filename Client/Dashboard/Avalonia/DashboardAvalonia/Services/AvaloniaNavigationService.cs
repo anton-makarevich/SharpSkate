@@ -20,7 +20,7 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
         private readonly IClassicDesktopStyleApplicationLifetime _desktop;
         private readonly IServiceProvider _container;
 
-        private readonly Queue<IBaseView> _backViewStack = new();
+        private readonly Stack<IBaseView> _backViewStack = new();
 
         public AvaloniaNavigationService(IClassicDesktopStyleApplicationLifetime desktop, IServiceProvider container)
         {
@@ -35,7 +35,7 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
             //For now just manual registration
             _viewModelViewDictionary.Add(typeof(LoginViewModel), typeof(LoginView));
             _viewModelViewDictionary.Add(typeof(SessionsViewModel), typeof(SessionsView));
-            // _viewModelViewDictionary.Add(typeof(SessionDetailsViewModel), typeof(SessionDetailsView));
+            _viewModelViewDictionary.Add(typeof(SessionDetailsViewModel), typeof(SessionDetailsView));
         }
 
         private T CreateViewModel<T>() where T : BaseViewModel
@@ -52,7 +52,7 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
             return Dispatcher.UIThread.InvokeAsync(()=>{
                  var view = CreateView(viewModel);
                                  var rootView = _desktop.MainWindow.Content as IBaseView;
-                                 _backViewStack.Enqueue(rootView);
+                                 _backViewStack.Push(rootView);
                                  _desktop.MainWindow.Content = view;
             });
         }
@@ -108,11 +108,12 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
 
         public Task NavigateBackAsync()
         {
-            return Task.Run(() =>
+            return  Dispatcher.UIThread.InvokeAsync(() =>
             {
                 if (_backViewStack.Count > 0)
                 {
-                    _desktop.MainWindow.Content = _backViewStack.Dequeue();
+                    var view = _backViewStack.Pop();
+                    _desktop.MainWindow.Content = view;
                 }
             });
         }

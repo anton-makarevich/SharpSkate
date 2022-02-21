@@ -90,9 +90,9 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia
                 .AddSingleton<Acr.UserDialogs.IUserDialogs, DummyUserDialogs>()
 
                 // ViewModels
-                .AddSingleton<LoginViewModel, LoginViewModel>()
-                .AddSingleton<SessionsViewModel, SessionsViewModel>()
-                .AddSingleton<SessionDetailsViewModel, SessionDetailsViewModel>();
+                .AddScoped<LoginViewModel, LoginViewModel>()
+                .AddScoped<SessionsViewModel, SessionsViewModel>()
+                .AddTransient<SessionDetailsViewModel, SessionDetailsViewModel>();
         }
     }
 }

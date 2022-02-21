@@ -43,16 +43,16 @@ namespace Sanet.SmartSkating.ViewModels
                     LapsData.Add(lap);
             }
         }
-        
+
         public ObservableCollection<Lap> LapsData { get; } = new ObservableCollection<Lap>();
 
-        public override bool ForceUiUpdate => !SessionManager.IsRunning 
-                                              && SessionManager.IsRemote  
+        public override bool ForceUiUpdate => !SessionManager.IsRunning
+                                              && SessionManager.IsRemote
                                               && FinalSessionTime == NoValue;
 
         private void UpdateFinalTime()
         {
-            if (SessionManager.CurrentSession?.WayPoints == null 
+            if (SessionManager.CurrentSession?.WayPoints == null
                 || SessionManager.CurrentSession?.WayPoints.Count == 0) return;
 #pragma warning disable 8602
             var finalTime = SessionManager.CurrentSession.WayPoints.Last().Date;

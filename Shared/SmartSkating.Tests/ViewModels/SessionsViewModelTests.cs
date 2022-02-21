@@ -342,7 +342,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             await _sut.OpenDetailsCommand.ExecuteAsync();
 
-            await _navigationService.Received(1).NavigateToViewModelAsync<SessionDetailsViewModel>();
+            await _navigationService.Received(1).NavigateToViewModelAsync(Arg.Any<SessionDetailsViewModel>());
         }
 
         [Fact]
@@ -465,6 +465,33 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.SelectedSession = new SessionViewModel(CreatSessions().First(), new List<TrackDto>(),_dataSyncService);
 
             canOpenDetailsUpdated.Should().BeTrue();
+        }
+
+        [Fact]
+        public void OnlyActiveSessions_Is_True_If_Not_Set_And_Rinks_Is_Selected()
+        {
+            _trackService.SelectedRink
+                .Returns(new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId"));
+
+            _sut.OnlyActiveSessions.Should().BeTrue();
+        }
+
+        [Fact]
+        public void OnlyActiveSessions_Is_False_If_Not_Set_And_Rinks_Is_NotSelected()
+        {
+            _trackService.SelectedRink.ReturnsNull();
+
+            _sut.OnlyActiveSessions.Should().BeFalse();
+        }
+
+        [Fact]
+        public void OnlyActiveSessions_Is_False_If_Set_Regardless_Of_Rink_Selection()
+        {
+            _trackService.SelectedRink
+                .Returns(new Rink(RinkTests.EindhovenStart,RinkTests.EindhovenFinish,"rinkId"));
+
+            _sut.OnlyActiveSessions = false;
+            _sut.OnlyActiveSessions.Should().BeFalse();
         }
     }
 }
