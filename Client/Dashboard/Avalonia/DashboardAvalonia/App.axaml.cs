@@ -50,9 +50,9 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia
                 desktop.MainWindow = new MainWindow();
                 desktop.MainWindow.Content = loginView;
             }
-            else
+            else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
             {
-                throw new NotImplementedException("This app type is not supported");
+                singleViewPlatform.MainView = new LoginView();
             }
 
             base.OnFrameworkInitializationCompleted();

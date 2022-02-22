@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Sanet.SmartSkating.Dashboard.Avalonia.Views.SessionDetailsView">
     <Grid Margin="10">
@@ -95,37 +96,10 @@
         Grid.Column="1"
          />
         </Grid>
-        <!-- <chart:SfChart  -->
-        <!--     Grid.Row="2" -->
-        <!--     AreaBorderThickness="0"  -->
-        <!--     Margin="5,0,5,0" > -->
-        <!--     <chart:SfChart.Behaviors> -->
-        <!--         <chart:ChartSelectionBehavior EnableSegmentSelection="True" /> -->
-        <!--         <chart:ChartZoomPanBehavior /> -->
-        <!--     </chart:SfChart.Behaviors> -->
-        <!--     <chart:SfChart.Header> -->
-        <!--         <TextBlock FontSize="14" Foreground="Black" -->
-        <!--                    Text="Laps" -->
-        <!--             Margin="0,5,0,5"/> -->
-        <!--     </chart:SfChart.Header> -->
-        <!-- -->
-        <!--     <chart:SfChart.PrimaryAxis> -->
-        <!--         <chart:CategoryAxis ShowGridLines="False" LabelPlacement="BetweenTicks"/> -->
-        <!--     </chart:SfChart.PrimaryAxis> -->
-        <!--     <chart:SfChart.SecondaryAxis> -->
-        <!--         <chart:NumericalAxis Visibility="Collapsed"  ShowGridLines="False"/> -->
-        <!--     </chart:SfChart.SecondaryAxis> -->
-        <!--     <chart:ColumnSeries  -->
-        <!--                 ItemsSource="{Binding LapsData}" ShowTooltip="True" -->
-        <!--                 XBindingPath="Number" YBindingPath="Time.TotalSeconds" > -->
-        <!--         <chart:ColumnSeries.AdornmentsInfo> -->
-        <!--             <chart:ChartAdornmentInfo ShowLabel="True" -->
-        <!--                                         FontSize="14" -->
-        <!--                                       LabelRotationAngle="270" -->
-        <!--                                         LabelPosition="Auto" -->
-        <!--                       Foreground="White"/> -->
-        <!--         </chart:ColumnSeries.AdornmentsInfo> -->
-        <!--     </chart:ColumnSeries> -->
-        <!-- </chart:SfChart> -->
+        <avalonia:CartesianChart
+            Grid.Row="2"
+            Series="{Binding Series}"
+            LegendPosition="Right">
+        </avalonia:CartesianChart>
     </Grid>
 </UserControl>

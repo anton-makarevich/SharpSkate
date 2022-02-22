@@ -2,8 +2,10 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Acr.UserDialogs;
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
 using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Tracking;
 
 namespace Sanet.SmartSkating.ViewModels
@@ -17,6 +19,18 @@ namespace Sanet.SmartSkating.ViewModels
             IDateProvider dateProvider,
             IUserDialogs userDialogs) : base(sessionManager, dateProvider, userDialogs)
         {
+            Series = new ObservableCollection<ISeries>
+            {
+                new ColumnSeries<ObservablePoint>
+                {
+                    Values = LapsData, Name = "", TooltipLabelFormatter =
+                        (point) =>
+                        {
+                            var ts = new TimeSpan((int)point.Model.Y);
+                            return $"{ts:mm\\:ss}";
+                        }
+                }
+            };
         }
 
         public string FinalSessionTime
@@ -39,12 +53,13 @@ namespace Sanet.SmartSkating.ViewModels
                 SessionManager.CurrentSession.LapsCount == LapsData.Count) return;
             foreach(var lap in SessionManager.CurrentSession.Laps)
             {
-                if (!LapsData.Contains(lap))
-                    LapsData.Add(lap);
+                if (lap.Number>LapsData.Count)
+                     LapsData.Add(new ObservablePoint(lap.Number,lap.Time.Ticks));
             }
         }
 
-        public ObservableCollection<Lap> LapsData { get; } = new ObservableCollection<Lap>();
+        public ObservableCollection<ISeries> Series { get; }
+        public ObservableCollection<ObservablePoint> LapsData { get; } = new ObservableCollection<ObservablePoint>();
 
         public override bool ForceUiUpdate => !SessionManager.IsRunning
                                               && SessionManager.IsRemote

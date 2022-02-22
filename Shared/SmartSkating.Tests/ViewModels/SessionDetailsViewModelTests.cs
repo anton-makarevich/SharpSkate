@@ -24,7 +24,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             _sut = new SessionDetailsViewModel(_sessionManager, _dateProvider, _userDialogs);
         }
-        
+
         [Fact]
         public void FinalSessionTime_Is_Difference_Between_Start_Time_And_Time_Of_Last_WayPoint()
         {
@@ -38,7 +38,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             });
             _sessionManager.IsRemote.Returns(true);
             _sessionManager.IsRunning.Returns(false);
-            
+
             _sut.UpdateUi();
 
             _sut.FinalSessionTime.Should().Be("0:20:20");
@@ -51,7 +51,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sessionManager.Received().SessionUpdated += _sut.OnSessionUpdate;
         }
-        
+
         [Fact]
         public void Unsubscribes_From_SessionUpdatedEvent_On_Page_Unload()
         {
@@ -68,7 +68,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
 
             _sut.ForceUiUpdate.Should().BeTrue();
         }
-        
+
         [Fact]
         public void UpdateUi_Updates_Chart_When_Session_Is_Running()
         {
@@ -87,15 +87,15 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.UpdateUi();
 
             _sut.LapsData.Count.Should().Be(session.Laps.Count);
-            _sut.LapsData[0].Should().Be(session.Laps[0]);
+            _sut.LapsData[0].Y.Should().Be(session.Laps[0].Time.Ticks);
         }
-        
+
         [Fact]
         public void UpdateUi_Updates_Chart_When_ForceUpdate()
         {
             _sessionManager.IsRunning.Returns(false);
             _sessionManager.IsRemote.Returns(true);
-            
+
             var session = CreateSessionMock();
             session.LapsCount.Returns(1);
             session.Laps.Returns(new List<Lap>
@@ -110,9 +110,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.UpdateUi();
 
             _sut.LapsData.Count.Should().Be(session.Laps.Count);
-            _sut.LapsData[0].Should().Be(session.Laps[0]);
+            _sut.LapsData[0].Y.Should().Be(session.Laps[0].Time.Ticks);
         }
-        
+
         private ISession CreateSessionMock()
         {
             var session = Substitute.For<ISession>();
