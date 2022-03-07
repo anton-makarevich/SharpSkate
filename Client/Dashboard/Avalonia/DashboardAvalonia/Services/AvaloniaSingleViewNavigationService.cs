@@ -19,13 +19,16 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
         private readonly Dictionary<Type, Type> _viewModelViewDictionary = new();
 
         private readonly ISingleViewApplicationLifetime _singleViewPlatform;
+        private readonly ContentControl _mainView;
         private readonly IServiceProvider _container;
 
         private readonly Stack<IBaseView> _backViewStack = new();
 
-        public AvaloniaSingleViewNavigationService(ISingleViewApplicationLifetime singleViewPlatform, IServiceProvider container)
+        public AvaloniaSingleViewNavigationService(ISingleViewApplicationLifetime singleViewPlatform, ContentControl contentControl, IServiceProvider container)
         {
             _singleViewPlatform = singleViewPlatform;
+            _singleViewPlatform.MainView = contentControl;
+            _mainView = contentControl;
             _container = container;
 
             RegisterViewModels();
@@ -52,9 +55,9 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
         {
             return Dispatcher.UIThread.InvokeAsync(()=>{
                  var view = CreateView(viewModel);
-                 var rootView = _singleViewPlatform.MainView as IBaseView;
+                 var rootView = _mainView.Content as IBaseView;
                  _backViewStack.Push(rootView);
-                 _singleViewPlatform.MainView = view as Control;
+                 _mainView.Content = view;
             });
         }
 
@@ -114,7 +117,7 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia.Services
                 if (_backViewStack.Count > 0)
                 {
                     var view = _backViewStack.Pop();
-                    _singleViewPlatform.MainView = view as Control;
+                    _mainView.Content = view;
                 }
             });
         }

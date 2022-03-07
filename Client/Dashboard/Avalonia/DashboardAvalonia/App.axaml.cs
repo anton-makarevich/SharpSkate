@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,9 +53,10 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia
                     desktop.MainWindow.Content = loginView;
                     break;
                 case ISingleViewApplicationLifetime singleViewPlatform:
-                    _navigationService = new AvaloniaSingleViewNavigationService(singleViewPlatform, _serviceProvider);
-                    loginView.ViewModel = _navigationService.GetViewModel<LoginViewModel>();
-                    singleViewPlatform.MainView = loginView;
+                    var mainWindow = new ContentControl();
+                    _navigationService = new AvaloniaSingleViewNavigationService(singleViewPlatform, mainWindow, _serviceProvider);
+                    loginView.ViewModel = _navigationService.GetViewModel<LoginViewModel>();               
+                    mainWindow.Content = loginView;
                     break;
                 default:
                     throw new Exception("Unsupported app type");
