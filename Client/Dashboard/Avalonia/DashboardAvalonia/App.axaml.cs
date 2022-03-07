@@ -42,17 +42,22 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia
         public override void OnFrameworkInitializationCompleted()
         {
             _serviceProvider = _services.BuildServiceProvider();
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            var loginView = new LoginView();
+            switch (ApplicationLifetime)
             {
-                _navigationService = new AvaloniaNavigationService(desktop, _serviceProvider);
-                var loginView = new LoginView();
-                loginView.ViewModel = _navigationService.GetViewModel<LoginViewModel>();
-                desktop.MainWindow = new MainWindow();
-                desktop.MainWindow.Content = loginView;
-            }
-            else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-            {
-                singleViewPlatform.MainView = new LoginView();
+                case IClassicDesktopStyleApplicationLifetime desktop:
+                    _navigationService = new AvaloniaNavigationService(desktop, _serviceProvider);
+                    loginView.ViewModel = _navigationService.GetViewModel<LoginViewModel>();
+                    desktop.MainWindow = new MainWindow();
+                    desktop.MainWindow.Content = loginView;
+                    break;
+                case ISingleViewApplicationLifetime singleViewPlatform:
+                    _navigationService = new AvaloniaSingleViewNavigationService(singleViewPlatform, _serviceProvider);
+                    loginView.ViewModel = _navigationService.GetViewModel<LoginViewModel>();
+                    singleViewPlatform.MainView = loginView;
+                    break;
+                default:
+                    throw new Exception("Unsupported app type");
             }
 
             base.OnFrameworkInitializationCompleted();
