@@ -7,6 +7,8 @@ pool:
 variables:
   solution: 'SmartSkating.sln'
   tokensFile: 'Shared/SmartSkating.Dto/ApiNames.cs'
+  wasmProjectDir: 'Client/Dashboard/Dashboard/Avalonia/DashboardAvalonia.Web/'
+  wasmProject: 'DashboardAvalonia.Web.csproj'
 
 steps:
 
@@ -25,12 +27,12 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj
+    projects: '$(wasmProjectDir)$(wasmProject)'
     includeNuGetOrg: true
     noCache: true
   displayName: 'Restore packages'
 
-- script: dotnet publish Client/Dashboard/Dashboard.Wasm/Dashboard.Wasm.csproj -c Release
+- script: 'dotnet publish $(wasmProjectDir)$(wasmProject) -c Release'
   displayName: 'Build dashboard wasm'
 
 - task: AzureCLI@2
@@ -47,7 +49,7 @@ steps:
     azureSubscription: 'AzureDevSubscription'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob upload-batch -d $web --account-name $(storage-name) --source Client/Dashboard/Dashboard.Wasm/bin/Release/net5.0/publish'
+    inlineScript: 'az storage blob upload-batch -d $web --account-name $(storage-name) --source $(wasmProjectDir)/bin/Release/net5.0/publish'
     arguments: ''
 
   displayName: 'Deploy dashboard wasm to azure storage'
