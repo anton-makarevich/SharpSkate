@@ -7,7 +7,7 @@ pool:
 variables:
   solution: 'SmartSkating.sln'
   tokensFile: 'Shared/SmartSkating.Dto/ApiNames.cs'
-  wasmProjectDir: 'Client/Dashboard/Dashboard/Avalonia/DashboardAvalonia.Web/'
+  wasmProjectDir: 'Client/Dashboard/Avalonia/DashboardAvalonia.Web'
   wasmProject: 'DashboardAvalonia.Web.csproj'
 
 steps:
@@ -27,7 +27,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '$(wasmProjectDir)$(wasmProject)'
+    projects: '$(wasmProjectDir)/$(wasmProject)'
     includeNuGetOrg: true
     noCache: true
   displayName: 'Restore packages'
