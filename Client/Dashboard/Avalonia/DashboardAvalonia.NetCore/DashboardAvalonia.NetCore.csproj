@@ -10,8 +10,8 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.14" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.14" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     </ItemGroup>
     <ItemGroup>

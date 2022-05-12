@@ -166,7 +166,7 @@
       <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="SimpleInjector">
-      <Version>5.3.0</Version>
+      <Version>5.3.3</Version>
     </PackageReference>
   <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.8" />
   <PackageReference Include="Xamarin.Google.Android.Material">
