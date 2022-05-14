@@ -87,7 +87,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.UpdateUi();
 
             _sut.LapsData.Count.Should().Be(session.Laps.Count);
-            _sut.LapsData[0].Y.Should().Be(session.Laps[0].Time.Ticks);
+            _sut.LapsData[0].Value.Should().Be((float)session.Laps[0].Time.TotalMilliseconds);
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _sut.UpdateUi();
 
             _sut.LapsData.Count.Should().Be(session.Laps.Count);
-            _sut.LapsData[0].Y.Should().Be(session.Laps[0].Time.Ticks);
+            _sut.LapsData[0].Value.Should().Be((float)session.Laps[0].Time.TotalMilliseconds);
         }
 
         private ISession CreateSessionMock()
