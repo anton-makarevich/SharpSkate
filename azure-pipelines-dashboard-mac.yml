@@ -2,53 +2,35 @@ trigger:
 - develop
 
 pool:
-  vmImage: 'macos-latest'
+  vmImage: 'windows-latest'
 
 variables:
-  - name: solution
-    value: 'SmartSkating.sln'
-  - name: project
-    value: 'Client/Dashboard/Dashboard.macOS/Dashboard.macOS.csproj'
-  - name: buildPlatform
-    value: 'iPhoneSimulator'
-  - name: buildConfiguration
-    value: 'Debug'
+  solution: 'SmartSkating.sln'
+  tokensFile: 'Shared/SmartSkating.Dto/ApiNames.cs'
+  projectDir: 'Client/Dashboard/Avalonia/DashboardAvalonia.NetCore'
+  projectName: 'DashboardAvalonia.NetCore.csproj'
 
 steps:
 
 - task: UseDotNet@2
-  displayName: 'Use dotnet sdk 5'
+  displayName: 'Use dotnet sdk 6'
   inputs:
-    version: 5.x
+    version: 6.x
     includePreviewVersions: false
 
-- script: dotnet restore $(solution)
-  displayName: 'Restore nuget packages'
-
-- task: Bash@3
-  displayName: 'Update Mono version'
+- task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: |
-      SYMLINK=6_12_0
-      MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
-      echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
-      echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
-      echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
+    script: '((Get-Content -path $(tokensFile) -Raw) -replace ''$(azureKeyName)'',''$(azureKeyValue)'') | Set-Content -Path $(tokensFile)'
+  displayName: 'Replace token'
 
-- task: Bash@3
-  displayName: 'Fix xamarin mac version (should be removed when agent is updated)'
+- task: DotNetCoreCLI@2
   inputs:
-    targetType: 'inline'
-    script: |
-      curl -o xamarinmac.pkg 'https://bosstoragemirror.blob.core.windows.net/wrench/xcode12.4/a4c70e7d04e3904d17aa60f6d640eb048081c757/4477741/package/notarized/xamarin.mac-7.4.0.10.pkg'
-      sudo installer -pkg xamarinmac.pkg -target /
+    command: 'restore'
+    projects: '$(projectDir)/$(projectName)'
+    includeNuGetOrg: true
+    noCache: true
+  displayName: 'Restore packages'
 
-- task: XamariniOS@2
-  displayName: 'Build Mac App'
-  inputs:
-    solutionFile: '$(project)'
-    configuration: '$(buildConfiguration)'
-    packageApp: false
-    buildForSimulator: true
-    runNugetRestore: true
+- script: 'dotnet publish $(projectDir)/$(projectName) -c Release'
+  displayName: 'Build dashboard'
