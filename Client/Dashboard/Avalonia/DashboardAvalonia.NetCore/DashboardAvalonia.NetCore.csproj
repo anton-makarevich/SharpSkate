@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <RootNamespace>DashboardAvalonia.NetCore</RootNamespace>
+        <AvaloniaVersion>0.10.12</AvaloniaVersion>
+        <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
+        <TrimMode>copyused</TrimMode>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.14" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.14" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\DashboardAvalonia\DashboardAvalonia.csproj" />
+    </ItemGroup>
+</Project>

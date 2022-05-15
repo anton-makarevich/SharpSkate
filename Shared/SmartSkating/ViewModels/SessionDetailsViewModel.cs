@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using Acr.UserDialogs;
+using Microcharts;
 using Sanet.SmartSkating.Dto.Services;
-using Sanet.SmartSkating.Models.Training;
 using Sanet.SmartSkating.Services.Tracking;
 
 namespace Sanet.SmartSkating.ViewModels
@@ -39,20 +39,26 @@ namespace Sanet.SmartSkating.ViewModels
                 SessionManager.CurrentSession.LapsCount == LapsData.Count) return;
             foreach(var lap in SessionManager.CurrentSession.Laps)
             {
-                if (!LapsData.Contains(lap))
-                    LapsData.Add(lap);
+                if (lap.Number>LapsData.Count)
+                     LapsData.Add(new ChartEntry((float)lap.Time.TotalMilliseconds)
+                     {
+                         Label = lap.Number.ToString(),
+                         ValueLabel = lap.Time.ToString(LapTimeFormat),
+                     });
             }
+            NotifyPropertyChanged(nameof(Chart));
         }
-        
-        public ObservableCollection<Lap> LapsData { get; } = new ObservableCollection<Lap>();
 
-        public override bool ForceUiUpdate => !SessionManager.IsRunning 
-                                              && SessionManager.IsRemote  
+        public Chart Chart => new BarChart() { Entries = LapsData };
+        public List<ChartEntry> LapsData { get; } = new List<ChartEntry>();
+
+        public override bool ForceUiUpdate => !SessionManager.IsRunning
+                                              && SessionManager.IsRemote
                                               && FinalSessionTime == NoValue;
 
         private void UpdateFinalTime()
         {
-            if (SessionManager.CurrentSession?.WayPoints == null 
+            if (SessionManager.CurrentSession?.WayPoints == null
                 || SessionManager.CurrentSession?.WayPoints.Count == 0) return;
 #pragma warning disable 8602
             var finalTime = SessionManager.CurrentSession.WayPoints.Last().Date;

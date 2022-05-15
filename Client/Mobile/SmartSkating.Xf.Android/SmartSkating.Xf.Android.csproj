@@ -84,7 +84,7 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <PackageReference Include="SimpleInjector">
-      <Version>5.0.0.2291</Version>
+      <Version>5.3.3</Version>
     </PackageReference>
   <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.8" /></ItemGroup>
   <ItemGroup>

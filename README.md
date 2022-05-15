@@ -34,4 +34,4 @@ Speed skating activity tracker for long ice tracks (400m rinks). Both outdoor an
 |Web (UNO Wasm)   |Mac   |UWP
 |:-:|:-:|
 |[![Build Status](https://dev.azure.com/antonmakarevich/SmartSkating/_apis/build/status/SmartSkating.Dashboard?branchName=develop)](https://dev.azure.com/antonmakarevich/SmartSkating/_build/latest?definitionId=9&branchName=develop)   |
-|https://smartskating.azureedge.net/
+|https://happy-mud-0482c4803.azurestaticapps.net/

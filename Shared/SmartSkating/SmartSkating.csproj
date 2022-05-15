@@ -19,4 +19,10 @@
   <ItemGroup>
     <ProjectReference Include="..\SmartSkating.Dto\SmartSkating.Dto.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microcharts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\Libs\Microcharts\Microcharts.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

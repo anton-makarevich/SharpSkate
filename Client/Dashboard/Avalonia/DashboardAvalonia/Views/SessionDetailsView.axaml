@@ -1,0 +1,104 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:microcharts="clr-namespace:Microcharts.Avalonia;assembly=Microcharts.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Sanet.SmartSkating.Dashboard.Avalonia.Views.SessionDetailsView">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button
+            Command="{Binding BackCommand}"
+            Content="Back"/>
+        <Grid
+            Margin="15"
+            Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock
+        Text="Elapsed Time:"
+        />
+            <TextBlock
+        Text="{Binding FinalSessionTime}"
+        Grid.Column="1" />
+
+            <TextBlock
+        Text="Laps:"
+        Grid.Row="1"
+    />
+            <TextBlock
+        Text="{Binding Laps}"
+        Grid.Row="1"
+        Grid.Column="1"/>
+            <TextBlock
+        Text="Distance:"
+        Grid.Row="2"
+         />
+            <TextBlock
+        Text="{Binding Distance}"
+        Grid.Row="2"
+        Grid.Column="1" />
+
+            <TextBlock
+        Text="Last Lap:"
+        Grid.Row="3"
+    />
+            <TextBlock
+        Text="{Binding LastLapTime}"
+        Grid.Row="3"
+        Grid.Column="1"
+        />
+            <TextBlock
+        Text="Best Lap:"
+        Grid.Row="4"
+
+    />
+
+        <TextBlock
+        Text="{Binding BestLapTime}"
+        Grid.Row="4"
+        Grid.Column="1"
+    />
+
+            <TextBlock
+        Text="Last 100m:"
+        Grid.Row="5"
+    />
+        <TextBlock
+        Text="{Binding LastSectorTime}"
+        Grid.Row="5"
+        Grid.Column="1"
+         />
+            <TextBlock
+        Text="Best 100m:"
+        Grid.Row="6"
+    />
+
+        <TextBlock
+        Text="{Binding BestSectorTime}"
+        Grid.Row="6"
+        Grid.Column="1"
+         />
+        </Grid>
+        <microcharts:ChartView
+            x:Name="Chart"
+            Grid.Row="2"
+            Chart="{Binding Chart}"/>
+    </Grid>
+</UserControl>

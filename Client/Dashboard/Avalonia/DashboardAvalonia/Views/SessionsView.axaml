@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Sanet.SmartSkating.Dashboard.Avalonia.Views.SessionsView">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ListBox
+            Items="{Binding Sessions}"
+            SelectedItem="{Binding SelectedSession, Mode=TwoWay}"
+        >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding RinkName}"/>
+                        <TextBlock
+                            Grid.Column="1"
+                            Text="{Binding StartTime}"/>
+                        <TextBlock
+                            Grid.Column="2"
+                            Text="{Binding Status}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button
+            Grid.Row="1"
+            IsEnabled="{Binding CanOpenSessionDetails}"
+            Command="{Binding OpenDetailsCommand}"
+            Content="Open details"/>
+    </Grid>
+</UserControl>
