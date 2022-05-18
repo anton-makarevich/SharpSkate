@@ -20,9 +20,6 @@ namespace Sanet.SmartSkating.Dto
             public const string Route = "scans";
         }
 
-        public const string BaseUrl = "https://smartskating.azure-api.net/smartskating";
-        public const string AzureApiSubscriptionKey = "<AzureApiKey>";
-
         public static class DevicesResource
         {
             public const string Path= "/devices";
