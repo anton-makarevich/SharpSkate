@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
-using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
@@ -11,19 +10,19 @@ namespace Sanet.SmartSkating.Services.Tracking
     public class SignalRService:ISyncService
     {
         private HubConnection? _connection;
-        private readonly ISessionInfoHelper _sessionInfoHelper;
+        private readonly IConfigService _configService;
 
-        public SignalRService(ISessionInfoHelper sessionInfoHelper)
+        public SignalRService(IConfigService configService)
         {
-            _sessionInfoHelper = sessionInfoHelper;
+            _configService = configService;
         }
 
         public async Task ConnectToHub(string sessionId)
         {
             _connection = new HubConnectionBuilder()
-                .WithUrl($"{ApiNames.BaseUrl}/{sessionId}", (opts) =>
+                .WithUrl($"{_configService.BaseUrl}/{sessionId}", (opts) =>
                 {
-                    opts.Headers.Add("Ocp-Apim-Subscription-Key", ApiNames.AzureApiSubscriptionKey);
+                    opts.Headers.Add("Ocp-Apim-Subscription-Key", _configService.AzureApiSubscriptionKey);
                 })
                 .Build();
             

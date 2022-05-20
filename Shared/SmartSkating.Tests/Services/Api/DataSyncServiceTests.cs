@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NSubstitute;
-using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
 using Sanet.SmartSkating.Dto.Services;
@@ -20,6 +19,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
         private readonly IApiService _apiService;
         private readonly IConnectivityService _connectivityService;
         private readonly IAccountService _accountService;
+        private readonly IConfigService _configService = Substitute.For<IConfigService>();
 
         private readonly List<WayPointDto> _wayPoints = new List<WayPointDto>
         {
@@ -72,7 +72,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             _connectivityService = Substitute.For<IConnectivityService>();
             _accountService = Substitute.For<IAccountService>();
             
-            _sut = new DataSyncService(_dataService,_apiService,_connectivityService, _accountService);
+            _sut = new DataSyncService(_dataService,_apiService,_connectivityService, _accountService,_configService);
             
             _dataService.GetAllSessionsAsync().Returns(Task.FromResult(new List<SessionDto>()));
         }
@@ -287,11 +287,14 @@ namespace Sanet.SmartSkating.Tests.Services.Api
         [Fact]
         public async Task SaveAndSyncSession_Sends_Session_To_Api_If_HasConnection()
         {
+            const string azureApiSubscriptionKey = "some";
             _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
+
             var session = GetSessionsStub(false, true).First();
             _apiService.PostSessionsAsync(
                     Arg.Any<List<SessionDto>>(),
-                    ApiNames.AzureApiSubscriptionKey)
+                    azureApiSubscriptionKey)
                 .Returns(Task.FromResult(new SaveEntitiesResponse
                 {
                     SyncedIds = null
@@ -301,17 +304,19 @@ namespace Sanet.SmartSkating.Tests.Services.Api
 
             await _apiService.Received(1).PostSessionsAsync(
                 Arg.Any<List<SessionDto>>(),
-                ApiNames.AzureApiSubscriptionKey);
+                azureApiSubscriptionKey);
         }
         
         [Fact]
         public async Task SaveAndSyncSession_Saves_Session_If_Failed_To_Send_OnServer()
         {
+            const string azureApiSubscriptionKey = "some";
             _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
             var session = GetSessionsStub(false, false).First();
             _apiService.PostSessionsAsync(
                             Arg.Any<List<SessionDto>>(),
-                            ApiNames.AzureApiSubscriptionKey)
+                            azureApiSubscriptionKey)
                 .Returns(Task.FromResult(new SaveEntitiesResponse
             {
                 SyncedIds = null
@@ -321,7 +326,28 @@ namespace Sanet.SmartSkating.Tests.Services.Api
             
             await _dataService.Received(1).SaveSessionAsync(session);
         }
-        
+
+        [Fact]
+        public async Task SaveAndSyncWaypoint_Saves_Waypoint_If_Failed_To_Send_OnServer()
+        {
+            const string azureApiSubscriptionKey = "some";
+            _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
+
+            var wayPointDto = _wayPoints.First();
+            _apiService.PostWaypointsAsync(
+                    Arg.Any<List<WayPointDto>>(),
+                    azureApiSubscriptionKey)
+                .Returns(Task.FromResult(new SaveEntitiesResponse
+                {
+                    SyncedIds = null
+                }));
+            
+            await _sut.SaveAndSyncWayPointAsync(wayPointDto);
+            
+            await _dataService.Received(1).SaveWayPointAsync(wayPointDto);
+        }
+
         [Fact]
         public async Task SaveAndSyncWaypoint_Saves_Waypoint_If_No_Connection()
         {
@@ -332,15 +358,18 @@ namespace Sanet.SmartSkating.Tests.Services.Api
 
             await _dataService.Received(1).SaveWayPointAsync(wayPointDto);
         }
-        
+
         [Fact]
         public async Task SaveAndSyncWaypoint_Sends_Waypoint_To_Api_If_HasConnection()
         {
+            const string azureApiSubscriptionKey = "some";
             _connectivityService.IsConnected().Returns(Task.FromResult(true));
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
+
             var wayPointDto = _wayPoints.First();
             _apiService.PostWaypointsAsync(
                     Arg.Any<List<WayPointDto>>(),
-                    ApiNames.AzureApiSubscriptionKey)
+                    azureApiSubscriptionKey)
                 .Returns(Task.FromResult(new SaveEntitiesResponse
                 {
                     SyncedIds = null
@@ -350,25 +379,7 @@ namespace Sanet.SmartSkating.Tests.Services.Api
 
             await _apiService.Received(1).PostWaypointsAsync(
                 Arg.Any<List<WayPointDto>>(),
-                ApiNames.AzureApiSubscriptionKey);
-        }
-        
-        [Fact]
-        public async Task SaveAndSyncWaypoint_Saves_Waypoint_If_Failed_To_Send_OnServer()
-        {
-            _connectivityService.IsConnected().Returns(Task.FromResult(true));
-            var wayPointDto = _wayPoints.First();
-            _apiService.PostWaypointsAsync(
-                    Arg.Any<List<WayPointDto>>(),
-                    ApiNames.AzureApiSubscriptionKey)
-                .Returns(Task.FromResult(new SaveEntitiesResponse
-                {
-                    SyncedIds = null
-                }));
-            
-            await _sut.SaveAndSyncWayPointAsync(wayPointDto);
-            
-            await _dataService.Received(1).SaveWayPointAsync(wayPointDto);
+                azureApiSubscriptionKey);
         }
     }
 }

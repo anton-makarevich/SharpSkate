@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Account;
@@ -32,20 +32,25 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly  ITrackService _trackService= Substitute.For<ITrackService>();
         private readonly INavigationService _navigationService = Substitute.For<INavigationService>();
         private readonly IDataSyncService _dataSyncService = Substitute.For<IDataSyncService>();
-
-        public SessionsViewModelTests()
-        {
-            _accountService.UserId.Returns(AccountId);
-            _sut = new SessionsViewModel(_apiClient, _accountService, _sessionProvider, _trackService, _dataSyncService);
-            _sut.SetNavigationService(_navigationService);
-        }
+        private readonly IConfigService _configService = Substitute.For<IConfigService>();
 
         [Fact]
         public async Task Fetches_Sessions_For_User_From_Api_On_Page_Load()
         {
+            const string azureApiSubscriptionKey = "some";
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
+            
             _sut.AttachHandlers();
 
-            await _apiClient.Received(1).GetSessionsAsync(AccountId,false, ApiNames.AzureApiSubscriptionKey);
+            await _apiClient.Received(1).GetSessionsAsync(AccountId,false, azureApiSubscriptionKey);
+        }
+
+        public SessionsViewModelTests()
+        {
+            _accountService.UserId.Returns(AccountId);
+            _sut = new SessionsViewModel(_apiClient, _accountService, _sessionProvider, _trackService, _dataSyncService,
+                _configService);
+            _sut.SetNavigationService(_navigationService);
         }
 
         [Fact]
@@ -74,8 +79,9 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             _accountService.UserId.ReturnsNull();
             _sut.AttachHandlers();
 
+            const string azureApiSubscriptionKey = "some";
             await _apiClient.DidNotReceiveWithAnyArgs()
-                .GetSessionsAsync(AccountId,false, ApiNames.AzureApiSubscriptionKey);
+                .GetSessionsAsync(AccountId,false, azureApiSubscriptionKey);
         }
 
         [Fact]
@@ -83,7 +89,10 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         {
             var sessions = CreatSessions();
 
-            _apiClient.GetSessionsAsync(AccountId,false,ApiNames.AzureApiSubscriptionKey)
+            const string azureApiSubscriptionKey = "some";
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
+
+            _apiClient.GetSessionsAsync(AccountId,false,azureApiSubscriptionKey)
                 .Returns(Task.FromResult(new GetSessionsResponse{Sessions = sessions}));
 
             _sut.AttachHandlers();
@@ -96,11 +105,13 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public void Only_Gets_Active_Sessions_For_A_Rink_When_Rink_Is_Selected()
         {
             var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "rinkId");
+            const string azureApiSubscriptionKey = "some";
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
             _trackService.SelectedRink.Returns(rink);
             var sessions = CreatSessions();
             sessions.First().RinkId = rink.Id;
 
-            _apiClient.GetSessionsAsync(AccountId, true, ApiNames.AzureApiSubscriptionKey)
+            _apiClient.GetSessionsAsync(AccountId, true, azureApiSubscriptionKey)
                 .Returns(Task.FromResult(new GetSessionsResponse{Sessions = sessions}));
 
             _sut.AttachHandlers();
@@ -112,10 +123,13 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         [Fact]
         public void Gets_All_Sessions_For_User_When_Rink_Is_NotSelected()
         {
+            const string azureApiSubscriptionKey = "some";
             _trackService.SelectedRink.ReturnsNull();
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
+            
             var sessions = CreatSessions();
 
-            _apiClient.GetSessionsAsync(AccountId, false, ApiNames.AzureApiSubscriptionKey)
+            _apiClient.GetSessionsAsync(AccountId, false, azureApiSubscriptionKey)
                 .Returns(Task.FromResult(new GetSessionsResponse{Sessions = sessions}));
 
             _sut.AttachHandlers();
@@ -127,10 +141,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public void Starts_New_Session_If_No_Active_Session_For_Rink_Is_Found()
         {
             var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "rinkId");
+            const string azureApiSubscriptionKey = "azKey";
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
             _trackService.SelectedRink.Returns(rink);
             var sessions = CreatSessions();
 
-            _apiClient.GetSessionsAsync(AccountId, true, ApiNames.AzureApiSubscriptionKey)
+            _apiClient.GetSessionsAsync(AccountId, true, azureApiSubscriptionKey)
                 .Returns(Task.FromResult(new GetSessionsResponse{Sessions = sessions}));
 
             _sut.AttachHandlers();
@@ -164,10 +180,12 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public async Task NavigatesTo_LiveSession_Right_Away_If_No_Active_Session_For_Rink_Is_Found()
         {
             var rink = new Rink(RinkTests.EindhovenStart, RinkTests.EindhovenFinish, "rinkId");
+            const string azureApiSubscriptionKey = "some";
+            _configService.AzureApiSubscriptionKey.Returns(azureApiSubscriptionKey);
             _trackService.SelectedRink.Returns(rink);
             var sessions = CreatSessions();
 
-            _apiClient.GetSessionsAsync(AccountId, true, ApiNames.AzureApiSubscriptionKey)
+            _apiClient.GetSessionsAsync(AccountId, true, azureApiSubscriptionKey)
                 .Returns(Task.FromResult(new GetSessionsResponse{Sessions = sessions}));
 
             _sut.AttachHandlers();

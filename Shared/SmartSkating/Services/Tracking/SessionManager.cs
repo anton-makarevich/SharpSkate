@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models.EventArgs;
@@ -24,6 +23,7 @@ namespace Sanet.SmartSkating.Services.Tracking
         private readonly IApiService _apiService;
         private readonly ISyncService _syncService;
         private readonly IDateProvider _dateProvider;
+        private readonly IConfigService _configService;
 
         public SessionManager(ILocationService locationService,
             IAccountService accountService,
@@ -33,7 +33,8 @@ namespace Sanet.SmartSkating.Services.Tracking
             ISessionProvider sessionProvider,
             IApiService apiService,
             ISyncService syncService, 
-            IDateProvider dateProvider)
+            IDateProvider dateProvider, 
+            IConfigService configService)
         {
             _locationService = locationService;
             _accountService = accountService;
@@ -44,6 +45,7 @@ namespace Sanet.SmartSkating.Services.Tracking
             _apiService = apiService;
             _syncService = syncService;
             _dateProvider = dateProvider;
+            _configService = configService;
         }
 
         public ISession? CurrentSession => _sessionProvider.CurrentSession;
@@ -112,7 +114,7 @@ namespace Sanet.SmartSkating.Services.Tracking
                 return;
             var waypointsTask = _apiService.GetWaypointsForSessionAsync(
                             CurrentSession.SessionId,
-                            ApiNames.AzureApiSubscriptionKey);
+                            _configService.AzureApiSubscriptionKey);
             var apiTasksForSession = new List<Task>
             {
                 waypointsTask
