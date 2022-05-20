@@ -11,8 +11,9 @@ namespace Sanet.SmartSkating.Dto.Services
         private const string ConfigFile =
 #if DEBUG
          "appsettings.debug.json";
-#endif
+#else
             "appsettings.json";
+#endif
         public ConfigService()
         {
             _configuration = new ConfigurationBuilder()
@@ -21,8 +22,8 @@ namespace Sanet.SmartSkating.Dto.Services
                 .Build();
         }
 
-        public string BaseUrl => GetConfigValue();// "https://smartskating.azure-api.net/smartskating";
-        public string AzureApiSubscriptionKey => GetConfigValue();//"<AzureApiKey>"
+        public string BaseUrl => GetConfigValue();
+        public string AzureApiSubscriptionKey => GetConfigValue();
 
         private string GetConfigValue([CallerMemberName] string configName = "")
         {
