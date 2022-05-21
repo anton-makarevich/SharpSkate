@@ -69,7 +69,8 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia
         {
 //#if __WASM__
 			// var httpHandler = new WasmHttpHandler();
-// #else
+// #el
+
             var configService = new ConfigService();
             var httpHandler = new HttpClientHandler();
             var httpClient = new HttpClient(httpHandler,false)
