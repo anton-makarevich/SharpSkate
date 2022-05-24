@@ -7,7 +7,7 @@ pool:
 variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  runtime: 'netcoreapp3.1'
+  runtime: 'net6.0'
   functionProjectPath: 'Backend/Functions/SmartSkating.Azure.Functions'
 
 steps:
