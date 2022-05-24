@@ -4,6 +4,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Sanet.SmartSkating.Dto.Models.Requests;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 using Xunit;
@@ -14,13 +15,14 @@ namespace Sanet.SmartSkating.Tests.Services.Account
     {
         private readonly LoginService _sut;
         private readonly IApiService _apiService;
+        private readonly IConfigService _configService = Substitute.For<IConfigService>();
         private const string Username = "username";
         private const string Password = "password";
 
         public LoginServiceTests()
         {
             _apiService = Substitute.For<IApiService>();
-            _sut = new LoginService(_apiService);
+            _sut = new LoginService(_apiService, _configService);
         }
 
         [Fact]

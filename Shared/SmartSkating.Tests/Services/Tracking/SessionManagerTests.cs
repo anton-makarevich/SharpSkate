@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Models.Responses;
 using Sanet.SmartSkating.Dto.Services;
@@ -37,9 +36,13 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
         private readonly IApiService _apiClient = Substitute.For<IApiService>();
         private readonly ISyncService _syncService = Substitute.For<ISyncService>();
         private readonly IDateProvider _dateProvider = Substitute.For<IDateProvider>();
+        private readonly IConfigService _configService = Substitute.For<IConfigService>();
+        private const string AzureApiSubscriptionKey = "azKey";
 
         public SessionManagerTests()
         {
+            _configService.AzureApiSubscriptionKey.Returns(AzureApiSubscriptionKey);
+
             _sut = new SessionManager(
                 _locationService,
                 _accountService,
@@ -49,7 +52,8 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
                 _sessionProvider,
                 _apiClient,
                 _syncService,
-                _dateProvider
+                _dateProvider,
+                _configService
                 );
         }
 
@@ -361,7 +365,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
             _sut.CheckSession();
 
             _apiClient.Received(1)
-                .GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey);
+                .GetWaypointsForSessionAsync(sessionId, AzureApiSubscriptionKey);
         }
 
         [Fact]
@@ -385,7 +389,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
                     Time = time
                 }
             };
-            _apiClient.GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
+            _apiClient.GetWaypointsForSessionAsync(sessionId, AzureApiSubscriptionKey)
                 .Returns(new GetWaypointsResponse
                 {
                     Waypoints = waypoints
@@ -418,7 +422,7 @@ namespace Sanet.SmartSkating.Tests.Services.Tracking
                     Time = time
                 }
             };
-            _apiClient.GetWaypointsForSessionAsync(sessionId, ApiNames.AzureApiSubscriptionKey)
+            _apiClient.GetWaypointsForSessionAsync(sessionId, AzureApiSubscriptionKey)
                 .Returns(new GetWaypointsResponse
                 {
                     Waypoints = waypoints

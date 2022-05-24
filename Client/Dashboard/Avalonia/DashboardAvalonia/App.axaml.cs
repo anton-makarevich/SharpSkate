@@ -69,14 +69,17 @@ namespace Sanet.SmartSkating.Dashboard.Avalonia
         {
 //#if __WASM__
 			// var httpHandler = new WasmHttpHandler();
-// #else
+// #el
+
+            var configService = new ConfigService();
             var httpHandler = new HttpClientHandler();
             var httpClient = new HttpClient(httpHandler,false)
             {
-                BaseAddress = new Uri(ApiNames.BaseUrl)
+                BaseAddress = new Uri(configService.BaseUrl)
             };
             // Services
             _services
+                .AddSingleton<IConfigService>(configService)
                 .AddSingleton(RestService.For<IApiService>(httpClient))
                 .AddSingleton<ILoginService, LoginService>()
                 .AddSingleton<IAccountService, AccountService>()

@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
-using Sanet.SmartSkating.Dto;
+using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
 using Sanet.SmartSkating.Services.Tracking;
@@ -18,21 +18,24 @@ namespace Sanet.SmartSkating.ViewModels
         private readonly ISessionProvider _sessionProvider;
         private readonly ITrackService _trackService;
         private readonly IDataSyncService _dataSyncService;
+        private readonly IConfigService _configService;
         private SessionViewModel? _selectedSession;
 
-        private bool? _onlyActiveSessions = null;
+        private bool? _onlyActiveSessions;
 
         public SessionsViewModel(IApiService apiClient,
             IAccountService accountService,
             ISessionProvider sessionProvider,
             ITrackService trackService,
-            IDataSyncService dataSyncService)
+            IDataSyncService dataSyncService,
+            IConfigService configService)
         {
             _apiClient = apiClient;
             _accountService = accountService;
             _sessionProvider = sessionProvider;
             _trackService = trackService;
             _dataSyncService = dataSyncService;
+            _configService = configService;
         }
 
         public ObservableCollection<SessionViewModel> Sessions { get; } =
@@ -118,7 +121,7 @@ namespace Sanet.SmartSkating.ViewModels
             (await _apiClient.GetSessionsAsync(
                     _accountService.UserId,
                     OnlyActiveSessions,
-                    ApiNames.AzureApiSubscriptionKey))
+                    _configService.AzureApiSubscriptionKey))
                 .Sessions?.OrderBy(f=>f.StartTime).ToList().ForEach(s=>
                 {
                     if (_trackService.SelectedRink != null && _trackService.SelectedRink.Id != s.RinkId) return;

@@ -12,7 +12,7 @@
 				"header": [
 					{
 						"key": "Ocp-Apim-Subscription-Key",
-						"value": "4e35cf8b9b3440e7b6ac2fdf5b1c010e",
+						"value": "",
 						"type": "text"
 					}
 				],
@@ -43,7 +43,7 @@
 				"header": [
 					{
 						"key": "Ocp-Apim-Subscription-Key",
-						"value": "4e35cf8b9b3440e7b6ac2fdf5b1c010e",
+						"value": "",
 						"type": "text"
 					}
 				],

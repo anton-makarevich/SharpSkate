@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Sanet.SmartSkating.Dto;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services.Account;
@@ -14,16 +13,18 @@ namespace Sanet.SmartSkating.Services.Api
         private readonly IApiService _apiService;
         private readonly IConnectivityService _connectivityService;
         private readonly IAccountService _accountService;
+        private readonly IConfigService _configService;
 
         private bool _isStarted;
 
         public DataSyncService(IDataService dataService, IApiService apiService,
-            IConnectivityService connectivityService, IAccountService accountService)
+            IConnectivityService connectivityService, IAccountService accountService, IConfigService configService)
         {
             _dataService = dataService;
             _apiService = apiService;
             _connectivityService = connectivityService;
             _accountService = accountService;
+            _configService = configService;
         }
 
         public void StartSyncing()
@@ -55,7 +56,7 @@ namespace Sanet.SmartSkating.Services.Api
             if (!await _connectivityService.IsConnected())
                 return;
             var device = _accountService.GetDeviceInfo();
-            await _apiService.PostDeviceAsync(device, ApiNames.AzureApiSubscriptionKey);
+            await _apiService.PostDeviceAsync(device, _configService.AzureApiSubscriptionKey);
         }
 
         public async Task SyncWayPointsAsync()
@@ -67,7 +68,7 @@ namespace Sanet.SmartSkating.Services.Api
                 return;
             var wayPointsIds = (await _apiService.PostWaypointsAsync(
                     wayPointsToSync, 
-                    ApiNames.AzureApiSubscriptionKey))
+                    _configService.AzureApiSubscriptionKey))
                 .SyncedIds;
             if (wayPointsIds == null) return;
             foreach (var syncedWayPoint in wayPointsIds)
@@ -87,7 +88,7 @@ namespace Sanet.SmartSkating.Services.Api
                 return;
             var syncedIds = (await _apiService.PostSessionsAsync(
                     sessionsToSync, 
-                    ApiNames.AzureApiSubscriptionKey))
+                    _configService.AzureApiSubscriptionKey))
                 .SyncedIds;
             if (syncedIds == null) return;
             foreach (var id in syncedIds)
@@ -112,7 +113,7 @@ namespace Sanet.SmartSkating.Services.Api
                 return;
             var syncedIds = (await _apiService.PostBleScansAsync(
                     bleScansToSync, 
-                    ApiNames.AzureApiSubscriptionKey))
+                    _configService.AzureApiSubscriptionKey))
                 .SyncedIds;
             if (syncedIds == null) return;
             foreach (var syncedScan in syncedIds)
@@ -130,7 +131,7 @@ namespace Sanet.SmartSkating.Services.Api
             }
             var response = await _apiService.PostSessionsAsync(
                 new List<SessionDto>{sessionDto},
-                ApiNames.AzureApiSubscriptionKey);
+                _configService.AzureApiSubscriptionKey);
 
             if (response.SyncedIds?.Count == null || response.SyncedIds?.Count == 0)
             {
@@ -147,7 +148,7 @@ namespace Sanet.SmartSkating.Services.Api
             }
             var response = await _apiService.PostWaypointsAsync(
                 new List<WayPointDto>{pointDto},
-                ApiNames.AzureApiSubscriptionKey);
+                _configService.AzureApiSubscriptionKey);
 
             if (response.SyncedIds?.Count == null || response.SyncedIds?.Count == 0)
             {

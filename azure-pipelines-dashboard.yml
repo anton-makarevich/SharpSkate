@@ -38,6 +38,18 @@ steps:
 - script: 'dotnet publish $(wasmProjectDir)/$(wasmProject) -c Release'
   displayName: 'Build dashboard wasm'
 
+- task: DownloadSecureFile@1
+  name: appsettings
+  inputs:
+    secureFile: 'appsettings.json'
+  displayName: 'Retrieve app setings'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: 'Copy-Item "$(appsettings.secureFilePath)" -Destination "$(wasmProjectDir)/bin/Release/net6.0/publish"'
+  displayName: 'Copy appsettings to publish folder'
+
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'AzureDevSubscription'
