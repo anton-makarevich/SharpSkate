@@ -2,7 +2,7 @@ trigger:
 - develop
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   solution: 'SmartSkating.sln'
@@ -24,47 +24,10 @@ steps:
     script: '((Get-Content -path $(tokensFile) -Raw) -replace ''$(azureKeyName)'',''$(azureKeyValue)'') | Set-Content -Path $(tokensFile)'
   displayName: 'Replace token'
 
-- task: DotNetCoreCLI@2
+- task: AzureStaticWebApp@0
   inputs:
-    command: 'restore'
-    projects: '$(wasmProjectDir)/$(wasmProject)'
-    includeNuGetOrg: true
-    noCache: true
-  displayName: 'Restore packages'
-
-- script: dotnet workload install wasm-tools
-  displayName: 'Install wasm workload'
-
-- script: 'dotnet publish $(wasmProjectDir)/$(wasmProject) -c Release'
-  displayName: 'Build dashboard wasm'
-
-- task: DownloadSecureFile@1
-  name: appsettings
-  inputs:
-    secureFile: 'appsettings.json'
-  displayName: 'Retrieve app setings'
-
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: 'Copy-Item "$(appsettings.secureFilePath)" -Destination "$(wasmProjectDir)/bin/Release/net6.0/publish"'
-  displayName: 'Copy appsettings to publish folder'
-
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'AzureDevSubscription'
-    scriptType: 'batch'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob delete-batch --account-name $(storage-name) --source $web --pattern package*'
-    arguments: ''
-  displayName: 'Delete old package folders if exist'
-
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'AzureDevSubscription'
-    scriptType: 'batch'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az storage blob upload-batch -d $web --account-name $(storage-name) --source $(wasmProjectDir)/bin/Release/net6.0/publish'
-    arguments: ''
-
-  displayName: 'Deploy dashboard wasm to azure storage'
+    app_location: '$(wasmProjectDir)'
+    app_build_command: 'dotnet build'
+    output_location: 'wwwroot'
+    verbose: true
+    azure_static_web_apps_api_token: '$(AZURE_STATIC_APP_TOKEN)'
