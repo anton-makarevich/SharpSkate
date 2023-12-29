@@ -11,12 +11,17 @@
       <None Remove="Resources\tracks.json" />
       <EmbeddedResource Include="Resources\ble.json" />
       <EmbeddedResource Include="Resources\tracks.json" />
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
       <None Update="appsettings.debug.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Remove="appsettings.json" />
+      <EmbeddedResource Include="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="appsettings.debug.json" />
+      <EmbeddedResource Include="appsettings.debug.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

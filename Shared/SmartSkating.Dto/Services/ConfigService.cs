@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Configuration;
 
@@ -16,9 +18,13 @@ namespace Sanet.SmartSkating.Dto.Services
 #endif
         public ConfigService()
         {
+            var assembly = Assembly.GetAssembly(typeof(ConfigService));
+            var resourceName = assembly.GetManifestResourceNames()
+                .FirstOrDefault(f=> f.Contains(ConfigFile));
+
+            using var stream = assembly.GetManifestResourceStream(resourceName);
             _configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(ConfigFile, optional: false, reloadOnChange: true)
+                .AddJsonStream(stream)
                 .Build();
         }
 

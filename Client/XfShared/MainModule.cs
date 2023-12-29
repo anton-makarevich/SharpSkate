@@ -16,6 +16,7 @@ namespace Sanet.SmartSkating.Xf
     {
         public static void RegisterMainModule(this Container container)
         {
+            var configService = new ConfigService();
             // Register app start viewmodel
             container.Register<StartViewModel>();
             container.Register<TracksViewModel>();
@@ -27,7 +28,7 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<IResourceReader,EmbeddedResourceReader>();
             container.RegisterSingleton<ISettingsService, SettingsService>();
             container.RegisterSingleton<IConnectivityService,EssentialsConnectivityService>();
-            container.RegisterInstance(RestService.For<IApiService>(ApiNames.BaseUrl));
+            container.RegisterInstance(RestService.For<IApiService>(configService.BaseUrl));
             container.RegisterSingleton<IDeviceInfo,EssentialsDeviceInfo>();
             container.RegisterSingleton<IPreferences,EssentialsPreferences>();
             container.RegisterSingleton<IAccountService,AccountService>();
@@ -45,6 +46,7 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<ISessionProvider,SessionProvider>();
             container.RegisterSingleton<ISessionManager,SessionManager>();
             container.RegisterSingleton<ISyncService, SignalRService>();
+            container.RegisterInstance<IConfigService>(configService);
         }
     }
 }
