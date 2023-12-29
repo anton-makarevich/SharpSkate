@@ -1,3 +1,5 @@
+using System.Net.Http;
+
 namespace Sanet.SmartSkating.Dto
 {
     public static class ApiNames

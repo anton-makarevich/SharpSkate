@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.2.0.562" />
     <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
+    <PackageReference Include="Microcharts" Version="0.9.5.9" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Refit" Version="5.2.4" />
@@ -18,11 +19,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmartSkating.Dto\SmartSkating.Dto.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microcharts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\Libs\Microcharts\Microcharts.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
