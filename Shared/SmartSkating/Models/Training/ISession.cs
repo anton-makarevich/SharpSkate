@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 
@@ -8,6 +9,7 @@ namespace Sanet.SmartSkating.Models.Training
 {
     public interface ISession
     {
+        event EventHandler<LapEventArgs>? LapPassed;
         string SessionId { get; }
         IList<WayPoint> WayPoints { get; }
         IList<Section> Sectors { get; }

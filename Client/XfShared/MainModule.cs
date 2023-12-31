@@ -5,9 +5,11 @@ using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Services;
 using Sanet.SmartSkating.Services.Account;
 using Sanet.SmartSkating.Services.Api;
+using Sanet.SmartSkating.Services.Narration;
 using Sanet.SmartSkating.Services.Storage;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
+using Sanet.SmartSkating.Xf.Services;
 using SimpleInjector;
 
 namespace Sanet.SmartSkating.Xf
@@ -34,6 +36,7 @@ namespace Sanet.SmartSkating.Xf
             container.RegisterSingleton<IAccountService,AccountService>();
             container.RegisterSingleton<ISessionInfoHelper,SessionInfoHelper>();
             container.RegisterInstance(UserDialogs.Instance);
+            container.RegisterSingleton<INarratorService,XamarinEssentialNarratorService>();
             #if TEST
             container.RegisterSingleton<IDataSyncService,DebugSyncService>();
             #else

@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters\InverseBooleanConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\XamarinEssentialNarratorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\XamarinFormsNavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Base\BaseView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Cells\TrackCell.xaml.cs" />

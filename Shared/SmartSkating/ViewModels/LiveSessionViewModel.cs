@@ -5,7 +5,9 @@ using System.Windows.Input;
 using Acr.UserDialogs;
 using Sanet.SmartSkating.Dto.Services;
 using Sanet.SmartSkating.Models;
+using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Services.Narration;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels.Base;
 
@@ -19,6 +21,7 @@ namespace Sanet.SmartSkating.ViewModels
 
         protected readonly ISessionManager SessionManager;
         private readonly IDateProvider _dateProvider;
+        private readonly INarratorService? _narratorService;
         private readonly IUserDialogs _userDialogs;
         
         private string _infoLabel = "";
@@ -33,10 +36,12 @@ namespace Sanet.SmartSkating.ViewModels
 
         public LiveSessionViewModel(ISessionManager sessionManager,
             IDateProvider dateProvider,
-            IUserDialogs userDialogs)
+            IUserDialogs userDialogs,
+            INarratorService? narratorService=null)
         {
             SessionManager = sessionManager;
             _dateProvider = dateProvider;
+            _narratorService = narratorService;
             _userDialogs = userDialogs;
 
             TotalTime = new TimeSpan().ToString(TotalTimeFormat);
@@ -45,17 +50,33 @@ namespace Sanet.SmartSkating.ViewModels
         public ICommand StartCommand => new SimpleCommand(async() =>
         {
             await SessionManager.StartSession();
-            
+            if (_narratorService != null && SessionManager.CurrentSession != null)
+            {
+                SessionManager.CurrentSession.LapPassed += SpeakLapTime;
+            }
 #pragma warning disable 4014
             TrackTime();
 #pragma warning restore 4014
             UpdateButtonsState();
         });
 
+        private void SpeakLapTime(object sender, LapEventArgs e)
+        {
+            if (_narratorService == null) return;
+            var textToSpeak = $"Lap number {e.Lap.Number}. {e.Lap.Time.Minutes} minutes, {e.Lap.Time.Seconds} seconds";
+            if (e.IsBest.HasValue && e.IsBest.Value)
+                textToSpeak += ". Best lap!";
+            _narratorService.SpeakText(textToSpeak);
+        }
+
         public ICommand StopCommand => new SimpleCommand(async () =>
         {
             var isConfirmed = await _userDialogs.ConfirmAsync("Do you want to stop session");
             if (!isConfirmed) return;
+            if (SessionManager.CurrentSession != null)
+            {
+                SessionManager.CurrentSession.LapPassed -= SpeakLapTime;
+            }
             SessionManager.StopSession();
             InfoLabel = "";
             UpdateButtonsState();
@@ -199,6 +220,10 @@ namespace Sanet.SmartSkating.ViewModels
         public override void DetachHandlers()
         {
             base.DetachHandlers();
+            if (SessionManager.CurrentSession != null)
+            {
+                SessionManager.CurrentSession.LapPassed -= SpeakLapTime;
+            }
             IsActive = false;
         }
     }

@@ -10,4 +10,9 @@
 	<uses-feature android:name="android.hardware.location.gps" android:required="true" />
 	<uses-feature android:name="android.hardware.location.network" android:required="false" />
 	<application android:allowBackup="false" android:label="SmartSkating.Xf.Android" />
+	<queries>
+		<intent>
+			<action android:name="android.intent.action.TTS_SERVICE" />
+		</intent>
+	</queries>
 </manifest>
