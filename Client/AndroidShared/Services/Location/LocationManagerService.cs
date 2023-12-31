@@ -3,7 +3,6 @@ using Android.App;
 using Android.Content;
 using Android.Locations;
 using Android.OS;
-using Sanet.SmartSkating.Models;
 using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Services.Location;
