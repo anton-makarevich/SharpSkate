@@ -63,9 +63,9 @@ namespace Sanet.SmartSkating.ViewModels
         private void SpeakLapTime(object sender, LapEventArgs e)
         {
             if (_narratorService == null) return;
-            var textToSpeak = $"Lap number {e.Lap.Number} - {e.Lap.Time.ToString(LapTimeFormat)}";
+            var textToSpeak = $"Lap number {e.Lap.Number}. {e.Lap.Time.Minutes} minutes, {e.Lap.Time.Seconds} seconds";
             if (e.IsBest.HasValue && e.IsBest.Value)
-                textToSpeak += " - Best lap!";
+                textToSpeak += ". Best lap!";
             _narratorService.SpeakText(textToSpeak);
         }
 

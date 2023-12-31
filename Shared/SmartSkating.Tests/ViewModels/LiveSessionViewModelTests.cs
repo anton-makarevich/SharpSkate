@@ -484,7 +484,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             session.LapPassed += Raise.EventWith(null, new LapEventArgs(lap, false));
 
             // Assert
-            _narratorService.Received(1).SpeakText("Lap number 1 - 01:30");
+            _narratorService.Received(1).SpeakText("Lap number 1. 1 minutes, 30 seconds");
         }
         
         [Fact]
@@ -499,7 +499,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
             session.LapPassed += Raise.EventWith(null, new LapEventArgs(lap, true));
 
             // Assert
-            _narratorService.Received(1).SpeakText("Lap number 1 - 01:30 - Best lap!");
+            _narratorService.Received(1).SpeakText("Lap number 1. 1 minutes, 30 seconds. Best lap!");
         }
 
         private void CreateSessionMockWithOneSector()
