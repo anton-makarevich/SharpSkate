@@ -6,7 +6,7 @@ namespace Sanet.SmartSkating.Xf.Services
 {
     public class XamarinEssentialNarratorService:INarratorService
     {
-        public async Task PlayText(string text)
+        public async Task SpeakText(string text)
         {
             await TextToSpeech.SpeakAsync(text);
         }

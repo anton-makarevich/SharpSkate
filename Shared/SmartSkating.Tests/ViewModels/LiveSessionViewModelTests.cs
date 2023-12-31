@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
@@ -6,8 +6,10 @@ using FluentAssertions;
 using NSubstitute;
 using Sanet.SmartSkating.Dto.Models;
 using Sanet.SmartSkating.Dto.Services;
+using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Models.Training;
+using Sanet.SmartSkating.Services.Narration;
 using Sanet.SmartSkating.Services.Tracking;
 using Sanet.SmartSkating.ViewModels;
 using Xunit;
@@ -20,6 +22,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         private readonly ISessionManager _sessionManager = Substitute.For<ISessionManager>();
         private readonly IDateProvider _dateProvider = Substitute.For<IDateProvider>();
         private readonly IUserDialogs _userDialogs = Substitute.For<IUserDialogs>();
+        private readonly INarratorService _narratorService = Substitute.For<INarratorService>();
 
         private readonly Coordinate _locationStub = new Coordinate(23, 45);
         private readonly DateTime _testTime = new DateTime(2020, 02, 20, 20, 20, 20);
@@ -27,7 +30,7 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public LiveSessionViewModelTests()
         {
             _dateProvider.Now().Returns(_testTime);
-            _sut = new LiveSessionViewModel(_sessionManager, _dateProvider, _userDialogs);
+            _sut = new LiveSessionViewModel(_sessionManager, _dateProvider, _userDialogs, _narratorService);
         }
 
         [Fact]
@@ -467,6 +470,36 @@ namespace Sanet.SmartSkating.Tests.ViewModels
         public void ForceUiUpdate_Is_Always_False()
         {
             _sut.ForceUiUpdate.Should().BeFalse();
+        }
+        
+        [Fact]
+        public void LapPassed_WhenIsBestIsFalse_CallsSpeakTextWithCorrectParameters()
+        {
+            // Arrange
+            var lap = new Lap { Number = 1, Time = new TimeSpan(0, 1, 30) };
+            var session = CreateSessionMock();
+            _sut.StartCommand.Execute(null);
+            
+            // Act
+            session.LapPassed += Raise.EventWith(null, new LapEventArgs(lap, false));
+
+            // Assert
+            _narratorService.Received(1).SpeakText("Lap number 1 - 01:30");
+        }
+        
+        [Fact]
+        public void LapPassed_WhenIsBestIsTrue_CallsSpeakTextWithCorrectParameters()
+        {
+            // Arrange
+            var lap = new Lap { Number = 1, Time = new TimeSpan(0, 1, 30) };
+            var session = CreateSessionMock();
+            _sut.StartCommand.Execute(null);
+            
+            // Act
+            session.LapPassed += Raise.EventWith(null, new LapEventArgs(lap, true));
+
+            // Assert
+            _narratorService.Received(1).SpeakText("Lap number 1 - 01:30 - Best lap!");
         }
 
         private void CreateSessionMockWithOneSector()

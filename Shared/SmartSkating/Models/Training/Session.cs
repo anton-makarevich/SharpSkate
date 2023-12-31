@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sanet.SmartSkating.Dto.Models;
+using Sanet.SmartSkating.Models.EventArgs;
 using Sanet.SmartSkating.Models.Geometry;
 using Sanet.SmartSkating.Models.Location;
 using Sanet.SmartSkating.Services;
@@ -11,6 +12,7 @@ namespace Sanet.SmartSkating.Models.Training
 {
     public class Session : ISession
     {
+        public event EventHandler<LapEventArgs>? LapPassed;
         private readonly Rink _rink;
         private readonly ISettingsService _settingsService;
 
@@ -225,15 +227,22 @@ namespace Sanet.SmartSkating.Models.Training
             if (lastSections.Count() == 4 && lastSections.First().Type == WayPointTypes.FirstSector &&
                 lastSections.Last().Type == WayPointTypes.FourthSector)
             {
+                var isBest = false;
                 LastLapTime = new TimeSpan(lastSections.Sum(s => s.Time.Ticks));
-                Laps.Add(new Lap
+                var newLap = new Lap
                 {
-                    Number = Laps.Count+1,
+                    Number = Laps.Count + 1,
                     Time = LastLapTime
-                });
-                
+                };
+                Laps.Add(newLap);
+
                 if (BestLapTime.Ticks == 0 || LastLapTime.Ticks < BestLapTime.Ticks)
+                {
                     BestLapTime = LastLapTime;
+                    isBest = true;
+                }
+
+                LapPassed?.Invoke(this, new LapEventArgs(newLap, isBest));
             }
         }
 
